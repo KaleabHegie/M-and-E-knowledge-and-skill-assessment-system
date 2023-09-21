@@ -12,44 +12,44 @@
 
     <link
       rel="stylesheet"
-      href="assets/plugins/fontawesome-free/css/all.min.css"
+      href="{%  static 'assets/plugins/fontawesome-free/css/all.min.css' %}"
     />
 
     <link
       rel="stylesheet"
-      href="../../../code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+      href="{% static '../../../code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' %}"
     />
 
     <link
       rel="stylesheet"
-      href="assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css"
+      href="{%  static 'assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}"
     />
 
     <link
       rel="stylesheet"
-      href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css"
+      href="{%  static 'assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}"
     />
 
-    <link rel="stylesheet" href="assets/plugins/jqvmap/jqvmap.min.css" />
+    <link rel="stylesheet" href="{%  static 'assets/plugins/jqvmap/jqvmap.min.css' %}" />
 
     <link
       rel="stylesheet"
-      href="assets/dist/css/adminlte.min2167.css?v=3.2.0"
-    />
-
-    <link
-      rel="stylesheet"
-      href="assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css"
+      href="{%  static 'assets/dist/css/adminlte.min2167.css' %}?v=3.2.0"
     />
 
     <link
       rel="stylesheet"
-      href="assets/plugins/daterangepicker/daterangepicker.css"
+      href="{%  static 'assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}"
     />
 
     <link
       rel="stylesheet"
-      href="assets/plugins/summernote/summernote-bs4.min.css"
+      href="{%  static 'assets/plugins/daterangepicker/daterangepicker.css' %}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{%  static 'assets/plugins/summernote/summernote-bs4.min.css' %}"
     />
     <script nonce="5c0ebefd-4dff-4729-8497-cbde4c4cf6b8">
       (function (w, d) {
@@ -113,7 +113,7 @@
           };
           ["complete", "interactive"].includes(bh.readyState)
             ? zaraz.init()
-            : bg.addEventListener("DOMContentLoaded", zaraz.init);
+            : bg.addEventListener("DOMContened", zaraz.init);
         })(w, d, "zarazData", "script");
       })(window, document);
     </script>
