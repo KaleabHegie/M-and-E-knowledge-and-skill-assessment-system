@@ -10,3 +10,5 @@ def surveyCreationView (request):
 
 def user_profile(request):
     return render(request , 'profile.html' )
+def change_password(request):
+    return render(request , 'change_password.html' )
