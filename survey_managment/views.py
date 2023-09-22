@@ -10,3 +10,8 @@ def loginView(request):
 
 def surveyCreationView (request):
     return render(request, 'surveyCreation.html', {})
+
+def user_profile(request):
+    return render(request , 'profile.html' )
+def change_password(request):
+    return render(request , 'change_password.html' )
