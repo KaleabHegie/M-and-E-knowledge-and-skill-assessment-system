@@ -7,3 +7,6 @@ def indexView (request):
 
 def surveyCreationView (request):
     return render(request, 'surveyCreation.html', {})
+
+def user_profile(request):
+    return render(request , 'profile.html' )
