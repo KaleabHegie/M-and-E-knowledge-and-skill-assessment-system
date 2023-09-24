@@ -7,18 +7,6 @@
 {% include "includes/head.html" %}  
 
 
-
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AdminLTE 3 | User Profile</title>
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
-
-<link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-
-<link rel="stylesheet" href="../../dist/css/adminlte.min2167.css?v=3.2.0">
-<script nonce="d6a68778-8675-43f9-bb49-1a52b8c97705">(function(w,d){!function(bg,bh,bi,bj){bg[bi]=bg[bi]||{};bg[bi].executed=[];bg.zaraz={deferred:[],listeners:[]};bg.zaraz.q=[];bg.zaraz._f=function(bk){return async function(){var bl=Array.prototype.slice.call(arguments);bg.zaraz.q.push({m:bk,a:bl})}};for(const bm of["track","set","debug"])bg.zaraz[bm]=bg.zaraz._f(bm);bg.zaraz.init=()=>{var bn=bh.getElementsByTagName(bj)[0],bo=bh.createElement(bj),bp=bh.getElementsByTagName("title")[0];bp&&(bg[bi].t=bh.getElementsByTagName("title")[0].text);bg[bi].x=Math.random();bg[bi].w=bg.screen.width;bg[bi].h=bg.screen.height;bg[bi].j=bg.innerHeight;bg[bi].e=bg.innerWidth;bg[bi].l=bg.location.href;bg[bi].r=bh.referrer;bg[bi].k=bg.screen.colorDepth;bg[bi].n=bh.characterSet;bg[bi].o=(new Date).getTimezoneOffset();if(bg.dataLayer)for(const bt of Object.entries(Object.entries(dataLayer).reduce(((bu,bv)=>({...bu[1],...bv[1]})),{})))zaraz.set(bt[0],bt[1],{scope:"page"});bg[bi].q=[];for(;bg.zaraz.q.length;){const bw=bg.zaraz.q.shift();bg[bi].q.push(bw)}bo.defer=!0;for(const bx of[localStorage,sessionStorage])Object.keys(bx||{}).filter((bz=>bz.startsWith("_zaraz_"))).forEach((by=>{try{bg[bi]["z_"+by.slice(7)]=JSON.parse(bx.getItem(by))}catch{bg[bi]["z_"+by.slice(7)]=bx.getItem(by)}}));bo.referrerPolicy="origin";bo.src="../../../../cdn-cgi/zaraz/sd0d9.js?z="+btoa(encodeURIComponent(JSON.stringify(bg[bi])));bn.parentNode.insertBefore(bo,bn)};["complete","interactive"].includes(bh.readyState)?zaraz.init():bg.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,"zarazData","script");})(window,document);</script></head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
@@ -52,7 +40,8 @@
 <div class="card card-primary card-outline">
 <div class="card-body box-profile">
 <div class="text-center">
-<img class="profile-user-img img-fluid img-circle" src="{ % static 'assets/dist/img/user4-128x128.jpg' %} alt="User profile picture">
+<img class="profile-user-img img-fluid img-circle" src="{% static 'assets/dist/img/user4-128x128.jpg' %}"
+ alt="User profile picture">
 </div>
 <h3 class="profile-username text-center">Nina Mcintire</h3>
 <p class="text-muted text-center">Software Engineer</p>
@@ -62,6 +51,50 @@
 
 
 </div>
+<div class="card-body">
+    
+    <div class="form-group">
+    <label>First Name:</label>
+    <div class="text" id="reservationdate" data-target-input="nearest">
+    <input type="text" class="form-control" placeholder="Nina"/>
+   
+    </div>
+    </div>
+    
+    <div class="form-group">
+    <label>Last Name:</label>
+    <div class="input-group date">
+    <input type="text" class="form-control" placeholder="Mcintire"/>
+    </div>
+    </div>
+    
+    
+    <div class="form-group">
+    <label>Email Address:</label>
+    <div class="input-group date">
+        <input type="text" class="form-control" placeholder="Nina001@gmail.com" />
+        </div>
+    
+    </div>
+    
+    
+    <div class="form-group">
+    <label>Phone Number:</label>
+    <div class="input-group date">
+        <input type="text" class="form-control" placeholder="+25198562592632"/>
+        </div>
+    
+    </div>
+    
+    
+    <div class="form-group">
+    <label>Position:</label>
+    <div class="input-group date">
+        <input type="text" class="form-control" placeholder="Web Developer"/>
+        </div>
+    </div>
+
+    </div>
 </div>
 </div>
 <div class="col-md-9">
