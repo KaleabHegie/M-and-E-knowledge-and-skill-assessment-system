@@ -5,6 +5,9 @@ from django.shortcuts import render
 def indexView (request):
     return render(request, 'index.html', {})
 
+def loginView(request):
+    return render(request, 'login.html')
+
 def surveyCreationView (request):
     return render(request, 'surveyCreation.html', {})
 
