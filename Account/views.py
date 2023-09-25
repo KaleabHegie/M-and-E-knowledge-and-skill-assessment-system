@@ -9,31 +9,39 @@ from . models import *
 # Create your views here.
 def register_view(request):
 	if request.method == 'POST':
-		full_name = request.POST['First']
+		first_name = request.POST['first_name']
+		last_name = request.POST['last_name']
 		username = request.POST['username']
 		email = request.POST['email']
+		DoB= request.POST['dob']
+		profile_picture= request.POST['profile_pic']
 		password = request.POST['password']
-		password2 = request.POST['password2']
+		re_password = request.POST['re_password']
+		phone_num = request.POST['phone_num']
 
-		if password == password2:
+		
+
+		if password == re_password:
 			if User.objects.filter(username=username).exists():
 					messages.error(request , 'User Name Already Taken')
-					return redirect('accounts:register_view')
+					return redirect('register_view')
 			else:
 				if User.objects.filter(email=email).exists():
 					messages.error(request , 'Email Name Already Exits ')
 					return redirect('accounts:register_view')
 				else:
-					user = User.objects.create_user(username=username,password=password,email=email,first_name=full_name)
-					user.save()
-					messages.success(request,'You Are Now Registered')
-					return redirect('accounts:login_view')
+					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,first_name = first_name,last_name=last_name)
+					custom_user.save()
+					system_user = System_User.objects.create(phone_number=phone_num, image=profile_picture, custom_user=custom_user)
+					System_User = System_User.objects.create_user
+					messages.success(request,'User registered Sucessfully')
+					return redirect('/')
 		else:
 			messages.error(request , 'Password Doest Not Match')
-			return redirect('accounts:register_view')
+			return redirect('register_view')
 
 	else:
-		return render(request,'./accounts/auth-signup.html')
+		return render(request,'userRegistration.html')
 
 
 # def login_view(request):
