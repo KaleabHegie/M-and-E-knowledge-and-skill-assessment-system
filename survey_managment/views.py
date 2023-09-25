@@ -15,7 +15,8 @@ def user_profile(request):
     return render(request , 'profile.html' )
 def change_password(request):
     return render(request , 'change_password.html' )
-
+def user_registration(request):
+    return render(request , 'userRegistration.html' )
 
 def Mychartanalysis(request):
     data={}
