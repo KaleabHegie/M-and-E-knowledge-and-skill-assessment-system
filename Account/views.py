@@ -28,20 +28,20 @@ def register_view(request):
 			else:
 				if User.objects.filter(email=email).exists():
 					messages.error(request , 'Email Name Already Exits ')
-					return redirect('accounts:register_view')
+					return redirect('register_view')
 				else:
 					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,first_name = first_name,last_name=last_name)
 					custom_user.save()
-					system_user = System_User.objects.create(phone_number=phone_num, image=profile_picture, custom_user=custom_user)
-					System_User = System_User.objects.create_user
+					system_user = System_User.objects.create(phone_number=phone_num, image=profile_picture, custom_user=custom_user,date_of_birth=DoB)
+					system_user.save()
 					messages.success(request,'User registered Sucessfully')
-					return redirect('/')
+					return HttpResponse("User Registered")
 		else:
 			messages.error(request , 'Password Doest Not Match')
 			return redirect('register_view')
 
 	else:
-		return render(request,'userRegistration.html')
+		return render(request,'survey_managment/userRegistration.html')
 
 
 # def login_view(request):
