@@ -30,6 +30,9 @@ def indexView (request):
 def loginView(request):
     return render(request, 'login.html')
 
+def forgotPasswordView(request):
+    return render(request, 'forgot-password.html')
+
 def surveyCreationView (request):
     return render(request, 'surveyCreation.html', {})
 
