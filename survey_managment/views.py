@@ -47,3 +47,9 @@ def user_registration(request):
 def Mychartanalysis(request):
     data={}
     return render(request,'chart_analysis.html',data)
+
+def FormsView(request):
+    return render(request, 'Forms.html')
+
+def formDetailView(request):
+    return render(request, 'FormDetail.html')
