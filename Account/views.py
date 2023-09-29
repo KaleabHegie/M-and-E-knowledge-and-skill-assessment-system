@@ -42,27 +42,25 @@ def register_view(request):
 		return render(request,'survey_managment/templates/userRegistration.html')
 
 
-# def login_view(request):
-# 	user = User.objects.all()
-# 	if request.method == 'POST':
-# 		username = request.POST['username']
-# 		password = request.POST['password']
+def login_view(request):
+	user = CustomUser.objects.all()
+	if request.method == 'POST':
+		username = request.POST['username']
+		password = request.POST['password']
 
-# 		user = auth.authenticate(username=username , password=password)
-# 		if user is not None and user.is_superuser: 
-# 			auth.login(request,user)
-# 			messages.success(request,'You Are Now LoggedIn')
-# 			return render(request,'./dashboard/profile.html')
-# 		elif user is not None:
-# 						return HttpResponse("Logged in as Customer")
+		user = auth.authenticate(username=username , password=password)
+		if user is not None: 
+			auth.login(request,user)
+			messages.success(request,'You Are Now LoggedIn')
+			return HttpResponse('Logged in')
 
-# 		else:
-# 			messages.error(request,'Invalid Credentials')
-# 			return HttpResponse("Invalid User")
+		else:
+			messages.error(request,'Invalid Credentials')
+			return HttpResponse("Invalid User")
 
 		
-# 	else:
-# 		return render(request,'./accounts/auth-login.html')
+	else:
+		return render(request,'survey_managment/templates/login.html')
 
 # from django.contrib.auth import logout
 # from django.shortcuts import redirect
