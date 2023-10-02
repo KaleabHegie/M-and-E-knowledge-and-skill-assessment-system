@@ -27,8 +27,8 @@ def change_password(request):
 def indexView (request):
     return render(request, 'index.html', {})
 
-def loginView(request):
-    return render(request, 'login.html')
+# def loginView(request):
+#     return render(request, 'login.html')
 
 def forgotPasswordView(request):
     return render(request, 'forgot-password.html')
@@ -41,8 +41,8 @@ def user_profile(request):
 
 def change_password(request):
     return render(request , 'change_password.html' )
-def user_registration(request):
-    return render(request , 'userRegistration.html' )
+# def user_registration(request):
+#     return render(request , 'userRegistration.html' )
 
 def Mychartanalysis(request):
     data={}
@@ -53,3 +53,4 @@ def FormsView(request):
 
 def formDetailView(request):
     return render(request, 'FormDetail.html')
+

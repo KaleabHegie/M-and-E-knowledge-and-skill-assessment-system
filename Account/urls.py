@@ -6,7 +6,7 @@ app_name = 'Account'
 
 urlpatterns = [
     path('register/',views.register_view, name='register_view'),
-    path('login/',views.login_view, name='login'),
+    path('Login/',views.login_view, name='Login'),
 
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

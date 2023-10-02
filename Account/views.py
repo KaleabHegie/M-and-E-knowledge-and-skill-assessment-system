@@ -39,7 +39,7 @@ def register_view(request):
 			return HttpResponse('Password does not match')
 
 	else:
-		return render(request,'survey_managment/templates/userRegistration.html')
+		return render(request,'./userRegistration.html')
 
 
 def login_view(request):
@@ -53,14 +53,13 @@ def login_view(request):
 			auth.login(request,user)
 			messages.success(request,'You Are Now LoggedIn')
 			return HttpResponse('Logged in')
-
+		elif CustomUser.objects.filter(username=username).exists():
+			return HttpResponse("Incorrcet password")
 		else:
 			messages.error(request,'Invalid Credentials')
 			return HttpResponse("Invalid User")
-
-		
 	else:
-		return render(request,'survey_managment/templates/login.html')
+		return render(request,'./login.html')
 
 # from django.contrib.auth import logout
 # from django.shortcuts import redirect

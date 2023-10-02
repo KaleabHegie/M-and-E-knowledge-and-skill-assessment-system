@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
-                <form method="post" action="{% url 'Account:login' %}" >
+                <form method="post" action="{% url 'Account:Login' %}" >
                     {%csrf_token%}
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" name="username" placeholder="Username">
