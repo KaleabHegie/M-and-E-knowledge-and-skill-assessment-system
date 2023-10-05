@@ -48,9 +48,9 @@ def Mychartanalysis(request):
     data={}
     return render(request,'chart_analysis.html',data)
 
-def FormsView(request):
-    return render(request, 'Forms.html')
+def questionnaireView(request):
+    return render(request, 'questionnaires.html')
 
-def formDetailView(request):
-    return render(request, 'FormDetail.html')
+def questionnaireDetailView(request):
+    return render(request, 'questionnaireDetail.html')
 

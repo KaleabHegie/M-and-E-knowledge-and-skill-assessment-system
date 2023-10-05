@@ -14,8 +14,8 @@ urlpatterns = [
     path('change_password', views.change_password,name='change_password'),
     path('forgotPassword/', views.forgotPasswordView,name='forgotPassword'),
     # path('login/', views.loginView, name='login'),
-    path('AllForm/', views.FormsView, name='AllForm'),
-    path('formDetail/', views.formDetailView, name='formDetail'),
+    path('questionnaires/', views.questionnaireView, name='questionnaires'),
+    path('questionnaireDetail/', views.questionnaireDetailView, name='questionnaireDetail'),
     
 
 ]
