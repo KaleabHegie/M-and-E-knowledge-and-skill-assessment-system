@@ -10,6 +10,9 @@ class CustomUser(AbstractUser):
     phone_number = models.CharField( max_length=50 ,null=True)    
     image = models.ImageField(upload_to='',null=True)
     date_of_birth = models.DateField( auto_now=False, auto_now_add=False , null=True)
+    Role =models.CharField( max_length=50 ,null=True)
+    Department = models.CharField( max_length=50 ,null=True)
+    Line_ministry = models.CharField( max_length=50 ,null=True)
     
     EMAIL_FIELD = 'email'
 

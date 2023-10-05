@@ -18,6 +18,10 @@ def register_view(request):
 		password = request.POST['password']
 		re_password = request.POST['re_password']
 		phone_num = request.POST['phone_num']
+		role = request.POST['role']
+		line_ministry = request.POST['line_ministry']
+		department = request.POST['department']
+
 
 
 		if password == re_password:
@@ -29,7 +33,8 @@ def register_view(request):
 					messages.error(request , 'Email Name Already Exits ')
 					return HttpResponse('Email Name Already Exits')
 				else:
-					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,first_name = first_name,last_name=last_name,phone_number=phone_num, image=profile_picture,date_of_birth=DoB)
+					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,first_name = first_name,last_name=last_name,
+												  phone_number=phone_num, image=profile_picture,date_of_birth=DoB,Role = role, Department = department, Line_ministry =line_ministry )
 					custom_user.save()
 					
 					messages.success(request,'User registered Sucessfully')
@@ -38,7 +43,7 @@ def register_view(request):
 			messages.error(request , 'Password Doest Not Match')
 			return HttpResponse('Password does not match')
 
-	else:
+	else: 
 		return render(request,'./userRegistration.html')
 
 

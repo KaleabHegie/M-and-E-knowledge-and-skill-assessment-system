@@ -35,56 +35,61 @@
             <div class="col-md-10">
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Quick Example</h3>
+                  <h3 class="card-title">Add Account</h3>
                 </div>
 
                 <form method="post" action="{% url 'Account:register_view' %}" enctype="multipart/form-data">
                   {% csrf_token %}
-                  <div class="card-body">
+                  <div class="card-body row">
+<div class="col-sm-6" >
                     <div class="form-group">
                       <label for="exampleInputEmail1">First Name</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="first_name"
-                        placeholder="Enter First Name" />
+                      <input type="text" class="form-control" id="first_name" name="first_name"
+                        placeholder="Enter First Name" required/>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Last Name</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="last_name"
-                        placeholder="Enter Last Name" />
+                      <input type="text" class="form-control" id="last_name" name="last_name"
+                        placeholder="Enter Last Name" required />
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Username</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="username"
-                        placeholder="Enter Username" />
+                      <input type="text" class="form-control" id="username" name="username"
+                        placeholder="Enter Username" required/>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" name="email"
-                        placeholder="Enter email" />
+                      <input type="email" class="form-control" id="email" name="email"
+                        placeholder="Enter email" required/>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Date of birth</label>
-                      <input type="date" class="form-control" id="exampleInputEmail1" name="dob"
-                        placeholder="Enter Date of birth" />
+                      <input type="date" class="form-control" id="dob" name="dob"
+                        placeholder="Enter Date of birth" required/>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Phone Number</label>
-                      <input type="date" class="form-control" id="exampleInputEmail1" name="phone_num"
-                        placeholder="Enter Date of birth" />
-                    </div <div class="form-group">
+                      <input type="text" class="form-control" id="phone_num" name="phone_num"
+                        placeholder="Enter phone number" required/>
+                    </div> 
+                   
+                </div>
+                <div class="col-sm-6" >
+                  <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" name="password"
-                      placeholder="Password" />
+                    <input type="password" class="form-control" id="password" name="password"
+                      placeholder="Password" required/>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Re-Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" name="re_password"
-                      placeholder="Password" />
+                    <input type="password" class="form-control" id="re_password" name="re_password"
+                      placeholder="Password" required/>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputFile">Photo</label>
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exampleInputFile" name="profile_pic" />
+                        <input type="file" class="custom-file-input" id="profile_pic" name="profile_pic" />
                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                       </div>
                       <div class="input-group-append">
@@ -92,14 +97,27 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Line Ministry</label>
+                    <input type="text" class="form-control" id="line_ministry" name="line_ministry"
+                      placeholder="Password" required/>
                   </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Department</label>
+                    <input type="text" class="form-control" id="department" name="department"
+                      placeholder="Departmnet" required/>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Role</label>
+                    <input type="text" class="form-control" id="role" name="role"
+                      placeholder="Role" required/>
+                  </div>
+                 
+                </div>
               </div>
 
               <div class="card-footer">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary btn-center">
                   Submit
                 </button>
               </div>
@@ -121,6 +139,70 @@
   </div>
 
   {% include "includes/scripts.html" %}
+  <script>
+    function validateForm(){
+      var first_name= document.getElementById("first_name").value;
+      var last_name= document.getElementById("last_name").value;
+      var email= document.getElementById("email").value;
+      var phone_num= document.getElementById("phone_num").value;
+      var username= document.getElementById("username").value;
+      var dob= document.getElementById("dob").value;
+      var password= document.getElementById("password").value;
+      var re_password= document.getElementById("re_password").value;
+      var line_ministry= document.getElementById("line_ministry").value;
+      var department= document.getElementById("department").value;
+      var role= document.getElementById("role").value;
+      var profile_pic= document.getElementById("profile_pic").value;
+
+      if(first_name=""){
+        return false;
+      }
+      if(last_name=""){
+        return false;
+      }
+      
+      // Validate email
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    alert("Please enter a valid email address.");
+    return false;
+  }
+
+  // Validate phone number
+  if (!/^[0-9]{10}$/.test(phone_num)) {
+    alert("Please enter a valid phone number.");
+    return false;
+  }
+
+  // Validate username
+  if (!/^[a-zA-Z0-9_-]{3,20}$/.test(username)) {
+    alert("Please enter a valid username (3-20 characters, alphanumeric, underscore, or hyphen only).");
+    return false;
+  }
+
+  // Validate date of birth
+  var today = new Date();
+  var dobDate = new Date(dob);
+  if (dobDate >= today) {
+    alert("Please enter a valid date of birth.");
+    return false;
+  }
+
+  // Validate password
+  if (password.length < 5) {
+    alert("Password must be at least 8 characters long.");
+    return false;
+  }
+
+  // Validate profile picture size
+  if (profile_pic.size > 1048576) {
+    alert("Profile picture size must be less than or equal to 1MB.");
+    return false;
+  }
+
+  // If all validation passes, allow form submission
+  return true;
+}
+  </script>
 
 </body>
 
