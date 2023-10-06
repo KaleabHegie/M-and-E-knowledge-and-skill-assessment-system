@@ -143,10 +143,9 @@
                       <div class="d-flex flex-column align-items-center text-center">
                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
                         <div class="mt-3">
-                          <h4>John Doe</h4>
-                          <p class="text-secondary mb-1">Full Stack Developer</p>
-                          <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-                          <button class="btn btn-primary">Edit Profile</button>
+                          <h4>{{custom_user.first_name}} {{custom_user.last_name}}</h4>
+                          <p class="text-secondary mb-1">{{custom_user.Role}}</p>
+                          <button class="btn btn-primary"><a href="{% url 'Account:edit_profile' %}" > Edit Profile</a></button>
                           <!-- <button class="btn btn-outline-primary">Message</button> -->
                         </div>
                       </div>
@@ -169,7 +168,7 @@
                         <h6 class="mb-0">Full Name</h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                        Kenneth Valdez
+                        {{custom_user.first_name}} {{custom_user.last_name}}
                       </div>
                     </div>
                     <hr>
@@ -180,8 +179,7 @@
                         <h6 class="mb-0">Email</h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                        (239) 816-9029
-                      </div>
+                        {{custom_user.email}}                      </div>
                     </div>
                     <hr>
                     <div class="row">
@@ -189,8 +187,7 @@
                         <h6 class="mb-0">Birth Date</h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                        (320) 380-4539
-                      </div>
+                        {{custom_user.date_of_birth}}                      </div>
                     </div>
                     <hr>
                     <div class="row">
@@ -198,7 +195,7 @@
                         <h6 class="mb-0">Phone</h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                        Bay Area, San Francisco, CA
+                        {{custom_user.phone_number}}
                       </div>
                     </div>
                     <hr>
@@ -207,8 +204,7 @@
                           <h6 class="mb-0">Username</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          fip@jukmuh.al
-                        </div>
+{{custom_user.username}}                        </div>
                       </div>
                     <hr>
                     <div class="row">
@@ -216,7 +212,7 @@
                           <h6 class="mb-0">Line Minstry</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          fip@jukmuh.al
+                          {{custom_user.Line_ministry}}
                         </div>
                       </div>
                     
@@ -244,7 +240,7 @@
                         <h6 class="mb-0">Line Minstry</h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                        fip@jukmuh.al
+                        {{custom_user.Line_ministry}}
                       </div>
                     </div>
                     <hr>
@@ -262,7 +258,7 @@
                         <h6 class="mb-0">Department</h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                        (320) 380-4539
+                        {{custom_user.Department}}
                       </div>
                     </div>
                     <hr>

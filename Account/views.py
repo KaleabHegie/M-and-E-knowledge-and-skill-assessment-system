@@ -66,15 +66,21 @@ def login_view(request):
 	else:
 		return render(request,'./login.html')
 
-# from django.contrib.auth import logout
-# from django.shortcuts import redirect
+from django.contrib.auth import logout
 
-# def logout_view(request):
-#     logout(request)
-#     return  redirect('pages:index')
+def logout_view(request):
+    logout(request)
+    return  redirect('pages:index')
 
 
-# # def dashborad(request):
-# # 	user_contact = Contact.objects.order_by('-contact_date').filter(user_id=request.user.id)
-# # 	return render(request,'accounts/dashborad.html',{'contacts' : user_contact})
+from .models import CustomUser
 
+def view_profile(request):
+    # Retrieve the custom user object
+    custom_user = request.user
+    
+    # Pass the custom user object to the template
+    return render(request, './profile.html', {'custom_user': custom_user})
+
+def edit_profile(request):
+    return render(request , './edit_profile.html' )

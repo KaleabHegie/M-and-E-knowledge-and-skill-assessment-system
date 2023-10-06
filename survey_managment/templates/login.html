@@ -5,11 +5,20 @@
 {% include "includes/head.html" %}
 
 
-<body class="hold-transition login-page" >
-    <div class="login-box">
-
+<body class="hold-transition login-page" style="background-color: black;">
+    <div class="row">
+        <div class="col-sm-6">
+                        <img src="{% static 'assets/logo/EPCD-Logo-Final-White-NoBg-Hi-res.png' %}"
+                          class="img-fluid" alt="Sample image" width="50%">
+</div>
+         
+    <div class="login-box col-sm-4 mt-5">
+     
+          
+          
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
+                
                 <a href="../../index2.html" class="h1"><b>Log In</b></a>
             </div>
             <div class="card-body">
@@ -62,6 +71,7 @@
 
     </div>
     {% include "includes/scripts.html" %}
+</div>
 </body>
 
 </html>
