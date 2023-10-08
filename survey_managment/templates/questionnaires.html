@@ -8,24 +8,40 @@
     <div class="wrapper">
         {% include 'includes/topNavbar.html' %}
         {% include 'includes/sideNavbar.html' %}
-       
+
 
         <div class="content-wrapper">
-            
+
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-12 d-flex" >
+                        <div class="col-sm-12 d-flex">
                             <h1>Recent Forms</h1>
 
-                            <a class="btn bg-secondary" style="margin-left: auto;">
-                                <i class="fas bi bi-file-earmark-plus"></i> NEW
-                            </a>
-                        </div> 
+                            <div class="col-md-6" style="margin: auto;">
+                                <div class="form-group">
+                                    <select class="select2" multiple="multiple" data-placeholder="Select ..."
+                                        style="width: 100%;">
+                                        <option>Alabama</option>
+                                        <option>Alaska</option>
+                                        <option>California</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                                <a href="{% url 'survey_managment:createForm' %}" class="btn bg-secondary"
+                                    style="margin-left: auto;">
+                                    <i class="fas bi bi-file-earmark-plus"></i> NEW
+                                </a>
+                            </div>
+                        </div>
+
                     </div>
 
-                </div>
-               
             </section>
 
 
@@ -33,67 +49,8 @@
                 <div class="row">
 
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
-                            <div class="info-box shadow">
-                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Form Name</span>
-                                    <span class="info-box-number">created_at</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-        
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
-                            <div class="info-box shadow">
-                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Form Name</span>
-                                    <span class="info-box-number">created_at</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-        
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
-                            <div class="info-box shadow">
-                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Form Name</span>
-                                    <span class="info-box-number">created_at</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-        
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
-                            <div class="info-box shadow">
-                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Form Name</span>
-                                    <span class="info-box-number">created_at</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-        
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
-                            <div class="info-box shadow">
-                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Form Name</span>
-                                    <span class="info-box-number">created_at</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-        
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -105,7 +62,8 @@
                     </div>
 
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -117,7 +75,8 @@
                     </div>
 
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -129,7 +88,73 @@
                     </div>
 
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
+                            <div class="info-box shadow">
+                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Form Name</span>
+                                    <span class="info-box-number">created_at</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
+                            <div class="info-box shadow">
+                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Form Name</span>
+                                    <span class="info-box-number">created_at</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
+                            <div class="info-box shadow">
+                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Form Name</span>
+                                    <span class="info-box-number">created_at</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
+                            <div class="info-box shadow">
+                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Form Name</span>
+                                    <span class="info-box-number">created_at</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
+                            <div class="info-box shadow">
+                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Form Name</span>
+                                    <span class="info-box-number">created_at</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -140,7 +165,8 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -151,7 +177,8 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -162,7 +189,8 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -173,7 +201,8 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -184,7 +213,8 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -195,7 +225,8 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -206,7 +237,8 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -217,7 +249,8 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6 col-12">
-                        <a href="{% url 'survey_managment:questionnaireDetail' %}" style="color: black;">
+                        <a href="{% url 'survey_managment:questionnaireDetail' %}"
+                            style="color: black; text-decoration: none;">
                             <div class="info-box shadow">
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                                 <div class="info-box-content">
@@ -242,7 +275,7 @@
     </div>
 
 
-{% include 'includes/scripts.html' %}
+    {% include 'includes/scripts.html' %}
 </body>
 
 </html>
