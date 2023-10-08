@@ -13,11 +13,14 @@ urlpatterns = [
     path('edit_profile/',views.edit_profile, name='edit_profile'),
 
     path('ChartAnalysis/',views.Mychartanalysis, name='ChartAnalysis'),
-    path('change_password', views.change_password,name='change_password'),
+    path('change_password/', views.change_password,name='change_password'),
     path('forgotPassword/', views.forgotPasswordView,name='forgotPassword'),
     # path('login/', views.loginView, name='login'),
     path('questionnaires/', views.questionnaireView, name='questionnaires'),
     path('questionnaireDetail/', views.questionnaireDetailView, name='questionnaireDetail'),
+
+
+    
     
 
 ]
