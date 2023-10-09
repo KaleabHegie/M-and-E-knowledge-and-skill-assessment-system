@@ -58,6 +58,19 @@ def questionnaireView(request):
 def questionnaireDetailView(request):
     return render(request, 'questionnaireDetail.html')
 
+def survey(request):
+    return render(request, 'survey.html')
+
+def chooseSurvey(request):
+    return render(request, 'chooseSurvey.html')
+
+def displayQuesion(request):
+    return render(request, 'displayQuesion.html')
+
+
+
+
+
 def createForm(request):
     return render(request, 'createForm.html')
 
