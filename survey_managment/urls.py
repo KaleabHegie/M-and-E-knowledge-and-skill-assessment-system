@@ -19,6 +19,7 @@ urlpatterns = [
     path('questionnaires/', views.questionnaireView, name='questionnaires'),
     path('questionnaireDetail/', views.questionnaireDetailView, name='questionnaireDetail'),
     path('createForm/', views.createForm, name='createForm'),
+    path('textQuestion/', views.questionType, name='textQuestion'),
 
 
 ]

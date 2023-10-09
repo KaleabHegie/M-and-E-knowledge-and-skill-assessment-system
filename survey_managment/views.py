@@ -60,3 +60,6 @@ def questionnaireDetailView(request):
 
 def createForm(request):
     return render(request, 'createForm.html')
+
+def questionType(request):
+    return render(request, 'questionTypes/textQuestion.html')
