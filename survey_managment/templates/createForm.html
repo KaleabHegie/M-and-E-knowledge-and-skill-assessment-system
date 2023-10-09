@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% include 'includes/head.html' %}
+
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        {%include 'includes/loader.html'%}
+
+        {% include 'includes/topNavbar.html' %}
+        {% include 'includes/sideNavbar.html' %}
+
+        <div class="content-wrapper">
+
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <!-- <h1 id="formTitle" contentEditable="true" >Untitled </h1> -->
+                        </div>
+                         <!-- <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Compose</li>
+                            </ol>
+                        </div>  -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+
+                       <div class="col-sm-auto bg-light sticky-top">
+                        <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
+                            
+                            <a href="/" class="d-block p-3 link-dark text-decoration-none" title="Import" data-bs-toggle="tooltip" 
+                                data-bs-placement="right" data-bs-original-title="Icon-only">
+                                <i class="bi bi-box-arrow-in-left"></i>
+                            </a>
+                            
+                            
+                            <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link py-3 px-2" title="Text" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                                        <i class="bi bi-textarea-t"></i>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link py-3 px-2" title="Numbers" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                                        <i class="bi bi-123"></i>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link py-3 px-2" title="Checkbox" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                                        <i class="bi bi-check2-circle"></i>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link py-3 px-2" title="Radio" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                                        <i class="bi bi-check-all"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="nav-link py-3 px-2" title="description" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Dashboard">
+                                        <i class="bi bi-card-text"></i>
+                                    </a>
+                                </li>
+                               
+                                <li>
+                                    <a href="#" class="nav-link py-3 px-2" title="Link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Products">
+                                        <i class="bi bi-link"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="nav-link py-3 px-2" title="Date" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
+                                        <i class="bi bi-calendar4-week"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="nav-link py-3 px-2" title="Email" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
+                                        <i class="bi bi-envelope-at"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="nav-link py-3 px-2" title="Rating" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
+                                        <i class="bi bi-star-half"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="nav-link py-3 px-2" title="Document" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
+                                        <i class="bi bi-file-earmark-arrow-up"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                       </div>
+
+
+                       
+                        <div class="col flex-grow-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div id="formTitle" contentEditable="true" style="font-size:x-large;">Untitled </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>MoPD</b> 
+            </div>
+            reserved.
+        </footer>
+
+
+    </div>
+
+
+{% include 'includes/scripts.html' %}
+    <script>
+       var editable = document.getElementById('formTitle')
+       editable.addEventListener('input', function(){
+        //    const fontsize = 10
+        //    this.style.fontSize = `${fontsize}px`
+       })
+    </script>
+</body>
+
+</html>
