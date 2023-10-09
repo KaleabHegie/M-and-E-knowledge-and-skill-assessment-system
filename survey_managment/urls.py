@@ -21,8 +21,8 @@ urlpatterns = [
     path('createForm/', views.createForm, name='createForm'),
 
 
-    path('AllForm/', views.FormsView, name='AllForm'),
-    path('formDetail/', views.formDetailView, name='formDetail'),
+    # path('AllForm/', views.FormsView, name='AllForm'),
+    # path('formDetail/', views.formDetailView, name='formDetail'),
     path('survey/', views.survey, name='survey'),
     path('chooseSurvey/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuesion/', views.displayQuesion, name='displayQuesion'),
