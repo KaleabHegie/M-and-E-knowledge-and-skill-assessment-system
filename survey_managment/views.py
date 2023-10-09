@@ -39,8 +39,12 @@ def surveyCreationView (request):
 def user_profile(request):
     return render(request , 'profile.html' )
 
+def edit_profile(request):
+    return render(request , 'edit_profile.html' )
+
 def change_password(request):
-    return render(request , 'change_password.html' )
+    return render(request , 'password_change.html' )
+
 # def user_registration(request):
 #     return render(request , 'userRegistration.html' )
 
@@ -48,11 +52,11 @@ def Mychartanalysis(request):
     data={}
     return render(request,'chart_analysis.html',data)
 
-def FormsView(request):
-    return render(request, 'Forms.html')
+def questionnaireView(request):
+    return render(request, 'questionnaires.html')
 
-def formDetailView(request):
-    return render(request, 'FormDetail.html')
+def questionnaireDetailView(request):
+    return render(request, 'questionnaireDetail.html')
 
 def survey(request):
     return render(request, 'survey.html')
@@ -66,3 +70,6 @@ def displayQuesion(request):
 
 
 
+
+def createForm(request):
+    return render(request, 'createForm.html')

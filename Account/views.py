@@ -18,6 +18,10 @@ def register_view(request):
 		password = request.POST['password']
 		re_password = request.POST['re_password']
 		phone_num = request.POST['phone_num']
+		role = request.POST['role']
+		line_ministry = request.POST['line_ministry']
+		department = request.POST['department']
+
 
 
 		if password == re_password:
@@ -29,7 +33,8 @@ def register_view(request):
 					messages.error(request , 'Email Name Already Exits ')
 					return HttpResponse('Email Name Already Exits')
 				else:
-					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,first_name = first_name,last_name=last_name,phone_number=phone_num, image=profile_picture,date_of_birth=DoB)
+					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,first_name = first_name,last_name=last_name,
+												  phone_number=phone_num, image=profile_picture,date_of_birth=DoB,Role = role, Department = department, Line_ministry =line_ministry )
 					custom_user.save()
 					
 					messages.success(request,'User registered Sucessfully')
@@ -38,7 +43,7 @@ def register_view(request):
 			messages.error(request , 'Password Doest Not Match')
 			return HttpResponse('Password does not match')
 
-	else:
+	else: 
 		return render(request,'./userRegistration.html')
 
 
@@ -61,15 +66,48 @@ def login_view(request):
 	else:
 		return render(request,'./login.html')
 
-# from django.contrib.auth import logout
-# from django.shortcuts import redirect
+from django.contrib.auth import logout
 
-# def logout_view(request):
-#     logout(request)
-#     return  redirect('pages:index')
+def logout_view(request):
+    logout(request)
+    return  redirect('pages:index')
 
 
-# # def dashborad(request):
-# # 	user_contact = Contact.objects.order_by('-contact_date').filter(user_id=request.user.id)
-# # 	return render(request,'accounts/dashborad.html',{'contacts' : user_contact})
+from .models import CustomUser
 
+def view_profile(request):
+    # Retrieve the custom user object
+    custom_user = request.user
+    
+    # Pass the custom user object to the template
+    return render(request, './profile.html', {'custom_user': custom_user})
+
+def edit_profile(request):
+    return render(request , './edit_profile.html' )
+
+
+
+# views.py
+from django.shortcuts import render
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm, PasswordChangeForm
+from django.contrib.auth.views import PasswordResetView, PasswordChangeView
+
+def password_reset_view(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(request=request)
+            # Additional logic or redirect here
+    else:
+        form = PasswordResetForm()
+    return render(request, './password_reset.html', {'form': form})
+
+def password_change_view(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            # Additional logic or redirect here
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, './password_change.html', {'form': form})
