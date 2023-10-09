@@ -6,6 +6,7 @@
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
+        {%include 'includes/loader.html'%}
 
         {% include 'includes/topNavbar.html' %}
         {% include 'includes/sideNavbar.html' %}
@@ -45,7 +46,8 @@
                             
                             <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link py-3 px-2" title="Text" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                                    <a href="#" class="nav-link py-3 px-2" title="Text" 
+                                        data-bs-toggle="modal" data-bs-target="#textQ" data-bs-placement="right">
                                         <i class="bi bi-textarea-t"></i>
                                     </a>
                                 </li>
@@ -144,9 +146,6 @@
         //    this.style.fontSize = `${fontsize}px`
        })
     </script>
-
-
-
 </body>
 
 </html>
