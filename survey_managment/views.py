@@ -43,7 +43,7 @@ def edit_profile(request):
     return render(request , 'edit_profile.html' )
 
 def users(request):
-    return render(request , 'users.html' )
+    return render(request , 'user.html' )
 
 
 
