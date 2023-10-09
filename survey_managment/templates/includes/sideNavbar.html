@@ -18,7 +18,7 @@
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
         <img
-          src="{% static 'assets\avatar5.png'%}"
+          src="{% static 'assets/dist/img/user2-160x160.jpg' %}"
           class="img-circle elevation-2"
           alt="User Image"
         />
@@ -88,7 +88,7 @@
         </ul>
       </li>
       <li class="nav-item">
-        <a href="{%url 'survey_managment:survey'%}" class="nav-link">
+        <a href="{%url 'survey_managment:questionnaires'%}" class="nav-link">
           <i class="nav-icon fas fa-copy"></i>
           <p>Survey</p>
         </a>
@@ -102,70 +102,20 @@
         </a>
       </li>
       
-       
       <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fa-solid fa-user"></i>
-          <p>
-            Profile
-            <i class="fas fa-angle-left right"></i>
-          </p>
+        <a href="{%url 'Account:view_profile'%}" class="nav-link">
+          <i class="nav-icon far fa-user"></i>
+          <p>Profile</p>
         </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="{%url 'Account:view_profile'%}" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Edit Profile</p>
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <a href="{%url 'Account:edit_profile'%}" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Edit Profile</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{%url 'survey_managment:change_password'%}" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Change Password</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{%url 'survey_managment:forgotPassword'%}" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Forgotten Password</p>
-            </a>
-          </li>
-        </ul>
       </li>
 
-      
       <li class="nav-item">
-<<<<<<< HEAD
-        <a href="#" class="nav-link">
-          <i class="fa-solid fa-user"></i>
-          <p>
-            User
-            <i class="fas fa-angle-left right"></i>
-          </p>
-=======
         <a href="{%url 'Account:register_view'%}" class="nav-link">
           <i class="nav-icon far fa-plus"></i>
           <p>Add User</p>
->>>>>>> 6ef21f881545566520ae82f3e62b95a6486fd0bb
         </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="{%url 'Account:register_view'%}" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Add User</p>
-            </a>
-          </li>
-          
-          
-        </ul>
       </li>
+    
       </ul>
     </nav>
   </div>
