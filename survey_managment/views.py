@@ -60,3 +60,7 @@ def questionnaireDetailView(request):
 
 def createForm(request):
     return render(request, 'createForm.html')
+def users(request):
+    return render(request, 'user.html')
+
+    

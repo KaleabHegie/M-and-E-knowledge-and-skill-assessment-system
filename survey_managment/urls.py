@@ -10,6 +10,9 @@ urlpatterns = [
     path('surveyCreation/',views.surveyCreationView, name='SurveyCreation'),
     # path('user_registration/', views.user_registration,name='user_registration'),
     path('user_profile/',views.user_profile, name='user_profile'),
+
+    path('users/',views.users, name='users'),
+
     path('edit_profile/',views.edit_profile, name='edit_profile'),
 
     path('ChartAnalysis/',views.Mychartanalysis, name='ChartAnalysis'),
