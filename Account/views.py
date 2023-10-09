@@ -84,3 +84,30 @@ def view_profile(request):
 
 def edit_profile(request):
     return render(request , './edit_profile.html' )
+
+
+
+# views.py
+from django.shortcuts import render
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm, PasswordChangeForm
+from django.contrib.auth.views import PasswordResetView, PasswordChangeView
+
+def password_reset_view(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(request=request)
+            # Additional logic or redirect here
+    else:
+        form = PasswordResetForm()
+    return render(request, './password_reset.html', {'form': form})
+
+def password_change_view(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            # Additional logic or redirect here
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, './password_change.html', {'form': form})
