@@ -73,6 +73,13 @@ def displayQuesion(request):
 
 def createForm(request):
     return render(request, 'createForm.html')
+<<<<<<< HEAD
+def users(request):
+    return render(request, 'user.html')
+
+    
+=======
 
 def questionType(request):
     return render(request, 'questionTypes/textQuestion.html')
+>>>>>>> 6ef21f881545566520ae82f3e62b95a6486fd0bb
