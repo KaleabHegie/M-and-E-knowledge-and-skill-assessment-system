@@ -42,9 +42,13 @@ def user_profile(request):
 def edit_profile(request):
     return render(request , 'edit_profile.html' )
 
+def users(request):
+    return render(request , 'user.html' )
+
+
+
 def change_password(request):
     return render(request , 'password_change.html' )
-
 # def user_registration(request):
 #     return render(request , 'userRegistration.html' )
 
@@ -70,9 +74,5 @@ def displayQuesion(request):
 
 
 
-
 def createForm(request):
     return render(request, 'createForm.html')
-
-def questionType(request):
-    return render(request, 'questionTypes/textQuestion.html')

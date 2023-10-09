@@ -8,17 +8,7 @@
 
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-      <div
-        class="preloader flex-column justify-content-center align-items-center"
-      >
-        <img
-          class="animation__shake"
-          src="assets/dist/img/AdminLTELogo.png"
-          alt="AdminLTELogo"
-          height="60"
-          width="60"
-        />
-      </div>
+      {% include "includes/loader.html" %}
 
       {% include 'includes/topNavbar.html' %}
       {% include 'includes/sideNavbar.html' %}
@@ -41,7 +31,7 @@
         </div>
 
         <div class="col-md-3 col-sm-6 col-12">
-            <a href="{% url 'survey_managment:formDetail' %}" style="color: black;">
+            <a href="{% url 'survey_managment:questionnaires' %}" style="color: black;">
                 <div class="info-box shadow">
                     <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                     <div class="info-box-content">
