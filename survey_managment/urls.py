@@ -16,7 +16,8 @@ urlpatterns = [
     # path('login/', views.loginView, name='login'),
     path('AllForm/', views.FormsView, name='AllForm'),
     path('formDetail/', views.formDetailView, name='formDetail'),
-    
-
+    path('survey/', views.survey, name='survey'),
+    path('chooseSurvey/', views.chooseSurvey, name='chooseSurvey'),
+    path('displayQuesion/', views.displayQuesion, name='displayQuesion'),
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

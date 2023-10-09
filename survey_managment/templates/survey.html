@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:08 GMT -->
+
+{% include "includes/head.html" %}  
+
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      <div
+        class="preloader flex-column justify-content-center align-items-center"
+      >
+        <img
+          class="animation__shake"
+          src="assets/dist/img/AdminLTELogo.png"
+          alt="AdminLTELogo"
+          height="60"
+          width="60"
+        />
+      </div>
+
+      {% include 'includes/topNavbar.html' %}
+      {% include 'includes/sideNavbar.html' %}
+
+      <div class="content-wrapper">
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0">Survey</h1>
+              </div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active">Survey</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-12">
+            <a href="{% url 'survey_managment:formDetail' %}" style="color: black;">
+                <div class="info-box shadow">
+                    <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Survey 2010</span>
+                        <span class="info-box-number">2010</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <a class="btn btn-primary" href="{% url 'survey_managment:SurveyCreation' %}">
+        Create New
+       </a>
+    </div>
+
+        
+      </div>
+
+      <footer class="main-footer">
+        <strong
+          >Copyright &copy; 2014-2021
+          <a href="https://adminlte.io/">MoPD </a>.</strong
+        >
+        All rights reserved.
+
+      </footer>
+
+      <aside class="control-sidebar control-sidebar-dark"></aside>
+    </div>
+
+   
+    {% include "includes/scripts.html" %}
+
+  </body>
+
+  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:12 GMT -->
+</html>

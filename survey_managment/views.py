@@ -54,3 +54,15 @@ def FormsView(request):
 def formDetailView(request):
     return render(request, 'FormDetail.html')
 
+def survey(request):
+    return render(request, 'survey.html')
+
+def chooseSurvey(request):
+    return render(request, 'chooseSurvey.html')
+
+def displayQuesion(request):
+    return render(request, 'displayQuesion.html')
+
+
+
+
