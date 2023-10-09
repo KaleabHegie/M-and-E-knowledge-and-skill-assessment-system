@@ -43,12 +43,12 @@ def edit_profile(request):
     return render(request , 'edit_profile.html' )
 
 def users(request):
-    return render(request , 'users.html' )
+    return render(request , 'user.html' )
 
 
 
 def change_password(request):
-    return render(request , 'change_password.html' )
+    return render(request , 'password_change.html' )
 # def user_registration(request):
 #     return render(request , 'userRegistration.html' )
 
