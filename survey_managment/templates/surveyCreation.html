@@ -120,28 +120,25 @@
                     </div>
                   </div>
                 </div>
+                <div class="col d-flex justify-content-center align-items-end gap-5">
+                
+
+                
+                  <a href="{% url 'survey_managment:chooseSurvey' %}"
+                    ><button type="button" class="btn btn-primary btn-md m-4">
+                      Choose target from prvious survey
+                    </button></a
+                  >
+    
+                  <a href="{% url 'survey_managment:createForm' %}"
+                    ><button type="button" class="btn btn-primary btn-md m-4">
+                      Add New Target
+                    </button></a
+                  >
+                </div>
               </div>    
-              
-              
-              <div class="col d-flex justify-content-center align-items-end gap-5">
-                
-
-                
-                <a href="{% url 'survey_managment:chooseSurvey' %}"
-                  ><button type="button" class="btn btn-primary btn-md m-4">
-                    Choose target from prvious survey
-                  </button></a
-                >
-
-                <a href="#"
-                  ><button type="button" class="btn btn-primary btn-md m-4">
-                    Add New Target
-                  </button></a
-                >
-              </div>
-
-
             </div>
+
 
 
           <div class="col-lg m-2 card shadow border">
@@ -152,6 +149,11 @@
               </div>
           </div>
 
+          <a class="text-center" href="{% url 'survey_managment:Index' %}"
+                    ><button type="button" class="btn btn-primary btn-md m-4">
+                      Save Survey
+                    </button></a
+                  >
 
         </div>
       </div>
