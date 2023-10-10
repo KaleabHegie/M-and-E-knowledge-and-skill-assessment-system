@@ -68,11 +68,8 @@ def survey(request):
 def chooseSurvey(request):
     return render(request, 'chooseSurvey.html')
 
-def displayQuesion(request):
+def displayQuestion(request):
     return render(request, 'displayQuesion.html')
-
-
-
 
 def createForm(request):
     return render(request, 'createForm.html')
