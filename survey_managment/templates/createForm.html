@@ -117,13 +117,15 @@
                                 <div class="card-body">
                                     <div id="formTitle" contentEditable="true" style="font-size:x-large;">
                                         Untitled </div>
-
-                                    
-                                            {% if zform %}
-                                     
-                                            {{zform.as_div}} 
+                                        <br>
+                                    <div id="Instruction" contentEditable="true" style="font-size:large;">
+                                        Instruction </div>
                                             
-                                        {% endif %}
+                                            {% for obj in questions %}
+                                            <div contentEditable="true" style="font-size:medium;">
+                                                {{obj.title}} </div>
+                                              
+                                             {% endfor %}
                                 </div>
                             </div>
                         </div>

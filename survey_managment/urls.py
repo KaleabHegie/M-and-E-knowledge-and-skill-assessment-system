@@ -22,7 +22,7 @@ urlpatterns = [
     path('questionnaires/', views.questionnaireView, name='questionnaires'),
     path('questionnaireDetail/', views.questionnaireDetailView, name='questionnaireDetail'),
     path('createForm/', views.createForm, name='createForm'),
-    path('createFormTWO/', views.createFormTWO, name='createFormTWO'),
+    path('createFormTWO/<arg>/', views.createFormTWO, name='createFormTWO'),
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
 
     # path('textQuestion/', views.questionType, name='textQuestion'),
