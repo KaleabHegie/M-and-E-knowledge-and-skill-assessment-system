@@ -10,30 +10,30 @@
         {% include 'includes/sideNavbar.html' %}
 
       <div class="content-wrapper">
+        <h3 class="text-info p-3">Base targets</h3>
         <section class="content-header">
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col-sm-12 d-flex">
-                <h1>Recent Forms</h1>
+                
 
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <select
-                      class="select2 form-group"
-                      multiple="multiple"
-                      data-placeholder="Select a State"
-                      style="width: 100%"
-                    >
-                      <option>Alabama</option>
-                      <option>Alaska</option>
-                      <option>California</option>
-                      <option>Delaware</option>
-                      <option>Tennessee</option>
-                      <option>Texas</option>
-                      <option>Washington</option>
-                    </select>
+                
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label for="my-input">Search Any thing:</label>
+                      <input id="my-input" list="fruits" name="fruit" class="form-control">
+                      <datalist id="fruits">
+                        <option value="Apple">
+                        <option value="Banana">
+                        <option value="Cherry">
+                        <option value="Grape">
+                        <option value="Orange">
+                      </datalist>
+                    </div>
                   </div>
                 </div>
+                
 
                 <a
                   href="{% url 'survey_managment:createForm' %}"
