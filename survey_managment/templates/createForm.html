@@ -117,6 +117,13 @@
                                 <div class="card-body">
                                     <div id="formTitle" contentEditable="true" style="font-size:x-large;">
                                         Untitled </div>
+
+                                    
+                                            {% if zform %}
+                                     
+                                            {{zform.as_div}} 
+                                            
+                                        {% endif %}
                                 </div>
                             </div>
                         </div>

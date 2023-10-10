@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.shortcuts import redirect
 
@@ -6,7 +6,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse_lazy
 
-
+from .forms import textQuestion
 # Create your views here.
 
 
@@ -76,3 +76,15 @@ def displayQuesion(request):
 
 def createForm(request):
     return render(request, 'createForm.html')
+
+def createFormTWO(request, zform):
+    context = {'zform':zform}
+    return render(request, 'createForm.html', context)
+
+
+def questionCreationByType(request):
+    if request.method == 'POST':
+        form = textQuestion(request.POST)
+        if form.is_valid():
+            return redirect('createFormTWO', form)
+        
