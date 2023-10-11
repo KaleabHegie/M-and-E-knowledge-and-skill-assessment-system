@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from django.shortcuts import redirect
 
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse_lazy
+
+
+from .models import *
 
 
 # Create your views here.
@@ -56,14 +59,34 @@ def Mychartanalysis(request):
     data={}
     return render(request,'chart_analysis.html',data)
 
+def surveyQuestionnaireView(request, id):
+    data = {
+        'id':id,
+        'questionnaires':  Questionnaire.objects.all(),
+    }
+    return render(request, 'surveyQuestionnaire.html', data)
+
+def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
+    questions = Question.objects.filter(for_questionnaire = questionnaire_id)
+
+    data = {
+        'questions': questions,
+    }
+    return render(request, 'surveyQuestionnaireDetail.html', data)
+
 def questionnaireView(request):
     return render(request, 'questionnaires.html')
 
 def questionnaireDetailView(request):
     return render(request, 'questionnaireDetail.html')
 
+
 def survey(request):
-    return render(request, 'survey.html')
+    data = {
+        'surveys': Survey.objects.all(),
+        }
+    return render(request, 'survey.html', data)
+
 
 def chooseSurvey(request):
     return render(request, 'chooseSurvey.html')
