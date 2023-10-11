@@ -131,13 +131,9 @@
     </div>
     </div>
     </section>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Save</button>
-    </form>
     
-    <!-- <section class="content">
+    
+  <section class="content">
     <div class="container-fluid">
     <div class="row">
         
@@ -223,13 +219,6 @@
                           fip@jukmuh.al
                         </div>
                       </div>
-                    
-                    <!-- <div class="row">
-                      <div class="col-sm-12">
-                        <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
-                      </div>
-                    </div> -->
-                    
                 </div>
                 <div class="col-sm-6"> 
 
@@ -277,7 +266,7 @@
                 </div>
                 </div>
                 <div class="options">
-                    <a href="#"  class="btn btn-success"><b>Save Changes</b></a>
+                    <a href="{%url 'Account:edit_profile'%}"  class="btn btn-success"><b>Save Changes</b></a>
                    
         <a href="#" class="btn btn-secondary  ml-5">Cancel</a>
         

@@ -4,7 +4,8 @@ from django.contrib import messages,auth
 
 from django.contrib.auth.models import User
 from . models import *
-
+from .forms import UserProfileForm
+from django.contrib.auth import settings
 
 # Create your views here.
 def register_view(request):
@@ -82,8 +83,22 @@ def view_profile(request):
     # Pass the custom user object to the template
     return render(request, './profile.html', {'custom_user': custom_user})
 
+# def edit_profile(request):
+#     return render(request , './edit_profile.html' )
+from django.shortcuts import render, redirect
+from .forms import UserProfileForm
+
 def edit_profile(request):
-    return render(request , './edit_profile.html' )
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = UserProfileForm(instance=request.user)
+    
+    return render(request, 'edit_profile.html', {'form': form})
+
 
 def forgotPasswordView(request):
     return render(request, 'forgot-password.html')
@@ -92,8 +107,12 @@ def user_profile(request):
     return render(request , 'profile.html' )
 
 def users(request):
-    return render(request , 'user.html' )
-
-
+	users = CustomUser.objects.all()
+	context ={
+		'users':users
+	}
+	return render(request, 'user.html', context )
 def change_password(request):
     return render(request , 'password_change.html' )
+
+
