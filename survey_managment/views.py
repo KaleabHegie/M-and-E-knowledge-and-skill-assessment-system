@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
 
@@ -7,6 +7,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse_lazy
 
 
+from .models import *
 # Create your views here.
 
 
@@ -48,7 +49,7 @@ def users(request):
 
 
 def change_password(request):
-    return render(request , 'change_password.html' )
+    return render(request , 'password_change.html' )
 # def user_registration(request):
 #     return render(request , 'userRegistration.html' )
 
@@ -68,11 +69,28 @@ def survey(request):
 def chooseSurvey(request):
     return render(request, 'chooseSurvey.html')
 
-def displayQuesion(request):
+def displayQuestion(request):
     return render(request, 'displayQuesion.html')
 
-
-
-
 def createForm(request):
-    return render(request, 'createForm.html')
+    k = Question.objects.all()
+    print(k)
+    context = {'questions' : k  }
+    return render(request, 'createForm.html', context)
+
+def createFormTWO(request, zform):
+    context = {'zform':zform}
+    return render(request, 'createForm.html', context)
+
+
+def questionCreationByType(request):
+    if request.method == 'POST':
+        QuestionTitle = request.POST.get('QuestionTitle')
+        QuestionType = 'text'
+        ForQuestionnaire = Questionnaire.objects.get(name="M&E") 
+        question = Question.objects.create(title=QuestionTitle, question_type=QuestionType, for_questionnaire=ForQuestionnaire,has_weight=True, allow_doc=True ,weight=3)
+        question.save()
+        return redirect("survey_managment:createForm")
+    else: 
+        return HttpResponse('sorry')
+        

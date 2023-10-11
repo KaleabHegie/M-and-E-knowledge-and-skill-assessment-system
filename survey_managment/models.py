@@ -53,16 +53,16 @@ TYPE_FIELD = [
     
 class Question(models.Model):
     title = models.TextField()
-    label = models.CharField(max_length=100)
+    label = models.CharField(max_length=100, null=True)
     question_type = models.CharField(max_length=100, choices=TYPE_FIELD)
     for_questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
-    choice_group = models.ForeignKey(Choice_group, on_delete=models.CASCADE)
-    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
-    catagory = models.ForeignKey(Catagory, on_delete=models.CASCADE)
+    choice_group = models.ForeignKey(Choice_group, on_delete=models.CASCADE, null=True)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE, null=True)
+    catagory = models.ForeignKey(Catagory, on_delete=models.CASCADE, null=True)
     has_weight = models.BooleanField()
     weight = models.IntegerField()
     allow_doc = models.BooleanField()
-    doc_label = models.TextField()
+    doc_label = models.TextField(null=True)
 
 
     def __str__(self):
