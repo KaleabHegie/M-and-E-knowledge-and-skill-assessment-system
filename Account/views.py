@@ -85,5 +85,15 @@ def view_profile(request):
 def edit_profile(request):
     return render(request , './edit_profile.html' )
 
+def forgotPasswordView(request):
+    return render(request, 'forgot-password.html')
+
+def user_profile(request):
+    return render(request , 'profile.html' )
+
+def users(request):
+    return render(request , 'user.html' )
 
 
+def change_password(request):
+    return render(request , 'password_change.html' )
