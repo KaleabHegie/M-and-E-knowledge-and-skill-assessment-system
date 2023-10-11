@@ -131,8 +131,13 @@
     </div>
     </div>
     </section>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save</button>
+    </form>
     
-    <section class="content">
+    <!-- <section class="content">
     <div class="container-fluid">
     <div class="row">
         
@@ -295,7 +300,7 @@
     </div>
     
     </div>
-    </section>
+    </section> -->
     
     </div>
     
