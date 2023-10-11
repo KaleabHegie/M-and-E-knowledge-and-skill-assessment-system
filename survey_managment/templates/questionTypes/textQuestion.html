@@ -1,23 +1,25 @@
+{% load static %}
+
 <div class="modal" id="textQ" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="QuestionLabel" contenteditable="true">
-            Question
-        </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <!-- <div class="modal-body">
-          <input type="text">
-        </div> -->
-        <div class="modal-footer">
+
+        <form action="{% url 'survey_managment:questionCreationByType' %}" method="post"> 
+          {% csrf_token %}
+          <div class="modal-header">
+            <input type="text" id="QuestionTitle" name="QuestionTitle" contenteditable="true" placeholder="Question">
+              
           
-            <a href="#" style="text-decoration: none;">
-                <button type="button" class="btn btn-primary">ADD</button>
-                
-            </a>
-          
-        </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-footer">
+                <a href="#" style="text-decoration: none;">
+                  <button type="submit" class="btn btn-primary">ADD</button>
+                </a>
+          </div> 
+        </form> 
+
+        
       </div>
     </div>
   </div>
