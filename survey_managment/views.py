@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
 
@@ -94,5 +94,26 @@ def chooseSurvey(request):
 def displayQuestion(request):
     return render(request, 'displayQuesion.html')
 
+
 def createForm(request):
-    return render(request, 'createForm.html')
+    k = Question.objects.all()
+    print(k)
+    context = {'questions' : k  }
+    return render(request, 'createForm.html', context)
+
+def createFormTWO(request, zform):
+    context = {'zform':zform}
+    return render(request, 'createForm.html', context)
+
+
+def questionCreationByType(request):
+    if request.method == 'POST':
+        QuestionTitle = request.POST.get('QuestionTitle')
+        QuestionType = 'text'
+        ForQuestionnaire = Questionnaire.objects.get(name="M&E") 
+        question = Question.objects.create(title=QuestionTitle, question_type=QuestionType, for_questionnaire=ForQuestionnaire,has_weight=True, allow_doc=True ,weight=3)
+        question.save()
+        return redirect("survey_managment:createForm")
+    else: 
+        return HttpResponse('sorry')
+        
