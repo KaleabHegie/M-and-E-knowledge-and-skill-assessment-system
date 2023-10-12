@@ -53,7 +53,7 @@ TYPE_FIELD = [
     
 class Question(models.Model):
     title = models.TextField()
-    label = models.TextField( null=True)
+    label = models.TextField(null=True)
     question_type = models.CharField(max_length=100, choices=TYPE_FIELD)
     for_questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
     choice_group = models.ForeignKey(Choice_group, on_delete=models.CASCADE ,  null=True , blank=True)
