@@ -12,3 +12,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         self.fields['new_password1'].widget.attrs.update({'class': 'form-control'})
         self.fields['new_password2'].widget.attrs.update({'class': 'form-control'})        
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = '__all__'
