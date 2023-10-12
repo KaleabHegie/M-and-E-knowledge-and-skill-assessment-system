@@ -116,4 +116,23 @@ def displayQuestion(request):
 
 
 def createForm(request):
-    return render(request, 'createForm.html')
+    k = Question.objects.all()
+    print(k)
+    context = {'questions' : k  }
+    return render(request, 'createForm.html', context)
+
+def createFormTWO(request, zform):
+    context = {'zform':zform}
+    return render(request, 'createForm.html', context)
+
+
+def questionCreationByType(request):
+    if request.method == 'POST':
+        QuestionTitle = request.POST.get('QuestionTitle')
+        QuestionType = 'text'
+        ForQuestionnaire = Questionnaire.objects.get(name="M&E") 
+        question = Question.objects.create(title=QuestionTitle, question_type=QuestionType, for_questionnaire=ForQuestionnaire,has_weight=True, allow_doc=True ,weight=3)
+        question.save()
+        return redirect("survey_managment:createForm")
+    else: 
+        return HttpResponse('sorry')
