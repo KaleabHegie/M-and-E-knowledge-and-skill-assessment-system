@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from django.shortcuts import redirect
 
@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 
 
 from .models import *
+
+
 # Create your views here.
 
 
@@ -57,14 +59,34 @@ def Mychartanalysis(request):
     data={}
     return render(request,'chart_analysis.html',data)
 
+def surveyQuestionnaireView(request, id):
+    data = {
+        'id':id,
+        'questionnaires':  Questionnaire.objects.all(),
+    }
+    return render(request, 'surveyQuestionnaire.html', data)
+
+def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
+    questions = Question.objects.filter(for_questionnaire = questionnaire_id)
+
+    data = {
+        'questions': questions,
+    }
+    return render(request, 'surveyQuestionnaireDetail.html', data)
+
 def questionnaireView(request):
     return render(request, 'questionnaires.html')
 
 def questionnaireDetailView(request):
     return render(request, 'questionnaireDetail.html')
 
+
 def survey(request):
-    return render(request, 'survey.html')
+    data = {
+        'surveys': Survey.objects.all(),
+        }
+    return render(request, 'survey.html', data)
+
 
 def chooseSurvey(request):
     return render(request, 'chooseSurvey.html')
@@ -73,24 +95,4 @@ def displayQuestion(request):
     return render(request, 'displayQuesion.html')
 
 def createForm(request):
-    k = Question.objects.all()
-    print(k)
-    context = {'questions' : k  }
-    return render(request, 'createForm.html', context)
-
-def createFormTWO(request, zform):
-    context = {'zform':zform}
-    return render(request, 'createForm.html', context)
-
-
-def questionCreationByType(request):
-    if request.method == 'POST':
-        QuestionTitle = request.POST.get('QuestionTitle')
-        QuestionType = 'text'
-        ForQuestionnaire = Questionnaire.objects.get(name="M&E") 
-        question = Question.objects.create(title=QuestionTitle, question_type=QuestionType, for_questionnaire=ForQuestionnaire,has_weight=True, allow_doc=True ,weight=3)
-        question.save()
-        return redirect("survey_managment:createForm")
-    else: 
-        return HttpResponse('sorry')
-        
+    return render(request, 'createForm.html')

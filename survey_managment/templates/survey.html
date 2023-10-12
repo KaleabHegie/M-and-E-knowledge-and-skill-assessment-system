@@ -32,15 +32,18 @@
 
         
         <div class="col-md-3 col-sm-6 col-12">
-            <a href="{% url 'survey_managment:questionnaires' %}" style="color: black;">
+          
+          {% for survey in surveys  %}
+            <a href="{% url 'survey_managment:survey_questionnaire' id=survey.id %}" style="color: black;">
                 <div class="info-box shadow">
                     <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Survey 2010</span>
-                        <span class="info-box-number">2010</span>
+                        <span class="info-box-text">{{ survey.name }}</span>
+                        <span class="info-box-number">{{ survey.year }}</span>
                     </div>
                 </div>
             </a>
+            {% endfor %}
         </div>
 
     
