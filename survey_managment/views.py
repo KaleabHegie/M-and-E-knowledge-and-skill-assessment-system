@@ -74,6 +74,21 @@ def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
     }
     return render(request, 'surveyQuestionnaireDetail.html', data)
 
+def surveyQuestionnaireView(request, id):
+    data = {
+        'id':id,
+        'questionnaires':  Questionnaire.objects.all(),
+    }
+    return render(request, 'surveyQuestionnaire.html', data)
+
+def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
+    questions = Question.objects.filter(for_questionnaire = questionnaire_id)
+
+    data = {
+        'questions': questions,
+    }
+    return render(request, 'surveyQuestionnaireDetail.html', data)
+
 def questionnaireView(request):
     return render(request, 'questionnaires.html')
 
@@ -82,6 +97,11 @@ def questionnaireDetailView(request):
 
 
 def survey(request):
+    data = {
+        'surveys': Survey.objects.all(),
+        }
+    return render(request, 'survey.html', data)
+
     data = {
         'surveys': Survey.objects.all(),
         }
@@ -96,24 +116,4 @@ def displayQuestion(request):
 
 
 def createForm(request):
-    k = Question.objects.all()
-    print(k)
-    context = {'questions' : k  }
-    return render(request, 'createForm.html', context)
-
-def createFormTWO(request, zform):
-    context = {'zform':zform}
-    return render(request, 'createForm.html', context)
-
-
-def questionCreationByType(request):
-    if request.method == 'POST':
-        QuestionTitle = request.POST.get('QuestionTitle')
-        QuestionType = 'text'
-        ForQuestionnaire = Questionnaire.objects.get(name="M&E") 
-        question = Question.objects.create(title=QuestionTitle, question_type=QuestionType, for_questionnaire=ForQuestionnaire,has_weight=True, allow_doc=True ,weight=3)
-        question.save()
-        return redirect("survey_managment:createForm")
-    else: 
-        return HttpResponse('sorry')
-        
+    return render(request, 'createForm.html')
