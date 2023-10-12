@@ -1,6 +1,8 @@
 from django import forms
+from .models import Question
 
-class textQuestion(forms.Form):
-    question = forms.TextInput()
-    
+class QuestionForm(forms.Form):
+    class Meta:
+        model = Question
+        fields = "__all__"    
     
