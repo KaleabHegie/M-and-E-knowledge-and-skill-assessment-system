@@ -146,7 +146,10 @@ def questionCreationByType(request):
 #######  Skill Assessment Survey View #####
 
 def skill_assessment_survey_view(request):
+    Question_list = Question.objects.all()
+    Catagory_list = Catagory.objects.all()
     context ={
-
+      'Question_list':Question_list ,'Catagory_list':Catagory_list
     }
     return render(request,'SkillAssessmentSurvey.html',context)
+
