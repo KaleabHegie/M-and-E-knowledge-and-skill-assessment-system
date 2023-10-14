@@ -26,9 +26,21 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'survey_managment/change_password.html', {'form': form})
 
+from django.shortcuts import render, get_object_or_404
 
-def indexView (request):
-    return render(request, 'index.html', {})
+def indexView(request):
+    survey_id = request.GET.get('survey_id')
+    if survey_id:
+        survey = get_object_or_404(Survey, id=survey_id)
+        questionnaires = survey.questionnaire_set.all()
+        context = {
+            'survey': survey,
+            'questionnaires': questionnaires,
+        }
+        return render(request, 'index.html', context)
+    else:
+        surveys = Survey.objects.all()
+        return render(request, 'index.html', {'surveys': surveys})
 
 # def loginView(request):
 #     return render(request, 'login.html')

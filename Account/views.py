@@ -108,6 +108,7 @@ def user_profile(request):
 
 def users(request):
 	users = CustomUser.objects.all()
+
 	context ={
 		'users':users
 	}

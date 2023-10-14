@@ -3,49 +3,118 @@
 <div class="modal" id="textQ" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="{% url 'survey_managment:questionCreationByType' %}" method="post">
+
+
+            <form action="{% url 'survey_managment:questionCreationByType' %}" id="theForm" method="post">
                 {% csrf_token %}
                 <div class="modal-header">
                     <h6 id="Icon-type" style="position: absolute; right: 10%;"> </h6>
                 </div>
+
                 <div class="modal-body">
-                    <div class="container" name="QuestionTitle" contenteditable="true">
-                        Ask a Question
-                        <ul id="optionList" style="display: none; list-style: none;"></ul>
+                    <!-- Question Text -->
+                    <div class="form-group">
+                        <label for="QuestionTitle">Question:</label>
+                        <input type="text" name="QuestionTitle" id="QuestionTitle" class="form-control" required>
+                      </div>
+
+                      <!-- Options (for multi-select questions) -->
+                      <div id="optionList" style="display: none;">
+                        <div id="options-container">
+                            <!--  options will be added here -->
+                        </div>
                         
-                    </div>
-                    <button id="addOptionBtn" type="button" >+</button>
-                </div>
+                        <!-- Add Option Button -->
+                        <button type="button" id="add-option-btn" class="btn btn-secondary">Add Option</button>
+                      </div>
+                       
+               </div>
                 <div class="modal-footer">
-                    <a href="#" style="text-decoration: none;">
-                        <button type="submit" class="btn btn-primary">ADD</button>
-                    </a>
+                      <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary">Add Question</button>
                 </div>
             </form>
+
+
         </div>
     </div>
   </div>
   
-  <script>
-    function getTitle(zTitle){
-      var singleInputs = ['Checkbox', 'Radio']
-      const optionList = document.getElementById('optionList')
-      if (singleInputs.includes(zTitle)){
-          optionList.style.display = 'block'
-          optionList.innerHTML = '<li>Option</li>   <li>Option</li>'
-      }
-  
-      // add options
-      const plus = document.getElementById('addOptionBtn')
-      plus.addEventListener('click', function(){
-          const newOption = document.createElement('li')
-          newOption.textContent = 'Option'
-          optionList.appendChild(newOption)
-      })
-  
-      // set header
-      const x =document.getElementById('Icon-type')
-      x.textContent = zTitle
-      console.log(zTitle)
+
+<script>
+    document.getElementById('textQ').addEventListener('hidden.bs.modal', function() {
+        var optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+
+        var modalForm = document.getElementById('theForm');
+        modalForm.reset();
+
+        var optionList = document.getElementById('optionList');
+        optionList.style.display = 'none';
+    });
+
+    function getTitle(zTitle) {
+        const x = document.getElementById('Icon-type');
+        x.textContent = zTitle;
+
+        var needOptions = ['Checkbox', 'Radio'];
+        var optionList = document.getElementById('optionList'); // Get the optionList container
+
+        if (needOptions.includes(zTitle)) {
+            optionList.style.display = 'block';
+
+            var optionsContainer = document.getElementById('options-container');
+            // Create default options
+            for (var i = 1; i <= 2; i++) {
+                var newOption = document.createElement('div');
+                newOption.classList.add('form-group');
+
+                var label = document.createElement('label');
+                label.textContent = 'Option ' + i + ':';
+
+                var input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('name', 'option');
+                input.classList.add('form-control');
+                input.required = true;
+
+                newOption.appendChild(label);
+                newOption.appendChild(input);
+
+                optionsContainer.appendChild(newOption);
+            }
+        }
     }
-  </script>
+
+
+document.getElementById('add-option-btn').addEventListener('click', function() {
+  var optionsContainer = document.getElementById('options-container');
+  var optionCount = optionsContainer.getElementsByClassName('form-group').length;
+
+  var newOption = document.createElement('div');
+  newOption.classList.add('form-group');
+
+  var label = document.createElement('label');
+  label.textContent = 'Option ' + (optionCount + 1) + ':';
+
+  var input = document.createElement('input');
+  input.setAttribute('type', 'text');
+  input.setAttribute('name', 'option');
+  input.classList.add('form-control');
+  input.required = true;
+
+  newOption.appendChild(label);
+  newOption.appendChild(input);
+
+  optionsContainer.appendChild(newOption);
+});
+</script>
+
+
+
+ 
+
+  
+
+
+  
