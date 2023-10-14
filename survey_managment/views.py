@@ -28,7 +28,15 @@ def change_password(request):
 
 
 def indexView (request):
-    return render(request, 'index.html', {})
+    survey = Survey.objects.all()
+    questionnaire = Questionnaire.objects.all()
+    context ={
+        'survey':survey,
+        'questionnaire': questionnaire,
+
+    }
+
+    return render(request, 'index.html',context)
 
 # def loginView(request):
 #     return render(request, 'login.html')
