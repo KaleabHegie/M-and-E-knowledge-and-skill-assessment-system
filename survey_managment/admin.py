@@ -14,3 +14,7 @@ admin.site.register(Choice)
 
 admin.site.register(Choice_group)
 
+admin.site.register(Answer)
+admin.site.register(UserResponse)
+admin.site.register(Department)
+

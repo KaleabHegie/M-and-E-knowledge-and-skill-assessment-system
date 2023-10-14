@@ -28,7 +28,15 @@ def change_password(request):
 
 
 def indexView (request):
-    return render(request, 'index.html', {})
+    survey = Survey.objects.all()
+    questionnaire = Questionnaire.objects.all()
+    context ={
+        'survey':survey,
+        'questionnaire': questionnaire,
+
+    }
+
+    return render(request, 'index.html',context)
 
 # def loginView(request):
 #     return render(request, 'login.html')
@@ -136,3 +144,17 @@ def questionCreationByType(request):
         return redirect("survey_managment:createForm")
     else: 
         return HttpResponse('sorry')
+    
+
+
+
+
+
+
+#######  Skill Assessment Survey View #####
+
+def skill_assessment_survey_view(request):
+    context ={
+
+    }
+    return render(request,'SkillAssessmentSurvey.html',context)

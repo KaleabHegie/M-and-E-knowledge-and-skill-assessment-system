@@ -4,11 +4,17 @@
 <html lang="en">
   <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:08 GMT -->
 
-{% include "includes/head.html" %}  
+<!-- {% include "includes/head.html" %}   -->
+<style>
+  .hidden {
+      display: none;
+    }
+</style>
 
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
      {%include 'includes/loader.html'%}
+       
 
       {% include 'includes/topNavbar.html' %}
       {% include 'includes/sideNavbar.html' %}
@@ -19,7 +25,59 @@
             <div class="row mb-2">
               <div class="col-sm-6">
                 <h1 class="m-0">Dashboard</h1>
+                
               </div>
+            <div class="row">
+              <div class="col-sm-2">
+                <select id="" onchange="">
+                  <option value="">Select Year</option>
+                  {%for survey in survey%}
+                  <option value="area_chart">{{survey.year|date:"Y"}}</option>
+          {%endfor%}
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <select id="#" onchange="">
+                  <option value="">Select Survey</option>
+                  {%for survey in survey%}
+                  <option value="area_chart">{{survey.name}}</option>
+          {%endfor%}
+          
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <select id="" onchange="">
+                  <option value="">Select Quesionnaries</option>
+                  <option value="all">All</option>
+                  {%for questionnaire in questionnaire%}
+                  <option value="area_chart">{{questionnaire.name}}</option>
+          {%endfor%}
+                </select>
+              </div>
+              
+              <div class="col-sm-2">
+                <select id="mySelect" onchange="showDiv()">
+                  <option value="">Select Chart</option>
+                  <option value="area_chart"> Area Chart</option>
+                  <option value="line_chart">Line Chart</option>
+                  
+                  <option value="pie_chart"> Pie Chart</option>
+                  <option value="bar_chart"> Bar Chart</option>
+                  <option value="donut_chart"> Donut Chart</option>
+                  <option value="stacked_bar_chart"> Stacked Bar Chart</option>
+          
+                </select>
+            </div>
+              <div class="col-sm-2">
+                <select id="" onchange="">
+                  <option value="">Select Line Ministry</option>
+                  <option value="area_chart"> Area Chart</option>
+                 
+          
+                </select>
+              </div>
+              
+            </div>
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -36,9 +94,11 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-6">
-                <div class="card card-primary">
+                <div class="hidden" id="area_chart">
+                  <div class="card card-primary">
+
                   <div class="card-header">
-                    <h3 class="card-title">Area Chart</h3>
+                    <h3 class="card-title" id="area_chart">Area Chart</h3>
                     <div class="card-tools">
                       <button
                         type="button"
@@ -56,6 +116,7 @@
                       </button>
                     </div>
                   </div>
+                </div>
                   <div class="card-body">
                     <div class="chart">
                       <canvas
@@ -70,10 +131,10 @@
                     </div>
                   </div>
                 </div>
-
+<div class="hidden" id="donut_chart">
                 <div class="card card-danger">
                   <div class="card-header">
-                    <h3 class="card-title">Donut Chart</h3>
+                    <h3 class="card-title" >Donut Chart</h3>
                     <div class="card-tools">
                       <button
                         type="button"
@@ -103,10 +164,12 @@
                     ></canvas>
                   </div>
                 </div>
+              </div>
+              <div class="hidden" id="pie_chart">
 
                 <div class="card card-danger">
                   <div class="card-header">
-                    <h3 class="card-title">Pie Chart</h3>
+                    <h3 class="card-title" >Pie Chart</h3>
                     <div class="card-tools">
                       <button
                         type="button"
@@ -136,12 +199,15 @@
                     ></canvas>
                   </div>
                 </div>
+                </div>
               </div>
 
               <div class="col-md-6">
+                <div class="hidden" id="line_chart">
+
                 <div class="card card-info">
                   <div class="card-header">
-                    <h3 class="card-title">Line Chart</h3>
+                    <h3 class="card-title" >Line Chart</h3>
                     <div class="card-tools">
                       <button
                         type="button"
@@ -173,10 +239,11 @@
                     </div>
                   </div>
                 </div>
-
+</div>
+<div class="hidden" id="bar_chart"> 
                 <div class="card card-success">
                   <div class="card-header">
-                    <h3 class="card-title">Bar Chart</h3>
+                    <h3 class="card-title" >Bar Chart</h3>
                     <div class="card-tools">
                       <button
                         type="button"
@@ -208,7 +275,8 @@
                     </div>
                   </div>
                 </div>
-
+</div>
+<div class="hidden" id="stacked_bar_chart">
                 <div class="card card-success">
                   <div class="card-header">
                     <h3 class="card-title">Stacked Bar Chart</h3>
@@ -244,6 +312,44 @@
                   </div>
                 </div>
               </div>
+
+              
+              </div>
+            </div>
+          </div>
+          <div class="hidden" id="mytable">
+          <div class="row">
+            <div class="col-12">
+            <div class="card">
+            <div class="card-header">
+            <h3 class="card-title">Survey</h3>
+            </div>
+            
+            <div class="card-body">
+            <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+            <th>#</th>
+            <th>Survey name</th>
+            <th>Average score</th>
+            <th>Target</th>
+          </tr>
+            </thead>
+            <tbody>
+            <tr data-widget="expandable-table" aria-expanded="false">
+            <td>183</td>
+            <td>John Doe</td>
+            <td>11-7-2014</td>
+            <td>Approved</td>
+            </tr>
+            
+            </tbody>
+            </table>
+            </div>
+            
+            </div>
+            
+            </div>
             </div>
           </div>
         </section>
@@ -270,6 +376,44 @@
 
 
   <script>
+     function showDiv() {
+      var select = document.getElementById("mySelect");
+      var area_chart = document.getElementById("area_chart");
+      var pie_chart = document.getElementById("pie_chart");
+      var bar_chart = document.getElementById("bar_chart");
+      var stacked_bar_chart=document.getElementById("stacked_bar_chart");
+      var line_chart= document.getElementById("line_chart");
+      var donut_chart = document.getElementById("donut_chart");
+      var mytable = document.getElementById("mytable");
+
+
+
+      // Hide all divs
+      area_chart.style.display = "none";
+      pie_chart.style.display = "none";
+      bar_chart.style.display = "none";
+      stacked_bar_chart.style.display = "none";
+      line_chart.style.display = "none";
+      donut_chart.style.display = "none";
+      mytable.style.display = "block";
+
+      
+
+      // Show the selected div based on the option value
+      if (select.value === "area_chart") {
+        area_chart.style.display = "block";
+      } else if (select.value === "pie_chart") {
+        pie_chart.style.display = "block";
+      } else if (select.value === "bar_chart") {
+        bar_chart.style.display = "block";
+      }else if (select.value === "stacked_bar_chart") {
+        stacked_bar_chart.style.display = "block";
+      } else if (select.value === "line_chart") {
+        line_chart.style.display = "block";
+      }else if (select.value === "donut_chart") {
+        donut_chart.style.display = "block";
+      }
+    }
     $(function () {
       /* ChartJS
        * -------
@@ -471,4 +615,5 @@
       });
     });
   </script>
+  
   </html>
