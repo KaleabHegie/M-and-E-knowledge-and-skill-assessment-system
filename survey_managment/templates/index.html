@@ -31,29 +31,60 @@
               <div class="col-sm-2">
                 <select id="" onchange="">
                   <option value="">Select Year</option>
-                  {%for survey in survey%}
+                  {%for survey in surveys%}
                   <option value="area_chart">{{survey.year|date:"Y"}}</option>
           {%endfor%}
                 </select>
               </div>
               <div class="col-sm-2">
-                <select id="#" onchange="">
+                <select id="survey-select" name="survey">
                   <option value="">Select Survey</option>
-                  {%for survey in survey%}
-                  <option value="area_chart">{{survey.name}}</option>
-          {%endfor%}
-          
+
+                  {% for survey in surveys %}
+                    <option value="{{ survey.id }}">{{ survey.name }}</option>
+                  {% endfor %}
                 </select>
               </div>
-              <div class="col-sm-2">
+              <!-- <div class="col-sm-2">
                 <select id="" onchange="">
                   <option value="">Select Quesionnaries</option>
                   <option value="all">All</option>
-                  {%for questionnaire in questionnaire%}
+                  {%for questionnaire in questionnaires%}
                   <option value="area_chart">{{questionnaire.name}}</option>
           {%endfor%}
                 </select>
-              </div>
+              </div> -->
+              
+   {% if surveys %}
+  {% for survey in surveys %}
+   
+      <div class="col-sm-2">
+        <div  id="questionnaires-{{ survey.id }}" class="questionnaires" {% if not loop.first %}style="display: none;"{% endif %}>
+          <select id="" onchange="">
+            <option value="">Select Quesionnaries</option>
+            <option value="all">All</option>
+            {% for questionnaire in survey.questionnaire_set.all %}
+                  <option>{{ questionnaire.name }}</option>
+                {% endfor %}
+          </select>
+       
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
               
               <div class="col-sm-2">
                 <select id="mySelect" onchange="showDiv()">
@@ -376,6 +407,22 @@
 
 
   <script>
+    var surveySelect = document.getElementById("survey-select");
+  var questionnaires = document.getElementsByClassName("questionnaires");
+
+  function showQuestionnaires(surveyId) {
+    for (var i = 0; i < questionnaires.length; i++) {
+      if (questionnaires[i].id === "questionnaires-" + surveyId) {
+        questionnaires[i].style.display = "block";
+      } else {
+        questionnaires[i].style.display = "none";
+      }
+    }
+  }
+
+  surveySelect.addEventListener("change", function() {
+    showQuestionnaires(surveySelect.value);
+  });
      function showDiv() {
       var select = document.getElementById("mySelect");
       var area_chart = document.getElementById("area_chart");
@@ -614,6 +661,7 @@
         options: stackedBarChartOptions,
       });
     });
+
   </script>
   
   </html>
