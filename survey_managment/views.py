@@ -136,3 +136,17 @@ def questionCreationByType(request):
         return redirect("survey_managment:createForm")
     else: 
         return HttpResponse('sorry')
+    
+
+
+
+
+
+
+#######  Skill Assessment Survey View #####
+
+def skill_assessment_survey_view(request):
+    context ={
+
+    }
+    return render(request,'SkillAssessmentSurvey.html',context)
