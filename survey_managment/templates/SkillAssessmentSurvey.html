@@ -1,0 +1,414 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+     
+    <style>
+        body {
+    margin: 40px 0 40px 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: #c4f2f569;
+    /* background: url('data:image/jpeg;base64,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');
+    background-repeat: no-repeat;
+    background-size: 300rem; */
+    box-shadow: none;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+main {
+    background-color: white;
+    padding: 10px 40px 40px 40px;
+    display: block;
+    text-align: left;
+    max-width: 800px;
+    margin: auto;
+    border-radius: 10px;
+}
+
+header {
+    text-align: center;
+}
+
+h1 {
+    font-size: 40px;
+    color: #191516;
+    font-weight: bold;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    font-size: 22px;
+}
+
+#name, #email, #number, #dropdown {
+    outline: none;
+    width: 100%;
+    padding: 7px;
+    font-size: 16px;
+    border: 1px solid #dee2e6;
+    border-radius: 3px;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+#dropdown, option {
+    outline: none;
+}
+
+select {
+    padding: 7px;
+}
+
+textarea {
+    display: block;
+}
+
+.form-group {
+    padding: 8px 0;
+    margin-bottom: 2px;
+}
+
+.form-group>label {
+    margin-bottom: 8px;
+    color: #191516;
+    display: block;
+    font-weight: 500;
+}
+
+[type="checkbox"]+label>span, [type="radio"]+label {
+    font-size: 16px;
+}
+
+[type="checkbox"], [type="radio"] {
+    margin: 0 8px 0 0;
+    box-sizing: border-box;
+    min-width: 18px;
+    min-height: 18px;
+}
+
+/*hide the original checkbox and radio button*/
+
+[type="checkbox"] , [type="radio"] {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+.radio-group, .checkbox-group {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+[type="radio"]+label {
+    margin: 0 5px 0 0;
+    font-size: 16px;
+    position: relative;
+    cursor: pointer;
+}
+
+[type="checkbox"]+label {
+    margin: 0 5px 0 0;
+    font-size: 16px;
+    position: relative;
+    cursor: pointer;
+}
+
+/* this is the custom box for the checkbox*/
+
+[type="checkbox"]+label::before {
+    content: '';
+    min-width: 18px;
+    min-height: 18px;
+    position: absolute;
+    left: -26px;
+    border-radius: 3px;
+    /* top: 5px; */
+    background-color: #eee;
+    transition: all 0.4s;
+}
+
+/* custom checkmark made using only css*/
+
+/* 
+[type="checkbox"]+label::after {
+    content: '';
+    min-width: 0px;
+    min-height: 0px;
+    position: absolute;
+    left: -20px;
+    top: 2px;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+    background-color:red; 
+    transform: rotateZ(40deg);
+    transition:  all 0.4s;
+
+}  
+*/
+
+/* this will unhide the custom checkmark */
+
+/* [type="checkbox"]:checked +label::after {
+    min-width: 5px;
+    min-height: 10px;
+} */
+
+/* this is the svg for the checkmark */
+
+[type="checkbox"]+label svg {
+    position: absolute;
+    width: 28px;
+    left: -31px;
+    top: -5px;
+}
+
+/* this is the polyline for the checkmark svg */
+
+[type="checkbox"]+label svg polyline {
+    stroke: white;
+    stroke-width: 8;
+    fill: none;
+    stroke-dasharray: 70;
+    stroke-dashoffset: 70;
+    transition: stroke-dashoffset 0.4s;
+}
+
+/* change the color of custom checkbox when the original checkbox is in checked state */
+
+[type="checkbox"]:checked+label::before {
+    background-color: #191516;
+}
+
+/* setting stroke-dashoffset to 0 will reveal the hidden checkmark */
+
+[type="checkbox"]:checked+label svg polyline {
+    stroke-dashoffset: 0;
+}
+
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    height: 200px;
+    resize: none;
+    padding: 4px;
+    font-size: 16px;
+    border: 1px solid #dee2e6;
+}
+
+button {
+    width: 100%;
+    display: block;
+    height: 40px;
+    background-color: #191516;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    box-sizing: border-box;
+}
+
+#description {
+    text-align: center;
+    font-style: italic;
+    margin-top: -10px;
+}
+
+/* custom circle for radio button*/
+[type="radio"]+label::before {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background-color: #eee;
+    left: -27px;
+    top: -1px;
+    width: 20px;
+    height: 20px;
+    transition: all 0.4s;
+}
+
+/* fill circle with inset shadow when it is selected*/
+[type="radio"]:checked+label::before {
+    box-shadow: inset 0 0 0 6px #191516;
+}
+
+
+@media (max-width: 540px) {
+ main {
+        max-width: 380px;
+    }
+}
+@media (max-width: 460px) {
+    main {
+        max-width: 280px;
+    }
+    h1 {
+        font-size: 32px;
+    }
+    #description {
+        font-size: 15px;
+    }
+    form {
+        font-size: 18px;
+    }
+    #name, #email, #number, #dropdown, textarea {
+        font-size: 15px;
+    }
+    [type="radio"]+label, [type="checkbox"]+label>span {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 375px) {
+ main {
+        max-width: 260px;
+        padding: 10px 30px 30px 40px;
+    }
+    h1 {
+        font-size: 28px;
+    }
+    #description {
+        font-size: 12px;
+    }
+    form {
+        font-size: 15px;
+    }
+    #name, #email, #number, #dropdown, textarea {
+        font-size: 12px;
+    }
+    [type="radio"]+label, [type="checkbox"]+label>span {
+        font-size: 12px;
+    }
+    button {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 320px) {
+ main {
+        max-width: 220px;
+    }
+}
+
+@media (max-width: 280px) {
+ main {
+        max-width: 180px;
+    }
+}
+    </style>
+
+</head>
+
+<body>
+  
+    <main>
+        <header>
+            <h2 id="title">Knowledge and Skills Assessment Survey</h2>  <img
+            src="{% static 'assets/logo/EPDM-Logo-Final-Hi-res.png' %}" height="150" width="150" padding-left="15rem"/>
+            <p id="description">Thank You For Taking Your Time To Give Us Response</p>
+        </header>
+        <form id="survey-form">
+
+            <div class="form-group">
+                <label for="name" id="name-label">Name</label>
+                <input type="text" name="name" id="name" placeholder="Enter Your Name" required>
+            </div>
+            <div class="form-group">
+                <label for="email" id="email-label">Email</label>
+                <input type="email" name="email" id="email" placeholder="Enter Your Email" required>
+            </div>
+            <div class="form-group">
+                <label for="age" id="number-label">Age</label>
+                <input type="number" name="age" id="number" min="1" max="99" placeholder="Enter Your Age">
+            </div>
+
+            <div class="form-group">
+                <label for="occupation">Choose A Role That Best Describes You</label>
+                <select name="occupation" id="dropdown">
+                    <option selected disabled value>Select Your Role</option>
+                    <option value="student">Student</option>
+                    <option value="full-time-job">Full Time Job</option>
+                    <option value="part-time-job">Part Time Job</option>
+                    <option value="prefer-to-not-say">Prefer Not To Say</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="rating">Would You Recommend Our Product To A Friend ?</label>
+                <div class="radio-group">
+                    <input type="radio" name="rating" id="never" value="never"><label for="never"> Never </label>
+                </div>
+                <div class="radio-group">
+                    <input type="radio" name="rating" id="maybe" value="maybe"><label for="maybe"> Maybe </label>
+                </div>
+                <div class="radio-group">
+                    <input type="radio" name="rating" id="likely" value="likely"><label for="likely"> Likely </label>
+                </div>
+                <div class="radio-group">
+                    <input type="radio" name="rating" id="definitely" value="definitely"><label for="definitely">
+                        Definitely
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="liked">Select Things That You Liked About Our Product</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="liked" id="ui" value="ui"><label for="ui">
+                        <svg class="check-mark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                            <polyline class="check-mark-svg-path" points="25.5,53.5 39.5,67.5 72.5,34.5 " />
+                        </svg>
+                        <span>UI</span>
+                    </label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="liked" id="features" value="features"><label for="features">
+                        <svg class="check-mark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                            <polyline class="check-mark-svg-path" points="25.5,53.5 39.5,67.5 72.5,34.5 " />
+                        </svg>
+                        <span>Features</span>
+                    </label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="liked" id="service" value="service"><label for="service">
+                        <svg class="check-mark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                            <polyline class="check-mark-svg-path" points="25.5,53.5 39.5,67.5 72.5,34.5 " />
+                        </svg>
+                        <span>Service</span>
+                    </label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="liked" id="simpleness" value="simpleness"><label for="simpleness">
+                        <svg class="check-mark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                            <polyline class="check-mark-svg-path" points="25.5,53.5 39.5,67.5 72.5,34.5 " />
+                        </svg>
+
+                        <span>Simpleness</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="remark">Remarks</label>
+                <textarea name="remark" id="remark" placeholder="Tell Us How Can We Improve.."></textarea>
+            </div>
+
+            <div class="form-group">
+                <button id="submit" type="submit">Submit</button>
+            </div>
+        </form>
+    </main>
+</body>
+
+</html>
