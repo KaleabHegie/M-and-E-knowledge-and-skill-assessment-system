@@ -1,0 +1,51 @@
+<!-- modal.html -->
+
+<div class="modal" id="textQ" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="{% url 'survey_managment:questionCreationByType' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h6 id="Icon-type" style="position: absolute; right: 10%;"> </h6>
+                </div>
+                <div class="modal-body">
+                    <div class="container" name="QuestionTitle" contenteditable="true">
+                        Ask a Question
+                        <ul id="optionList" style="display: none; list-style: none;"></ul>
+                        
+                    </div>
+                    <button id="addOptionBtn" type="button" >+</button>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" style="text-decoration: none;">
+                        <button type="submit" class="btn btn-primary">ADD</button>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+  
+  <script>
+    function getTitle(zTitle){
+      var singleInputs = ['Checkbox', 'Radio']
+      const optionList = document.getElementById('optionList')
+      if (singleInputs.includes(zTitle)){
+          optionList.style.display = 'block'
+          optionList.innerHTML = '<li>Option</li>   <li>Option</li>'
+      }
+  
+      // add options
+      const plus = document.getElementById('addOptionBtn')
+      plus.addEventListener('click', function(){
+          const newOption = document.createElement('li')
+          newOption.textContent = 'Option'
+          optionList.appendChild(newOption)
+      })
+  
+      // set header
+      const x =document.getElementById('Icon-type')
+      x.textContent = zTitle
+      console.log(zTitle)
+    }
+  </script>
