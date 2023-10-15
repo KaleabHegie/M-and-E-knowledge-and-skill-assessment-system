@@ -205,8 +205,7 @@
                       <button
                         type="button"
                         class="btn btn-tool"
-                        data-card-widget="collapse"
-                      >
+                        data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
                       </button>
                       <button
@@ -348,12 +347,14 @@
               </div>
             </div>
           </div>
+          {% if surveys %}
+          {% for survey in surveys %}
           <div class="hidden" id="mytable">
           <div class="row">
             <div class="col-12">
             <div class="card">
             <div class="card-header">
-            <h3 class="card-title">Survey</h3>
+            <h3 class="card-title">Expandable Table</h3>
             </div>
             
             <div class="card-body">
@@ -361,19 +362,23 @@
             <thead>
             <tr>
             <th>#</th>
-            <th>Survey name</th>
+            <th>questionnaire</th>
             <th>Average score</th>
+            <th>Status</th>
             <th>Target</th>
-          </tr>
-            </thead>
-            <tbody>
-            <tr data-widget="expandable-table" aria-expanded="false">
-            <td>183</td>
-            <td>John Doe</td>
-            <td>11-7-2014</td>
-            <td>Approved</td>
             </tr>
-            
+            </thead>
+            <tbody  id="questionnaires-{{ survey.id }}" class="questionnaires">
+              {% for questionnaire in survey.questionnaire_set.all %}
+              <tr data-widget="expandable-table" aria-expanded="false">
+                <td> {{forloop.counter}} </td>
+                <td>{{ questionnaire.name }}</td>
+                <td>{{ questionnaire.id }}%</td>
+                <td>Good</td>
+                <td>100%</td>
+              </tr>
+            {% endfor %}
+            <td colspan="2"> Total</td>
             </tbody>
             </table>
             </div>
@@ -383,6 +388,9 @@
             </div>
             </div>
           </div>
+            {% endfor %}
+            {% endif %}
+
         </section>
 
        
@@ -433,8 +441,6 @@
       var donut_chart = document.getElementById("donut_chart");
       var mytable = document.getElementById("mytable");
 
-
-
       // Hide all divs
       area_chart.style.display = "none";
       pie_chart.style.display = "none";
@@ -443,8 +449,6 @@
       line_chart.style.display = "none";
       donut_chart.style.display = "none";
       mytable.style.display = "block";
-
-      
 
       // Show the selected div based on the option value
       if (select.value === "area_chart") {
