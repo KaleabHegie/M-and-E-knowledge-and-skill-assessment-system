@@ -84,7 +84,7 @@
             <tbody>
             {%for info in users%}
             <tr>
-            <td>{{info.id}}</td>
+            <td>{{forloop.counter}}</td>
             <td>{{info.first_name}} {{info.last_name}}</td>
             <td>{{info.email}}</td>
             <td>{{info.Line_ministry}}</td>

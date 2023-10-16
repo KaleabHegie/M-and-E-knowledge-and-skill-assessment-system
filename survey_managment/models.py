@@ -1,4 +1,5 @@
 from django.db import models
+from Account.models import CustomUser
 
 # Create your models here.
 class Survey(models.Model):
@@ -53,7 +54,7 @@ TYPE_FIELD = [
     
 class Question(models.Model):
     title = models.TextField()
-    label = models.TextField(null=True)
+    label = models.TextField(null=True,blank=True)
     question_type = models.CharField(max_length=100, choices=TYPE_FIELD)
     for_questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
     choice_group = models.ForeignKey(Choice_group, on_delete=models.CASCADE ,  null=True , blank=True)
@@ -62,14 +63,41 @@ class Question(models.Model):
     choice_group = models.ForeignKey(Choice_group, on_delete=models.CASCADE ,  null=True , blank=True)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE ,  null=True , blank=True)
     catagory = models.ForeignKey(Catagory, on_delete=models.CASCADE , null=True , blank=True)
-    has_weight = models.BooleanField()
-    weight = models.IntegerField()
-    allow_doc = models.BooleanField()
-    doc_label = models.TextField(null=True)
+    has_weight = models.BooleanField(blank=True)
+    weight = models.IntegerField(blank=True)
+    allow_doc = models.BooleanField(blank=True)
+    doc_label = models.TextField(null=True,blank=True)
 
 
     def __str__(self):
         return self.title
 
+
+
+class Department(models.Model):
+    department_no=models.IntegerField()
+    department_name = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.department_name
+
+class UserResponse(models.Model):
+    forsurvey = models.ForeignKey("Survey", on_delete=models.CASCADE , null=True , blank=True)
+    submitted_by =models.ForeignKey("Account.CustomUser", on_delete=models.CASCADE , null=True , blank=True)
+    submitted_at = models.DateTimeField(auto_now=True)
+    submitted_id = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.submitted_by
+
+
+class Answer(models.Model):
+    forquestion=models.ForeignKey("Question", on_delete=models.CASCADE , null=True , blank=True)
+    answertext= models.CharField(max_length=500)
+    response = models.ForeignKey("UserResponse", on_delete=models.CASCADE , null=True , blank=True)
+
+    def __str__(self) -> str:
+        return self.forquestion
+    
 
 
