@@ -28,6 +28,8 @@ urlpatterns = [
     path('chooseSurvey/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/', views.displayQuestion, name='displayQuestion'),
 
+    path('questionnaire/<int:questionnaire_id>/', views.display_questionnaire, name='display_questionnaire'),
+
     path('skillassessmentsurvey/',views.skill_assessment_survey_view, name='skillassessmentsurvey'),
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -165,3 +165,11 @@ def skill_assessment_survey_view(request):
     }
     return render(request,'SkillAssessmentSurvey.html',context)
 
+
+
+
+def display_questionnaire(request, questionnaire_id):
+    questionnaire = Questionnaire.objects.get(id=questionnaire_id)
+    questions = Question.objects.filter(for_questionnaire=questionnaire)
+    print("Number of questions retrieved:", questions.count())  # Add this line
+    return render(request, 'questions.html', {'questionnaire': questionnaire, 'questions': questions})

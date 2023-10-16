@@ -40,14 +40,7 @@
                 </select>
               </div>
               <div class="col-sm-2">
-                <select id="survey-select" name="survey">
-                  <option value="">Select Survey</option>
-
-                  {% for survey in surveys %}
-                    <option value="{{ survey.id }}">{{ survey.name }}</option>
-                  {% endfor %}
-                </select>
-              </div>
+              
               <!-- <div class="col-sm-2">
                 <select id="" onchange="">
                   <option value="">Select Quesionnaries</option>
@@ -57,38 +50,6 @@
           {%endfor%}
                 </select>
               </div> -->
-              
-   {% if surveys %}
-  {% for survey in surveys %}
-   
-      <div class="col-sm-2">
-        <div  id="questionnaires-{{ survey.id }}" class="questionnaires" {% if not loop.first %}style="display: none;"{% endif %}>
-          <select id="" onchange="">
-            <option value="">Select Quesionnaries</option>
-            <option value="all">All</option>
-            {% for questionnaire in survey.questionnaire_set.all %}
-                  <option>{{ questionnaire.name }}</option>
-                {% endfor %}
-          </select>
-       
-      </div>
-    </div>
-  {% endfor %}
-{% endif %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-              
               <div class="col-sm-2">
                 <select id="mySelect" onchange="showDiv()">
                   <option value="">Select Chart</option>
