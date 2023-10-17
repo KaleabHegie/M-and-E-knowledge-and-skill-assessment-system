@@ -51,7 +51,15 @@
                         </li>
                         {% endfor %}
                     </ul>
-                    <button type="submit">Save selected questions</button>
+                    <div class="form-group">
+                        <label for="survey-select">Select target survey:</label>
+                        <select class="form-control" id="survey-select" name="target_survey">
+                            {% for survey in surveys %}
+                            <option value="{{ survey.id }}">{{ survey.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit">Duplicate selected questions</button>
                 </form>
                 
                      

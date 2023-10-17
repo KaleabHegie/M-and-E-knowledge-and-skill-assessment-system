@@ -44,7 +44,7 @@ TYPE_FIELD = [
         ("Text" ,"Text"),
         ("Number", "Number"),
         ("Radio", "Radio"),
-        ("Multi-Select", "Multi-Select"),
+        ("Checkbox", "Checkbox"),
         ("Text-Area", "Text Area"),
         ("URL", "URL"),
         ("Email", "Email"),
