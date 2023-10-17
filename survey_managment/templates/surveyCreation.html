@@ -4,15 +4,11 @@
 <html lang="en">
   <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:08 GMT -->
 
-{% include "includes/head.html" %}  
+  {% include "includes/head.html" %}
 
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-    
-      {% include "includes/loader.html" %}
-
-      {% include 'includes/topNavbar.html' %}
-      {% include 'includes/sideNavbar.html' %}
+      {% include "includes/loader.html" %} {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
 
       <div class="content-wrapper">
         <div class="content-header">
@@ -31,130 +27,30 @@
           </div>
         </div>
 
-      
-          
-
         <div class="row justify-content-center">
-          <div class="col-lg m-2 card shadow border">
-            <div class="form-group mt-3">
-                <label for="survey-title" class="h5 mt-4">Enter survey title</label>
-                <input type="text" class="form-control form-control-lg" id="survey-title" name="survey-title" placeholder="EX M&E skill assesment ....." >
-                <label for="survey-year" class="h5 mt-4">Enter survey year</label>
-                <input type="text" class="form-control form-control-lg" id="survey-title" name="survey-year" placeholder="EX 2012 ....." >
+          <div class="col-lg-7 m-2 card shadow border">
+            <!-- create_survey.html -->
+
+            <form method="POST">
+              {% csrf_token %}
+
+              <div class="form-group">
+                <label for="{{ form.name.id_for_label }}" class="h5 mt-4"
+                  >Enter survey name</label
+                >
+                {{ form.name }}
               </div>
 
-              <h2 class="text-center text-info">Targets</h2>
-              <div class="accordion" id="accordionExample">
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                      Basic M&E Docs
-                    </button>
-                  </h2>
-                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                      <div class="list-group">
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                          አስፈጻሚ ተቋሙ  የረጂም ዓመት ፡ የመካከለኛ፡  እንዲሁም ከረጅም/ መካከለኛ አመት እቅዱ የሚመነጭና የተሰናሰለ የአጭር ጊዜ ስትራቴጂክ ፕላን (institutional Strategic plan) አለው።
-                          <button type="button" class="btn btn-primary">Edit</button>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                          አስፈጻሚ ተቋሙ ለሚትገብራቸዉ ስትራቴጂክ ፕላን፡ ፕሮጀችት/ፕሮግራሞች /ፖሊሲዎች የተዘጋጀ የልማት ፕላን አፈፃፀም ክትትልና ግምገማ መመሪያ አለዉ ።
-                          <button type="button" class="btn btn-primary">Edit</button>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                          ተቋሙ ፕሮግራሞችና ፕሮጀክቶች አፈፃፀም መከታተያ እቅድ  (Performance Monitoring Plan/Framework)  አለው።
-                          <button type="button" class="btn btn-primary">Edit</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                      M&E Staff+Structure
-                    </button>
-                  </h2>
-                  <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                      <div class="list-group">
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                          የተቋሙ የክትትልና ግምገማ ባለሙያዎች በቂ የሆነ ስርዓት የመዘርጋት፣ መመሪያዎችን የማዘጋጀት፣ መረጃ የመተንተን፣ የውስጥ ግምገማና ጥናቶችን የማካሄድ፣ ወ.ዘ.ተ ክህሎት አላቸው።
-                          <button type="button" class="btn btn-primary">Edit</button>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                          የተቋሙ የክትትልና ግምገማ የስራ ክፍል ከሁሉም መሪ የስራ ክፍሎች (ፕሮግራም/ፕሮጀክት ባለሙያ) አንፃር ያለው ተቋማዊ ሚና (organizational role) በግልፅ የሚያሳይ የስራ ድርሻ ቻርት (organogram) አለ።
-                          <button type="button" class="btn btn-primary">Edit</button>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                          ተቋሙ ከሚመደብለት ዓመታዊ ፕሮግራም በጀት ውስጥ ከ5%-10%  የሚሆነው ለታቀዱ የክትትልና ግመገማ ተግባራት ማስፈፀሚያነት ይመድባል።
-                          <button type="button" class="btn btn-primary">Edit</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                      Monitoring
-                    </button>
-                  </h2>
-                  <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                      <div class="list-group">
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                          በተቋሙ ውስጥ የሪፖርት አቀራረብ መመሪያ አለ።
-                          <button type="button" class="btn btn-primary">Edit</button>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                          ተቋሙን በሚመለከቱ በሁሉም ቁልፍ የአፈፃፀም አመልካቾች (KPIs) ላይ የአፈፃፀም ክትትል ይደረጋል።
-                          <button type="button" class="btn btn-primary">Edit</button>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                          ተቋሙ በየጊዜው የመስክ ክትትል የማካሄድ ባህል አለው። 
-                          <button type="button" class="btn btn-primary">Edit</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col d-flex justify-content-center align-items-end gap-5">
-                
-
-                
-                  <a href="{% url 'survey_managment:chooseSurvey' %}"
-                    ><button type="button" class="btn btn-primary btn-md m-4">
-                      Choose target from prvious survey
-                    </button></a
-                  >
-    
-                  <a href="{% url 'survey_managment:createForm' %}"
-                    ><button type="button" class="btn btn-primary btn-md m-4">
-                      Add New Target
-                    </button></a
-                  >
-                </div>
-              </div>    
-            </div>
-
-
-
-          <div class="col-lg m-2 card shadow border">
-            <h2 class="text-center text-info">Edit Question</h2>
-            
-             <div class="list-group-item d-flex justify-content-between align-items-center">
-              አስፈጻሚ ተቋሙ  የረጂም ዓመት ፡ የመካከለኛ፡  እንዲሁም ከረጅም/ መካከለኛ አመት እቅዱ የሚመነጭና የተሰናሰለ የአጭር ጊዜ ስትራቴጂክ ፕላን (institutional Strategic plan) አለው።
+              <div class="form-group">
+                <label for="{{ form.year.id_for_label }}" class="h5 mt-4"
+                  >Enter survey year</label
+                >
+                {{ form.year }}
               </div>
+
+              <button type="submit" class="btn btn-primary mt-3">Next</button>
+            </form>
           </div>
-
-          <a class="text-center" href="{% url 'survey_managment:Index' %}"
-                    ><button type="button" class="btn btn-primary btn-md m-4">
-                      Save Survey
-                    </button></a
-                  >
-
         </div>
       </div>
 
@@ -164,15 +60,12 @@
           <a href="https://adminlte.io/">MoPD </a>.</strong
         >
         All rights reserved.
-
       </footer>
 
       <aside class="control-sidebar control-sidebar-dark"></aside>
     </div>
 
-   
     {% include "includes/scripts.html" %}
-
   </body>
 
   <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:12 GMT -->
