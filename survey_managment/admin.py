@@ -8,7 +8,7 @@ admin.site.register(Questionnaire)
 
 admin.site.register(Survey)
 
-admin.site.register(Catagory)
+admin.site.register(Category)
 
 admin.site.register(Choice)
 
