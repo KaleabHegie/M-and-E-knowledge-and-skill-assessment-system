@@ -1,6 +1,6 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+    {% load static %}
 
 {% include 'includes/head.html' %}
 
@@ -35,129 +35,41 @@
                 <div class="container-fluid">
                     <div class="row">
 
-                       <div class="col-sm-auto bg-light sticky-top">
-                        <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
-                            
-                            <a href="/" class="d-block p-3 link-dark text-decoration-none" title="Import" data-bs-toggle="tooltip" 
-                                data-bs-placement="right" data-bs-original-title="Icon-only">
-                                <i class="bi bi-box-arrow-in-left"></i>
-                            </a>
-                            
-                            
-                            <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link py-3 px-2" title="Text" 
-                                        data-bs-toggle="modal" data-bs-target="#textQ" 
-                                        onclick="getTitle(this.title)"
-                                           data-bs-placement="right">
-                                        <i class="bi bi-textarea-t"></i>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link py-3 px-2" title="Numbers"
-                                    data-bs-toggle="modal" data-bs-target="#textQ"
-                                    onclick="getTitle(this.title)"  
-                                     data-bs-placement="right" >
-                                        <i class="bi bi-123"></i>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link py-3 px-2" title="Checkbox"
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right">
-                                        <i class="bi bi-check2-circle"></i>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link py-3 px-2" title="Radio"
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right" >
-                                        <i class="bi bi-check-all"></i>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="description"
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right">
-                                        <i class="bi bi-card-text"></i>
-                                    </a>
-                                </li>
-                               
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="Link" 
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right" >
-                                        <i class="bi bi-link"></i>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="Date" 
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                    data-bs-placement="right" >
-                                        <i class="bi bi-calendar4-week"></i>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="Email" 
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right" >
-                                        <i class="bi bi-envelope-at"></i>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="Rating" 
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                    data-bs-placement="right">
-                                        <i class="bi bi-star-half"></i>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="Document"
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right" >
-                                        <i class="bi bi-file-earmark-arrow-up"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                       </div>
-
-
-                       
                         <div class="col flex-grow-1">
                             <div class="card">
                                 <div class="card-body">
-                                    <div id="formTitle" contentEditable="true" style="font-size:x-large;">
-                                        Untitled </div>
-                                        <br>
-                                    <div id="Instruction" contentEditable="true" style="font-size:large;">
-                                        Instruction </div>
+
+                                    <form action="{% url 'survey_managment:newForm' %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="formTitle">Questionnaire Title</label>
+                                            <input type="text" name="Title" class="form-control form-control-border"
+                                            id="formTitle" placeholder="M&E concept">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Instruction">Instruction</label>
+                                            <input type="text" name="Instruction" class="form-control form-control-border"
+                                            id="Instruction" placeholder="A Guide to fill this Questionnaire">
+                                        </div>  
+                                        <div class="form-group">
+                                            <label for="category">Add Category (optional)</label>
+                                            <div name="category">  {{ cateForm.as_p }} </div>
+                                                <div id="categories" >
+                                                    
+                                                    <button type="button" id="addIcon" class="btn btn-outline-dark">
+                                                        <i class="bi bi-plus-circle"></i>
+                                                    </button> <br>
+                                                </div>
                                             
-                                            {% for obj in questions %}
-                                            <div contentEditable="true" style="font-size:medium;">
-                                                {{obj.title}} </div>
-                                              
-                                             {% endfor %}
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary">NEXT</button> 
+                                    </form>
                                 </div>
                             </div>
                         </div>
+
+                        
                     </div>
 
                 </div>
@@ -172,18 +84,21 @@
             reserved.
         </footer>
 
-
+        <!--  -->
     </div>
 
-
+<script>
+    document.getElementById('addIcon').addEventListener('click', function(){
+        var newCata = document.createElement('input')
+       newCata.classList.add('form-control')
+       newCata.setAttribute('type', 'text');
+       newCata.setAttribute('name', 'category');
+       newCata.style.marginTop = '10px';
+       categories.appendChild(newCata)
+    })
+</script>
+   
 {% include 'includes/scripts.html' %}
-    <script>
-       var editable = document.getElementById('formTitle')
-       editable.addEventListener('input', function(){
-        //    const fontsize = 10
-        //    this.style.fontSize = `${fontsize}px`
-       })
-    </script>
 </body>
 
 </html>

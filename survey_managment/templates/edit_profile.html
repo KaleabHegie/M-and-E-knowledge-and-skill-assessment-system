@@ -140,18 +140,22 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex flex-column align-items-center text-center">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
-                        <div class="mt-3">
-                          <h4>John Doe</h4>
-                          <p class="text-secondary mb-1">Full Stack Developer</p>
-                          <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <!-- Add an input element of type "file" -->
+<input type="file" id="profile-pic-input" style="display: none">
+
+<div class="card-body">
+    <div class="d-flex flex-column align-items-center text-center">
+        <!-- Add a container for the profile picture -->
+        <div id="profile-pic-container">
+            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+            <i class="fa-solid fa-user-pen" onclick="chooseProfilePic()"></i>
+        </div>
+        <p class="text-secondary mb-1">{{ custom_user.Role }}</p>
+        <div class="mt-3">
+        </div>
+    </div>
+</div>
+
                 
                
                 
@@ -289,8 +293,7 @@
     </div>
     
     </div>
-    </section> -->
-    
+    </section>
     </div>
     
     <footer class="main-footer">
@@ -305,9 +308,39 @@
     </aside>
     
     </div>
+
     
     
     {% include "includes/scripts.html" %}
     
+    <script>
+      // Function to trigger the file input when the icon is clicked
+function chooseProfilePic() {
+    document.getElementById("profile-pic-input").click();
+}
+
+// Function to handle the file selection
+document.getElementById("profile-pic-input").addEventListener("change", function(event) {
+    var file = event.target.files[0];
+
+    // Perform any necessary validation or processing with the selected file
+
+    // Example: Display the selected image
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var imageElement = document.createElement("img");
+        imageElement.src = e.target.result;
+        imageElement.alt = "Admin";
+        imageElement.classList.add("rounded-circle");
+        imageElement.width = 150;
+
+        var containerElement = document.getElementById("profile-pic-container");
+        containerElement.innerHTML = "";
+        containerElement.appendChild(imageElement);
+    };
+    reader.readAsDataURL(file);
+});
+
+    </script>
     </body>
 </html>
