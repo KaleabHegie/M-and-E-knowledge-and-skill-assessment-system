@@ -100,7 +100,7 @@ def edit_profile(request):
     else:
         form = UserProfileForm(instance=profile)
 
-    return render(request, 'edit_profile.html', {'form': form})
+    return render(request, 'edit_profile.html', {'form': form,'user':user})
 
 
 def forgotPasswordView(request):

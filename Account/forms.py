@@ -25,3 +25,6 @@ class UserProfileForm(forms.ModelForm):
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter a username'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter a password'}),
         }
+        from django import forms
+
+
