@@ -27,7 +27,6 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'survey_managment/change_password.html', {'form': form})
 
-from django.shortcuts import render, get_object_or_404
 
 def indexView(request):
     survey_id = request.GET.get('survey_id')
@@ -57,7 +56,7 @@ def surveyCreationView(request):
         if form.is_valid():
             survey = form.save()  # Save the form data to create a new Survey object
             print(survey.id)  # Check if the object has been saved to the database
-            return redirect('survey_managment:chooseTarget', survey_id=survey.id , question_id = 0)  # Pass the survey ID to the success page
+            return redirect('survey_managment:chooseSurvey', id=survey.id , choose_id = survey.id)  # Pass the survey ID to the success page
         else:
             print(form.errors)  # Print any validation errors
     else:
@@ -158,9 +157,10 @@ def create_question(request , survey_id , questionnaire_id):
     
 
 
-def chooseSurvey(request , id=0):
+def chooseSurvey(request , id , choose_id ):
     data = {
-        'id':id,
+        'choose_id':choose_id,
+        'survey_id':id,
         'questionnaires':  Questionnaire.objects.all(),
         'surveys': Survey.objects.all(),
         }
@@ -184,7 +184,7 @@ def displayQuestion(request, survey_id, questionnaire_id):
                 return redirect('survey_managment:index')
             else:
                 print('Form is not valid:', form.errors)
-        return redirect('survey_managment:chooseSurvey', id=survey_id)
+        return redirect('survey_managment:chooseSurvey', id=survey_id , choose_id=questionnaire_id)
     
     form = QuestionCreateByEdit()
     questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
