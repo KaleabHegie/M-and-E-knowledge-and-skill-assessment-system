@@ -4,28 +4,40 @@
 
 <!-- Mirrored from adminlte.io/themes/v3/pages/forms/validation.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:24 GMT -->
 {% include 'includes/head.html' %}
-
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 
 <body class="hold-transition sidebar-mini">
+
+    <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4" style="background-color: rgb(190, 202, 212); color: black; height: 400rem;">
+
+        <h4 style="margin-top: 2rem; font-family: Serif; font-weight: bolder;"><center>Question Category</center></h4>
+        {% for singlecategory in Catagory_list %}
+        <ul style="list-style-type: none; margin-top: 3rem; font-family: Serif; font-size: large;">
+            <li> <i class="fa fa-question-circle"></i>   {{singlecategory.name }}</li>   
+          </ul>
+        {% endfor %}
+       
+     
+        
+  </aside>
 <div class="wrapper">
 
   {% include "includes/loader.html" %} 
 
+<div class="content-wrapper" style="margin-right: 3rem;" >
 
-
-
-<div class="content-wrapper" >
-
-<section class="content-header" style="margin-top: 5rem;">
+<section class="content-header" style="margin-top: 5rem; margin-right: 3rem;">
 <div class="container-fluid">
 <div class="row mb-2">
 <div class="col-sm-6">
-<h1>Survey Questions </h1>
+<h1>Survey Questions..."will be edited " </h1>
 </div>
 <div class="col-sm-6">
 <ol class="breadcrumb float-sm-right">
-<li class="breadcrumb-item"><a href="#">Home</a></li>
-<li class="breadcrumb-item active">Validation</li>
+<!-- <li class="breadcrumb-item"><a href="#">Home</a></li>
+<li class="breadcrumb-item active">Validation</li> -->
 </ol>
 </div>
 </div>
@@ -39,12 +51,12 @@
 <div class="col-md-12">
 
 <div class="card card-primary">
-<div class="card-header">
+<div class="card-header"  style="background-color: rgb(223, 188, 188);>
 <h3 class="card-title">Knowlage & Skill Assessment Questions </h3>
 </div>
 
 
-<form id="quickForm">
+<form id="quickForm" method="POST" action="">
     {% for singlequestion in Question_list %}
 <div class="card-body">
 <div class="form-group">
@@ -56,7 +68,7 @@
 {% endfor %}
 
 <div class="card-footer">
-<button type="submit" class="btn btn-primary">Submit</button>
+<button type="submit" class="btn btn-primary"><center>Submit</center></button>
 </div>
 </form>
 </div>
