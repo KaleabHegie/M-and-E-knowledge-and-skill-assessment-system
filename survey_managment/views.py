@@ -1,10 +1,30 @@
 from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.http import JsonResponse
+from .models import Category, Question
+
+def category_questions(request):
+    if request.method == 'POST':
+        category_id = request.POST.get('category_id')
+        questions = Question.objects.filter(category_id=category_id)
+        question_list = []
+        for question in questions:
+            question_list.append({
+                'id': question.id,
+                'text': question.text,
+                # Add more fields as needed
+            })
+        return JsonResponse({'questions': question_list})
+    categories = Category.objects.all()
+    return render(request, 'category_questions.html', {'categories': categories})
+
 
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse_lazy
+from datetime import datetime
+from .forms import CategoryForm
 from .forms import *
 
 
@@ -27,7 +47,6 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'survey_managment/change_password.html', {'form': form})
 
-from django.shortcuts import render, get_object_or_404
 
 def indexView(request):
     survey_id = request.GET.get('survey_id')
@@ -64,7 +83,7 @@ def surveyCreationView(request):
         if form.is_valid():
             survey = form.save()  # Save the form data to create a new Survey object
             print(survey.id)  # Check if the object has been saved to the database
-            return redirect('survey_managment:chooseTarget', survey_id=survey.id , question_id = 0)  # Pass the survey ID to the success page
+            return redirect('survey_managment:chooseSurvey', id=survey.id , choose_id = survey.id)  # Pass the survey ID to the success page
         else:
             print(form.errors)  # Print any validation errors
     else:
@@ -165,9 +184,10 @@ def create_question(request , survey_id , questionnaire_id):
     
 
 
-def chooseSurvey(request , id=0):
+def chooseSurvey(request , id , choose_id ):
     data = {
-        'id':id,
+        'choose_id':choose_id,
+        'survey_id':id,
         'questionnaires':  Questionnaire.objects.all(),
         'surveys': Survey.objects.all(),
         }
@@ -191,7 +211,7 @@ def displayQuestion(request, survey_id, questionnaire_id):
                 return redirect('survey_managment:index')
             else:
                 print('Form is not valid:', form.errors)
-        return redirect('survey_managment:chooseSurvey', id=survey_id)
+        return redirect('survey_managment:chooseSurvey', id=survey_id , choose_id=questionnaire_id)
     
     form = QuestionCreateByEdit()
     questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
@@ -229,28 +249,49 @@ def chooseTarget(request, survey_id, question_id):
     
     return render(request, 'chooseTarget.html', data)
 
+   
 
-def createForm(request):
-    k = Question.objects.all()
-    print(k)
-    context = {'questions' : k  }
-    return render(request, 'createForm.html', context)
+def newForm(request):
+    if request.method == 'POST':
+        # new Questionnaire
+        name = request.POST.get('Title')
+        instruction = request.POST.get('Instruction')
+        created_at = datetime.now()
+        # survey = ??
+        newQuestionnaire = Questionnaire.objects.create(name=name, instruction=instruction, created_at=created_at)
+        newQuestionnaire.save()
+        request.session['questionnaire_id'] = newQuestionnaire.id 
+       
+        # new categories
+        category = request.POST.getlist('category')
+        print(category)
+        for i in category:
+            name = i
+            Category.objects.create(name=name)
 
-def createFormTWO(request, zform):
-    context = {'zform':zform}
-    return render(request, 'createForm.html', context)
 
+        return redirect('survey_managment:questionCreationByType' )
+    else :
+         cateForm = CategoryForm()
+         return render(request, 'createForm.html', {'cateForm' : cateForm})
 
 def questionCreationByType(request):
+    category = Category.objects.all()
     if request.method == 'POST':
         QuestionTitle = request.POST.get('QuestionTitle')
-        QuestionType = 'text'
-        ForQuestionnaire = Questionnaire.objects.get(name="M&E") 
+        QuestionType = request.POST.get('Icon-type')
+        formID = request.session.get('questionnaire_id')
+        ForQuestionnaire = Questionnaire.objects.get(id=formID) 
         question = Question.objects.create(title=QuestionTitle, question_type=QuestionType, for_questionnaire=ForQuestionnaire,has_weight=True, allow_doc=True ,weight=3)
         question.save()
-        return redirect("survey_managment:createForm")
-    else: 
-        return HttpResponse('sorry')
+       
+        zQuestions = Question.objects.filter(for_questionnaire=formID)
+        context = {'zQuestions': zQuestions, 'category': category}
+        return render(request, 'addQuestions.html',context )
+    
+    return render(request, 'addQuestions.html', {'category': category})
+
+    
     
 
 
@@ -258,15 +299,60 @@ def questionCreationByType(request):
 
 
 
-#######  Skill Assessment Survey View #####
+#######  Assessment Survey View #####
 
 def skill_assessment_survey_view(request):
     Question_list = Question.objects.all()
-    Catagory_list = Catagory.objects.all()
+    Catagory_list = Category.objects.all()
     context ={
       'Question_list':Question_list ,'Catagory_list':Catagory_list
     }
     return render(request,'SkillAssessmentSurvey.html',context)
+
+def answer_question(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    if request.method == 'POST':
+        answer_text = request.POST.get('answer')
+        answer = Answer(question=question, text=answer_text)
+        answer.save()
+        return redirect('surveydisplay')
+    return render(request, 'answer_question.html', {'question': question})
+
+
+
+
+
+# def category_questions(request):
+#     if request.method == 'POST':
+#         category_id = request.POST.get('category_id')
+#         questions = Question.objects.filter(category_id=category_id)
+#         question_list = []
+#         for question in questions:
+#             question_list.append({
+#                 'id': question.id,
+#                 'text': question.text,
+#             })
+#         return JsonResponse({'questions': question_list})
+#     categories = Category.objects.all()
+#     return render(request, 'SkillAssessmentSurvey.html', {'categories': categories})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
