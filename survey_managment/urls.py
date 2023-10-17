@@ -30,5 +30,9 @@ urlpatterns = [
 
 
     path('surveydisplay/', views.skill_assessment_survey_view, name="surveydisplay"),
+    path('surveydisplay/<int:category_id>/Catagory_list/', views.skill_assessment_survey_view, name="surveydisplay"),
+
+    path('surveydisplay/<int:question_id>/answer/', views.answer_question, name='answer_question'),
+    # path('category-questions/', views.category_questions, name='category_questions'),
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

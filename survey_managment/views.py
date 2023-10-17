@@ -1,6 +1,24 @@
 from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.http import JsonResponse
+from .models import Category, Question
+
+def category_questions(request):
+    if request.method == 'POST':
+        category_id = request.POST.get('category_id')
+        questions = Question.objects.filter(category_id=category_id)
+        question_list = []
+        for question in questions:
+            question_list.append({
+                'id': question.id,
+                'text': question.text,
+                # Add more fields as needed
+            })
+        return JsonResponse({'questions': question_list})
+    categories = Category.objects.all()
+    return render(request, 'category_questions.html', {'categories': categories})
+
 
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -283,6 +301,51 @@ def skill_assessment_survey_view(request):
       'Question_list':Question_list ,'Catagory_list':Catagory_list
     }
     return render(request,'SkillAssessmentSurvey.html',context)
+
+def answer_question(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    if request.method == 'POST':
+        answer_text = request.POST.get('answer')
+        answer = Answer(question=question, text=answer_text)
+        answer.save()
+        return redirect('surveydisplay')
+    return render(request, 'answer_question.html', {'question': question})
+
+
+
+
+
+# def category_questions(request):
+#     if request.method == 'POST':
+#         category_id = request.POST.get('category_id')
+#         questions = Question.objects.filter(category_id=category_id)
+#         question_list = []
+#         for question in questions:
+#             question_list.append({
+#                 'id': question.id,
+#                 'text': question.text,
+#             })
+#         return JsonResponse({'questions': question_list})
+#     categories = Category.objects.all()
+#     return render(request, 'SkillAssessmentSurvey.html', {'categories': categories})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
