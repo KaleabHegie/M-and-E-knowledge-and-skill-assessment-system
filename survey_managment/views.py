@@ -196,34 +196,52 @@ def chooseSurvey(request , id , choose_id ):
 
 
 
-def displayQuestion(request, survey_id, questionnaire_id):
-   
-    
+def displayQuestion(request, survey_id, questionnaire_id=None):
+    if questionnaire_id:
+        questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
+        questions = Question.objects.filter(for_questionnaire=questionnaire)
+    else:
+        questionnaire = None
+        questions = Question.objects.none()
+
+    surveys = Survey.objects.all()
+
     if request.method == 'POST':
         selected_questions = request.POST.getlist('selected_questions')
+        target_survey_id = request.POST.get('target_survey')
+
+        target_survey = get_object_or_404(Survey, id=target_survey_id)
+
         for question_id in selected_questions:
             question = get_object_or_404(Question, id=question_id)
-            form = QuestionCreateByEdit(request.POST, instance=question)
-            if form.is_valid():
-                new_question = form.save(commit=False)
-                new_question.for_questionnaire = questionnaire
-                new_question.save()
-                return redirect('survey_managment:index')
-            else:
-                print('Form is not valid:', form.errors)
-        return redirect('survey_managment:chooseSurvey', id=survey_id , choose_id=questionnaire_id)
-    
-    form = QuestionCreateByEdit()
-    questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
-    questions = Question.objects.filter(for_questionnaire=questionnaire)
+
+            new_question = Question.objects.create(
+                title=question.title,
+                question_type=question.question_type,
+                has_weight = question.has_weight,
+                weight=question.weight,
+                allow_doc = question.allow_doc,
+                for_questionnaire = questionnaire
+            )
+            new_question.for_questionnaire = questionnaire
+            new_question.save()
+            new_question.for_questionnaire.add(target_survey)
+
+        return redirect('survey_managment:index')
+    else:
+        if questionnaire:
+            form = QuestionForm()
+        else:
+            form = QuestionnaireForm()
+
     data = {
         'questionnaire_id': questionnaire_id,
         'questions': questions,
         'form': form,
+        'surveys': surveys,
     }
-    
-    return render(request, 'displayQuesion.html', data)
 
+    return render(request, 'displayQuesion.html', data)
 
     
 
