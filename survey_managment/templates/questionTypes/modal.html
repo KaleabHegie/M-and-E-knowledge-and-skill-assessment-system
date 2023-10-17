@@ -6,8 +6,8 @@
             <form action="{% url 'survey_managment:questionCreationByType'  %}" id="theForm" method="post">
                 {% csrf_token %}
                 <div class="modal-header">
-                    <h6 id="Icon-type" style="position: absolute; right: 10%;"> </h6>
-                    <input type="hidden" name="Icon-type">
+                    <h6 id="IconType" style="position: absolute; right: 10%;"> </h6>
+                    <input type="hidden" name="IconType" id="IconType1" value="">
                 </div>
 
                 <div class="modal-body">
@@ -17,8 +17,18 @@
                         <input type="text" name="QuestionTitle" id="QuestionTitle" class="form-control" required>
                       </div>
 
+                      <!-- check weight -->
+                      <div class="form-group">
+                        <label for="myCheckbox">
+                            <input type="checkbox" id="myCheckbox" name="myCheckbox">
+                            Has Weight 
+                        </label>
+                        <div id="weightInput" style="display: none;">
+                            <input class="form-control" type="number" name="weightInput" id="">
+                        </div>
+                      </div>
                       
-                      
+                      <!-- list of categories -->
                         <div class="form-group">
                             <label>category (optional)</label>
                             <select class="form-control select2" multiple="multiple" data-placeholder="Select category" style="width: 100%;">
@@ -52,6 +62,17 @@
   </div> 
 
 <script>
+    var myCheckbox = document.getElementById('myCheckbox')
+    var weightInput = document.getElementById('weightInput')
+    myCheckbox.addEventListener('change', function(){
+        if (myCheckbox.checked){
+            weightInput.style.display = 'block'
+        }
+        else 
+            weightInput.style.display = 'none'
+    })
+    
+
     document.getElementById('textQ').addEventListener('hidden.bs.modal', function() {
         var optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
@@ -64,8 +85,10 @@
     });
 
     function getTitle(zTitle) {
-        const x = document.getElementById('Icon-type');
+        const x = document.getElementById('IconType');
         x.textContent = zTitle;
+        const y = document.getElementById('IconType1')
+        y.value = zTitle
 
         var needOptions = ['Checkbox', 'Radio'];
         var optionList = document.getElementById('optionList'); // Get the optionList container

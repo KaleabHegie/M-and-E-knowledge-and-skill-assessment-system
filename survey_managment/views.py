@@ -254,10 +254,25 @@ def questionCreationByType(request):
     category = Category.objects.all()
     if request.method == 'POST':
         QuestionTitle = request.POST.get('QuestionTitle')
-        QuestionType = request.POST.get('Icon-type')
+        QuestionType = request.POST.get('IconType')
         formID = request.session.get('questionnaire_id')
-        ForQuestionnaire = Questionnaire.objects.get(id=formID) 
-        question = Question.objects.create(title=QuestionTitle, question_type=QuestionType, for_questionnaire=ForQuestionnaire,has_weight=True, allow_doc=True ,weight=3)
+        ForQuestionnaire = Questionnaire.objects.get(id=formID)
+        weightInput = request.POST.get('weightInput')
+        if weightInput > 0:
+            has_weight = True
+            weight = weightInput
+        else:
+            has_weight = False
+            weight = None
+
+        question = Question.objects.create(
+            title=QuestionTitle, 
+            question_type=QuestionType, 
+            for_questionnaire=ForQuestionnaire,
+            has_weight=has_weight, 
+            allow_doc=True ,
+            weight = weight
+            )
         question.save()
        
         zQuestions = Question.objects.filter(for_questionnaire=formID)
