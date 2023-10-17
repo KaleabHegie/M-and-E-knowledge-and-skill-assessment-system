@@ -33,38 +33,29 @@
       
           
         <div class="row container ">
-            <div class="col-lg-8  card shadow">
+            <div class="col-lg-9  card shadow">
 
-              <h4 class="text-center text-info mt-3"> Quesions of Target Monitoring From Survey 2020 </h4>
+              <h4 class="text-center text-info mt-3"> Quesions of {{ question.for_questionnaire.name }} </h4>
                 <ul class="list-group">
-                    <li class="list-group-item">
-                      <div class="form-check form-check-inline d-flex justify-content-between">
-                        <label class="form-check-label mr-3" for="checkbox1">
-                          በባለፈው በጀት ዓመት ከታቀደው የመስክ ክትትል ስራ ውስጥ 80% እና ከዚያ በላይ የሚሆነው ተከናውኗል።
-                        </label>
-                        <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      <div class="form-check form-check-inline d-flex justify-content-between">
-                        <label class="form-check-label mr-3" for="checkbox2">
-                          ተቋሙ ለመስክ ክትትል ስራ የሚሆን በጀት ይመደባል።
-                        </label>
-                        <input class="form-check-input" type="checkbox" value="" id="checkbox2">
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      <div class="form-check form-check-inline d-flex justify-content-between">
-                        <label class="form-check-label mr-3" for="checkbox3">
-                          ተቋሙ በየጊዜው የመስክ ክትትል የማካሄድ ባህል አለው። 
-                        </label>
-                        <input class="form-check-input" type="checkbox" value="" id="checkbox3">
-                      </div>
-                    </li>
+                  <form method="post" action="">
+                    {% csrf_token %}
+                    <ul class="list-group">
+                        {% for question in questions %}
+                        <li class="list-group-item">
+                            <div class="form-check form-check-inline d-flex justify-content-between border rounded p-3 shadow-sm">
+                                <label class="form-check-label mr-3" for="checkbox{{ question.id }}">
+                                    {{ question.title }}
+                                </label>
+                                <input class="form-check-input" type="checkbox" name="selected_questions" value="{{ question.id }}" id="checkbox{{ question.id }}">
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <button type="submit">Save selected questions</button>
+                </form>
+                
                      
-                  <a href="{% url 'survey_managment:chooseSurvey' %}" class="btn btn-primary">
-                    Done
-                 </a>
+                 
 
                   </ul>
                  

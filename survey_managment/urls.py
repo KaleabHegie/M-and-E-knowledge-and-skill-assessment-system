@@ -23,9 +23,9 @@ urlpatterns = [
     path('newForm/', views.newForm, name='newForm'),
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('survey/', views.survey, name='survey'),
-    path('chooseSurvey/', views.chooseSurvey, name='chooseSurvey'),
-    path('displayQuestion/', views.displayQuestion, name='displayQuestion'),
-
-    path('skillassessmentsurvey/',views.skill_assessment_survey_view, name='skillassessmentsurvey'),
+    path('chooseSurvey/<int:id>/', views.chooseSurvey, name='chooseSurvey'),
+    path('questionnaire/<int:questionnaire_id>/', views.display_questionnaire, name='display_questionnaire'),
+    path('displayQuestion/<int:survey_id>/<int:questionnaire_id>/', views.displayQuestion, name='displayQuestion'),
+    path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
