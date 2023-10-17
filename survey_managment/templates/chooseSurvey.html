@@ -37,7 +37,7 @@
             <h4 class="text-center text-info mt-3">Choose Survey To Edit</h4>
            
             {% for survey in surveys %}
-
+            {% if survey_id != survey.id  %}
               <a href="{% url 'survey_managment:chooseSurvey' id=survey_id choose_id=survey.id %}" style="color: black;">
                   <div class="info-box shadow">
                       <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
@@ -47,7 +47,7 @@
                       </div>
                   </div>
               </a>
-
+              {% endif %}
               {% endfor %}
         
                    
