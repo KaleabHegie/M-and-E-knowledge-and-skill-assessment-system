@@ -60,7 +60,14 @@ def indexView(request):
         return render(request, 'index.html', context)
     else:
         surveys = Survey.objects.all()
-        return render(request, 'index.html', {'surveys': surveys})
+        count_survey = Survey.objects.all().count()
+        count_questionnaries = Questionnaire.objects.all().count()
+        context= {
+            'surveys': surveys,
+            'count_survey':count_survey,
+            'count_questionnaries':count_questionnaries
+        }
+        return render(request, 'index.html',context)
 
 # def loginView(request):
 #     return render(request, 'login.html')
