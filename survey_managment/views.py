@@ -301,7 +301,11 @@ def questionCreationByType(request):
         formID = request.session.get('questionnaire_id')
         ForQuestionnaire = Questionnaire.objects.get(id=formID)
         weightInput = request.POST.get('weightInput')
+<<<<<<< HEAD
         if int(weightInput) > 0:
+=======
+        if weightInput > 0:
+>>>>>>> 0d80f9b336572004f9c7a39bdcd5d147d387e72e
             has_weight = True
             weight = weightInput
         else:

@@ -133,7 +133,7 @@
     </section>
 
 {% block content %}
-  <form method="post">
+  <form method="post" enctype="multipart/form-data" >
     {% csrf_token %}
     <section class="content">
       <div class="container-fluid">
@@ -148,7 +148,7 @@
       <div class="d-flex flex-column align-items-center text-center">
           <!-- Add a container for the profile picture -->
           <div id="profile-pic-container">
-              <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+              <img src="{{user.image.url}}" alt="Admin" class="rounded-circle" width="150">
               <i class="fa-solid fa-user-pen" onclick="chooseProfilePic()"></i>
           </div>
           <p class="text-secondary mb-1">{{ custom_user.Role }}</p>
