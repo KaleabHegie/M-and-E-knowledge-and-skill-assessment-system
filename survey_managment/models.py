@@ -12,7 +12,7 @@ class Survey(models.Model):
 class Questionnaire(models.Model):
     name = models.CharField( max_length=100)
     instruction = models.TextField(null=True)
-    created_at = models.DateTimeField(auto_now=False, auto_now_add=False)
+    created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
     survey = models.ForeignKey("Survey",on_delete=models.CASCADE,null=True,blank=True)  
     def __str__(self):
         return self.name
