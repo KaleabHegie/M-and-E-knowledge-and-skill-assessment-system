@@ -336,26 +336,26 @@ def questionCreationByType(request):
 
 
 
-def userinfo_view(request):
-    context = {}
-    return render(request, 'userinfopageforsurvey.html', context)
+# def userinfo_view(request):
+#     context = {}
+#     return render(request, 'userinfopageforsurvey.html', context)
 
-def skill_assessment_survey_view(request):
-    Question_list = Question.objects.all()
-    Catagory_list = Category.objects.all()
-    context ={
-      'Question_list':Question_list ,'Catagory_list':Catagory_list
-    }
-    return render(request,'SkillAssessmentSurvey.html',context)
+# def skill_assessment_survey_view(request):
+#     Question_list = Question.objects.all()
+#     Catagory_list = Category.objects.all()
+#     context ={
+#       'Question_list':Question_list ,'Catagory_list':Catagory_list
+#     }
+#     return render(request,'SkillAssessmentSurvey.html',context)
 
-def answer_question(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    if request.method == 'POST':
-        answer_text = request.POST.get('answer')
-        answer = Answer(question=question, text=answer_text)
-        answer.save()
-        return redirect('surveydisplay')
-    return render(request, 'answer_question.html', {'question': question})
+# def answer_question(request, question_id):
+#     question = get_object_or_404(Question, pk=question_id)
+#     if request.method == 'POST':
+#         answer_text = request.POST.get('answer')
+#         answer = Answer(question=question, text=answer_text)
+#         answer.save()
+#         return redirect('surveydisplay')
+#     return render(request, 'answer_question.html', {'question': question})
 
 
 
