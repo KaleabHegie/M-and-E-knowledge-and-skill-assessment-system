@@ -23,8 +23,7 @@ urlpatterns = [
     path('newForm/', views.newForm, name='newForm'),
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('survey/', views.survey, name='survey'),
-    path('chooseSurvey/<int:id>/', views.chooseSurvey, name='chooseSurvey'),
-    path('questionnaire/<int:questionnaire_id>/', views.display_questionnaire, name='display_questionnaire'),
+    path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:survey_id>/<int:questionnaire_id>/', views.displayQuestion, name='displayQuestion'),
     path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
 

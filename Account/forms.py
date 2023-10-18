@@ -15,4 +15,16 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = '__all__'
+        fields = ['first_name', 'last_name', 'email', 'phone_number','username','date_of_birth','image']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your first name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your last name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter your email address'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your phone number'}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter a username'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter a password'}),
+        }
+        from django import forms
+
+

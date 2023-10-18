@@ -85,19 +85,22 @@ def view_profile(request):
 
 # def edit_profile(request):
 #     return render(request , './edit_profile.html' )
-from django.shortcuts import render, redirect
+
 from .forms import UserProfileForm
 
 def edit_profile(request):
+    user = request.user
+    profile = CustomUser.objects.get(username=user)
+
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+        form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('profile')
+            return HttpResponse('updated')
     else:
-        form = UserProfileForm(instance=request.user)
-    
-    return render(request, 'edit_profile.html', {'form': form})
+        form = UserProfileForm(instance=profile)
+
+    return render(request, 'edit_profile.html', {'form': form,'user':user})
 
 
 def forgotPasswordView(request):

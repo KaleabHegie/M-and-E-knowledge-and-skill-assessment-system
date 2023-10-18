@@ -47,7 +47,6 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'survey_managment/change_password.html', {'form': form})
 
-from django.shortcuts import render, get_object_or_404
 
 def indexView(request):
     survey_id = request.GET.get('survey_id')
@@ -61,7 +60,14 @@ def indexView(request):
         return render(request, 'index.html', context)
     else:
         surveys = Survey.objects.all()
-        return render(request, 'index.html', {'surveys': surveys})
+        count_survey = Survey.objects.all().count()
+        count_questionnaries = Questionnaire.objects.all().count()
+        context= {
+            'surveys': surveys,
+            'count_survey':count_survey,
+            'count_questionnaries':count_questionnaries
+        }
+        return render(request, 'index.html',context)
 
 # def loginView(request):
 #     return render(request, 'login.html')
@@ -77,7 +83,7 @@ def surveyCreationView(request):
         if form.is_valid():
             survey = form.save()  # Save the form data to create a new Survey object
             print(survey.id)  # Check if the object has been saved to the database
-            return redirect('survey_managment:chooseTarget', survey_id=survey.id , question_id = 0)  # Pass the survey ID to the success page
+            return redirect('survey_managment:chooseSurvey', id=survey.id , choose_id = survey.id)  # Pass the survey ID to the success page
         else:
             print(form.errors)  # Print any validation errors
     else:
@@ -178,9 +184,10 @@ def create_question(request , survey_id , questionnaire_id):
     
 
 
-def chooseSurvey(request , id=0):
+def chooseSurvey(request , id , choose_id ):
     data = {
-        'id':id,
+        'choose_id':choose_id,
+        'survey_id':id,
         'questionnaires':  Questionnaire.objects.all(),
         'surveys': Survey.objects.all(),
         }
@@ -189,34 +196,52 @@ def chooseSurvey(request , id=0):
 
 
 
-def displayQuestion(request, survey_id, questionnaire_id):
-   
-    
+def displayQuestion(request, survey_id, questionnaire_id=None):
+    if questionnaire_id:
+        questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
+        questions = Question.objects.filter(for_questionnaire=questionnaire)
+    else:
+        questionnaire = None
+        questions = Question.objects.none()
+
+    surveys = Survey.objects.all()
+
     if request.method == 'POST':
         selected_questions = request.POST.getlist('selected_questions')
+        target_survey_id = request.POST.get('target_survey')
+
+        target_survey = get_object_or_404(Survey, id=target_survey_id)
+
         for question_id in selected_questions:
             question = get_object_or_404(Question, id=question_id)
-            form = QuestionCreateByEdit(request.POST, instance=question)
-            if form.is_valid():
-                new_question = form.save(commit=False)
-                new_question.for_questionnaire = questionnaire
-                new_question.save()
-                return redirect('survey_managment:index')
-            else:
-                print('Form is not valid:', form.errors)
-        return redirect('survey_managment:chooseSurvey', id=survey_id)
-    
-    form = QuestionCreateByEdit()
-    questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
-    questions = Question.objects.filter(for_questionnaire=questionnaire)
+
+            new_question = Question.objects.create(
+                title=question.title,
+                question_type=question.question_type,
+                has_weight = question.has_weight,
+                weight=question.weight,
+                allow_doc = question.allow_doc,
+                for_questionnaire = questionnaire
+            )
+            new_question.for_questionnaire = questionnaire
+            new_question.save()
+            new_question.for_questionnaire.add(target_survey)
+
+        return redirect('survey_managment:index')
+    else:
+        if questionnaire:
+            form = QuestionForm()
+        else:
+            form = QuestionnaireForm()
+
     data = {
         'questionnaire_id': questionnaire_id,
         'questions': questions,
         'form': form,
+        'surveys': surveys,
     }
-    
-    return render(request, 'displayQuesion.html', data)
 
+    return render(request, 'displayQuesion.html', data)
 
     
 
@@ -272,10 +297,29 @@ def questionCreationByType(request):
     category = Category.objects.all()
     if request.method == 'POST':
         QuestionTitle = request.POST.get('QuestionTitle')
-        QuestionType = request.POST.get('Icon-type')
+        QuestionType = request.POST.get('IconType')
         formID = request.session.get('questionnaire_id')
-        ForQuestionnaire = Questionnaire.objects.get(id=formID) 
-        question = Question.objects.create(title=QuestionTitle, question_type=QuestionType, for_questionnaire=ForQuestionnaire,has_weight=True, allow_doc=True ,weight=3)
+        ForQuestionnaire = Questionnaire.objects.get(id=formID)
+        weightInput = request.POST.get('weightInput')
+<<<<<<< HEAD
+        if int(weightInput) > 0:
+=======
+        if weightInput > 0:
+>>>>>>> 0d80f9b336572004f9c7a39bdcd5d147d387e72e
+            has_weight = True
+            weight = weightInput
+        else:
+            has_weight = False
+            weight = None
+
+        question = Question.objects.create(
+            title=QuestionTitle, 
+            question_type=QuestionType, 
+            for_questionnaire=ForQuestionnaire,
+            has_weight=has_weight, 
+            allow_doc=True ,
+            weight = weight
+            )
         question.save()
        
         zQuestions = Question.objects.filter(for_questionnaire=formID)

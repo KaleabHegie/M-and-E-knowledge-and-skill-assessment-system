@@ -33,7 +33,11 @@
 
             <section class="content">
                 <div class="container-fluid">
-                    <div class="row">
+                    <div class="row" style="
+                        display: flex;
+                        border: 1px solid #ccc;
+                        border-radius: 5px;
+                        overflow: hidden;">
 
                        <div class="col-sm-auto bg-light sticky-top">
                         <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
@@ -44,7 +48,7 @@
                             </a>
                             
                             
-                            <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
+                            <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center" >
                                 <li class="nav-item">
                                     <a href="#" class="nav-link py-3 px-2" title="Text" 
                                         data-bs-toggle="modal" data-bs-target="#textQ" 
@@ -91,7 +95,7 @@
                                 </li>
                                
                                 <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="Link" 
+                                    <a href="#" class="nav-link py-3 px-2" title="url" 
                                     data-bs-toggle="modal" data-bs-target="#textQ" 
                                     onclick="getTitle(this.title)"
                                      data-bs-placement="right" >
