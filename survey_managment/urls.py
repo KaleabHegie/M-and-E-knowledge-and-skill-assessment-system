@@ -31,7 +31,7 @@ urlpatterns = [
 
     path('surveydisplay/', views.skill_assessment_survey_view, name="surveydisplay"),
     path('surveydisplay/<int:category_id>/Catagory_list/', views.skill_assessment_survey_view, name="surveydisplay"),
-
+    path('userinfo/', views.userinfo_view , name='userinfo'),
     path('surveydisplay/<int:question_id>/answer/', views.answer_question, name='answer_question'),
     # path('category-questions/', views.category_questions, name='category_questions'),
 ]

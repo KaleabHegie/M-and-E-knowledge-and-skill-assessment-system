@@ -292,7 +292,9 @@ def questionCreationByType(request):
 
 
 
-#######  Assessment Survey View #####
+def userinfo_view(request):
+    context = {}
+    return render(request, 'userinfopageforsurvey.html', context)
 
 def skill_assessment_survey_view(request):
     Question_list = Question.objects.all()
@@ -328,26 +330,6 @@ def answer_question(request, question_id):
 #         return JsonResponse({'questions': question_list})
 #     categories = Category.objects.all()
 #     return render(request, 'SkillAssessmentSurvey.html', {'categories': categories})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def display_questionnaire(request, questionnaire_id):
