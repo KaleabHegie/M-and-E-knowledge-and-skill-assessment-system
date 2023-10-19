@@ -4,14 +4,11 @@
 <html lang="en">
   <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:08 GMT -->
 
-{% include "includes/head.html" %}  
+  {% include "includes/head.html" %}
 
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
- 
-
-      {% include 'includes/topNavbar.html' %}
-      {% include 'includes/sideNavbar.html' %}
+      {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
 
       <div class="content-wrapper">
         <div class="content-header">
@@ -30,48 +27,44 @@
           </div>
         </div>
 
-      
-          
-        <div class="row container ">
-            <div class="col-lg-9  card shadow">
-
-              <h4 class="text-center text-info mt-3"> Quesions of {{ question.for_questionnaire.name }} </h4>
-                <ul class="list-group">
-                  <form method="post" action="">
-                    {% csrf_token %}
-                    <ul class="list-group">
-                        {% for question in questions %}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline d-flex justify-content-between border rounded p-3 shadow-sm">
-                                <label class="form-check-label mr-3" for="checkbox{{ question.id }}">
-                                    {{ question.title }}
-                                </label>
-                                <input class="form-check-input" type="checkbox" name="selected_questions" value="{{ question.id }}" id="checkbox{{ question.id }}">
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    <div class="form-group">
-                        <label for="survey-select">Select target survey:</label>
-                        <select class="form-control" id="survey-select" name="target_survey">
-                            {% for survey in surveys %}
-                            <option value="{{ survey.id }}">{{ survey.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="submit">Duplicate selected questions</button>
-                </form>
-                
-                     
-                 
-
-                  </ul>
-                 
-            </div>
+        <div class="row container justify-content-center">
+          <div class="col-lg-9 card shadow ">
+            <h4 class="text-center text-info mt-3">
+              Select and add questions for survey {{ surveys.first.name }}
+          </h4>
+            <ul class="list-group">
+              <form method="post" action="">
+                {% csrf_token %}
+                <table class="table">
+                  {% for questionnaire in questionnaires %}
+                      <tr class="table-primary" data-parent="collapse-{{questionnaire.id }}" data-toggle="collapse" data-target="#collapse-{{ questionnaire.id }}" aria-expanded="false" aria-controls="collapse-{{ questionnaire.id }}">
+                          <th scope="row">
+                              {{ questionnaire.name }}
+                          </th>
+                      </tr>
+                      <tr>
+                          <td colspan="2">
+                              <div id="collapse-{{ questionnaire.id }}" class="collapse">
+                                  <table class="table">
+                                      {% for question in questionnaire.question_set.all %}
+                                          <tr class="question-row">
+                                              <td><input type="checkbox"></td>
+                                              <td>{{ question.title }}</td>
+                                              <!-- Add more columns for other fields -->
+                                          </tr>
+                                      {% endfor %}
+                                  </table>
+                              </div>
+                          </td>
+                      </tr>
+                  {% endfor %}
+              </table>
+              
+                <button class="btn btn-primary mt-4 mb-4 p-3" type="submit">Add Selected Questions</button>
+              </form>
+            </ul>
+          </div>
         </div>
-        
-          
-        
       </div>
 
       <footer class="main-footer">
@@ -80,15 +73,12 @@
           <a href="https://adminlte.io/">MoPD </a>.</strong
         >
         All rights reserved.
-
       </footer>
 
       <aside class="control-sidebar control-sidebar-dark"></aside>
     </div>
 
-   
     {% include "includes/scripts.html" %}
-
   </body>
 
   <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:12 GMT -->

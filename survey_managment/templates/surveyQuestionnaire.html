@@ -36,7 +36,7 @@
                 
 
                 <a
-                  href="{% url 'survey_managment:createForm' %}"
+                  href="{% url 'survey_managment:newForm' %}"
                   class="btn bg-secondary"
                   style="margin-left: auto"
                 >
@@ -55,7 +55,7 @@
             <div class="col-md-3 col-sm-6 col-12">
               <a href="{% url 'survey_managment:survey_questionnaire_detail' survey_id=questionnaire.survey.id   questionnaire_id=questionnaire.id %}" style="color: black; text-decoration: none">
                 <div class="info-box shadow">
-                  <span class="info-box-icon bg-info"><i class="far fa-copy"></i></span>
+                  <span class="info-box-icon" style="background-color:#52B788"><i class="far fa-copy"></i></span>
                   <div class="info-box-content">
                     <span class="info-box-text">{{ questionnaire.name }}</span>
                     <span class="info-box-number">{{ questionnaire.created_at.date }}</span>

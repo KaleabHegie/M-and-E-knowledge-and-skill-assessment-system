@@ -4,10 +4,18 @@ from Account.models import CustomUser
 # Create your models here.
 class Survey(models.Model):
     name = models.CharField(max_length=200)
-    year = models.DateField(auto_now=False, auto_now_add=False)
+    start_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
+    end_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
+    survey_type = models.ForeignKey("SurveyType" , on_delete=models.CASCADE , null=True)
 
     def __str__(self):
         return self.name
+    
+class SurveyType(models.Model):
+    name = models.CharField( max_length=50)   
+    
+    def __str__(self):
+        return self.name 
 
 class Questionnaire(models.Model):
     name = models.CharField( max_length=100)
@@ -16,6 +24,7 @@ class Questionnaire(models.Model):
     survey = models.ForeignKey("Survey",on_delete=models.CASCADE,null=True,blank=True)  
     def __str__(self):
         return self.name
+
     
 class Category(models.Model):
     name = models.CharField( max_length=100)
