@@ -61,11 +61,10 @@ def indexView(request):
     else:
         surveys = Survey.objects.all()
         count_survey = Survey.objects.all().count()
-        count_questionnaries = Questionnaire.objects.all().count()
         context= {
             'surveys': surveys,
             'count_survey':count_survey,
-            'count_questionnaries':count_questionnaries
+
         }
         return render(request, 'index.html',context)
 
@@ -113,7 +112,6 @@ def Mychartanalysis(request):
 def surveyQuestionnaireView(request, id):
     data = {
         'id':id,
-        'questionnaires':  Questionnaire.objects.all(),
     }
     return render(request, 'surveyQuestionnaire.html', data)
 
@@ -128,7 +126,6 @@ def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
 def surveyQuestionnaireView(request, id):
     data = {
         'id':id,
-        'questionnaires':  Questionnaire.objects.all(),
     }
     return render(request, 'surveyQuestionnaire.html', data)
 
@@ -188,7 +185,6 @@ def chooseSurvey(request , id , choose_id ):
     data = {
         'choose_id':choose_id,
         'survey_id':id,
-        'questionnaires':  Questionnaire.objects.all(),
         'surveys': Survey.objects.all(),
         }
     return render(request, 'chooseSurvey.html' , data)
@@ -232,7 +228,6 @@ def displayQuestion(request, id ):
         'form':   QuestionnaireForm(),
         'surveys' : Survey.objects.filter(id=id),
         'category_set' : Category.objects.all(),
-        'questionnaires' : Questionnaire.objects.all()
         }
 
     return render(request, 'displayQuesion.html', data)
@@ -295,11 +290,7 @@ def questionCreationByType(request):
         formID = request.session.get('questionnaire_id')
         ForQuestionnaire = Questionnaire.objects.get(id=formID)
         weightInput = request.POST.get('weightInput')
-<<<<<<< HEAD
-        if int(weightInput) > 0:
-=======
         if weightInput > 0:
->>>>>>> 0d80f9b336572004f9c7a39bdcd5d147d387e72e
             has_weight = True
             weight = weightInput
         else:
