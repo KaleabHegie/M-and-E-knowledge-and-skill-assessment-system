@@ -291,10 +291,29 @@ def questionCreationByType(request):
     category = Category.objects.all()
     if request.method == 'POST':
         QuestionTitle = request.POST.get('QuestionTitle')
-        QuestionType = request.POST.get('Icon-type')
+        QuestionType = request.POST.get('IconType')
         formID = request.session.get('questionnaire_id')
-        ForQuestionnaire = Questionnaire.objects.get(id=formID) 
-        question = Question.objects.create(title=QuestionTitle, question_type=QuestionType, for_questionnaire=ForQuestionnaire,has_weight=True, allow_doc=True ,weight=3)
+        ForQuestionnaire = Questionnaire.objects.get(id=formID)
+        weightInput = request.POST.get('weightInput')
+<<<<<<< HEAD
+        if int(weightInput) > 0:
+=======
+        if weightInput > 0:
+>>>>>>> 0d80f9b336572004f9c7a39bdcd5d147d387e72e
+            has_weight = True
+            weight = weightInput
+        else:
+            has_weight = False
+            weight = None
+
+        question = Question.objects.create(
+            title=QuestionTitle, 
+            question_type=QuestionType, 
+            for_questionnaire=ForQuestionnaire,
+            has_weight=has_weight, 
+            allow_doc=True ,
+            weight = weight
+            )
         question.save()
        
         zQuestions = Question.objects.filter(for_questionnaire=formID)
@@ -311,24 +330,26 @@ def questionCreationByType(request):
 
 
 
-#######  Assessment Survey View #####
+# def userinfo_view(request):
+#     context = {}
+#     return render(request, 'userinfopageforsurvey.html', context)
 
-def skill_assessment_survey_view(request):
-    Question_list = Question.objects.all()
-    Catagory_list = Category.objects.all()
-    context ={
-      'Question_list':Question_list ,'Catagory_list':Catagory_list
-    }
-    return render(request,'SkillAssessmentSurvey.html',context)
+# def skill_assessment_survey_view(request):
+#     Question_list = Question.objects.all()
+#     Catagory_list = Category.objects.all()
+#     context ={
+#       'Question_list':Question_list ,'Catagory_list':Catagory_list
+#     }
+#     return render(request,'SkillAssessmentSurvey.html',context)
 
-def answer_question(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    if request.method == 'POST':
-        answer_text = request.POST.get('answer')
-        answer = Answer(question=question, text=answer_text)
-        answer.save()
-        return redirect('surveydisplay')
-    return render(request, 'answer_question.html', {'question': question})
+# def answer_question(request, question_id):
+#     question = get_object_or_404(Question, pk=question_id)
+#     if request.method == 'POST':
+#         answer_text = request.POST.get('answer')
+#         answer = Answer(question=question, text=answer_text)
+#         answer.save()
+#         return redirect('surveydisplay')
+#     return render(request, 'answer_question.html', {'question': question})
 
 
 
@@ -347,26 +368,6 @@ def answer_question(request, question_id):
 #         return JsonResponse({'questions': question_list})
 #     categories = Category.objects.all()
 #     return render(request, 'SkillAssessmentSurvey.html', {'categories': categories})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def display_questionnaire(request, questionnaire_id):
