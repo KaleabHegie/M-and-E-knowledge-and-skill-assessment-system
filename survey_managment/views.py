@@ -83,7 +83,7 @@ def surveyCreationView(request):
         if form.is_valid():
             survey = form.save()  # Save the form data to create a new Survey object
             print(survey.id)  # Check if the object has been saved to the database
-            return redirect('survey_managment:chooseSurvey', id=survey.id , choose_id = survey.id)  # Pass the survey ID to the success page
+            return redirect('survey_managment:displayQuestion', id=survey.id)  # Pass the survey ID to the success page
         else:
             print(form.errors)  # Print any validation errors
     else:
@@ -196,50 +196,44 @@ def chooseSurvey(request , id , choose_id ):
 
 
 
-def displayQuestion(request, survey_id, questionnaire_id=None):
-    if questionnaire_id:
-        questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
-        questions = Question.objects.filter(for_questionnaire=questionnaire)
-    else:
-        questionnaire = None
-        questions = Question.objects.none()
+def displayQuestion(request, id ):
+ 
+    questions = Question.objects.none()
 
-    surveys = Survey.objects.all()
+    
 
-    if request.method == 'POST':
-        selected_questions = request.POST.getlist('selected_questions')
-        target_survey_id = request.POST.get('target_survey')
+    # if request.method == 'POST':
+    #     selected_questions = request.POST.getlist('selected_questions')
+    #     target_survey_id = request.POST.get('target_survey')
 
-        target_survey = get_object_or_404(Survey, id=target_survey_id)
+    #     target_survey = get_object_or_404(Survey, id=target_survey_id)
 
-        for question_id in selected_questions:
-            question = get_object_or_404(Question, id=question_id)
+    #     for question_id in selected_questions:
+    #         question = get_object_or_404(Question, id=question_id)
 
-            new_question = Question.objects.create(
-                title=question.title,
-                question_type=question.question_type,
-                has_weight = question.has_weight,
-                weight=question.weight,
-                allow_doc = question.allow_doc,
-                for_questionnaire = questionnaire
-            )
-            new_question.for_questionnaire = questionnaire
-            new_question.save()
-            new_question.for_questionnaire.add(target_survey)
+    #         new_question = Question.objects.create(
+    #             title=question.title,
+    #             question_type=question.question_type,
+    #             has_weight = question.has_weight,
+    #             weight=question.weight,
+    #             allow_doc = question.allow_doc,
+    #             for_questionnaire = questionnaire
+    #         )
+    #         new_question.for_questionnaire = questionnaire
+    #         new_question.save()
+    #         new_question.for_questionnaire.add(target_survey)
 
-        return redirect('survey_managment:index')
-    else:
-        if questionnaire:
-            form = QuestionForm()
-        else:
-            form = QuestionnaireForm()
+    #     return redirect('survey_managment:index')
+    # else:
+    #         form = QuestionnaireForm()
 
     data = {
-        'questionnaire_id': questionnaire_id,
         'questions': questions,
-        'form': form,
-        'surveys': surveys,
-    }
+        'form':   QuestionnaireForm(),
+        'surveys' : Survey.objects.filter(id=id),
+        'category_set' : Category.objects.all(),
+        'questionnaires' : Questionnaire.objects.all()
+        }
 
     return render(request, 'displayQuesion.html', data)
 
@@ -262,7 +256,7 @@ def chooseTarget(request, survey_id, question_id):
         'form': form,
         'question_id': question_id,
         'survey_id': survey_id,
-        'questions': Question.objects.all()
+        'questions': Question.objects.all(),
     }
     
     return render(request, 'chooseTarget.html', data)
@@ -293,91 +287,69 @@ def newForm(request):
          cateForm = CategoryForm()
          return render(request, 'createForm.html', {'cateForm' : cateForm})
 
-def questionCreationByType(request):
-    category = Category.objects.all()
-    if request.method == 'POST':
-        QuestionTitle = request.POST.get('QuestionTitle')
-        QuestionType = request.POST.get('IconType')
-        formID = request.session.get('questionnaire_id')
-        ForQuestionnaire = Questionnaire.objects.get(id=formID)
-        weightInput = request.POST.get('weightInput')
-<<<<<<< HEAD
-        if int(weightInput) > 0:
-=======
-        if weightInput > 0:
->>>>>>> 0d80f9b336572004f9c7a39bdcd5d147d387e72e
-            has_weight = True
-            weight = weightInput
-        else:
-            has_weight = False
-            weight = None
+# def questionCreationByType(request):
+#     category = Category.objects.all()
+#     if request.method == 'POST':
+#         QuestionTitle = request.POST.get('QuestionTitle')
+#         QuestionType = request.POST.get('IconType')
+#         formID = request.session.get('questionnaire_id')
+#         ForQuestionnaire = Questionnaire.objects.get(id=formID)
+#         weightInput = request.POST.get('weightInput')
+# <<<<<<< HEAD
+#         if int(weightInput) > 0:
+# =======
+#         if weightInput > 0:
+# >>>>>>> 0d80f9b336572004f9c7a39bdcd5d147d387e72e
+#             has_weight = True
+#             weight = weightInput
+#         else:
+#             has_weight = False
+#             weight = None
 
-        question = Question.objects.create(
-            title=QuestionTitle, 
-            question_type=QuestionType, 
-            for_questionnaire=ForQuestionnaire,
-            has_weight=has_weight, 
-            allow_doc=True ,
-            weight = weight
-            )
-        question.save()
+#         question = Question.objects.create(
+#             title=QuestionTitle, 
+#             question_type=QuestionType, 
+#             for_questionnaire=ForQuestionnaire,
+#             has_weight=has_weight, 
+#             allow_doc=True ,
+#             weight = weight
+#             )
+#         question.save()
        
-        zQuestions = Question.objects.filter(for_questionnaire=formID)
-        context = {'zQuestions': zQuestions, 'category': category}
-        return render(request, 'addQuestions.html',context )
+#         zQuestions = Question.objects.filter(for_questionnaire=formID)
+#         context = {'zQuestions': zQuestions, 'category': category}
+#         return render(request, 'addQuestions.html',context )
     
-    return render(request, 'addQuestions.html', {'category': category})
-
-    
-    
-
-
-
-
-
-
-# def userinfo_view(request):
-#     context = {}
-#     return render(request, 'userinfopageforsurvey.html', context)
-
-# def skill_assessment_survey_view(request):
-#     Question_list = Question.objects.all()
-#     Catagory_list = Category.objects.all()
-#     context ={
-#       'Question_list':Question_list ,'Catagory_list':Catagory_list
-#     }
-#     return render(request,'SkillAssessmentSurvey.html',context)
-
-# def answer_question(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     if request.method == 'POST':
-#         answer_text = request.POST.get('answer')
-#         answer = Answer(question=question, text=answer_text)
-#         answer.save()
-#         return redirect('surveydisplay')
-#     return render(request, 'answer_question.html', {'question': question})
-
-
-
-
-
-# def category_questions(request):
-#     if request.method == 'POST':
-#         category_id = request.POST.get('category_id')
-#         questions = Question.objects.filter(category_id=category_id)
-#         question_list = []
-#         for question in questions:
-#             question_list.append({
-#                 'id': question.id,
-#                 'text': question.text,
-#             })
-#         return JsonResponse({'questions': question_list})
-#     categories = Category.objects.all()
-#     return render(request, 'SkillAssessmentSurvey.html', {'categories': categories})
-
+#     return render(request, 'addQuestions.html', {'category': category})
 
 def display_questionnaire(request, questionnaire_id):
     questionnaire = Questionnaire.objects.get(id=questionnaire_id)
     questions = Question.objects.filter(for_questionnaire=questionnaire)
     print("Number of questions retrieved:", questions.count())  
     return render(request, 'Analysis_for_each.html', {'questionnaire': questionnaire, 'questions': questions})
+
+
+
+
+####### final preview views ################################
+
+def greetingpage_view(request):
+    context ={
+
+    }
+    return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
+
+def skill_ass_sur_view(request):
+    context ={
+
+    }
+    return render(request, 'Final_Preview_Pages/Skill_Ass_Sur_Preview.html' , context)
+
+def line_min_sur_view(request):
+    context ={
+
+    }
+    return render(request, 'Final_Preview_Pages/Line_Min_Sur_Preview.html' , context)
+
+
+
