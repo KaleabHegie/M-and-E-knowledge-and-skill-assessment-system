@@ -4,10 +4,7 @@
 {% include "includes/head.html" %}
 <body class="hold-transition sidebar-mini layout-fixed">
     <style>
-        .textS{
-        text-align: center;
-        font-family: 'Courier New', Courier, monospace;
-    }
+        
     </style>
 
     
@@ -125,10 +122,12 @@
                             style="background-color: transparent;">Survey Analysis</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="compare.html">Compare Data</a>
+                        <a class="nav-link" href="{% url 'survey_managment:compareData' %}">Compare Data</a>
                     </li>
                 </ul>
                 <br>
+
+
                 <div class="container-fluid" style="background-color: #e3f2fd;">
                     <div class="container-fluid" id="searchArea">
                         <h2 class="textS">Search Area</h2>
@@ -160,6 +159,7 @@
                         </div>
                     </div>
                 </div>
+
                 <br>
             </div>
 

@@ -347,3 +347,6 @@ def line_min_sur_view(request):
 
 
 
+
+def compareDataView(request):
+    return render(request, 'compare.html')
