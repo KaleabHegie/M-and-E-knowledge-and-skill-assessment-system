@@ -59,13 +59,3 @@ class QuestionForm(forms.ModelForm):
         fields = '__all__'
 
 
-class QuestionnaireForm(forms.ModelForm):
-    class Meta:
-        model = Questionnaire
-        fields = ['name', 'instruction']
-
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'instruction': forms.Textarea(attrs={'class': 'form-control'}),
-        }
-        

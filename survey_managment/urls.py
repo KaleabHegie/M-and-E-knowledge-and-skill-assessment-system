@@ -20,12 +20,12 @@ urlpatterns = [
     
     path('questionnaires/', views.questionnaireView, name='questionnaires'),
     path('questionnaireDetail/', views.questionnaireDetailView, name='questionnaireDetail'),
-    path('newForm/', views.newForm, name='newForm'),
+    # path('newForm/', views.newForm, name='newForm'),
     # path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('survey/', views.survey, name='survey'),
-    path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
-    path('displayQuestion/<int:id>/', views.displayQuestion, name='displayQuestion'),
-    path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
+    # path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
+    # path('displayQuestion/<int:id>/', views.displayQuestion, name='displayQuestion'),
+    # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
 
 
    

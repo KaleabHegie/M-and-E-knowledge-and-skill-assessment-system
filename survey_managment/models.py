@@ -4,9 +4,12 @@ from Account.models import CustomUser
 # Create your models here.
 class Survey(models.Model):
     name = models.CharField(max_length=200)
+    instruction = models.TextField(null=True)
     start_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     end_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     survey_type = models.ForeignKey("SurveyType" , on_delete=models.CASCADE , null=True)
+    created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+    question = models.ManyToManyField('Question')
 
     def __str__(self):
         return self.name
@@ -16,35 +19,12 @@ class SurveyType(models.Model):
     
     def __str__(self):
         return self.name 
-
-class Questionnaire(models.Model):
-    name = models.CharField( max_length=100)
-    instruction = models.TextField(null=True)
-    created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
-    survey = models.ForeignKey("Survey",on_delete=models.CASCADE,null=True,blank=True)  
-    def __str__(self):
-        return self.name
-
     
-class Category(models.Model):
-    name = models.CharField( max_length=100)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subcategories')
-
-    def __str__(self):
-        return self.name
-    
-class Choice_group(models.Model):
-    name = models.TextField()
-
-    def __str__(self):
-        return self.name
 
     
 class Choice(models.Model):
     name = models.TextField()
     weight = models.IntegerField()
-    for_choice_group = models.ForeignKey(Choice_group, on_delete=models.CASCADE, null=True)
-
     def __str__(self):
         return self.name
 
@@ -65,9 +45,8 @@ class Question(models.Model):
     title = models.TextField()
     label = models.TextField(null=True,blank=True)
     question_type = models.CharField(max_length=100, choices=TYPE_FIELD)
-    for_questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
     choice = models.ManyToManyField(Choice)
-    catagory = models.ForeignKey(Category, on_delete=models.CASCADE , null=True , blank=True)
+    catagory = models.ForeignKey("Category", on_delete=models.CASCADE , null=True , blank=True)
     has_weight = models.BooleanField(blank=True)
     weight = models.IntegerField(blank=True)
     allow_doc = models.BooleanField(blank=True)
@@ -77,7 +56,12 @@ class Question(models.Model):
     def __str__(self):
         return self.title
 
+class Category(models.Model):
+    name = models.CharField( max_length=100)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subcategories')
 
+    def __str__(self):
+        return self.name
 
 class Department(models.Model):
     department_no=models.IntegerField()
