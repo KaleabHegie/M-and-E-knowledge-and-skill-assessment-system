@@ -48,30 +48,27 @@ def change_password(request):
     return render(request, 'survey_managment/change_password.html', {'form': form})
 
 
-def index2(request):
-    return render(request, 'index2.html')
-
-
 
 def indexView(request):
-    survey_id = request.GET.get('survey_id')
-    if survey_id:
-        survey = get_object_or_404(Survey, id=survey_id)
-        questionnaires = survey.questionnaire_set.all()
-        context = {
-            'survey': survey,
-            'questionnaires': questionnaires,
-        }
-        return render(request, 'index.html', context)
-    else:
-        surveys = Survey.objects.all()
-        count_survey = Survey.objects.all().count()
-        context= {
-            'surveys': surveys,
-            'count_survey':count_survey,
+     return render(request, 'index.html')
+    # survey_id = request.GET.get('survey_id')
+    # if survey_id:
+    #     survey = get_object_or_404(Survey, id=survey_id)
+    #     questionnaires = survey.questionnaire_set.all()
+    #     context = {
+    #         'survey': survey,
+    #         'questionnaires': questionnaires,
+    #     }
+    #     return render(request, 'index.html', context)
+    # else:
+    #     surveys = Survey.objects.all()
+    #     count_survey = Survey.objects.all().count()
+    #     context= {
+    #         'surveys': surveys,
+    #         'count_survey':count_survey,
 
-        }
-        return render(request, 'index.html',context)
+    #     }
+    #     return render(request, 'index.html',context)
 
 # def loginView(request):
 #     return render(request, 'login.html')
