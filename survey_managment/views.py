@@ -84,9 +84,8 @@ def surveyCreationView(request):
         form = SurveyForm(request.POST)
         if form.is_valid():
             survey = form.save()  
-            survey.id = int(request.session['survey_id'])
             print(survey.id)  # Check if the object has been saved to the database
-            return redirect('survey_managment:questionCreationByType' , survey_id=survey.id)  # Pass the survey ID to the success page
+            return redirect('survey_managment:questionCreationByType', survey_id=survey.id)  # Pass the survey ID to the success page
         else:
             print(form.errors)  # Print any validation errors
     else:
@@ -196,51 +195,28 @@ def chooseSurvey(request , id , choose_id ):
 
 
 
-def displayQuestion(request, survey_id ):
- 
-    
-    # if request.method == 'POST':
-    #     selected_questions = request.POST.getlist('selected_questions')
-    #     target_survey_id = request.POST.get('target_survey')
+def displayQuestion(request, survey_id):
+    if request.method == 'POST':
+        selected_questions = request.POST.getlist('selected_questions')
+        target_survey = get_object_or_404(Survey, id=survey_id)
 
-    #     target_survey = get_object_or_404(Survey, id=target_survey_id)
+        for question_id in selected_questions:
+            ques = get_object_or_404(Question, id=question_id)
+            print(question_id)
+            target_survey.question.add(ques)
 
-    #     for question_id in selected_questions:
-    #         question = get_object_or_404(Question, id=question_id)
-
-    #         new_question = Question.objects.create(
-    #             title=question.title,
-    #             question_type=question.question_type,
-    #             has_weight = question.has_weight,
-    #             weight=question.weight,
-    #             allow_doc = question.allow_doc,
-    #             for_questionnaire = questionnaire
-    #         )
-    #         new_question.for_questionnaire = questionnaire
-    #         new_question.save()
-    #         new_question.for_questionnaire.add(target_survey)
-
-    #     return redirect('survey_managment:index')
-    # else:
-    #         form = QuestionnaireForm()
-
-   
-      # Show 5 questions per page
-
-    
-    
-    data = {
-         'all_questions' : Question.objects.all(), 
-         'page_number' : request.GET.get('page'),
-         'questions' : Paginator(Question.objects.all(), 4).get_page(request.GET.get('page')),
-         'paginator' : Paginator(Question.objects.all(), 4),
-         'surveys' : Survey.objects.filter(id=survey_id),
-         'categories' : Category.objects.all(),
+        return redirect('survey_managment:Index')
+    else:
+        data = {
+            'questions': Question.objects.all(),
+            'page_number': request.GET.get('page'),
+            'questions': Paginator(Question.objects.all(), 4).get_page(request.GET.get('page')),
+            'paginator': Paginator(Question.objects.all(), 4),
+            'surveys': Survey.objects.get(id=survey_id),
+            'categories': Category.objects.all(),
         }
 
     return render(request, 'displayQuesion.html', data)
-
-    
 
 
 def chooseTarget(request, survey_id, question_id):
