@@ -49,25 +49,27 @@ def change_password(request):
     return render(request, 'survey_managment/change_password.html', {'form': form})
 
 
-def indexView(request):
-    survey_id = request.GET.get('survey_id')
-    if survey_id:
-        survey = get_object_or_404(Survey, id=survey_id)
-        questionnaires = survey.questionnaire_set.all()
-        context = {
-            'survey': survey,
-            'questionnaires': questionnaires,
-        }
-        return render(request, 'index.html', context)
-    else:
-        surveys = Survey.objects.all()
-        count_survey = Survey.objects.all().count()
-        context= {
-            'surveys': surveys,
-            'count_survey':count_survey,
 
-        }
-        return render(request, 'index.html',context)
+def indexView(request):
+     return render(request, 'index.html')
+    # survey_id = request.GET.get('survey_id')
+    # if survey_id:
+    #     survey = get_object_or_404(Survey, id=survey_id)
+    #     questionnaires = survey.questionnaire_set.all()
+    #     context = {
+    #         'survey': survey,
+    #         'questionnaires': questionnaires,
+    #     }
+    #     return render(request, 'index.html', context)
+    # else:
+    #     surveys = Survey.objects.all()
+    #     count_survey = Survey.objects.all().count()
+    #     context= {
+    #         'surveys': surveys,
+    #         'count_survey':count_survey,
+
+    #     }
+    #     return render(request, 'index.html',context)
 
 # def loginView(request):
 #     return render(request, 'login.html')
@@ -295,7 +297,7 @@ def questionCreationByType(request , survey_id):
         QuestionTitle = request.POST.get('QuestionTitle')
         QuestionType = request.POST.get('IconType')
         weightInput = request.POST.get('weightInput')
-        if weightInput > 0:
+        if int(weightInput) > 0:
             has_weight = True
             weight = weightInput
         else:
@@ -371,3 +373,30 @@ def questionCreationByType(request , survey_id):
 def display_questionnaire(request, questionnaire_id):
     print("Number of questions retrieved:", questions.count())  
     return render(request, 'Analysis_for_each.html', {'questionnaire': questionnaire, 'questions': questions})
+
+
+
+
+####### final preview views ################################
+
+def greetingpage_view(request):
+    context ={
+
+    }
+    return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
+
+def skill_ass_sur_view(request,):
+    question_list = Question.objects.all()
+    context ={
+           'question_list': question_list
+    }
+    return render(request, 'Final_Preview_Pages/Skill_Ass_Sur_Preview.html' , context)
+
+def line_min_sur_view(request):
+    context ={
+
+    }
+    return render(request, 'Final_Preview_Pages/Line_Min_Sur_Preview.html' , context)
+
+
+
