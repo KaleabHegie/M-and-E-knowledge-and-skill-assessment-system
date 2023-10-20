@@ -1,9 +1,9 @@
 <!-- modal.html -->
-
+{% load static %}
 <div class="modal" id="textQ" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="{% url 'survey_managment:questionCreationByType'  %}" id="theForm" method="post">
+            <form action="{% url 'survey_managment:questionCreationByType' survey_id  %}" id="theForm" method="post">
                 {% csrf_token %}
                 <div class="modal-header">
                     <h6 id="IconType" style="position: absolute; right: 10%;"> </h6>

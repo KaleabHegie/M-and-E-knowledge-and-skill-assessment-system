@@ -30,38 +30,81 @@
         <div class="row container justify-content-center">
           <div class="col-lg-9 card shadow ">
             <h4 class="text-center text-info mt-3">
-              Select and add questions for survey {{ surveys.first.name }}
+              Choose Questions for survey {{ surveys.name }}
           </h4>
+        
             <ul class="list-group">
               <form method="post" action="">
                 {% csrf_token %}
-                <table class="table">
-                  {% for questionnaire in questionnaires %}
-                      <tr class="table-primary" data-parent="collapse-{{questionnaire.id }}" data-toggle="collapse" data-target="#collapse-{{ questionnaire.id }}" aria-expanded="false" aria-controls="collapse-{{ questionnaire.id }}">
-                          <th scope="row">
-                              {{ questionnaire.name }}
-                          </th>
-                      </tr>
-                      <tr>
-                          <td colspan="2">
-                              <div id="collapse-{{ questionnaire.id }}" class="collapse">
-                                  <table class="table">
-                                      {% for question in questionnaire.question_set.all %}
-                                          <tr class="question-row">
-                                              <td><input type="checkbox"></td>
-                                              <td>{{ question.title }}</td>
-                                              <!-- Add more columns for other fields -->
-                                          </tr>
-                                      {% endfor %}
-                                  </table>
+                              
+                <div class="card">
+                  <div class="card-header">
+                    <div class="form-row">
+  
+                      <div class="col">
+                        <input type="text" class="form-control" id="search-input" placeholder="Search question...">
+                      </div>
+                      <div class="col-md-3">
+                        <button type="button" class="btn btn-primary float-right" id="select-all-btn">Select All</button>
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div class="card-body">
+                    <div class="questions-list">
+                      {% for question in all_questions %}
+                        {% if forloop.counter <= questions.paginator.per_page %}
+                          <div class="question-row">
+                            <div class="question-card card mb-3">
+                              <div class="card-body">
+                              {% if question.catagory %}
+                                <h6 class="card-subtitle mb-2 text-muted">{{ question.catagory.name }}</h6>
+                              {% endif %}
+                                <div class="form-check">
+                                  <input class="form-check-input question-checkbox" type="checkbox" value="{{ question.id }}" id="question-{{ question.id }}">
+                                  <label class="form-check-label" for="question-{{ question.id }}">
+                                    {{ question.title }}
+                                  </label>
+                                </div>
                               </div>
-                          </td>
-                      </tr>
-                  {% endfor %}
-              </table>
-              
-                <button class="btn btn-primary mt-4 mb-4 p-3" type="submit">Add Selected Questions</button>
+                            </div>
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                                  
+                    {% if questions.has_other_pages %}
+                      <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                          {% if questions.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ questions.previous_page_number }}">Previous</a></li>
+                          {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                          {% endif %}
+                                  
+                          {% for page in questions.paginator.page_range %}
+                            {% if page == questions.number %}
+                              <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+                            {% else %}
+                              <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                            {% endif %}
+                          {% endfor %}
+                                  
+                          {% if questions.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ questions.next_page_number }}">Next</a></li>
+                          {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                          {% endif %}
+                        </ul>
+                      </nav>
+                    {% endif %}
+                  </div>
+                  <div class="card-footer">
+                    <button class="btn btn-primary mt-4 mb-4 p-1" type="submit">Add Selected Questions</button>
+                  </div>
+                </div>
               </form>
+                    
             </ul>
           </div>
         </div>
@@ -81,5 +124,20 @@
     {% include "includes/scripts.html" %}
   </body>
 
-  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:12 GMT -->
-</html>
+  <script>
+    $(document).ready(function() {
+      // Search functionality
+      $('#search-input').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('.question-row').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+      
+      // Select all functionality
+      $('#select-all-btn').on('click', function() {
+        $('.question-checkbox').prop('checked', true);
+      });
+    });
+  </script>
+  </html>

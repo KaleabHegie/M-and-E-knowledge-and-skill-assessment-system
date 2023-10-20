@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 from .models import Category, Question
 
 def category_questions(request):
@@ -82,9 +83,10 @@ def surveyCreationView(request):
     if request.method == 'POST':
         form = SurveyForm(request.POST)
         if form.is_valid():
-            survey = form.save()  # Save the form data to create a new Survey object
+            survey = form.save()  
+            survey.id = int(request.session['survey_id'])
             print(survey.id)  # Check if the object has been saved to the database
-            return redirect('survey_managment:displayQuestion', id=survey.id)  # Pass the survey ID to the success page
+            return redirect('survey_managment:questionCreationByType' , survey_id=survey.id)  # Pass the survey ID to the success page
         else:
             print(form.errors)  # Print any validation errors
     else:
@@ -194,12 +196,9 @@ def chooseSurvey(request , id , choose_id ):
 
 
 
-def displayQuestion(request, id ):
+def displayQuestion(request, survey_id ):
  
-    questions = Question.objects.none()
-
     
-
     # if request.method == 'POST':
     #     selected_questions = request.POST.getlist('selected_questions')
     #     target_survey_id = request.POST.get('target_survey')
@@ -225,11 +224,18 @@ def displayQuestion(request, id ):
     # else:
     #         form = QuestionnaireForm()
 
+   
+      # Show 5 questions per page
+
+    
+    
     data = {
-        'questions': questions,
-        'form':   QuestionnaireForm(),
-        'surveys' : Survey.objects.filter(id=id),
-        'category_set' : Category.objects.all(),
+         'all_questions' : Question.objects.all(), 
+         'page_number' : request.GET.get('page'),
+         'questions' : Paginator(Question.objects.all(), 4).get_page(request.GET.get('page')),
+         'paginator' : Paginator(Question.objects.all(), 4),
+         'surveys' : Survey.objects.filter(id=survey_id),
+         'categories' : Category.objects.all(),
         }
 
     return render(request, 'displayQuesion.html', data)
@@ -284,13 +290,12 @@ def newForm(request):
          cateForm = CategoryForm()
          return render(request, 'createForm.html', {'cateForm' : cateForm})
 
-def questionCreationByType(request):
+def questionCreationByType(request , survey_id):
     category = Category.objects.all()
+    
     if request.method == 'POST':
         QuestionTitle = request.POST.get('QuestionTitle')
         QuestionType = request.POST.get('IconType')
-        formID = request.session.get('questionnaire_id')
-        ForQuestionnaire = Questionnaire.objects.get(id=formID)
         weightInput = request.POST.get('weightInput')
         if int(weightInput) > 0:
             has_weight = True
@@ -299,25 +304,73 @@ def questionCreationByType(request):
             has_weight = False
             weight = None
 
-#         question = Question.objects.create(
-#             title=QuestionTitle, 
-#             question_type=QuestionType, 
-#             for_questionnaire=ForQuestionnaire,
-#             has_weight=has_weight, 
-#             allow_doc=True ,
-#             weight = weight
-#             )
-#         question.save()
+        question = Question.objects.create(
+            title=QuestionTitle, 
+            question_type=QuestionType, 
+            has_weight=has_weight, 
+            allow_doc=True ,
+            weight = weight
+            )
+        question.save()
+
+        
+        
        
-#         zQuestions = Question.objects.filter(for_questionnaire=formID)
-#         context = {'zQuestions': zQuestions, 'category': category}
-#         return render(request, 'addQuestions.html',context )
+       
+        context = {'category': category , 'survey_id':survey_id}
+        return render(request, 'addQuestions.html',context )
     
-#     return render(request, 'addQuestions.html', {'category': category})
+    return render(request, 'addQuestions.html', {'category': category , 'survey_id':survey_id})
+
+    
+    
+
+
+
+
+
+
+# def userinfo_view(request):
+#     context = {}
+#     return render(request, 'userinfopageforsurvey.html', context)
+
+# def skill_assessment_survey_view(request):
+#     Question_list = Question.objects.all()
+#     Catagory_list = Category.objects.all()
+#     context ={
+#       'Question_list':Question_list ,'Catagory_list':Catagory_list
+#     }
+#     return render(request,'SkillAssessmentSurvey.html',context)
+
+# def answer_question(request, question_id):
+#     question = get_object_or_404(Question, pk=question_id)
+#     if request.method == 'POST':
+#         answer_text = request.POST.get('answer')
+#         answer = Answer(question=question, text=answer_text)
+#         answer.save()
+#         return redirect('surveydisplay')
+#     return render(request, 'answer_question.html', {'question': question})
+
+
+
+
+
+# def category_questions(request):
+#     if request.method == 'POST':
+#         category_id = request.POST.get('category_id')
+#         questions = Question.objects.filter(category_id=category_id)
+#         question_list = []
+#         for question in questions:
+#             question_list.append({
+#                 'id': question.id,
+#                 'text': question.text,
+#             })
+#         return JsonResponse({'questions': question_list})
+#     categories = Category.objects.all()
+#     return render(request, 'SkillAssessmentSurvey.html', {'categories': categories})
+
 
 def display_questionnaire(request, questionnaire_id):
-    questionnaire = Questionnaire.objects.get(id=questionnaire_id)
-    questions = Question.objects.filter(for_questionnaire=questionnaire)
     print("Number of questions retrieved:", questions.count())  
     return render(request, 'Analysis_for_each.html', {'questionnaire': questionnaire, 'questions': questions})
 
