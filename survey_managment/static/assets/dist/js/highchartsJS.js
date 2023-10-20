@@ -188,7 +188,7 @@ Highcharts.chart('barChart', {
 
 
 
-Highcharts.chart('BasicBar', {
+Highcharts.chart('basicBar', {
     chart: {
         type: 'column'
     },
@@ -257,3 +257,4 @@ Highcharts.chart('BasicBar', {
 
     }]
 });
+

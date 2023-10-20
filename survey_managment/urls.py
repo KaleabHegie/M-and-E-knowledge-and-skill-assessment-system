@@ -13,7 +13,7 @@ urlpatterns = [
     path('forgotPassword/', views.forgotPasswordView,name='forgotPassword'),
     # path('login/', views.loginView, name='login'),
 
-
+    path('compareData/', views.compareDataView, name='compareData'),
     path('survey_questionnaire/<int:id>/', views.surveyQuestionnaireView, name='survey_questionnaire'),
 
     path('survey_questionnaire_detail/<int:survey_id>/<int:questionnaire_id>/', views.surveyQuestionnaireDetailView, name='survey_questionnaire_detail'),
