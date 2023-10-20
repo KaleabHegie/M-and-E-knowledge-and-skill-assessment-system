@@ -6,6 +6,7 @@
 
 {% include "includes/head.html" %}  
 
+
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
       {% include "includes/loader.html" %}
@@ -29,32 +30,29 @@
             </div>
           </div>
         </div>
-
-        
-        <div class="col-md-3 col-sm-6 col-12">
-          
-          {% for survey in surveys  %}
-            <a href="{% url 'survey_managment:survey_questionnaire' id=survey.id %}" style="color: black;">
+        <section class="container-fluid ">
+          <div class="row ">
+            {% for survey in surveys  %}
+            <div class="col-md-3 col-sm-6 col-12 p-3">
+              <a href="{% url 'survey_managment:survey_questionnaire' id=survey.id %}" style="color: black;">
                 <div class="info-box shadow">
-                    <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                    <span class="info-box-icon" style="background-color:#52B788"><i class="far fa-copy"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">{{ survey.name }}</span>
                         <span class="info-box-number">{{ survey.year }}</span>
                     </div>
                 </div>
             </a>
+            </div>
             {% endfor %}
-        </div>
-
-    
-
-        <a class="btn btn-primary ml-3 p-2" href="{% url 'survey_managment:SurveyCreation' %}">
-        Create New
-       </a>
-   
-
-        
+          </div>
+          <a class="btn ml-2 p-2 shadow-lg btn-info " href="{% url 'survey_managment:SurveyCreation' %}">
+            Create New
+           </a>
+        </section>
       </div>
+
+      
 
       <footer class="main-footer">
         <strong
@@ -66,6 +64,7 @@
       </footer>
 
       <aside class="control-sidebar control-sidebar-dark"></aside>
+
     </div>
 
    
@@ -73,5 +72,4 @@
 
   </body>
 
-  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:12 GMT -->
-</html>
+  </html>
