@@ -11,71 +11,65 @@
       {% include "includes/loader.html" %} {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
 
       <div class="content-wrapper">
-        <div class="content-header">
-          <div class="container-fluid">
-            <div class="row mb-2">
-              <div class="col-sm-6">
-                <h1 class="m-0">Survey Creation</h1>
-              </div>
-              <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item active">Survey Creation</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
+        
 
         <div class="row justify-content-center">
           <div class="col-lg-7 m-2 card shadow-lg border">
-            <!-- create_survey.html -->
-
-            <form method="POST">
-              {% csrf_token %}
-          
-              <div class="form-group {% if form.name.errors %}has-error{% endif %}">
-                  <label for="{{ form.name.id_for_label }}" class="h5 mt-4">Enter survey name</label>
-                  {{ form.name }}
-                  {% if form.name.errors %}
-                      <div class="alert alert-danger">
-                          {% for error in form.name.errors %}
-                              {{ error }}
-                          {% endfor %}
+   
+                <h2 class="mt-3 mb-3">Create Survey</h2>
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label for="{{ form.name.id_for_label }}">Name:</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                      <div class="invalid-feedback">
+                        {{ form.name.errors|join:", " }}
                       </div>
-                  {% endif %}
-              </div>
-          
-              <div class="form-group {% if form.start_at.errors %}has-error{% endif %}">
-                  <label for="{{ form.start_at.id_for_label }}" class="h5 mt-4">Starts At</label>
-                  {{ form.start_at }}
-                  {% if form.start_at.errors %}
-                      <div class="alert alert-danger">
-                          {% for error in form.start_at.errors %}
-                              {{ error }}
-                          {% endfor %}
+                    {% endif %}
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ form.instruction.id_for_label }}">Instruction:</label>
+                    {{ form.instruction }}
+                    {% if form.instruction.errors %}
+                      <div class="invalid-feedback">
+                        {{ form.instruction.errors|join:", " }}
                       </div>
-                  {% endif %}
-              </div>
-          
-              <div class="form-group {% if form.end_at.errors %}has-error{% endif %}">
-                  <label for="{{ form.end_at.id_for_label }}" class="h5 mt-4">Ends At</label>
-                  {{ form.end_at }}
-                  {% if form.end_at.errors %}
-                      <div class="alert alert-danger">
-                          {% for error in form.end_at.errors %}
-                              {{ error }}
-                          {% endfor %}
+                    {% endif %}
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="{{ form.start_at.id_for_label }}">Start Date:</label>
+                      {{ form.start_at }}
+                      {% if form.start_at.errors %}
+                        <div class="invalid-feedback">
+                          {{ form.start_at.errors|join:", " }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="{{ form.end_at.id_for_label }}">End Date:</label>
+                      {{ form.end_at }}
+                      {% if form.end_at.errors %}
+                        <div class="invalid-feedback">
+                          {{ form.end_at.errors|join:", " }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ form.survey_type.id_for_label }}">Survey Type:</label>
+                    {{ form.survey_type }}
+                    {% if form.survey_type.errors %}
+                      <div class="invalid-feedback">
+                        {{ form.survey_type.errors|join:", " }}
                       </div>
-                  {% endif %}
-              </div>
-          
-              <div class="form-group has-error">
-                <label for="{{ form.end_at.id_for_label }}" class="h5 mt-4">Survey Type</label>
-                {{ form.survey_type }}    
-            </div>
-              <button type="submit" class="btn btn-primary mt-3 mb-3">Next</button>
-          </form>
+                    {% endif %}
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-md p-2 mb-3 mt-3">Create</button>
+                </form>
+           
+            
           
           </div>
         </div>

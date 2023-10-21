@@ -17,41 +17,30 @@ class CategoryForm(forms.ModelForm):
 
 
 class SurveyForm(forms.ModelForm):
-    def clean_name(self):
-        name = self.cleaned_data['name']
-        if len(name) < 5:
-            raise ValidationError("Name must be at least 5 characters long.")
-        return name
-
-    def clean_start_at(self):
-        start_at = self.cleaned_data['start_at']
-        if start_at <= timezone.now().date():
-            raise ValidationError("Start date must be in the future.")
-        return start_at
-
-    def clean_end_at(self):
-        end_at = self.cleaned_data['end_at']
-        start_at = self.cleaned_data.get('start_at')
-        if start_at and end_at <= start_at:
-            raise ValidationError("End date must be after the start date.")
-        return end_at
+    name = forms.CharField(min_length=5, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    instruction = forms.CharField(min_length=5, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    start_at = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control','type':'date'}))
+    end_at = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control','type':'date'}))
 
     class Meta:
         model = Survey
-        fields = '__all__'
+        fields = ['name', 'instruction', 'start_at', 'end_at', 'survey_type']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'start_at': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'end_at': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'survey_type': forms.Select(attrs={'class': 'form-control'}),
         }
-        labels = {
-            'name': 'Survey Name',
-            'start_at': 'Start Date',
-            'end_at': 'End Date',
-            'survey_type': 'Survey Type',
-        }
 
+    def clean_start_at(self):
+        start_at = self.cleaned_data.get('start_at')
+        if start_at and start_at < timezone.now().date():
+            raise forms.ValidationError('Start date must be after system date.')
+        return start_at
+
+    def clean_end_at(self):
+        start_at = self.cleaned_data.get('start_at')
+        end_at = self.cleaned_data.get('end_at')
+        if start_at and end_at and end_at < start_at:
+            raise forms.ValidationError('End date must be after start date.')
+        return end_at
         
 class QuestionForm(forms.ModelForm):
     class Meta:

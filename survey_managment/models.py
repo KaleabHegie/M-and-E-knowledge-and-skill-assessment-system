@@ -9,7 +9,7 @@ class Survey(models.Model):
     end_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     survey_type = models.ForeignKey("SurveyType" , on_delete=models.CASCADE , null=True)
     created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
-    question = models.ManyToManyField('Question')
+    question = models.ManyToManyField('Question' , null=True)
 
     def __str__(self):
         return self.name
@@ -20,14 +20,6 @@ class SurveyType(models.Model):
     def __str__(self):
         return self.name 
     
-
-    
-class Choice(models.Model):
-    name = models.TextField()
-    weight = models.IntegerField()
-    def __str__(self):
-        return self.name
-
     
 TYPE_FIELD = [
         ("Text" ,"Text"),
@@ -45,7 +37,7 @@ class Question(models.Model):
     title = models.TextField()
     label = models.TextField(null=True,blank=True)
     question_type = models.CharField(max_length=100, choices=TYPE_FIELD)
-    choice = models.ManyToManyField(Choice)
+    choice = models.ManyToManyField("Choice" ,  null=True , blank=True)
     catagory = models.ForeignKey("Category", on_delete=models.CASCADE , null=True , blank=True)
     has_weight = models.BooleanField(blank=True)
     weight = models.IntegerField(blank=True)
@@ -55,6 +47,15 @@ class Question(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+    
+class Choice(models.Model):
+    name = models.TextField()
+    weight = models.IntegerField()
+    def __str__(self):
+        return self.name
+
 
 class Category(models.Model):
     name = models.CharField( max_length=100)

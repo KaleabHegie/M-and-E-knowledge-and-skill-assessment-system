@@ -11,7 +11,7 @@
         {% include 'includes/topNavbar.html' %}
         {% include 'includes/sideNavbar.html' %}
         
-        {% include 'questionTypes/modal.html' %}
+        {% include 'questionTypes/modal.html' with survey_id=survey_id %}
 
         <div class="content-wrapper">
 
@@ -31,18 +31,19 @@
                 </div>
             </section>
 
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row" style="
+            <section class="content ">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10" style="
                         display: flex;
                         border: 1px solid #ccc;
                         border-radius: 5px;
-                        overflow: hidden;">
+                        overflow: hidden;
+                        ">
 
-                       <div class="col-sm-auto bg-light sticky-top">
-                        <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
+                       <div class="col-sm-auto bg-light sticky-top shadow" style="border:lpx  solid green;margin-left:-15px">
+                        <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top" >
                             
-                            <a href="/" class="d-block p-3 link-dark text-decoration-none" title="Import" data-bs-toggle="tooltip" 
+                            <a href="{% url "survey_managment:displayQuestion" survey_id %}" class="d-block p-3 link-dark text-decoration-none" title="Import" data-bs-toggle="tooltip" 
                                 data-bs-placement="right" data-bs-original-title="Icon-only">
                                 <i class="bi bi-box-arrow-in-left"></i>
                             </a>
@@ -144,21 +145,18 @@
                        </div>
 
 
-                       
-                        <div class="col flex-grow-1">
-                            
-                            <div class="card">
-                                <div class="card-body">
-                                    {% for i in zQuestions %}
-                                    <div class="form-group">
-                                        <label>{{ i.title }} </label>
-                                        <input type="text" class="form-control form-control-border" disabled>
-                                    </div>
-                                    {% endfor %}
+                       <div class="col flex-grow-1" hidden>
+                        <div class="card">
+                            <div class="card-body">
+                                {% for i in zQuestions %}
+                                <div class="form-group">
+                                    <label>{{ i.title }} </label>
+                                    <input type="text" class="form-control form-control-border" disabled>
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
-
+                    </div>
                         
                     </div>
 

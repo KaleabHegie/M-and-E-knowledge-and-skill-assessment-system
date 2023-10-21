@@ -14,7 +14,7 @@ urlpatterns = [
     path('forgotPassword/', views.forgotPasswordView,name='forgotPassword'),
     # path('login/', views.loginView, name='login'),
 
-
+    path('compareData/', views.compareDataView, name='compareData'),
     path('survey_questionnaire/<int:id>/', views.surveyQuestionnaireView, name='survey_questionnaire'),
 
     path('survey_questionnaire_detail/<int:survey_id>/<int:questionnaire_id>/', views.surveyQuestionnaireDetailView, name='survey_questionnaire_detail'),
@@ -22,11 +22,19 @@ urlpatterns = [
     path('questionnaires/', views.questionnaireView, name='questionnaires'),
     path('questionnaireDetail/', views.questionnaireDetailView, name='questionnaireDetail'),
     path('newForm/', views.newForm, name='newForm'),
+<<<<<<< HEAD
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('survey/', views.survey, name='survey'),
     path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:id>/', views.displayQuestion, name='displayQuestion'),
     path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
+=======
+    path('questionCreationByType/<int:survey_id>/', views.questionCreationByType, name='questionCreationByType'),
+    path('survey/', views.survey, name='survey'),
+    # path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
+    path('displayQuestion/<int:survey_id>/', views.displayQuestion, name='displayQuestion'),
+    # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
+>>>>>>> 058351b15a72d2ab5771ff699c5c51f85da20565
 
 
    
