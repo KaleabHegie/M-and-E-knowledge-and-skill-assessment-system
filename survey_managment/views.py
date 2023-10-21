@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from .models import Category, Question
+from django.core.paginator import Paginator
 
 def category_questions(request):
     if request.method == 'POST':
@@ -368,8 +369,13 @@ def greetingpage_view(request):
 
 def skill_ass_sur_view(request,):
     question_list = Question.objects.all()
+    paginator = Paginator(question_list, 5)  
+    
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
     context ={
-           'question_list': question_list
+           'question_list': question_list,
+           'page_obj': page_obj
     }
     return render(request, 'Final_Preview_Pages/Skill_Ass_Sur_Preview.html' , context)
 
