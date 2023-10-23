@@ -311,51 +311,6 @@ def questionCreationByType(request , survey_id):
 
 
 
-# def userinfo_view(request):
-#     context = {}
-#     return render(request, 'userinfopageforsurvey.html', context)
-
-# def skill_assessment_survey_view(request):
-#     Question_list = Question.objects.all()
-#     Catagory_list = Category.objects.all()
-#     context ={
-#       'Question_list':Question_list ,'Catagory_list':Catagory_list
-#     }
-#     return render(request,'SkillAssessmentSurvey.html',context)
-
-# def answer_question(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     if request.method == 'POST':
-#         answer_text = request.POST.get('answer')
-#         answer = Answer(question=question, text=answer_text)
-#         answer.save()
-#         return redirect('surveydisplay')
-#     return render(request, 'answer_question.html', {'question': question})
-
-
-
-
-
-# def category_questions(request):
-#     if request.method == 'POST':
-#         category_id = request.POST.get('category_id')
-#         questions = Question.objects.filter(category_id=category_id)
-#         question_list = []
-#         for question in questions:
-#             question_list.append({
-#                 'id': question.id,
-#                 'text': question.text,
-#             })
-#         return JsonResponse({'questions': question_list})
-#     categories = Category.objects.all()
-#     return render(request, 'SkillAssessmentSurvey.html', {'categories': categories})
-
-
-def display_questionnaire(request, questionnaire_id):
-    print("Number of questions retrieved:", questions.count())  
-    return render(request, 'Analysis_for_each.html', {'questionnaire': questionnaire, 'questions': questions})
-
-
 
 
 ####### final preview views ################################
@@ -365,6 +320,13 @@ def greetingpage_view(request):
 
     }
     return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
+
+def userinfo_view(request):
+    context ={
+
+    }
+    return render(request,'Final_Preview_Pages/userinfopage.html',context)
+
 
 def skill_ass_sur_view(request,):
     question_list = Question.objects.all()
