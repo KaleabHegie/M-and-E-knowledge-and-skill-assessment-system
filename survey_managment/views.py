@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from .models import Category, Question
 from django.http import JsonResponse
 
+from django.core.paginator import Paginator
 
 def category_questions(request):
     if request.method == 'POST':
@@ -53,7 +54,12 @@ def change_password(request):
 
 
 def indexView(request):
-     return render(request, 'index.html')
+    surveys = Survey.objects.all().count()
+    questions = Question.objects.all().count()
+    Response = UserResponse.objects.all().count()
+
+    context = {'surveys': surveys, 'questions': questions, 'Response':Response}
+    return render(request, 'index.html', context)
     # survey_id = request.GET.get('survey_id')
     # if survey_id:
     #     survey = get_object_or_404(Survey, id=survey_id)
@@ -310,51 +316,6 @@ def questionCreationByType(request , survey_id):
 
 
 
-# def userinfo_view(request):
-#     context = {}
-#     return render(request, 'userinfopageforsurvey.html', context)
-
-# def skill_assessment_survey_view(request):
-#     Question_list = Question.objects.all()
-#     Catagory_list = Category.objects.all()
-#     context ={
-#       'Question_list':Question_list ,'Catagory_list':Catagory_list
-#     }
-#     return render(request,'SkillAssessmentSurvey.html',context)
-
-# def answer_question(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     if request.method == 'POST':
-#         answer_text = request.POST.get('answer')
-#         answer = Answer(question=question, text=answer_text)
-#         answer.save()
-#         return redirect('surveydisplay')
-#     return render(request, 'answer_question.html', {'question': question})
-
-
-
-
-
-# def category_questions(request):
-#     if request.method == 'POST':
-#         category_id = request.POST.get('category_id')
-#         questions = Question.objects.filter(category_id=category_id)
-#         question_list = []
-#         for question in questions:
-#             question_list.append({
-#                 'id': question.id,
-#                 'text': question.text,
-#             })
-#         return JsonResponse({'questions': question_list})
-#     categories = Category.objects.all()
-#     return render(request, 'SkillAssessmentSurvey.html', {'categories': categories})
-
-
-def display_questionnaire(request, questionnaire_id):
-    print("Number of questions retrieved:", questions.count())  
-    return render(request, 'Analysis_for_each.html', {'questionnaire': questionnaire, 'questions': questions})
-
-
 
 
 ####### final preview views ################################
@@ -364,19 +325,57 @@ def greetingpage_view(request):
 
     }
     return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
+   
+def userinfo_view(request):
+    Departments= Department.objects.all()
+    context ={
+       'Departments':Departments
+    }
+    return render(request,'Final_Preview_Pages/userinfopage.html',context)
+
 
 def skill_ass_sur_view(request,):
     question_list = Question.objects.all()
+    
+    question_paginator=Paginator(question_list,5)
+  
+    page_num = request.GET.get('page')
+
+    page=question_paginator.get_page(page_num)
+
     context ={
-           'question_list': question_list
+           'count':question_paginator.count ,
+           'page': page 
     }
     return render(request, 'Final_Preview_Pages/Skill_Ass_Sur_Preview.html' , context)
 
 def line_min_sur_view(request):
-    context ={
+    question_list = Question.objects.all()
+    
+    question_paginator=Paginator(question_list,5)
+  
+    page_num = request.GET.get('page')
 
+    page=question_paginator.get_page(page_num)
+
+    context ={
+           'count':question_paginator.count ,
+           'page': page 
     }
     return render(request, 'Final_Preview_Pages/Line_Min_Sur_Preview.html' , context)
+
+
+def survey_answer_view(request):
+    if request.method == 'POST':
+       answertext = request.POST.get('answertext')
+
+       survey_answer = Answer(answertext=answertext)
+       survey_answer.save()
+
+       return HttpResponse('Survey Successfully Submitted')
+    else:
+        return HttpResponse('Invalid request method')
+
 
 
 
