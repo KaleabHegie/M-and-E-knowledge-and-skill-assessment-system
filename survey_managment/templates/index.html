@@ -27,18 +27,15 @@
 
                         <!-- dynamic count cards -->
                         <div class="col-lg-4" style="margin: auto;">
-                            <div class="card" style="border: 2px solid;
-                                    border-image: linear-gradient(to right, #00b894, #00a6fb);
-                                    border-image-slice: 1;
-                                    box-shadow: 2px 2px 15px rgba(56, 247, 244, 0.5);">
+                            <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex align-items-top ">
                                         <div class="flex-fill">
                                             <h5 class="d-block fw-semibold  mb-1">Total - Survey</h5>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-block ">
-                                                    <div class="fw-semibold counter" style="font-size: x-large; text-align: center;"
-                                                    data-count="{{surveys}}">0  </div>
+                                                    <div class="fw-semibold counter" 
+                                                     style="font-size: x-large; text-align: center;" > {{surveys}} </div>
                                                     <a href="" class="nav-link text-primary">
                                                         View All
                                                         <i class="bi bi-arrow-right-circle"></i>
@@ -55,17 +52,15 @@
                             </div>
 
 
-                            <div class="card " style="border: 2px solid;
-                            border-image: linear-gradient(to right, #00b894, #5e60ce);
-                            border-image-slice: 1;
-                            box-shadow: 2px 2px 15px rgba(56, 247, 244, 0.5);">
+                            <div class="card " >
                                 <div class="card-body">
                                     <div class="d-flex align-items-top ">
                                         <div class="flex-fill">
-                                            <h5 class="d-block fw-semibold  mb-1">Total - </h5>
+                                            <h5 class="d-block fw-semibold  mb-1"> Questions </h5>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-block ">
-                                                    <div class="text-muted">Js count</div>
+                                                    <div class=" counter" 
+                                                    style="font-size: x-large; text-align: center;"> {{questions}} </div>
                                                     <a href="" class="nav-link" style="color: #5e60ce;">
                                                         View All
                                                         <i class="bi bi-arrow-right-circle"></i>
@@ -82,17 +77,15 @@
                             </div>
 
 
-                            <div class="card" style="border: 2px solid;
-                            border-image: linear-gradient(to right, #00b894, #7ae582);
-                            border-image-slice: 1;
-                            box-shadow: 2px 2px 15px rgba(56, 247, 244, 0.5);">
+                            <div class="card" >
                                 <div class="card-body">
                                     <div class="d-flex align-items-top ">
                                         <div class="flex-fill">
-                                            <h5 class="d-block fw-semibold  mb-1">Total - </h5>
+                                            <h5 class="d-block fw-semibold  mb-1"> Responses </h5>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-block ">
-                                                    <div class="text-muted">Js count</div>
+                                                    <div class=" counter" 
+                                                    style="font-size: x-large; text-align: center;"> {{Response}} </div>
                                                     <a href="" class="nav-link " style="color: #7ae582;">
                                                         View All
                                                         <i class="bi bi-arrow-right-circle"></i>
@@ -132,7 +125,7 @@
                         <div class="row ">
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label class="textS">Survey</label>
-                                <select class="form-control select2">
+                                <select class="form-control ">
                                     <option selected="selected">Alabama</option>
                                     <option>Alaska</option>
                                     <option>California</option>
@@ -144,7 +137,7 @@
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label class="textS">By Date</label>
-                                <select class="form-control select2">
+                                <select class="form-control ">
                                     <option selected="selected">Alabama</option>
                                     <option>Alaska</option>
                                     <option>California</option>
@@ -295,7 +288,7 @@
                                 <div class="card-body">
                                     <div class="flex-fill">
                                         <div class="form-group">
-                                            <select class="form-control select2" style="width: 100%;">
+                                            <select class="form-control " style="width: 100%;">
                                                 <option selected="selected">choose chart</option>
                                                 <option>Alaska</option>
                                                 <option>California</option>
@@ -331,16 +324,18 @@
         </div>
     </div>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="/path/to/jquery.min.js"></script>
-  <script src="/path/to/jquery.waypoints.min.js"></script>
-  <script src="jquery.countup.js"></script>
 
-  
-     <!-- Place the JavaScript code -->
-  <script>
-    $('.counter').countUp();
-  </script>
+   
     {% include "includes/scripts.html" %}
+ 
+    <script>
+      $(document).ready(function(){
+        $(".counter").counterUp({
+          delay: 10,
+          time: 1200
+        });
+      });
+    </script>
+
 </body>
 </html>
