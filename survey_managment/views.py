@@ -4,6 +4,8 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from .models import Category, Question
+from django.http import JsonResponse
+
 
 def category_questions(request):
     if request.method == 'POST':
@@ -112,10 +114,23 @@ def Mychartanalysis(request):
     data={}
     return render(request,'chart_analysis.html',data)
 
+
+
+def jsonSender(request, id):
+    data = {
+        'questions' : list(Question.objects.all().values()),
+        'categories': list(Category.objects.all().values()),
+        'surveys': Survey.objects.get(id=id),
+    }
+    return JsonResponse(data)
+
 def surveyQuestionnaireView(request, id):
+
     data = {
         'id':id,
+        'surveys': Survey.objects.get(id=id),
     }
+
     return render(request, 'surveyQuestionnaire.html', data)
 
 def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
@@ -126,19 +141,9 @@ def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
     }
     return render(request, 'surveyQuestionnaireDetail.html', data)
 
-def surveyQuestionnaireView(request, id):
-    data = {
-        'id':id,
-    }
-    return render(request, 'surveyQuestionnaire.html', data)
 
-def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
-    questions = Question.objects.filter(for_questionnaire = questionnaire_id)
 
-    data = {
-        'questions': questions,
-    }
-    return render(request, 'surveyQuestionnaireDetail.html', data)
+
 
 def questionnaireView(request):
     return render(request, 'questionnaires.html')
@@ -198,13 +203,12 @@ def chooseSurvey(request , id , choose_id ):
 def displayQuestion(request, survey_id):
     if request.method == 'POST':
         selected_questions = request.POST.getlist('selected_questions')
-        target_survey = get_object_or_404(Survey, id=survey_id)
-
+        survey = get_object_or_404(Survey, id=survey_id)
         for question_id in selected_questions:
             ques = get_object_or_404(Question, id=question_id)
-            print(question_id)
-            target_survey.question.add(ques)
-
+            
+            survey.question.add(ques)
+          
         return redirect('survey_managment:Index')
     else:
         data = {
