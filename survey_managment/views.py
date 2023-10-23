@@ -321,31 +321,57 @@ def greetingpage_view(request):
 
     }
     return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
-
+   
 def userinfo_view(request):
+    Departments= Department.objects.all()
     context ={
-
+       'Departments':Departments
     }
     return render(request,'Final_Preview_Pages/userinfopage.html',context)
 
 
 def skill_ass_sur_view(request,):
     question_list = Question.objects.all()
-    paginator = Paginator(question_list, 5)  
     
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    question_paginator=Paginator(question_list,5)
+  
+    page_num = request.GET.get('page')
+
+    page=question_paginator.get_page(page_num)
+
     context ={
-           'question_list': question_list,
-           'page_obj': page_obj
+           'count':question_paginator.count ,
+           'page': page 
     }
     return render(request, 'Final_Preview_Pages/Skill_Ass_Sur_Preview.html' , context)
 
 def line_min_sur_view(request):
-    context ={
+    question_list = Question.objects.all()
+    
+    question_paginator=Paginator(question_list,5)
+  
+    page_num = request.GET.get('page')
 
+    page=question_paginator.get_page(page_num)
+
+    context ={
+           'count':question_paginator.count ,
+           'page': page 
     }
     return render(request, 'Final_Preview_Pages/Line_Min_Sur_Preview.html' , context)
+
+
+def survey_answer_view(request):
+    if request.method == 'POST':
+       answertext = request.POST.get('answertext')
+
+       survey_answer = Answer(answertext=answertext)
+       survey_answer.save()
+
+       return HttpResponse('Survey Successfully Submitted')
+    else:
+        return HttpResponse('Invalid request method')
+
 
 
 
