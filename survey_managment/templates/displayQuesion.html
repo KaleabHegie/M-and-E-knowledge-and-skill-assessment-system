@@ -34,7 +34,7 @@
           </h4>
         
             <ul class="list-group">
-              <form method="post" action="">
+              <form method="post" >
                 {% csrf_token %}
                               
                 <div class="card">
@@ -61,7 +61,7 @@
                                 <h6 class="card-subtitle mb-2 text-muted">{{ question.catagory.name }}</h6>
                               {% endif %}
                                 <div class="form-check">
-                                  <input class="form-check-input question-checkbox" type="checkbox" value="{{ question.id }}" id="question-{{ question.id }}">
+                                  <input class="form-check-input question-checkbox" type="checkbox" value="{{ question.id }}" id="question-{{ question.id }}" name="selected_questions">
                                   <label class="form-check-label" for="question-{{ question.id }}">
                                     {{ question.title }}
                                   </label>

@@ -32,8 +32,10 @@
         </div>
         <section class="container-fluid ">
           <div class="row ">
+
+      
             {% for survey in surveys  %}
-            <div class="col-md-3 col-sm-6 col-12 p-3">
+            <div class="col-md-3 col-sm-6 col-12 p-1">
               <a href="{% url 'survey_managment:survey_questionnaire' id=survey.id %}" style="color: black;">
                 <div class="info-box shadow">
                     <span class="info-box-icon" style="background-color:#52B788"><i class="far fa-copy"></i></span>
@@ -46,7 +48,7 @@
             </div>
             {% endfor %}
           </div>
-          <a class="btn ml-2 p-2 shadow-lg btn-info " href="{% url 'survey_managment:SurveyCreation' %}">
+          <a class="btn  p-2 shadow-lg btn-info " href="{% url 'survey_managment:SurveyCreation' %}">
             Create New
            </a>
         </section>

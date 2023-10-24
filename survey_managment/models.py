@@ -40,7 +40,7 @@ class Question(models.Model):
     choice = models.ManyToManyField("Choice" ,  null=True , blank=True)
     catagory = models.ForeignKey("Category", on_delete=models.CASCADE , null=True , blank=True)
     has_weight = models.BooleanField(blank=True)
-    weight = models.IntegerField(blank=True)
+    weight = models.IntegerField(blank=True,null=True)
     allow_doc = models.BooleanField(blank=True)
     doc_label = models.TextField(null=True,blank=True)
 
