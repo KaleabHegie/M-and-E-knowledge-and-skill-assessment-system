@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  {% include 'includes/head.html' %}
+
+  <body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+      {% include "includes/loader.html" %}
+       {% include 'includes/topNavbar.html' %}
+        {% include 'includes/sideNavbar.html' %}
+
+      <div class="content-wrapper">
+        <h3 class="text-info p-3">Base targets</h3>
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-12 d-flex">
+                
+
+                
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label for="my-input">Search Any thing:</label>
+                      <input id="my-input" list="fruits" name="fruit" class="form-control">
+                      <datalist id="fruits">
+                        <option value="Apple">
+                        <option value="Banana">
+                        <option value="Cherry">
+                        <option value="Grape">
+                        <option value="Orange">
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
+                
+
+                <a
+                  href="{% url 'survey_managment:newForm' %}"
+                  class="btn bg-secondary"
+                  style="margin-left: auto"
+                >
+                  <i class="fas bi bi-file-earmark-plus"></i> NEW
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="container-fluid">
+          <div class="row">
+            
+            <ul class="list-group">
+              {% for survey in surveys.question.all %}
+                
+                  <li class="list-group-item">
+                      <div class="info-box shadow">
+                        <div class="info-box-content">
+                          {{ survey.title }}
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                
+              {% endfor %}
+            </ul>
+            
+
+          </div>
+        </section>
+      </div>
+
+      <footer class="main-footer">
+        <div class="float-right d-none d-sm-block"><b>Version</b> 3.2.0</div>
+        reserved.
+      </footer>
+    </div>
+
+    {% include 'includes/scripts.html' %}
+  </body>
+
+  <script>
+    fetch('/jsonSender/' + id + '/')
+    .then(response => response.json())
+    .then(data => {
+      // Do something with the JSON data
+      console.log(data);
+    })
+    .catch(error => console.error(error));
+  </script>
+</html>

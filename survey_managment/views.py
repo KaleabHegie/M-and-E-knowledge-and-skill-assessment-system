@@ -313,7 +313,7 @@ def questionCreationByType(request , survey_id):
         QuestionTitle = request.POST.get('QuestionTitle')
         QuestionType = request.POST.get('IconType')
         weightInput = request.POST.get('weightInput')
-        if int(weightInput) > 0:
+        if weightInput and int(weightInput) > 0:
             has_weight = True
             weight = weightInput
         else:
@@ -329,10 +329,9 @@ def questionCreationByType(request , survey_id):
             )
         question.save()
 
-        
-        
-       
-       
+        hasOptions = ['Checkbox', 'Radio']
+            
+
         context = {'category': category , 'survey_id':survey_id}
         return render(request, 'addQuestions.html',context )
     

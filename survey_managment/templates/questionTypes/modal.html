@@ -30,8 +30,13 @@
                       
                       <!-- list of categories -->
                         <div class="form-group">
-                            <label>category (optional)</label>
-                            <select class="form-control select2" multiple="multiple" data-placeholder="Select category" style="width: 100%;">
+                            <label>
+                                <input type="checkbox" id="category">
+                                category
+                            </label>
+                            <select class="form-control" id="categorySelect"
+                            style="display: none;" multiple="multiple" 
+                            data-placeholder="Select category" style="width: 100%;">
                                 {% for i in category %}
                                 <option>{{ i.name }}</option>
                                 {% endfor %}
@@ -71,6 +76,9 @@
         else 
             weightInput.style.display = 'none'
     })
+
+    var category = document.getElementById('category')
+    var categorySelect = document.getElementById('categorySelect')
     
 
     document.getElementById('textQ').addEventListener('hidden.bs.modal', function() {

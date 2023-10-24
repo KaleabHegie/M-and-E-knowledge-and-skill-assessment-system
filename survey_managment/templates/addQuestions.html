@@ -5,6 +5,11 @@
 {% include 'includes/head.html' %}
 
 <body class="hold-transition sidebar-mini">
+    <style>
+        .nav-pills {
+            font-size:16px;
+        }
+    </style>
     <div class="wrapper">
         {%include 'includes/loader.html'%}
 
@@ -19,20 +24,155 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <!-- <h1 id="formTitle" contentEditable="true" >Untitled </h1> -->
+
                         </div>
-                         <!-- <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Compose</li>
-                            </ol>
-                        </div>  -->
                     </div>
                 </div>
             </section>
 
-            <section class="content ">
-                <div class="row justify-content-center">
+            <section>
+                <div class="container-fluid">
+                    <button class="btn" data-bs-toggle="modal" data-bs-target="#ICONS"
+                     style="float: right; color: white; background-color: #0096c7;" >
+                        <i class="bi bi-plus-circle"></i>  Question
+                    </button> 
+                    <div class="modal" id="ICONS" tabindex="-1"  aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" >
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-5">Select Question Type</h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul class="nav nav-pills row" >
+                                        <div class="col-lg-4">
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link" title="Text" 
+                                                    data-bs-toggle="modal" data-bs-target="#textQ" 
+                                                    onclick="getTitle(this.title)"
+                                                    data-bs-placement="right">
+                                                    <i class="bi bi-textarea-t"></i> Text
+                                                </a>
+                                            </li>
+        
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link " title="Numbers"
+                                                data-bs-toggle="modal" data-bs-target="#textQ"
+                                                onclick="getTitle(this.title)"  
+                                                data-bs-placement="right" >
+                                                    <i class="bi bi-123"></i> Numbers
+                                                </a>
+                                            </li>
+        
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link" title="Checkbox"
+                                                data-bs-toggle="modal" data-bs-target="#textQ" 
+                                                onclick="getTitle(this.title)"
+                                                data-bs-placement="right">
+                                                    <i class="bi bi-check2-circle"></i> Checkbox
+                                                </a>
+                                            </li>
+        
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link " title="Radio"
+                                                data-bs-toggle="modal" data-bs-target="#textQ" 
+                                                onclick="getTitle(this.title)"
+                                                data-bs-placement="right" >
+                                                    <i class="bi bi-check-all"></i> Radio
+                                                </a>
+                                            </li>
+                                        </div>
+                                        
+                                        <div class="col-lg-4">
+                                            <li>
+                                                <a href="#" class="nav-link " title="description"
+                                                data-bs-toggle="modal" data-bs-target="#textQ" 
+                                                onclick="getTitle(this.title)"
+                                                data-bs-placement="right">
+                                                    <i class="bi bi-card-text"></i> description
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="#" class="nav-link " title="url" 
+                                                data-bs-toggle="modal" data-bs-target="#textQ" 
+                                                onclick="getTitle(this.title)"
+                                                data-bs-placement="right" >
+                                                    <i class="bi bi-link"></i> url
+                                                </a>
+                                            </li>
+        
+                                            <li>
+                                                <a href="#" class="nav-link " title="Date" 
+                                                data-bs-toggle="modal" data-bs-target="#textQ" 
+                                                onclick="getTitle(this.title)"
+                                                data-bs-placement="right" >
+                                                    <i class="bi bi-calendar4-week"></i> Date
+                                                </a>
+                                            </li>
+        
+                                            <li>
+                                                <a href="#" class="nav-link " title="Email" 
+                                                data-bs-toggle="modal" data-bs-target="#textQ" 
+                                                onclick="getTitle(this.title)"
+                                                data-bs-placement="right" >
+                                                    <i class="bi bi-envelope-at"></i> Email
+                                                </a>
+                                            </li>
+                                        </div>
+                                        
+    
+                                        <div class="col-lg-4">
+                                            <li>
+                                                <a href="#" class="nav-link " title="Rating" 
+                                                data-bs-toggle="modal" data-bs-target="#textQ" 
+                                                onclick="getTitle(this.title)"
+                                                data-bs-placement="right">
+                                                    <i class="bi bi-star-half"></i> Rating
+                                                </a>
+                                            </li>
+        
+                                            <li>
+                                                <a href="#" class="nav-link " title="Document"
+                                                data-bs-toggle="modal" data-bs-target="#textQ" 
+                                                onclick="getTitle(this.title)"
+                                                data-bs-placement="right" >
+                                                    <i class="bi bi-file-earmark-arrow-up"></i> Document
+                                                </a>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <button class="btn " style=" color: white; background-color: #0096c7;" >
+                        <i class="bi bi-box-arrow-in-left"></i> Import
+                    </button>
+                </div>
+
+                <div class="container-fluid">
+                    {% if zQuestions %}
+                    <div class="card">
+                        <div class="card-body">
+                            {% for i in zQuestions %}
+                            <div class="form-group">
+                                <label>{{ i.title }} </label>
+                                <input type="text" class="form-control form-control-border" disabled>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="container" style="display: flex; align-items: center;">
+                        <p style="margin: auto; color: darkgray;"> NO Questions Created!</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- <section class="content">
+                <div class="row justify-content-center  container-fluid">
                     <div class="col-lg-10" style="
                         display: flex;
                         border: 1px solid #ccc;
@@ -161,16 +301,9 @@
                     </div>
 
                 </div>
-            </section>
+            </section> -->
 
         </div>
-
-        <footer class="main-footer">
-            <div class="float-right d-none d-sm-block">
-                <b>MoPD</b> 
-            </div>
-            reserved.
-        </footer>
 
 
     </div>
