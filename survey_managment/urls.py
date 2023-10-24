@@ -15,39 +15,25 @@ urlpatterns = [
     # path('login/', views.loginView, name='login'),
 
     path('compareData/', views.compareDataView, name='compareData'),
-    path('survey_questionnaire/<int:id>/', views.surveyQuestionnaireView, name='survey_questionnaire'),
+    path('survey_questionnaire/', views.surveyQuestionnaireView, name='survey_questionnaire'),
 
     path('survey_questionnaire_detail/<int:survey_id>/<int:questionnaire_id>/', views.surveyQuestionnaireDetailView, name='survey_questionnaire_detail'),
     
     path('questionnaires/', views.questionnaireView, name='questionnaires'),
     path('questionnaireDetail/', views.questionnaireDetailView, name='questionnaireDetail'),
     path('newForm/', views.newForm, name='newForm'),
-# <<<<<<< HEAD
-# <<<<<<< HEAD
-# =======
-# >>>>>>> 4dda5eacbbef10bce70eeb2d0c862c2c24d4e1b8
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('survey/', views.survey, name='survey'),
     path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:id>/', views.displayQuestion, name='displayQuestion'),
+    path('catagorizedQuestion/<int:id>/', views.catagorizedQuestion, name='catagorizedQuestion'),
     path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
-# <<<<<<< HEAD
-# =======
-# =======
-# >>>>>>> 4dda5eacbbef10bce70eeb2d0c862c2c24d4e1b8
     path('questionCreationByType/<int:survey_id>/', views.questionCreationByType, name='questionCreationByType'),
     path('survey/', views.survey, name='survey'),
     # path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:survey_id>/', views.displayQuestion, name='displayQuestion'),
-    path('jsonSender/<int:id>' , views.jsonSender , name = 'jsonSender'),
-    # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
-# <<<<<<< HEAD
-# >>>>>>> 058351b15a72d2ab5771ff699c5c51f85da20565
-# =======
-# >>>>>>> 4dda5eacbbef10bce70eeb2d0c862c2c24d4e1b8
-
-
-   
+    path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
+    # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),   
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
     path('userinfo/',views.userinfo_view, name='userinfo'),
     path('skillassesmentpage/',views.skill_ass_sur_view,  name='skillassesmentpage'),
