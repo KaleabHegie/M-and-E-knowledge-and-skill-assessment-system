@@ -30,17 +30,19 @@
                       
                       <!-- list of categories -->
                         <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="category">
-                                category
-                            </label>
-                            <select class="form-control" id="categorySelect"
-                            style="display: none;" multiple="multiple" 
+                            <label>Category</label>
+                            <button type="button" class="btn" id="addCategory" style="float: right;">
+                                <i class="bi bi-plus-circle"></i>
+                            </button>
+                            <select class="form-control" id="categoryList" 
                             data-placeholder="Select category" style="width: 100%;">
                                 {% for i in category %}
-                                <option>{{ i.name }}</option>
+                                <option >{{ i.name }}</option>
                                 {% endfor %}
                             </select>
+                            <div id="newCategoryDiv" style="display: none;">
+                                <!-- new category and subcategory will be here -->
+                            </div>
                         </div>
                       
 
@@ -77,9 +79,20 @@
             weightInput.style.display = 'none'
     })
 
-    var category = document.getElementById('category')
-    var categorySelect = document.getElementById('categorySelect')
-    
+    // add new category or subcategory
+    var newCategoryDiv = document.getElementById('newCategoryDiv')
+    var addCategory = document.getElementById('addCategory') 
+    function addCategoryClickHandler(){
+        newCategoryDiv.style.display = 'block'
+        // categoryList.style.display = 'none';
+        var newCategory =  document.createElement('input')
+        newCategory.setAttribute('type', 'text')
+        newCategory.classList.add('form-control', 'mt-2');
+        newCategory.required = true;
+        newCategoryDiv.appendChild(newCategory)
+    }
+    addCategory.addEventListener('click', addCategoryClickHandler);
+ 
 
     document.getElementById('textQ').addEventListener('hidden.bs.modal', function() {
         var optionsContainer = document.getElementById('options-container');
@@ -87,6 +100,10 @@
 
         var modalForm = document.getElementById('theForm');
         modalForm.reset();
+        
+        while (newCategoryDiv.firstElementChild) {
+            newCategoryDiv.removeChild(newCategoryDiv.firstElementChild);
+        }
 
         var optionList = document.getElementById('optionList');
         optionList.style.display = 'none';
