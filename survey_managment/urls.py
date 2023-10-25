@@ -15,7 +15,7 @@ urlpatterns = [
     # path('login/', views.loginView, name='login'),
 
     path('compareData/', views.compareDataView, name='compareData'),
-    path('survey_questionnaire/<int:id>/', views.surveyQuestionnaireView, name='survey_questionnaire'),
+    path('survey_questionnaire/', views.surveyQuestionnaireView, name='survey_questionnaire'),
 
     path('survey_questionnaire_detail/<int:survey_id>/<int:questionnaire_id>/', views.surveyQuestionnaireDetailView, name='survey_questionnaire_detail'),
     
@@ -27,6 +27,7 @@ urlpatterns = [
     path('survey/', views.survey, name='survey'),
     path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:id>/', views.displayQuestion, name='displayQuestion'),
+    path('catagorizedQuestion/<int:id>/', views.catagorizedQuestion, name='catagorizedQuestion'),
     path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
 
     path('questionCreationByType/<int:survey_id>/', views.questionCreationByType, name='questionCreationByType'),
@@ -39,6 +40,8 @@ urlpatterns = [
 
 
    
+    path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
+    # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),   
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
     path('userinfo/',views.userinfo_view, name='userinfo'),
     path('skillassesmentpage/',views.skill_ass_sur_view,  name='skillassesmentpage'),

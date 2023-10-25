@@ -6,9 +6,24 @@
 
 <body class="hold-transition sidebar-mini">
     <style>
-        .nav-pills {
-            font-size:16px;
+        .custom-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            list-style: none;
+            padding-left: 0;
         }
+        
+        .custom-list li {
+            border: 2px solid #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            color: black;
+        }
+        .custom-list li:hover {
+        border-color: #4c956c;
+        }
+
     </style>
     <div class="wrapper">
         {%include 'includes/loader.html'%}
@@ -44,103 +59,93 @@
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <ul class="nav nav-pills row" >
-                                        <div class="col-lg-4">
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link" title="Text" 
-                                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                                    onclick="getTitle(this.title)"
-                                                    data-bs-placement="right">
-                                                    <i class="bi bi-textarea-t"></i> Text
-                                                </a>
-                                            </li>
-        
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link " title="Numbers"
-                                                data-bs-toggle="modal" data-bs-target="#textQ"
-                                                onclick="getTitle(this.title)"  
-                                                data-bs-placement="right" >
-                                                    <i class="bi bi-123"></i> Numbers
-                                                </a>
-                                            </li>
-        
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link" title="Checkbox"
-                                                data-bs-toggle="modal" data-bs-target="#textQ" 
-                                                onclick="getTitle(this.title)"
-                                                data-bs-placement="right">
-                                                    <i class="bi bi-check2-circle"></i> Checkbox
-                                                </a>
-                                            </li>
-        
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link " title="Radio"
-                                                data-bs-toggle="modal" data-bs-target="#textQ" 
-                                                onclick="getTitle(this.title)"
-                                                data-bs-placement="right" >
-                                                    <i class="bi bi-check-all"></i> Radio
-                                                </a>
-                                            </li>
-                                        </div>
-                                        
-                                        <div class="col-lg-4">
-                                            <li>
-                                                <a href="#" class="nav-link " title="description"
-                                                data-bs-toggle="modal" data-bs-target="#textQ" 
-                                                onclick="getTitle(this.title)"
-                                                data-bs-placement="right">
-                                                    <i class="bi bi-card-text"></i> description
-                                                </a>
-                                            </li>
-                                        
-                                            <li>
-                                                <a href="#" class="nav-link " title="url" 
-                                                data-bs-toggle="modal" data-bs-target="#textQ" 
-                                                onclick="getTitle(this.title)"
-                                                data-bs-placement="right" >
-                                                    <i class="bi bi-link"></i> url
-                                                </a>
-                                            </li>
-        
-                                            <li>
-                                                <a href="#" class="nav-link " title="Date" 
-                                                data-bs-toggle="modal" data-bs-target="#textQ" 
-                                                onclick="getTitle(this.title)"
-                                                data-bs-placement="right" >
-                                                    <i class="bi bi-calendar4-week"></i> Date
-                                                </a>
-                                            </li>
-        
-                                            <li>
-                                                <a href="#" class="nav-link " title="Email" 
-                                                data-bs-toggle="modal" data-bs-target="#textQ" 
-                                                onclick="getTitle(this.title)"
-                                                data-bs-placement="right" >
-                                                    <i class="bi bi-envelope-at"></i> Email
-                                                </a>
-                                            </li>
-                                        </div>
-                                        
+                                    
+                                    <ul class="custom-list">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link" title="Text" 
+                                               data-bs-toggle="modal" data-bs-target="#textQ" onclick="getTitle(this.title)"
+                                               data-bs-placement="right">
+                                                <i class="bi bi-textarea-t"></i> Text
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link " title="Numbers"
+                                            data-bs-toggle="modal" data-bs-target="#textQ"
+                                            onclick="getTitle(this.title)"  
+                                            data-bs-placement="right" >
+                                                <i class="bi bi-123"></i> Numbers
+                                            </a>
+                                        </li>
     
-                                        <div class="col-lg-4">
-                                            <li>
-                                                <a href="#" class="nav-link " title="Rating" 
-                                                data-bs-toggle="modal" data-bs-target="#textQ" 
-                                                onclick="getTitle(this.title)"
-                                                data-bs-placement="right">
-                                                    <i class="bi bi-star-half"></i> Rating
-                                                </a>
-                                            </li>
-        
-                                            <li>
-                                                <a href="#" class="nav-link " title="Document"
-                                                data-bs-toggle="modal" data-bs-target="#textQ" 
-                                                onclick="getTitle(this.title)"
-                                                data-bs-placement="right" >
-                                                    <i class="bi bi-file-earmark-arrow-up"></i> Document
-                                                </a>
-                                            </li>
-                                        </div>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link" title="Checkbox"
+                                            data-bs-toggle="modal" data-bs-target="#textQ" 
+                                            onclick="getTitle(this.title)"
+                                            data-bs-placement="right">
+                                                <i class="bi bi-check2-circle"></i> Checkbox
+                                            </a>
+                                        </li>
+    
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link " title="Radio"
+                                            data-bs-toggle="modal" data-bs-target="#textQ" 
+                                            onclick="getTitle(this.title)"
+                                            data-bs-placement="right" >
+                                                <i class="bi bi-check-all"></i> Radio
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="nav-link " title="description"
+                                            data-bs-toggle="modal" data-bs-target="#textQ" 
+                                            onclick="getTitle(this.title)"
+                                            data-bs-placement="right">
+                                                <i class="bi bi-card-text"></i> description
+                                            </a>
+                                        </li>
+                                    
+                                        <li>
+                                            <a href="#" class="nav-link " title="url" 
+                                            data-bs-toggle="modal" data-bs-target="#textQ" 
+                                            onclick="getTitle(this.title)"
+                                            data-bs-placement="right" >
+                                                <i class="bi bi-link"></i> url
+                                            </a>
+                                        </li>
+    
+                                        <li>
+                                            <a href="#" class="nav-link " title="Date" 
+                                            data-bs-toggle="modal" data-bs-target="#textQ" 
+                                            onclick="getTitle(this.title)"
+                                            data-bs-placement="right" >
+                                                <i class="bi bi-calendar4-week"></i> Date
+                                            </a>
+                                        </li>
+    
+                                        <li>
+                                            <a href="#" class="nav-link " title="Email" 
+                                            data-bs-toggle="modal" data-bs-target="#textQ" 
+                                            onclick="getTitle(this.title)"
+                                            data-bs-placement="right" >
+                                                <i class="bi bi-envelope-at"></i> Email
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="nav-link " title="Rating" 
+                                            data-bs-toggle="modal" data-bs-target="#textQ" 
+                                            onclick="getTitle(this.title)"
+                                            data-bs-placement="right">
+                                                <i class="bi bi-star-half"></i> Rating
+                                            </a>
+                                        </li>
+    
+                                        <li>
+                                            <a href="#" class="nav-link " title="Document"
+                                            data-bs-toggle="modal" data-bs-target="#textQ" 
+                                            onclick="getTitle(this.title)"
+                                            data-bs-placement="right" >
+                                                <i class="bi bi-file-earmark-arrow-up"></i> Document
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                               </div>

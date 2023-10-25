@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from adminlte.io/themes/v3/pages/forms/validation.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:24 GMT -->
+{% include 'includes/head.html' %}
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">      
+</head>
+
+<body class="hold-transition sidebar-mini">
+
+    <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4" style="background-color: rgba(230, 235, 240, 0.24); color: black; height: 600rem;">
+
+        <h4 style="margin-top: 2rem; font-family: Serif; font-weight: bolder;"><center>Question Category</center></h4>
+        {% for singlecategory in Catagory_list %}
+        <ul style="list-style-type: none; margin-top: 3rem; font-family: Serif; font-size: large;">
+            <a href=""><li> <i class="fa fa-question-circle"></i>   {{singlecategory.name }}</li></a>   
+          </ul>
+        {% endfor %}
+       
+     
+        
+  </aside>
+<div class="wrapper">
+
+  {% include "includes/loader.html" %} 
+
+<div class="content-wrapper" style="margin-right: 3rem;" >
+
+<section class="content-header" style="margin-top: 5rem; margin-right: 3rem;">
+<div class="container-fluid">
+<div class="row mb-2">
+<div class="col-sm-6">
+<h1>Survey Questions..."will be edited " </h1>
+</div>
+
+</div>
+</div>
+</section>
+
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+
+<div class="col-md-12">
+
+<div class="card card-primary">
+<div class="card-header"  style="background-color: rgb(223, 188, 188);">
+<h3 class="card-title">Knowlage & Skill Assessment Questions </h3>
+</div>
+
+
+               <form id="quickForm" method="POST" action="">
+                {% csrf_token %}
+              {% for singlequestion in Question_list %}
+               <div class="card-body">
+               <div class="form-group">
+
+               <label for="exampleInputEmail1">{{singlequestion.title}}</label>
+               <input type="number" name="answer" class="form-control" id="answer" placeholder="Enter your answer">
+               </div>
+               </div>
+            {% endfor %}
+
+           <div class="card-footer">
+           <button type="submit" class="btn btn-primary"><center>Submit</center></button>
+           </div>
+           </form>
+           </div>
+           </div>
+</div>
+</div>
+</section>
+</div>
+
+
+
+
+<footer class="main-footer">
+<div class="float-right d-none d-sm-block">
+<b>Version</b> 3.2.0
+</div>
+<strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io/">AdminLTE.io</a>.</strong> All rights reserved.
+</footer>
+</div>
+
+
+{% include 'includes/scripts.html' %}
+
+
+<script>
+$(function () {
+  $.validator.setDefaults({
+    submitHandler: function () {
+      alert( "Form successful submitted!" );
+    }
+  });
+  $('#quickForm').validate({
+    rules: {
+      email: {
+        required: true,
+        email: true,
+      },
+      password: {
+        required: true,
+        minlength: 5
+      },
+      terms: {
+        required: true
+      },
+    },
+    messages: {
+      email: {
+        required: "Please enter a email address",
+        email: "Please enter a valid email address"
+      },
+      password: {
+        required: "Please provide a password",
+        minlength: "Your password must be at least 5 characters long"
+      },
+      terms: "Please accept our terms"
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+    }
+  });
+});
+</script>
+
+
+   
+</body>
+</html>
