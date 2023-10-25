@@ -8,7 +8,7 @@ class Survey(models.Model):
     start_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     end_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     survey_type = models.ForeignKey("SurveyType" , on_delete=models.CASCADE , null=True)
-    created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+    created_at = models.DateField(auto_now=True, auto_now_add=False)
     question = models.ManyToManyField('Question' , null=True)
 
     def __str__(self):

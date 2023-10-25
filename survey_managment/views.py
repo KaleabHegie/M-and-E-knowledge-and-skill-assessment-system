@@ -122,19 +122,20 @@ def Mychartanalysis(request):
 
 
 
-def jsonSender(request, id):
+def jsonSender(request):
     data = {
         'questions' : list(Question.objects.all().values()),
         'categories': list(Category.objects.all().values()),
-        'surveys': Survey.objects.get(id=id),
+        'surveys':    list(Survey.objects.all().values()),
     }
     return JsonResponse(data)
 
-def surveyQuestionnaireView(request, id):
+def surveyQuestionnaireView(request):
+    surveys = Survey.objects.all()
 
     data = {
-        'id':id,
-        'surveys': Survey.objects.get(id=id),
+        'surveys': surveys,
+        'categories' : Category.objects.all()
     }
 
     return render(request, 'surveyQuestionnaire.html', data)
@@ -206,10 +207,10 @@ def chooseSurvey(request , id , choose_id ):
 
 
 
-def displayQuestion(request, survey_id):
+def displayQuestion(request, id):
     if request.method == 'POST':
         selected_questions = request.POST.getlist('selected_questions')
-        survey = get_object_or_404(Survey, id=survey_id)
+        survey = get_object_or_404(Survey, id=id)
         for question_id in selected_questions:
             ques = get_object_or_404(Question, id=question_id)
             
@@ -222,11 +223,40 @@ def displayQuestion(request, survey_id):
             'page_number': request.GET.get('page'),
             'questions': Paginator(Question.objects.all(), 4).get_page(request.GET.get('page')),
             'paginator': Paginator(Question.objects.all(), 4),
-            'surveys': Survey.objects.get(id=survey_id),
+            'surveys': Survey.objects.get(id=id),
             'categories': Category.objects.all(),
+            'id' : id,
+
         }
 
     return render(request, 'displayQuesion.html', data)
+
+
+def catagorizedQuestion(request, id):
+    if request.method == 'POST':
+        selected_questions = request.POST.getlist('selected_questions')
+        survey = get_object_or_404(Survey, id=id)
+        for question_id in selected_questions:
+            ques = get_object_or_404(Question, id=question_id)
+            
+            survey.question.add(ques)
+          
+        return redirect('survey_managment:Index')
+    else:
+        data = {
+            'questions': Question.objects.all(),
+            'page_number': request.GET.get('page'),
+            'questions': Paginator(Question.objects.all(), 4).get_page(request.GET.get('page')),
+            'paginator': Paginator(Question.objects.all(), 4),
+            'surveys': Survey.objects.get(id=id),
+            'id' : id,
+            'categories': Category.objects.all(),
+        }
+
+    return render(request, 'catagorizedQuestion.html', data)
+
+
+
 
 
 def chooseTarget(request, survey_id, question_id):
