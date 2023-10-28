@@ -354,7 +354,15 @@ def greetingpage_view(request):
 
     }
     return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
-   
+
+
+def surveyss_view(request):
+    data={
+
+    }
+    return render(request, 'Final_Preview_Pages/Surveys.html',data)
+
+
 def userinfo_view(request):
     Departments= Department.objects.all()
     context ={

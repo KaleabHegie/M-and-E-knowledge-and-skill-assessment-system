@@ -40,6 +40,7 @@ urlpatterns = [
     path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),   
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
+    path('surveys/', views.surveyss_view, name ='surveys'),
     path('userinfo/',views.userinfo_view, name='userinfo'),
     path('skillassesmentpage/',views.skill_ass_sur_view,  name='skillassesmentpage'),
     path('lineminsurpage/',views.line_min_sur_view, name='lineminsurpage'),
