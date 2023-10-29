@@ -39,6 +39,56 @@
             font-size: x-small;
             font-weight: 400;
           }
+          .card {
+    box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: 1rem;
+}
+
+.card-body {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.5rem 1.5rem;
+}
+.avatar-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: #000;
+    color: #fff;
+    font-weight: 700;
+}
+
+.avatar {
+    width: 3rem;
+    height: 3rem;
+}
+.rounded-3 {
+    border-radius: 0.5rem!important;
+}
+.mb-2 {
+    margin-bottom: 0.5rem!important;
+}
+.me-4 {
+    margin-right: 1.5rem!important;
+}
         </style>
       </head>
 <body>
@@ -92,42 +142,84 @@
 
   </section><!-- End Hero -->
    <!-- ======= Services Section ======= -->
-   <section id="services" class="services">
 
-    <div class="container" data-aos="fade-up">
 
-      <header class="section-header">
-        <h1 style="color: rgb(7, 88, 7); font-weight: 500; font-family: serif;">Surveys</h1>
-        <p></p>
-      </header>
-
-      <div class="row gy-4">
-
-        <div class="col-lg-4 col-md-6" >
-          <div class="service-box blue">
-            <i class="ri-discuss-line icon"></i>
-            <h3>Skill Assessment Surveys</h3>
-            <p></p>
-            <a href="{% url 'survey_managment:surveylists' %}" class="read-more"><span>See More</span> <i class="bi bi-arrow-right"></i></a>
-
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6">
-          <div class="service-box orange">
-            <i class="ri-discuss-line icon"></i>
-            <h3>System Analysis Surveys</h3>
-            <a href="{% url 'survey_managment:surveylists' %}" class="read-more"><span>See More</span> <i class="bi bi-arrow-right"></i></a>
-          </div>
-        </div>
-
-       
-
-      </div>
-
+   <div class="container">
+    <div class="text-center mb-5">
+    <h3>Survey Lists</h3>
     </div>
-
-  </section><!-- End Services Section -->
+    <div class="card mb-3">
+    <div class="card-body">
+    <div class="d-flex flex-column flex-lg-row">
+    <span class="avatar avatar-text rounded-3 me-4 mb-2">FD</span>
+    <div class="row flex-fill">
+    <div class="col-sm-5">
+    <h4 class="h5">Add the lists</h4>
+    <!-- <span class="badge bg-secondary">WORLDWIDE</span> <span class="badge bg-success">$60K - $100K</span> -->
+    </div>
+    <!-- <div class="col-sm-4 py-2">
+    <span class="badge bg-secondary">REACT</span>
+    <span class="badge bg-secondary">NODE</span>
+    <span class="badge bg-secondary">TYPESCRIPT</span>
+    <span class="badge bg-secondary">JUNIOR</span>
+    </div> -->
+    <!-- <div class="col-sm-3 text-lg-end">
+    <a href="#" class="btn btn-primary stretched-link">Apply</a>
+    </div> -->
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="card mb-3">
+    <div class="card-body">
+    <div class="d-flex flex-column flex-lg-row">
+    <span class="avatar avatar-text rounded-3 me-4 bg-warning mb-2">BE</span>
+    <div class="row flex-fill">
+    <div class="col-sm-5">
+    <h4 class="h5">.......</h4>
+    <!-- <span class="badge bg-secondary">US</span> <span class="badge bg-success">$90K - $180K</span> -->
+    </div>
+    <!-- <div class="col-sm-4 py-2">
+    <span class="badge bg-secondary">GOLANG</span>
+    <span class="badge bg-secondary">SENIOR</span>
+    <span class="badge bg-secondary">ENGINEER</span>
+    <span class="badge bg-secondary">BACKEND</span>
+    </div> -->
+    <!-- <div class="col-sm-3 text-lg-end">
+    <a href="#" class="btn btn-primary stretched-link">Apply</a>
+    </div> -->
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="card mb-3">
+    <div class="card-body">
+    <div class="d-flex flex-column flex-lg-row">
+    <span class="avatar avatar-text rounded-3 me-4 bg-info mb-2">PM</span>
+    <div class="row flex-fill">
+    <div class="col-sm-5">
+    <h4 class="h5">.......</h4>
+    <!-- <span class="badge bg-secondary">WORLDWIDE</span> <span class="badge bg-success">$150K - $210K</span> -->
+    </div>
+    <!-- <div class="col-sm-4 py-2">
+    <span class="badge bg-secondary">PRODUCT MARKETING</span>
+    <span class="badge bg-secondary">MARKETING</span>
+    <span class="badge bg-secondary">EXECUTIVE</span>
+    <span class="badge bg-secondary">ECOMMERCE</span>
+    </div> -->
+    <!-- <div class="col-sm-3 text-lg-end">
+    <a href="#" class="btn btn-primary stretched-link">Apply</a>
+    </div> -->
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+        
+    </script>
 
 
 

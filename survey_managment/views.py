@@ -362,6 +362,9 @@ def surveyss_view(request):
     }
     return render(request, 'Final_Preview_Pages/Surveys.html',data)
 
+def survey_listss_views(request):
+    return render(request,'Final_Preview_Pages/SL.html')
+
 
 def userinfo_view(request):
     Departments= Department.objects.all()
