@@ -1,0 +1,119 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:08 GMT -->
+
+  {% include "includes/head.html" %}
+
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
+
+      <div class="content-wrapper">
+        
+
+        <div class="container">
+          <div class="row">
+            <div class="col-lg p-3">
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg p-3">
+                      <ul class="nav nav-tabs">
+                          <li class="nav-item">
+                            <a class="nav-link" href="{% url "survey_managment:displayQuestion" id=survey_id %}">Question List</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link " href="">User response</a>
+                          </li>
+                        </ul>
+      
+                  </div>
+                </div>
+            </div>
+          </div>
+
+       </div>
+
+
+
+        <div class="row container justify-content-center">
+          <div class="col-lg-9 card shadow ">
+            <h4 class="text-center text-info mt-3">
+               Questions for survey {{ survey.name }}
+          </h4>
+        
+            <ul class="list-group">
+            
+                              
+                <div class="card">
+                  <div class="card-header">
+                    <div class="form-row">
+  
+                      <div class="col">
+                        <input type="text" class="form-control" id="search-input" placeholder="Search question...">
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div class="card-body">
+                    <div class="questions-list">
+                      {% for question in questions %}
+                       
+                          <div class="question-row">
+                            <div class="question-card card mb-3">
+                              <div class="card-body">
+                                {% if question.catagory %}
+                                  <h6 class="card-subtitle mb-2 text-muted">{{ question.catagory.name }}</h6>
+                                {% endif %}
+                                {{ question.title }}
+                              </div>
+                            </div>
+                          </div>
+                        
+                      {% endfor %}
+                    </div>
+                  </div>
+                  
+          
+                  </div>
+                  
+                </div>
+   
+                    
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <footer class="main-footer">
+        <strong
+          >Copyright &copy; 2014-2021
+          <a href="https://adminlte.io/">MoPD </a>.</strong
+        >
+        All rights reserved.
+      </footer>
+
+      <aside class="control-sidebar control-sidebar-dark"></aside>
+    </div>
+
+    {% include "includes/scripts.html" %}
+  </body>
+
+  <script>
+    $(document).ready(function() {
+      // Search functionality
+      $('#search-input').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('.question-row').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+      
+      // Select all functionality
+      $('#select-all-btn').on('click', function() {
+        $('.question-checkbox').prop('checked', true);
+      });
+    });
+  </script>
+  </html>

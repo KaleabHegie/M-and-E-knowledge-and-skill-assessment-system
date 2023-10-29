@@ -166,8 +166,13 @@ def survey(request):
     return render(request, 'survey.html', data)
 
 
-
-
+def survey_detail(request, id):
+    data = {
+        'survey_id': id,
+        'survey': Survey.objects.get(id=id),
+        'questions': Survey.objects.get(id=id).question.all()
+    }
+    return render(request, 'survey_detail.html', data)
 
 def create_question(request , survey_id , questionnaire_id):
     if request.method == 'POST':

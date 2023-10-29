@@ -46,7 +46,7 @@
       
             {% for survey in surveys  %}
             <div class="col-md-3 col-sm-6 col-12 p-1">
-              {% comment %} <a href="{% url 'survey_managment:survey_questionnaire' id=survey.id %}" style="color: black;"> {% endcomment %}
+              <a href="{% url 'survey_managment:survey_detail' id=survey.id %}" style="color: black;">
                 <div class="info-box shadow">
                   <span class="info-box-icon" style="color: #0096c7;">
                     <i class="far fa-copy"></i>
