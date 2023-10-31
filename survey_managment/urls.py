@@ -43,9 +43,7 @@ urlpatterns = [
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
     path('surveys/', views.surveyss_view, name ='surveys'),
     path('surveylists/<int:id>',views.survey_listss_views, name='surveylists'),
-    path('userinfo/',views.userinfo_view, name='userinfo'),
-    path('skillassesmentpage/',views.skill_ass_sur_view,  name='skillassesmentpage'),
-    path('lineminsurpage/',views.line_min_sur_view, name='lineminsurpage'),
+    path('questionForSurvey/<int:id>' , views.questionForSurvey , name = 'questionForSurvey')
 
 
 ]
