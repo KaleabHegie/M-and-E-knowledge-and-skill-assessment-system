@@ -363,12 +363,16 @@ def greetingpage_view(request):
 
 def surveyss_view(request):
     data={
-
+        'surveyTypes' : SurveyType.objects.all()
     }
     return render(request, 'Final_Preview_Pages/Surveys.html',data)
 
-def survey_listss_views(request):
-    return render(request,'Final_Preview_Pages/SL.html')
+def survey_listss_views(request, id):
+    surveys = Survey.objects.filter(survey_type=id)
+    data = {
+        'surveys': surveys
+    }
+    return render(request, 'Final_Preview_Pages/SL.html', data)
 
 
 def userinfo_view(request):
