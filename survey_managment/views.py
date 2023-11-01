@@ -167,8 +167,13 @@ def survey(request):
     return render(request, 'survey.html', data)
 
 
-
-
+def survey_detail(request, id):
+    data = {
+        'survey_id': id,
+        'survey': Survey.objects.get(id=id),
+        'questions': Survey.objects.get(id=id).question.all()
+    }
+    return render(request, 'survey_detail.html', data)
 
 def create_question(request , survey_id , questionnaire_id):
     if request.method == 'POST':
@@ -378,60 +383,27 @@ def greetingpage_view(request):
 
 def surveyss_view(request):
     data={
-
+        'surveyTypes' : SurveyType.objects.all()
     }
     return render(request, 'Final_Preview_Pages/Surveys.html',data)
 
-
-def userinfo_view(request):
-    Departments= Department.objects.all()
-    context ={
-       'Departments':Departments
+def survey_listss_views(request, id):
+    surveys = Survey.objects.filter(survey_type=id)
+    data = {
+        'surveys': surveys
     }
-    return render(request,'Final_Preview_Pages/userinfopage.html',context)
+    return render(request, 'Final_Preview_Pages/SL.html', data)
 
 
-def skill_ass_sur_view(request,):
-    question_list = Question.objects.all()
-    
-    question_paginator=Paginator(question_list,5)
-  
-    page_num = request.GET.get('page')
-
-    page=question_paginator.get_page(page_num)
-
-    context ={
-           'count':question_paginator.count ,
-           'page': page 
+def questionForSurvey(request, id):
+    survey = Survey.objects.get(id=id)
+    questions = survey.question.all()
+    data = {
+        'questions': questions
     }
-    return render(request, 'Final_Preview_Pages/Skill_Ass_Sur_Preview.html' , context)
-
-def line_min_sur_view(request):
-    question_list = Question.objects.all()
-    
-    question_paginator=Paginator(question_list,5)
-  
-    page_num = request.GET.get('page')
-
-    page=question_paginator.get_page(page_num)
-
-    context ={
-           'count':question_paginator.count ,
-           'page': page 
-    }
-    return render(request, 'Final_Preview_Pages/Line_Min_Sur_Preview.html' , context)
+    return render(request, 'Final_Preview_Pages/questionForSurvey.html', data)
 
 
-def survey_answer_view(request):
-    if request.method == 'POST':
-       answertext = request.POST.get('answertext')
-
-       survey_answer = Answer(answertext=answertext)
-       survey_answer.save()
-
-       return HttpResponse('Survey Successfully Submitted')
-    else:
-        return HttpResponse('Invalid request method')
 
 
 

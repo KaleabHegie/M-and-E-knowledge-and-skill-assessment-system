@@ -59,7 +59,7 @@
           <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}" style="color: rgb(9, 109, 9);">Features</a></li>
           <li><a class="nav-link scrollto" href="{% url 'survey_managment:surveys' %}" style="color: rgb(9, 109, 9);">Surveys</a></li>
           <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}" style="color: rgb(9, 109, 9);">Contact</a></li>
-          <li><a class="getstarted scrollto" href="{% url 'survey_managment:greetingpage' %}" style="color: white; background-color: rgb(9, 109, 9);" >Get Started</a></li>
+          <li><a class="getstarted scrollto" href="{% url 'survey_managment:surveys' %}" style="color: white; background-color: rgb(9, 109, 9);" >Get Started</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -103,23 +103,17 @@
 
       <div class="row gy-4">
 
-        <div class="col-lg-4 col-md-6" >
-          <div class="service-box blue">
-            <i class="ri-discuss-line icon"></i>
-            <h3>Skill Assessment Surveys</h3>
-            <p></p>
-            <a href="#" class="read-more"><span>See More</span> <i class="bi bi-arrow-right"></i></a>
-
-          </div>
-        </div>
+      {% for surveyType in surveyTypes  %}
 
         <div class="col-lg-4 col-md-6">
-          <div class="service-box orange">
+          <div class="service-box green">
             <i class="ri-discuss-line icon"></i>
-            <h3>System Analysis Surveys</h3>
-            <a href="#" class="read-more"><span>See More</span> <i class="bi bi-arrow-right"></i></a>
+            <h3>{{surveyType.name}}</h3>
+            <a href="{% url 'survey_managment:surveylists' surveyType.id %}" class="read-more"><span>See More</span> <i class="bi bi-arrow-right"></i></a>
           </div>
         </div>
+
+        {% endfor %} 
 
        
 
