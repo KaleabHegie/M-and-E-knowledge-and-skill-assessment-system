@@ -93,7 +93,8 @@ def surveyCreationView(request):
         if form.is_valid():
             survey = form.save()  
             print(survey.id)  # Check if the object has been saved to the database
-            return redirect('survey_managment:questionCreationByType', survey_id=survey.id)  # Pass the survey ID to the success page
+            # redirect_url = f'survey_managment:questionCreationByType/?survey_id=survey.id'
+            return redirect('survey_managment:questionCreationByType',survey_id=survey.id )  # Pass the survey ID to the success page
         else:
             print(form.errors)  # Print any validation errors
     else:
@@ -305,41 +306,60 @@ def newForm(request):
     else :
          cateForm = CategoryForm()
          return render(request, 'createForm.html', {'cateForm' : cateForm})
-
-def questionCreationByType(request , survey_id):
-    category = Category.objects.all()
     
+
+
+def questionCreationByType(request, survey_id):
+    # survey_id = request.GET.get('survey_id')
+    return render(request, 'addQuestions.html', {'survey_id':survey_id})
+
+    
+    
+
+def newQuestion(request, questionType):
+    categories = Category.objects.prefetch_related('subcategories')
     if request.method == 'POST':
-        QuestionTitle = request.POST.get('QuestionTitle')
-        QuestionType = request.POST.get('IconType')
-        weightInput = request.POST.get('weightInput')
-        if weightInput and int(weightInput) > 0:
-            has_weight = True
-            weight = weightInput
-        else:
-            has_weight = False
-            weight = None
+        # Obtain the form data from the request
+        title = request.POST.get('title')
+        label = request.POST.get('labelInput')
+        question_type = request.POST.get('question_type')
+        has_weight = bool(request.POST.get('weightCHK'))
+        weight = int(request.POST.get('weightInput')) if has_weight else None
+        allow_doc = bool(request.POST.get('allow_doc'))
+        doc_label = request.POST.get('doc_label')
+        selected_category_id = request.POST.get('category')
+
+        category = get_object_or_404(Category, id=selected_category_id)
 
         question = Question.objects.create(
-            title=QuestionTitle, 
-            question_type=QuestionType, 
-            has_weight=has_weight, 
-            allow_doc=True ,
-            weight = weight
-            )
-        question.save()
+            title=title,
+            label=label,
+            question_type=question_type,
+            has_weight=has_weight,
+            weight=weight,
+            allow_doc=allow_doc,
+            doc_label=doc_label,
+            category=category,
+        )
+        print(question_type)
 
-        hasOptions = ['Checkbox', 'Radio']
+        hasOption = ['choice', 'radio']
+        if question_type in hasOption:
+            options = request.POST.getlist('option')
+            for i in options:
+                newChoice = Choice.objects.create(name=i)
+                question.choice.add(newChoice)
+
+        question.save()
             
 
-        context = {'category': category , 'survey_id':survey_id}
-        return render(request, 'addQuestions.html',context )
-    
-    return render(request, 'addQuestions.html', {'category': category , 'survey_id':survey_id})
-
-    
+        context = {'question': question, 'hasOption':hasOption }
+        return render(request, 'addQuestions.html', context )
     
 
+
+    context = {'questionType': questionType, 'categories': categories}
+    return render(request, 'modal.html', context)
 
 
 
