@@ -24,6 +24,7 @@ urlpatterns = [
     path('newForm/', views.newForm, name='newForm'),
 
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
+    path('newQuestion/(?P<questionType>[a-zA-Z]+)/', views.newQuestion, name='newQuestion'),
     path('survey/', views.survey, name='survey'),
     path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:id>/', views.displayQuestion, name='displayQuestion'),

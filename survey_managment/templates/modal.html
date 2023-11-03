@@ -1,0 +1,225 @@
+<!-- modal.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'includes/head.html' %}
+
+    <style>
+.back-button {
+  display: inline-block;
+  padding: 0 10px;
+  text-decoration: none !important;
+  color: black;
+}
+
+.back-button:hover {
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  transform: scale(1.05);
+}
+
+
+.back-button i {
+  margin-right: 10px;
+}
+
+
+/* 
+        select {
+          width: 200px;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 16px;
+          color: #333;
+        }
+        
+        optgroup {
+          font-weight: bold;
+        }
+        
+        option {
+          padding: 5px;
+          background-color: #e8e8e8;
+        } */
+    </style>
+<body>
+    
+        <div class="container">
+            <div class="row justify-content-center align-items-center" style="height:100vh">
+                <div class="col-md-6">
+                    <div class="container card shadow " >
+                        <form action="" id="theForm" method="post">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <!-- to be changed history -->
+                                <a href="#" class="back-button" onclick="window.history.back(); return false;"> 
+                                    <i class="fas fa-arrow-left"></i> Back
+                                  </a>
+                                <!-- <h6 id="IconType" style="position: absolute; right: 10%;">{{questionType}} </h6> -->
+                                <input type="hidden" name="question_type" id="IconType1" value="{{questionType}}">
+                            </div>
+
+                            <div class="modal-body">
+                                <!-- Question Text -->
+                                <div class="form-group">
+                                    <label >Question:</label>
+                                    <input type="text" name="title" class="form-control" required>
+                                </div>
+
+                                <!-- Question label optional -->
+                                <div class="form-group">
+                                    <label >
+                                        <input type="checkbox" id="labelCHK">
+                                        Label (optional) </label>
+                                    <input type="text" name="labelInput" id="labelInput" class="form-control" style="display: none;">
+                                </div>
+
+                                <!-- check weight -->
+                                <div class="form-group">
+                                    <label >
+                                        <input type="checkbox" id="weightCHK" name="weightCHK">
+                                        Has Weight 
+                                    </label>
+                                    <input class="form-control" style="display: none;" type="number" name="weightInput" id="weightInput">
+                                </div>
+
+                                 <!-- Adds Doc field for the question -->
+                                 <div class="form-group">
+                                    <label >
+                                        <input type="checkbox" id="allow_doc" name="allow_doc">
+                                        Requires Document 
+                                    </label>
+                                    <textarea class="form-control" style="display: none;" name="doc_label" id="doc_label" rows="4" cols="50"></textarea>
+                                </div>
+                            
+
+                             <!-- Category and subcategory fields -->
+                            <label for="id_category">Category:</label>
+                            <div class="category-dropdown">
+                                <select class="form-control" name="category" id="">
+                                    <option value="">-- Select Category --</option>
+                                    {% for category in categories %}
+                                        {% if category.subcategories.exists %}
+                                            <optgroup class="category-group" label="{{ category.name }}">
+                                                {% for subcategory in category.subcategories.all %}
+                                                    <option value="{{ subcategory.id }}">- {{ subcategory.name }}</option>
+                                                {% endfor %}
+                                            </optgroup>
+                                        {% else %}
+                                            <option value="{{ category.id }}">{{ category.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+
+
+                                <!-- Options (for multi-select questions) -->
+                                <div id="optionList" style="display: none;">
+                                    <div id="options-container">
+                                        <!--  options will be added here -->
+                                    </div>
+                                    
+                                    <!-- Add Option Button -->
+                                    <button type="button" id="add-option-btn" class="btn btn-secondary">Add Option</button>
+                                </div>
+                                
+                        </div>
+                            <div class="modal-footer">
+                                <!-- Submit Button -->
+                                    <button type="submit" class="btn btn-primary">Add Question</button>
+                            </div>
+                        </form>
+
+                    </div>
+            </div>
+        </div>
+
+
+    <script>
+  function toggleInputField(checkboxId, inputFieldId) {
+    var checkbox = document.getElementById(checkboxId);
+    var inputField = document.getElementById(inputFieldId);
+
+    checkbox.addEventListener('change', function() {
+      inputField.style.display = checkbox.checked ? 'block' : 'none';
+    });
+  }
+
+  toggleInputField('weightCHK', 'weightInput')
+  toggleInputField('labelCHK', 'labelInput')
+  toggleInputField('allow_doc', 'doc_label')
+//   if allow_doc is checked display option to enter a  doc label as optional
+
+
+
+        const IconType = document.getElementById('IconType1').value.toLowerCase();
+        var needOptions = ['checkbox', 'radio'];
+        var optionList = document.getElementById('optionList'); // Get the optionList container
+
+        if (needOptions.includes(IconType)) {
+            console.log(IconType)
+            optionList.style.display = 'block';
+
+            var optionsContainer = document.getElementById('options-container');
+            // Create default options
+            for (var i = 1; i <= 2; i++) {
+                var newOption = document.createElement('div');
+                newOption.classList.add('form-group');
+
+                var label = document.createElement('label');
+                label.textContent = 'Option ' + i + ':';
+
+                var input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('name', 'option');
+                input.classList.add('form-control');
+                input.required = true;
+
+                newOption.appendChild(label);
+                newOption.appendChild(input);
+
+                optionsContainer.appendChild(newOption);
+            }
+        }
+ 
+    
+    
+    // keep adding option input fields if add-option button is clicked
+    document.getElementById('add-option-btn').addEventListener('click', function() {
+      var optionsContainer = document.getElementById('options-container');
+      var optionCount = optionsContainer.getElementsByClassName('form-group').length;
+    
+      var newOption = document.createElement('div');
+      newOption.classList.add('form-group');
+    
+      var label = document.createElement('label');
+      label.textContent = 'Option ' + (optionCount + 1) + ':';
+    
+      var input = document.createElement('input');
+      input.setAttribute('type', 'text');
+      input.setAttribute('name', 'option');
+      input.classList.add('form-control');
+      input.required = true;
+    
+      newOption.appendChild(label);
+      newOption.appendChild(input);
+    
+      optionsContainer.appendChild(newOption);
+    });
+
+
+  
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+  
+
+
+  

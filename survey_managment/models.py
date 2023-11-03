@@ -21,15 +21,15 @@ class SurveyType(models.Model):
     
     
 TYPE_FIELD = [
-        ("Text" ,"Text"),
-        ("Number", "Number"),
-        ("Radio", "Radio"),
-        ("Checkbox", "Checkbox"),
-        ("Text-Area", "Text Area"),
-        ("URL", "URL"),
-        ("Email", "Email"),
-        ("Date", "Date"),
-        ("Rating", "Rating")
+        ("text" ,"text"),
+        ("number", "number"),
+        ("radio", "radio"),
+        ("checkbox", "checkbox"),
+        ("textarea", "textarea"),
+        ("url", "url"),
+        ("email", "email"),
+        ("date", "date"),
+        ("rating", "rating")
     ]
     
 class Question(models.Model):
@@ -37,7 +37,7 @@ class Question(models.Model):
     label = models.TextField(null=True,blank=True)
     question_type = models.CharField(max_length=100, choices=TYPE_FIELD)
     choice = models.ManyToManyField("Choice" ,  null=True , blank=True)
-    catagory = models.ForeignKey("Category", on_delete=models.CASCADE , null=True , blank=True)
+    category = models.ForeignKey("Category", on_delete=models.CASCADE , null=True , blank=True)
     has_weight = models.BooleanField(blank=True)
     weight = models.IntegerField(blank=True,null=True)
     allow_doc = models.BooleanField(blank=True)
@@ -51,7 +51,7 @@ class Question(models.Model):
     
 class Choice(models.Model):
     name = models.TextField()
-    weight = models.IntegerField()
+    weight = models.IntegerField(null=True)
     def __str__(self):
         return self.name
 
