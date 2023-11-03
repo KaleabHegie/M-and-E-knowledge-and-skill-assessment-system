@@ -167,6 +167,18 @@ def survey(request):
     return render(request, 'survey.html', data)
 
 
+def user_response(request, id):
+    survey = get_object_or_404(Survey, id=id)
+    user_responses = UserResponse.objects.filter(forsurvey=survey)
+    answers = Answer.objects.filter(response__in=user_responses)
+    data = {
+        'survey_id': id,
+        'survey': survey,
+        'user_responses': user_responses,
+        'answers': answers,
+    }
+    return render(request, 'user_response.html', data)
+
 def survey_detail(request, id):
     data = {
         'survey_id': id,

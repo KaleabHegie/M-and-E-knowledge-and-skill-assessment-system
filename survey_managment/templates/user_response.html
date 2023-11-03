@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  {% include 'includes/head.html' %}
+
+  <body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+      {% include "includes/loader.html" %}
+       {% include 'includes/topNavbar.html' %}
+        {% include 'includes/sideNavbar.html' %}
+
+      <div class="content-wrapper">
+
+       <div class="container">
+          <div class="row">
+            <div class="col-lg p-3">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url "survey_managment:displayQuestion" id=survey_id %}">Question List</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url "survey_managment:user_response" id=survey_id %}">User Response</a>
+                    </li>
+                </ul>
+            </div>
+          </div>
+
+       </div>
+       
+       
+
+       <section class="container-fluid">
+        <div class="container">
+          <h1>{{ survey.title }}</h1>
+          {% if user_responses %}
+            <div id="accordion">
+              {% for response in user_responses %}
+                <div class="card">
+                  <div class="card-header" id="heading{{ response.id }}">
+                    <h5 class="mb-0">
+                      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ response.id }}" aria-expanded="true" aria-controls="collapse{{ response.id }}">
+                        Response by {{ response.submitted_by }} at {{ response.submitted_at }}
+                      </button>
+                    </h5>
+                  </div>
+                  <div id="collapse{{ response.id }}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ response.id }}" data-parent="#accordion">
+                    <div class="card-body">
+                      <ul>
+                        {% for answer in response.answer_set.all %}
+                          <li><strong>{{ answer.forquestion }}:</strong> {{ answer.answertext }}</li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p>No responses found.</p>
+          {% endif %}
+        </div>
+      </section>
+      
+
+
+      
+      <style>
+          .accordion-button {
+              background-color: #f8f9fa;
+              color: #212529;
+              border: none;
+              border-radius: 0;
+              font-size: 1rem;
+              font-weight: 500;
+              text-align: left;
+          }
+      
+          .accordion-button:focus {
+              box-shadow: none;
+          }
+      
+          .accordion-button:not(.collapsed) {
+              background-color: #e9ecef;
+          }
+      
+          .accordion-body {
+              background-color: #f8f9fa;
+              padding: 1rem;
+          }
+          .question-container {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin:10px;
+            border-radius: 4px;
+          }
+      </style>
+      
+      </div>
+
+      <footer class="main-footer">
+        <div class="float-right d-none d-sm-block"><b>Version</b> 3.2.0</div>
+        reserved.
+      </footer>
+    </div>
+
+    {% include 'includes/scripts.html' %}
+  </body>
+
+
+</html>

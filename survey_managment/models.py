@@ -74,10 +74,10 @@ class UserResponse(models.Model):
     forsurvey = models.ForeignKey("Survey", on_delete=models.CASCADE , null=True , blank=True)
     submitted_by =models.ForeignKey("Account.CustomUser", on_delete=models.CASCADE , null=True , blank=True)
     submitted_at = models.DateTimeField(auto_now=True)
-   
 
     def __str__(self) -> str:
         return str(self.submitted_by)
+    
     
 class Answer(models.Model):
     forquestion=models.ForeignKey("Question", on_delete=models.CASCADE , null=True , blank=True)
