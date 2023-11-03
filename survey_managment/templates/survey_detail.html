@@ -19,14 +19,14 @@
               <div class="container">
                 <div class="row">
                   <div class="col-lg p-3">
-                      <ul class="nav nav-tabs">
-                          <li class="nav-item">
-                            <a class="nav-link" href="{% url "survey_managment:displayQuestion" id=survey_id %}">Question List</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link " href="">User response</a>
-                          </li>
-                        </ul>
+                    <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url "survey_managment:displayQuestion" id=survey_id %}">Question List</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url "survey_managment:user_response" id=survey_id %}">User Response</a>
+                      </li>
+                    </ul>
       
                   </div>
                 </div>
@@ -56,25 +56,7 @@
                     </div>
                   </div>
             
-                  <div class="card-body">
-                    <div class="questions-list">
-                      {% for question in questions %}
-                       
-                          <div class="question-row">
-                            <div class="question-card card mb-3">
-                              <div class="card-body">
-                                {% if question.catagory %}
-                                  <h6 class="card-subtitle mb-2 text-muted">{{ question.catagory.name }}</h6>
-                                {% endif %}
-                                {{ question.title }}
-                              </div>
-                            </div>
-                          </div>
-                        
-                      {% endfor %}
-                    </div>
-                  </div>
-                  
+                 
           
                   </div>
                   
