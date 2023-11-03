@@ -1,7 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from .models import Category
 from .models import *
 
 class CategoryForm(forms.ModelForm):
@@ -48,3 +47,12 @@ class QuestionForm(forms.ModelForm):
         fields = '__all__'
 
 
+class UserResponseForm(forms.ModelForm):
+    class Meta:
+        model = UserResponse
+        fields = ['forsurvey', 'submitted_by']
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['answertext']

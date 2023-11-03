@@ -374,18 +374,34 @@ def survey_listss_views(request, id):
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
 
-
 def questionForSurvey(request, id):
-    survey = Survey.objects.get(id=id)
+    survey = get_object_or_404(Survey, id=id)
     questions = survey.question.all()
-    data = {
-        'questions': questions
+    print(request.user)
+    if request.method == 'POST':
+        user_response_form = UserResponseForm(request.POST)
+        answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
+        # value = request.POST.get('answer_16')
+        # print(value)
+
+        userresponse = UserResponse.objects.create(forsurvey = survey , submitted_by = request.user)
+        for i in questions:
+            value = request.POST.get(f'answer_{i.id}')
+            Answer.objects.create(forquestion = i , answertext = value , response = userresponse)              
+            value = ''
+        return redirect('survey_managment:surveys')
+    else:
+        user_response_form = UserResponseForm()
+        answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
+
+    context = {
+        'survey': survey,
+        'questions': questions,
+        'user_response_form': user_response_form,
+        'answer_forms': answer_forms,
     }
-    return render(request, 'Final_Preview_Pages/questionForSurvey.html', data)
 
-
-
-
+    return render(request, 'Final_Preview_Pages/questionForSurvey.html', context)
 
 
 
