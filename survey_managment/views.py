@@ -336,7 +336,6 @@ def questionCreationByType(request, survey_id):
 def newQuestion(request, questionType):
     categories = Category.objects.prefetch_related('subcategories')
     if request.method == 'POST':
-        # Obtain the form data from the request
         title = request.POST.get('title')
         label = request.POST.get('labelInput')
         question_type = request.POST.get('question_type')
@@ -358,7 +357,6 @@ def newQuestion(request, questionType):
             doc_label=doc_label,
             category=category,
         )
-        print(question_type)
 
         hasOption = ['choice', 'radio']
         if question_type in hasOption:
