@@ -10,20 +10,6 @@ from django.core.paginator import Paginator
 from datetime import date
 
 
-def category_questions(request):
-    if request.method == 'POST':
-        category_id = request.POST.get('category_id')
-        questions = Question.objects.filter(category_id=category_id)
-        question_list = []
-        for question in questions:
-            question_list.append({
-                'id': question.id,
-                'text': question.text,
-                # Add more fields as needed
-            })
-        return JsonResponse({'questions': question_list})
-    categories = Category.objects.all()
-    return render(request, 'category_questions.html', {'categories': categories})
 
 
 from django.contrib.auth import update_session_auth_hash
@@ -238,7 +224,7 @@ def displayQuestion(request, id):
         data = {
             'questions': Question.objects.all(),
             'page_number': request.GET.get('page'),
-            'questions': Paginator(Question.objects.all(), 4).get_page(request.GET.get('page')),
+            'questionss': Paginator(Question.objects.all(), 4).get_page(request.GET.get('page')),
             'paginator': Paginator(Question.objects.all(), 4),
             'surveys': Survey.objects.get(id=id),
             'categories': Category.objects.all(),
@@ -327,15 +313,17 @@ def newForm(request):
 
 def questionCreationByType(request, survey_id):
     # survey_id = request.GET.get('survey_id')
+    # survey = Survey.objects.get(id=survey_id)
+    # survey_questions = survey.question.all()
     return render(request, 'addQuestions.html', {'survey_id':survey_id})
 
+
     
     
 
-def newQuestion(request, questionType):
+def newQuestion(request ,questionType ):
     categories = Category.objects.prefetch_related('subcategories')
     if request.method == 'POST':
-        # Obtain the form data from the request
         title = request.POST.get('title')
         label = request.POST.get('labelInput')
         question_type = request.POST.get('question_type')
@@ -357,7 +345,6 @@ def newQuestion(request, questionType):
             doc_label=doc_label,
             category=category,
         )
-        print(question_type)
 
         hasOption = ['choice', 'radio']
         if question_type in hasOption:
@@ -367,9 +354,9 @@ def newQuestion(request, questionType):
                 question.choice.add(newChoice)
 
         question.save()
-            
+ 
 
-        context = {'question': question, 'hasOption':hasOption }
+        context = {'question': question,  'hasOption':hasOption }
         return render(request, 'addQuestions.html', context )
     
 
