@@ -123,7 +123,7 @@
                               </div>
                         </div>
                     </div>
-                    <a href={% url "survey_managment:displayQuestion" survey_id %} class="btn " style=" color: white; background-color: #0096c7;" >
+                    <a class="btn " style=" color: white; background-color: #0096c7;" >
                         <i class="bi bi-box-arrow-in-left"></i> Import
                     </a>
                 </div>
@@ -153,6 +153,16 @@
                             {% endif %}
                         </div>
                     </div>
+                  {% endif %}
+                </div>
+                
+
+                <div class="container">
+                    {% if survey_questions %}
+                        {%  for i in survey_questions %}
+                            <p> {{i}} </p>
+                        {% endfor %}
+
                     {% else %}
                     <div class="container" style="display: flex; align-items: center;">
                         <p style="margin: auto; color: darkgray;"> NO Questions Created!</p>
