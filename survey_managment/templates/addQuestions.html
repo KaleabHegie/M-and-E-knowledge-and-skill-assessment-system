@@ -139,11 +139,11 @@
                                 <p>Options:</p>
                                 <ul>
                                     {% for choice in question.choice.all %}
-                                    <li>{{ choice.name }}</li>
+                                    <li >{{ choice.name }}</li>
                                     {% endfor %}
                                 </ul>
                                 {% else %}
-                                    <p>Input Field:</p>
+                                    <!-- <p>Input Field:</p> -->
                                     <input type="{{ question.question_type }}" name="dynamic_field" value="">                            
                                 {% endif %}
 
@@ -157,18 +157,7 @@
                 </div>
                 
 
-                <div class="container">
-                    {% if survey_questions %}
-                        {%  for i in survey_questions %}
-                            <p> {{i}} </p>
-                        {% endfor %}
-
-                    {% else %}
-                    <div class="container" style="display: flex; align-items: center;">
-                        <p style="margin: auto; color: darkgray;"> NO Questions Created!</p>
-                    </div>
-                    {% endif %}
-                </div>
+              
             </section>
 
         </div>
