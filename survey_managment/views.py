@@ -314,12 +314,15 @@ def newForm(request):
 
 def questionCreationByType(request, survey_id):
     # survey_id = request.GET.get('survey_id')
+    # survey = Survey.objects.get(id=survey_id)
+    # survey_questions = survey.question.all()
     return render(request, 'addQuestions.html', {'survey_id':survey_id})
 
+
     
     
 
-def newQuestion(request, questionType):
+def newQuestion(request ,questionType ):
     categories = Category.objects.prefetch_related('subcategories')
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -352,9 +355,9 @@ def newQuestion(request, questionType):
                 question.choice.add(newChoice)
 
         question.save()
-            
+ 
 
-        context = {'question': question, 'hasOption':hasOption }
+        context = {'question': question,  'hasOption':hasOption }
         return render(request, 'addQuestions.html', context )
     
 

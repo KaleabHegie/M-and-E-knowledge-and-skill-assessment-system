@@ -123,7 +123,7 @@
                               </div>
                         </div>
                     </div>
-                    <a href={% url "survey_managment:displayQuestion" survey_id %} class="btn " style=" color: white; background-color: #0096c7;" >
+                    <a class="btn " style=" color: white; background-color: #0096c7;" >
                         <i class="bi bi-box-arrow-in-left"></i> Import
                     </a>
                 </div>
@@ -139,11 +139,11 @@
                                 <p>Options:</p>
                                 <ul>
                                     {% for choice in question.choice.all %}
-                                    <li>{{ choice.name }}</li>
+                                    <li >{{ choice.name }}</li>
                                     {% endfor %}
                                 </ul>
                                 {% else %}
-                                    <p>Input Field:</p>
+                                    <!-- <p>Input Field:</p> -->
                                     <input type="{{ question.question_type }}" name="dynamic_field" value="">                            
                                 {% endif %}
 
@@ -153,12 +153,11 @@
                             {% endif %}
                         </div>
                     </div>
-                    {% else %}
-                    <div class="container" style="display: flex; align-items: center;">
-                        <p style="margin: auto; color: darkgray;"> NO Questions Created!</p>
-                    </div>
-                    {% endif %}
+                  {% endif %}
                 </div>
+                
+
+              
             </section>
 
         </div>
