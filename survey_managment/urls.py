@@ -24,28 +24,28 @@ urlpatterns = [
     path('newForm/', views.newForm, name='newForm'),
 
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
+    path('newQuestion/(?P<questionType>[a-zA-Z]+)/', views.newQuestion, name='newQuestion'),
     path('survey/', views.survey, name='survey'),
     path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:id>/', views.displayQuestion, name='displayQuestion'),
     path('catagorizedQuestion/<int:id>/', views.catagorizedQuestion, name='catagorizedQuestion'),
     path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
-
     path('questionCreationByType/<int:survey_id>/', views.questionCreationByType, name='questionCreationByType'),
     path('survey/', views.survey, name='survey'),
+    path('survey_detail/<int:id>', views.survey_detail, name='survey_detail'),
+    path('user_response/<int:id>', views.user_response, name='user_response'),
     # path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:survey_id>/', views.displayQuestion, name='displayQuestion'),
     path('jsonSender/<int:id>' , views.jsonSender , name = 'jsonSender'),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
 
-
-
    
     path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),   
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
-    path('userinfo/',views.userinfo_view, name='userinfo'),
-    path('skillassesmentpage/',views.skill_ass_sur_view,  name='skillassesmentpage'),
-    path('lineminsurpage/',views.line_min_sur_view, name='lineminsurpage'),
+    path('surveys/', views.surveyss_view, name ='surveys'),
+    path('surveylists/<int:id>',views.survey_listss_views, name='surveylists'),
+    path('questionForSurvey/<int:id>' , views.questionForSurvey , name = 'questionForSurvey')
 
 
 ]

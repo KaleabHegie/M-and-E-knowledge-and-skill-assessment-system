@@ -93,7 +93,8 @@ def surveyCreationView(request):
         if form.is_valid():
             survey = form.save()  
             print(survey.id)  # Check if the object has been saved to the database
-            return redirect('survey_managment:questionCreationByType', survey_id=survey.id)  # Pass the survey ID to the success page
+            # redirect_url = f'survey_managment:questionCreationByType/?survey_id=survey.id'
+            return redirect('survey_managment:questionCreationByType',survey_id=survey.id )  # Pass the survey ID to the success page
         else:
             print(form.errors)  # Print any validation errors
     else:
@@ -166,8 +167,25 @@ def survey(request):
     return render(request, 'survey.html', data)
 
 
+def user_response(request, id):
+    survey = get_object_or_404(Survey, id=id)
+    user_responses = UserResponse.objects.filter(forsurvey=survey)
+    answers = Answer.objects.filter(response__in=user_responses)
+    data = {
+        'survey_id': id,
+        'survey': survey,
+        'user_responses': user_responses,
+        'answers': answers,
+    }
+    return render(request, 'user_response.html', data)
 
-
+def survey_detail(request, id):
+    data = {
+        'survey_id': id,
+        'survey': Survey.objects.get(id=id),
+        'questions': Survey.objects.get(id=id).question.all()
+    }
+    return render(request, 'survey_detail.html', data)
 
 def create_question(request , survey_id , questionnaire_id):
     if request.method == 'POST':
@@ -305,41 +323,58 @@ def newForm(request):
     else :
          cateForm = CategoryForm()
          return render(request, 'createForm.html', {'cateForm' : cateForm})
-
-def questionCreationByType(request , survey_id):
-    category = Category.objects.all()
     
+
+
+def questionCreationByType(request, survey_id):
+    # survey_id = request.GET.get('survey_id')
+    return render(request, 'addQuestions.html', {'survey_id':survey_id})
+
+    
+    
+
+def newQuestion(request, questionType):
+    categories = Category.objects.prefetch_related('subcategories')
     if request.method == 'POST':
-        QuestionTitle = request.POST.get('QuestionTitle')
-        QuestionType = request.POST.get('IconType')
-        weightInput = request.POST.get('weightInput')
-        if weightInput and int(weightInput) > 0:
-            has_weight = True
-            weight = weightInput
-        else:
-            has_weight = False
-            weight = None
+        title = request.POST.get('title')
+        label = request.POST.get('labelInput')
+        question_type = request.POST.get('question_type')
+        has_weight = bool(request.POST.get('weightCHK'))
+        weight = int(request.POST.get('weightInput')) if has_weight else None
+        allow_doc = bool(request.POST.get('allow_doc'))
+        doc_label = request.POST.get('doc_label')
+        selected_category_id = request.POST.get('category')
+
+        category = get_object_or_404(Category, id=selected_category_id)
 
         question = Question.objects.create(
-            title=QuestionTitle, 
-            question_type=QuestionType, 
-            has_weight=has_weight, 
-            allow_doc=True ,
-            weight = weight
-            )
-        question.save()
+            title=title,
+            label=label,
+            question_type=question_type,
+            has_weight=has_weight,
+            weight=weight,
+            allow_doc=allow_doc,
+            doc_label=doc_label,
+            category=category,
+        )
 
-        hasOptions = ['Checkbox', 'Radio']
+        hasOption = ['choice', 'radio']
+        if question_type in hasOption:
+            options = request.POST.getlist('option')
+            for i in options:
+                newChoice = Choice.objects.create(name=i)
+                question.choice.add(newChoice)
+
+        question.save()
             
 
-        context = {'category': category , 'survey_id':survey_id}
-        return render(request, 'addQuestions.html',context )
-    
-    return render(request, 'addQuestions.html', {'category': category , 'survey_id':survey_id})
-
-    
+        context = {'question': question, 'hasOption':hasOption }
+        return render(request, 'addQuestions.html', context )
     
 
+
+    context = {'questionType': questionType, 'categories': categories}
+    return render(request, 'modal.html', context)
 
 
 
@@ -354,58 +389,49 @@ def greetingpage_view(request):
 
     }
     return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
-   
-def userinfo_view(request):
-    Departments= Department.objects.all()
-    context ={
-       'Departments':Departments
+
+
+def surveyss_view(request):
+    data={
+        'surveyTypes' : SurveyType.objects.all()
     }
-    return render(request,'Final_Preview_Pages/userinfopage.html',context)
+    return render(request, 'Final_Preview_Pages/Surveys.html',data)
 
-
-def skill_ass_sur_view(request,):
-    question_list = Question.objects.all()
-    
-    question_paginator=Paginator(question_list,5)
-  
-    page_num = request.GET.get('page')
-
-    page=question_paginator.get_page(page_num)
-
-    context ={
-           'count':question_paginator.count ,
-           'page': page 
+def survey_listss_views(request, id):
+    surveys = Survey.objects.filter(survey_type=id)
+    data = {
+        'surveys': surveys
     }
-    return render(request, 'Final_Preview_Pages/Skill_Ass_Sur_Preview.html' , context)
+    return render(request, 'Final_Preview_Pages/SL.html', data)
 
-def line_min_sur_view(request):
-    question_list = Question.objects.all()
-    
-    question_paginator=Paginator(question_list,5)
-  
-    page_num = request.GET.get('page')
-
-    page=question_paginator.get_page(page_num)
-
-    context ={
-           'count':question_paginator.count ,
-           'page': page 
-    }
-    return render(request, 'Final_Preview_Pages/Line_Min_Sur_Preview.html' , context)
-
-
-def survey_answer_view(request):
+def questionForSurvey(request, id):
+    survey = get_object_or_404(Survey, id=id)
+    questions = survey.question.all()
+    print(request.user)
     if request.method == 'POST':
-       answertext = request.POST.get('answertext')
+        user_response_form = UserResponseForm(request.POST)
+        answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
+        # value = request.POST.get('answer_16')
+        # print(value)
 
-       survey_answer = Answer(answertext=answertext)
-       survey_answer.save()
-
-       return HttpResponse('Survey Successfully Submitted')
+        userresponse = UserResponse.objects.create(forsurvey = survey , submitted_by = request.user)
+        for i in questions:
+            value = request.POST.get(f'answer_{i.id}')
+            Answer.objects.create(forquestion = i , answertext = value , response = userresponse)              
+            value = ''
+        return redirect('survey_managment:surveys')
     else:
-        return HttpResponse('Invalid request method')
+        user_response_form = UserResponseForm()
+        answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
 
+    context = {
+        'survey': survey,
+        'questions': questions,
+        'user_response_form': user_response_form,
+        'answer_forms': answer_forms,
+    }
 
+    return render(request, 'Final_Preview_Pages/questionForSurvey.html', context)
 
 
 

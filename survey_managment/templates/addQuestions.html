@@ -31,7 +31,6 @@
         {% include 'includes/topNavbar.html' %}
         {% include 'includes/sideNavbar.html' %}
         
-        {% include 'questionTypes/modal.html' with survey_id=survey_id %}
 
         <div class="content-wrapper">
 
@@ -51,99 +50,72 @@
                      style="float: right; color: white; background-color: #0096c7;" >
                         <i class="bi bi-plus-circle"></i>  Question
                     </button> 
+
+
                     <div class="modal" id="ICONS" tabindex="-1"  aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" >
                             <div class="modal-content">
                                 <div class="modal-header">
                                   <h1 class="modal-title fs-5">Select Question Type</h1>
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     
                                     <ul class="custom-list">
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link" title="Text" 
-                                               data-bs-toggle="modal" data-bs-target="#textQ" onclick="getTitle(this.title)"
+                                            <a href="{% url 'survey_managment:newQuestion' questionType='text' %}" class="nav-link" title="Text" 
                                                data-bs-placement="right">
                                                 <i class="bi bi-textarea-t"></i> Text
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link " title="Numbers"
-                                            data-bs-toggle="modal" data-bs-target="#textQ"
-                                            onclick="getTitle(this.title)"  
-                                            data-bs-placement="right" >
+                                            <a href="{% url 'survey_managment:newQuestion' questionType='number' %}" class="nav-link " title="Numbers" data-bs-placement="right" >
                                                 <i class="bi bi-123"></i> Numbers
                                             </a>
                                         </li>
     
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link" title="Checkbox"
-                                            data-bs-toggle="modal" data-bs-target="#textQ" 
-                                            onclick="getTitle(this.title)"
-                                            data-bs-placement="right">
-                                                <i class="bi bi-check2-circle"></i> Checkbox
+                                            <a href="{% url 'survey_managment:newQuestion' questionType='checkbox' %}" class="nav-link" title="Checkbox" data-bs-placement="right">
+                                                <i class="bi bi-check-all"></i> Multi-select
                                             </a>
                                         </li>
     
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link " title="Radio"
-                                            data-bs-toggle="modal" data-bs-target="#textQ" 
-                                            onclick="getTitle(this.title)"
-                                            data-bs-placement="right" >
-                                                <i class="bi bi-check-all"></i> Radio
+                                            <a href="{% url 'survey_managment:newQuestion' questionType='radio' %}" class="nav-link " title="Radio" data-bs-placement="right" >
+                                                <i class="bi bi-check2-circle"></i> Uni-select
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#" class="nav-link " title="description"
-                                            data-bs-toggle="modal" data-bs-target="#textQ" 
-                                            onclick="getTitle(this.title)"
-                                            data-bs-placement="right">
-                                                <i class="bi bi-card-text"></i> description
+                                            <a href="{% url 'survey_managment:newQuestion' questionType='textarea' %}" class="nav-link " title="description" data-bs-placement="right">
+                                                <i class="bi bi-card-text"></i> Description
                                             </a>
                                         </li>
                                     
                                         <li>
-                                            <a href="#" class="nav-link " title="url" 
-                                            data-bs-toggle="modal" data-bs-target="#textQ" 
-                                            onclick="getTitle(this.title)"
-                                            data-bs-placement="right" >
-                                                <i class="bi bi-link"></i> url
+                                            <a href="{% url 'survey_managment:newQuestion' questionType='url' %}" class="nav-link " title="url"  data-bs-placement="right" >
+                                                <i class="bi bi-link"></i> URL
                                             </a>
                                         </li>
     
                                         <li>
-                                            <a href="#" class="nav-link " title="Date" 
-                                            data-bs-toggle="modal" data-bs-target="#textQ" 
-                                            onclick="getTitle(this.title)"
-                                            data-bs-placement="right" >
+                                            <a href="{% url 'survey_managment:newQuestion' questionType='date' %}" class="nav-link " title="date"  data-bs-placement="right" >
                                                 <i class="bi bi-calendar4-week"></i> Date
                                             </a>
                                         </li>
     
                                         <li>
-                                            <a href="#" class="nav-link " title="Email" 
-                                            data-bs-toggle="modal" data-bs-target="#textQ" 
-                                            onclick="getTitle(this.title)"
-                                            data-bs-placement="right" >
+                                            <a href="{% url 'survey_managment:newQuestion' questionType='email' %}" class="nav-link " title="Email"  data-bs-placement="right" >
                                                 <i class="bi bi-envelope-at"></i> Email
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#" class="nav-link " title="Rating" 
-                                            data-bs-toggle="modal" data-bs-target="#textQ" 
-                                            onclick="getTitle(this.title)"
-                                            data-bs-placement="right">
+                                            <a href="{% url 'survey_managment:newQuestion' questionType='rating' %}" class="nav-link " title="Rating"  data-bs-placement="right">
                                                 <i class="bi bi-star-half"></i> Rating
                                             </a>
                                         </li>
     
                                         <li>
-                                            <a href="#" class="nav-link " title="Document"
-                                            data-bs-toggle="modal" data-bs-target="#textQ" 
-                                            onclick="getTitle(this.title)"
-                                            data-bs-placement="right" >
-                                                <i class="bi bi-file-earmark-arrow-up"></i> Document
+                                            <a href="{% url 'survey_managment:newQuestion' questionType='file' %}" class="nav-link " title="Document" data-bs-placement="right" >
+                                                <i class="bi bi-file-earmark-arrow-up"></i> File
                                             </a>
                                         </li>
                                     </ul>
@@ -151,21 +123,34 @@
                               </div>
                         </div>
                     </div>
-                    <button class="btn " style=" color: white; background-color: #0096c7;" >
+                    <a href={% url "survey_managment:displayQuestion" survey_id %} class="btn " style=" color: white; background-color: #0096c7;" >
                         <i class="bi bi-box-arrow-in-left"></i> Import
-                    </button>
+                    </a>
                 </div>
 
                 <div class="container-fluid">
-                    {% if zQuestions %}
+                    {% if question %}
                     <div class="card">
                         <div class="card-body">
-                            {% for i in zQuestions %}
-                            <div class="form-group">
-                                <label>{{ i.title }} </label>
-                                <input type="text" class="form-control form-control-border" disabled>
-                            </div>
-                            {% endfor %}
+                            <h2>{{ question.title }}</h2>
+                            {% if question.label %} <p>{{ question.label }}</p> {% endif %}
+
+                            {% if question.question_type in hasOption %}
+                                <p>Options:</p>
+                                <ul>
+                                    {% for choice in question.choice.all %}
+                                    <li>{{ choice.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                    <p>Input Field:</p>
+                                    <input type="{{ question.question_type }}" name="dynamic_field" value="">                            
+                                {% endif %}
+
+                            {% if question.allow_doc %}
+                                <p>Document Label: {{ question.doc_label }}</p>
+                                <textarea name="" id="" cols="30" rows="10"></textarea>
+                            {% endif %}
                         </div>
                     </div>
                     {% else %}
@@ -175,138 +160,6 @@
                     {% endif %}
                 </div>
             </section>
-
-            <!-- <section class="content">
-                <div class="row justify-content-center  container-fluid">
-                    <div class="col-lg-10" style="
-                        display: flex;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
-                        overflow: hidden;
-                        ">
-
-                       <div class="col-sm-auto bg-light sticky-top shadow" style="border:lpx  solid green;margin-left:-15px">
-                        <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top" >
-                            
-                            <a href="{% url "survey_managment:displayQuestion" survey_id %}" class="d-block p-3 link-dark text-decoration-none" title="Import" data-bs-toggle="tooltip" 
-                                data-bs-placement="right" data-bs-original-title="Icon-only">
-                                <i class="bi bi-box-arrow-in-left"></i>
-                            </a>
-                            
-                            
-                            <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center" >
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link py-3 px-2" title="Text" 
-                                        data-bs-toggle="modal" data-bs-target="#textQ" 
-                                        onclick="getTitle(this.title)"
-                                           data-bs-placement="right">
-                                        <i class="bi bi-textarea-t"></i>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link py-3 px-2" title="Numbers"
-                                    data-bs-toggle="modal" data-bs-target="#textQ"
-                                    onclick="getTitle(this.title)"  
-                                     data-bs-placement="right" >
-                                        <i class="bi bi-123"></i>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link py-3 px-2" title="Checkbox"
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right">
-                                        <i class="bi bi-check2-circle"></i>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link py-3 px-2" title="Radio"
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right" >
-                                        <i class="bi bi-check-all"></i>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="description"
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right">
-                                        <i class="bi bi-card-text"></i>
-                                    </a>
-                                </li>
-                               
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="url" 
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right" >
-                                        <i class="bi bi-link"></i>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="Date" 
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                    data-bs-placement="right" >
-                                        <i class="bi bi-calendar4-week"></i>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="Email" 
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right" >
-                                        <i class="bi bi-envelope-at"></i>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="Rating" 
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                    data-bs-placement="right">
-                                        <i class="bi bi-star-half"></i>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="nav-link py-3 px-2" title="Document"
-                                    data-bs-toggle="modal" data-bs-target="#textQ" 
-                                    onclick="getTitle(this.title)"
-                                     data-bs-placement="right" >
-                                        <i class="bi bi-file-earmark-arrow-up"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                       </div>
-
-
-                       <div class="col flex-grow-1" hidden>
-                        <div class="card">
-                            <div class="card-body">
-                                {% for i in zQuestions %}
-                                <div class="form-group">
-                                    <label>{{ i.title }} </label>
-                                    <input type="text" class="form-control form-control-border" disabled>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                        
-                    </div>
-
-                </div>
-            </section> -->
 
         </div>
 
