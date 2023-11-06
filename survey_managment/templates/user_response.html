@@ -16,7 +16,7 @@
             <div class="col-lg p-3">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url "survey_managment:displayQuestion" id=survey_id %}">Question List</a>
+                      <a class="nav-link" href="{% url "survey_managment:survey_detail" id=survey_id %}">Question List</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url "survey_managment:user_response" id=survey_id %}">User Response</a>
@@ -31,35 +31,41 @@
 
        <section class="container-fluid">
         <div class="container">
-          <h1>{{ survey.title }}</h1>
+          <h1 style="font-size: 2.5rem; font-weight: bold;">{{ survey.title }}</h1>
           {% if user_responses %}
             <div id="accordion">
               {% for response in user_responses %}
-                <div class="card">
-                  <div class="card-header" id="heading{{ response.id }}">
+                <div class="card shadow mb-3">
+                  <div class="card-header bg-light" id="heading{{ response.id }}">
                     <h5 class="mb-0">
-                      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ response.id }}" aria-expanded="true" aria-controls="collapse{{ response.id }}">
+                      <button class="btn btn-link text-dark" data-toggle="collapse" data-target="#collapse{{ response.id }}" aria-expanded="true" aria-controls="collapse{{ response.id }}">
                         Response by {{ response.submitted_by }} at {{ response.submitted_at }}
                       </button>
                     </h5>
                   </div>
                   <div id="collapse{{ response.id }}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ response.id }}" data-parent="#accordion">
                     <div class="card-body">
-                      <ul>
-                        {% for answer in response.answer_set.all %}
-                          <li><strong>{{ answer.forquestion }}:</strong> {{ answer.answertext }}</li>
-                        {% endfor %}
-                      </ul>
+                      {% for answer in response.answer_set.all %}
+                        <div style="margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); padding: 10px;">
+                          {{ answer.forquestion }}  
+                          <div class="bg-info p-3 d-inline-flex">
+                          <strong>
+                            {{ answer.answertext }}
+                          </strong>
+                        </div>
+                        </div>
+                      {% endfor %}
                     </div>
                   </div>
                 </div>
               {% endfor %}
             </div>
           {% else %}
-            <p>No responses found.</p>
+            <p style="font-size: 1.2rem;">No responses found.</p>
           {% endif %}
         </div>
       </section>
+      
       
 
 
@@ -105,6 +111,20 @@
 
     {% include 'includes/scripts.html' %}
   </body>
+
+  <script>
+  $(document).ready(function() {
+    $('#accordion .collapse').on('show.bs.collapse', function () {
+      $(this).prev().addClass('active');
+    });
+
+    $('#accordion .collapse').on('hide.bs.collapse', function () {
+      $(this).prev().removeClass('active');
+    });
+  });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 </html>
