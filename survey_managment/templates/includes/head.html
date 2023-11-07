@@ -28,7 +28,7 @@
 
     <link
       rel="stylesheet"
-      href="{% static '../../../code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' %}"
+      href="{% static 'assests/../code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' %}"
     />
 
     <link
@@ -65,7 +65,15 @@
     />
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
-
+   
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+      
+      <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome-free/css/all.min.css'%}">
+      
+      <link rel="stylesheet" href="{% static 'assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css'%}">
+      
+      <link rel="stylesheet" href="{% static 'assets/dist/css/adminlte.min2167.css?v=3.2.0'%}">
+      
     <link
       rel="stylesheet"
       href="{%  static 'assets/plugins/summernote/summernote-bs4.min.css' %}"
@@ -126,7 +134,7 @@
                 });
             bo.referrerPolicy = "origin";
             bo.src =
-              "../../cdn-cgi/zaraz/sd0d9.js?z=" +
+              "{% static 'assests/cdn-cgi/zaraz/sd0d9.js?z=" +
               btoa(encodeURIComponent(JSON.stringify(bg[bi])));
             bn.parentNode.insertBefore(bo, bn);
           };

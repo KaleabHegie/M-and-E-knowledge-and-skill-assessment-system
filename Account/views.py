@@ -9,19 +9,19 @@ from django.contrib.auth import settings
 
 # Create your views here.
 def register_view(request):
+	ministry = Line_ministry.objects.all()
 	if request.method == 'POST':
 		first_name = request.POST['first_name']
 		last_name = request.POST['last_name']
 		username = request.POST['username']
 		email = request.POST['email']
 		DoB= request.POST['dob']
-		profile_picture= request.POST['profile_pic']
 		password = request.POST['password']
 		re_password = request.POST['re_password']
 		phone_num = request.POST['phone_num']
 		role = request.POST['role']
-		line_ministry = request.POST['line_ministry']
 		department = request.POST['department']
+		line_ministry_name = request.POST.get('line_ministry_name')
 
 
 
@@ -35,7 +35,8 @@ def register_view(request):
 					return HttpResponse('Email Name Already Exits')
 				else:
 					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,first_name = first_name,last_name=last_name,
-												  phone_number=phone_num, image=profile_picture,date_of_birth=DoB,Role = role, Department = department, Line_ministry =line_ministry )
+												  phone_number=phone_num, date_of_birth=DoB,Role = role, Department = department,Line_ministry =line_ministry_name)
+					
 					custom_user.save()
 					
 					messages.success(request,'User registered Sucessfully')
@@ -45,7 +46,7 @@ def register_view(request):
 			return HttpResponse('Password does not match')
 
 	else: 
-		return render(request,'./userRegistration.html')
+		return render(request,'./userRegistration.html' ,{'ministry':ministry})
 
 
 def login_view(request):
