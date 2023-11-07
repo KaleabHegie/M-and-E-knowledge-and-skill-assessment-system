@@ -229,7 +229,6 @@ def displayQuestion(request, id):
             'surveys': Survey.objects.get(id=id),
             'categories': Category.objects.all(),
             'id' : id,
-
         }
 
     return render(request, 'displayQuesion.html', data)
@@ -241,9 +240,7 @@ def catagorizedQuestion(request, id):
         survey = get_object_or_404(Survey, id=id)
         for question_id in selected_questions:
             ques = get_object_or_404(Question, id=question_id)
-            
             survey.question.add(ques)
-          
         return redirect('survey_managment:Index')
     else:
         data = {

@@ -10,7 +10,7 @@ class Survey(models.Model):
     survey_type = models.ForeignKey("SurveyType" , on_delete=models.CASCADE , null=True)
     created_at = models.DateField(auto_now=True, auto_now_add=False)
     question = models.ManyToManyField('Question' , null=True)
-
+    for_line_ministry = models.ManyToManyField("LineMinistry" , null=True)
     def __str__(self):
         return self.name
     
@@ -19,7 +19,12 @@ class SurveyType(models.Model):
     def __str__(self):
         return self.name 
     
-    
+class LineMinistry(models.Model):
+    name = models.CharField( max_length=50)    
+    def __str__(self):
+        return self.name 
+
+
 TYPE_FIELD = [
         ("text" ,"text"),
         ("number", "number"),
