@@ -7,6 +7,8 @@ from .models import Category, Question
 from django.http import JsonResponse
 
 from django.core.paginator import Paginator
+from datetime import date
+
 
 
 
@@ -197,9 +199,6 @@ def create_question(request , survey_id , questionnaire_id):
     else:
         return redirect("survey_managment:displayQuestion" , survey_id , questionnaire_id)  # Redirect to an error page if the request method is not POST
 
-    
-
-
 def chooseSurvey(request , id , choose_id ):
     data = {
         'choose_id':choose_id,
@@ -220,7 +219,7 @@ def displayQuestion(request, id):
             
             survey.question.add(ques)
           
-        return redirect('survey_managment:Index')
+        return redirect('survey_managment:questionCreationByType' , survey_id=id)
     else:
         data = {
             'questions': Question.objects.all(),
@@ -387,7 +386,8 @@ def surveyss_view(request):
     return render(request, 'Final_Preview_Pages/Surveys.html',data)
 
 def survey_listss_views(request, id):
-    surveys = Survey.objects.filter(survey_type=id)
+    today = date.today()
+    surveys = Survey.objects.filter(survey_type=id, start_at__lte=today, end_at__gte=today)
     data = {
         'surveys': surveys
     }
