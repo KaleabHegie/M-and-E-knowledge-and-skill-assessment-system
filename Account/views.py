@@ -14,17 +14,18 @@ from survey_managment.views import survey_listss_views
 def register_view(request):
 	ministry = Line_ministry.objects.all()
 	if request.method == 'POST':
-		first_name = request.POST['first_name']
-		last_name = request.POST['last_name']
-		username = request.POST['username']
-		email = request.POST['email']
-		DoB= request.POST['dob']
-		password = request.POST['password']
-		re_password = request.POST['re_password']
-		phone_num = request.POST['phone_num']
-		role = request.POST['role']
-		department = request.POST['department']
+		first_name = request.POST.get('first_name')
+		last_name = request.POST.get('last_name')
+		username = request.POST.get('username')
+		email = request.POST.get('email')
+		DoB= request.POST.get('dob')
+		password = request.POST.get('password')
+		re_password = request.POST.get('re_password')
+		phone_num = request.POST.get('phone_num')
+		role = request.POST.get('role')
+		department = request.POST.get('department')
 		line_ministry_name = request.POST.get('line_ministry_name')
+		selected_gender = request.POST.get('gender')
 
 
 
@@ -38,7 +39,7 @@ def register_view(request):
 					return HttpResponse('Email Name Already Exits')
 				else:
 					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,first_name = first_name,last_name=last_name,
-												  phone_number=phone_num, date_of_birth=DoB,Role = role, Department = department,Line_ministry =line_ministry_name)
+												  phone_number=phone_num, date_of_birth=DoB,Role = role, Department = department,Line_ministry =line_ministry_name ,gender= selected_gender)
 					
 					custom_user.save()
 					
@@ -68,10 +69,10 @@ def login_view(request):
 	else:
 		return render(request,'./login.html')
 
+def logout(request):
+        auth.logout(request)
+        return redirect('/greetingpage')
 
-def logout_view(request):
-    logout(request)
-    return  redirect('pages:index')
 
 
 from .models import CustomUser
