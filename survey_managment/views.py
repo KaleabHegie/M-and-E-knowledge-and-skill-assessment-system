@@ -392,16 +392,13 @@ def greetingpage_view(request):
     return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
 
 
-def surveyss_view(request):
-    data={
-        'surveyTypes' : SurveyType.objects.all()
-    }
-    return render(request, 'Final_Preview_Pages/Surveys.html',data)
+
 
 @login_required
 def survey_listss_views(request):
     today = date.today()
-    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today)
+    user = request.user.Line_ministry
+    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today, for_line_ministry=user)
     data = {
         'surveys': surveys
     }
