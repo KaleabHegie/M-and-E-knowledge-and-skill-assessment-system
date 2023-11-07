@@ -22,6 +22,8 @@ from .forms import *
 
 from .models import *
 
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
@@ -396,6 +398,7 @@ def surveyss_view(request):
     }
     return render(request, 'Final_Preview_Pages/Surveys.html',data)
 
+@login_required
 def survey_listss_views(request):
     today = date.today()
     surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today)

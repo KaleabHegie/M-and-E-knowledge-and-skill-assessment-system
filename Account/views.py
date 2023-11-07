@@ -6,6 +6,9 @@ from django.contrib.auth.models import User
 from . models import *
 from .forms import UserProfileForm
 from django.contrib.auth import settings
+from django.contrib.auth import logout
+from survey_managment.views import survey_listss_views 
+
 
 # Create your views here.
 def register_view(request):
@@ -58,17 +61,13 @@ def login_view(request):
 		user = auth.authenticate(username=username , password=password)
 		if user is not None: 
 			auth.login(request,user)
-			messages.success(request,'You Are Now LoggedIn')
-			return HttpResponse('Logged in')
-		elif CustomUser.objects.filter(username=username).exists():
-			return HttpResponse("Incorrcet password")
+			return redirect('survey_managment:surveylists')
 		else:
 			messages.error(request,'Invalid Credentials')
 			return HttpResponse("Invalid User")
 	else:
 		return render(request,'./login.html')
 
-from django.contrib.auth import logout
 
 def logout_view(request):
     logout(request)
