@@ -10,5 +10,5 @@ admin.site.register(Answer)
 admin.site.register(UserResponse)
 admin.site.register(Department)
 admin.site.register(SurveyType)
-admin.site.register(LineMinistry)
+
 
