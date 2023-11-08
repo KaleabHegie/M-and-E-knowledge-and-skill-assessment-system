@@ -18,13 +18,9 @@ urlpatterns = [
     path('survey_questionnaire/', views.surveyQuestionnaireView, name='survey_questionnaire'),
 
     path('survey_questionnaire_detail/<int:survey_id>/<int:questionnaire_id>/', views.surveyQuestionnaireDetailView, name='survey_questionnaire_detail'),
-    
-    path('questionnaires/', views.questionnaireView, name='questionnaires'),
-    path('questionnaireDetail/', views.questionnaireDetailView, name='questionnaireDetail'),
-    path('newForm/', views.newForm, name='newForm'),
 
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
-    path('newQuestion/(?P<questionType>[a-zA-Z]+)/', views.newQuestion, name='newQuestion'),
+    path('newQuestion/<str:questionType>/<int:s_id>/', views.newQuestion, name='newQuestion'),
     path('survey/', views.survey, name='survey'),
     path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:id>/', views.displayQuestion, name='displayQuestion'),
