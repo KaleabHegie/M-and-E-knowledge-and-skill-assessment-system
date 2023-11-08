@@ -116,6 +116,7 @@
     </div>
   </div> 
 <div class="wrapper">
+
 <form  id="wizard" action="{% url 'Account:register_view' %}" method="POST">
 
 {% csrf_token %}
@@ -132,7 +133,7 @@
 
 </div>
 <p> Personal Information</p>
-<div class="row"> 
+<div class="row" > 
   <div class="form-group col-6">
     <input type="text" class="form-control" id="first_name" name="first_name"
       placeholder="Enter First Name" required/>
