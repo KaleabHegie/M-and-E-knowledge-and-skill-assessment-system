@@ -65,12 +65,12 @@ def register_view(request):
 
 
 def login_view(request):
-	user = CustomUser.objects.all()
+
 	if request.method == 'POST':
 		username = request.POST['username']
 		password = request.POST['password']
 
-		user = auth.authenticate(username=username , password=password)
+		user = auth.authenticate(request ,username=username , password=password)
 		if user is not None and user.is_superuser: 
 			auth.login(request,user)
 			return redirect('survey_managment:Index')
