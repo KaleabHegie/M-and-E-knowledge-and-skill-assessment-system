@@ -387,7 +387,7 @@ def newQuestion(request ,questionType ):
 
 def greetingpage_view(request):
     context ={
-
+        
     }
     return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
 
