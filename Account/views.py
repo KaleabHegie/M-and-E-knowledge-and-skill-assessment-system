@@ -79,7 +79,7 @@ def login_view(request):
 			return redirect('survey_managment:surveylists')
 		else:
 			messages.error(request,'Invalid Credentials')
-			return HttpResponse("Invalid User")
+			return redirect('Account:Login')
 	else:
 		return render(request,'./login.html')
 
@@ -117,7 +117,7 @@ def edit_profile(request):
             instance = form.save(commit=False)
             instance.image = form.cleaned_data['image']
             instance.save()
-            return HttpResponse('updated')
+            return redirect('Account:view_profile')
     else:
         form = UserProfileForm(instance=profile)
 
@@ -149,7 +149,7 @@ def update_users(request, id):
         form = Admin_Update(request.POST, request.FILES, instance=users)
         if form.is_valid():
             form.save()
-            return HttpResponse('Edited')
+            return redirect('Account:users')
     else:
         form = Admin_Update(instance=users)
     return render(request, './update_users.html', {'form': form})
@@ -160,5 +160,5 @@ def delete_user(request, id):
     user = get_object_or_404(CustomUser, id=id)
     if request.method == 'POST':
         user.delete()
-        return HttpResponse('Deleted')
+        return redirect('Account:users')
     return render(request, 'delete_user.html', {'user': user})
