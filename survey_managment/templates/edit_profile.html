@@ -1,254 +1,142 @@
-{% load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback"
-    />
-
-    <link
-      rel="stylesheet"
-      href="{%  static 'assets/plugins/fontawesome-free/css/all.min.css' %}"
-    />
-
-    <link
-      rel="stylesheet"
-      href="{% static '../../../code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' %}"
-    />
-
-    <link
-      rel="stylesheet"
-      href="{%  static 'assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}"
-    />
-
-    <link
-      rel="stylesheet"
-      href="{%  static 'assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}"
-    />
-
-    <link rel="stylesheet" href="{%  static 'assets/plugins/jqvmap/jqvmap.min.css' %}" />
-
-    <link
-      rel="stylesheet"
-      href="{%  static 'assets/dist/css/adminlte.min2167.css' %}?v=3.2.0"
-    />
-
-    <link
-      rel="stylesheet"
-      href="{%  static 'assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}"
-    />
-
-    <link
-      rel="stylesheet"
-      href="{%  static 'assets/plugins/daterangepicker/daterangepicker.css' %}"
-    />
-
-    <link
-      rel="stylesheet"
-      href="{%  static 'assets/plugins/summernote/summernote-bs4.min.css' %}"
-    />
-    <style>
-        body{
-    margin-top:20px;
-    color: #1a202c;
-    text-align: left;
-    background-color: #e2e8f0;    
-}
-.main-body {
-    padding: 15px;
-}
-.card {
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
-}
-
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 0 solid rgba(0,0,0,.125);
-    border-radius: .25rem;
-}
-
-.card-body {
-    flex: 1 1 auto;
-    min-height: 1px;
-    padding: 1rem;
-}
-
-.gutters-sm {
-    margin-right: -8px;
-    margin-left: -8px;
-}
-
-.gutters-sm>.col, .gutters-sm>[class*=col-] {
-    padding-right: 8px;
-    padding-left: 8px;
-}
-.mb-3, .my-3 {
-    margin-bottom: 1rem!important;
-}
-
-.bg-gray-300 {
-    background-color: #e2e8f0;
-}
-.h-100 {
-    height: 100%!important;
-}
-.shadow-none {
-    box-shadow: none!important;
-}
-    </style>
+  {%include "includes/head.html"%}
+  <style>
+    body{margin-top:20px;}
+.avatar{
+width:200px;
+height:200px;
+}	
+  </style>
 </head>
-<body class="hold-transition sidebar-mini">
-    <div class="wrapper">
-
-    
-        {% include 'includes/topNavbar.html' %}
-          {% include 'includes/sideNavbar.html' %}
-    
+<body>
+  <div class="wrapper">
+    {% if user.is_superuser %}
+    {% include 'includes/topNavbar.html' %}
+    {% include 'includes/sideNavbar.html' %}
+    {% endif %}
     <div class="content-wrapper">
     
-    <section class="content-header">
-    <div class="container-fluid">
-    <div class="row mb-2">
-    <div class="col-sm-6">
-    <h1> Edit Profile</h1>
-    </div>
-    <div class="col-sm-6">
-    <ol class="breadcrumb float-sm-right">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item active">User Profile</li>
-    </ol>
-    </div>
-    </div>
-    </div>
-    </section>
-
-{% block content %}
-  <form method="post" enctype="multipart/form-data" >
-    {% csrf_token %}
-    <section class="content">
+      <section class="content-header">
       <div class="container-fluid">
-      <div class="row">
-      <div class="col-md-12">
+  <div class="container bootstrap snippets bootdey">
+    <h1 class="text-primary">Edit Profile</h1>
+      <hr>
+	<div class="row">
+      <!-- left column -->
+      <div class="col-md-3">
+        <div class="text-center">
+          {% if user.image %}
+      <img src="{{ user.image.url }}" class="avatar img-circle img-thumbnail" alt="avatar">
+    {% else %}
+          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="avatar img-circle img-thumbnail" alt="avatar">
+          <h6>Upload a different photo...</h6>
+          {%  endif %}
+        </div>
+      </div>
+      
+      <!-- edit form column -->
+      <div class="col-md-9 personal-info">
+        <!-- <div class="alert alert-info alert-dismissable">
+          <a class="panel-close close" data-dismiss="alert">×</a> 
+          <i class="fa fa-coffee"></i>
+          This is an <strong>.alert</strong>. Use this to show important messages to the user.
+        </div> -->
+        <h3>Personal info</h3>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
           <div class="row">
-              <div class="col-md-3">
-                  <!-- Add an input element of type "file" -->
-  <input type="file" id="profile-pic-input" style="display: none">
-  
-  <div class="card-body">
-      <div class="d-flex flex-column align-items-center text-center">
-          <!-- Add a container for the profile picture -->
-          <div id="profile-pic-container">
-              <img src="{{user.image.url}}" alt="Admin" class="rounded-circle" width="150">
-              <i class="fa-solid fa-user-pen" onclick="chooseProfilePic()"></i>
+            <div class="col-md-6">
+              <div class="form-group">
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}
+              </div>
+              <div class="form-group">
+                {{ form.last_name.label_tag }}
+                {{ form.last_name }}
+              </div>
+              <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                {{ form.date_of_birth.label_tag }}
+                {{ form.date_of_birth }}
+              </div>
+              <div class="form-group">
+                {{ form.phone_number.label_tag }}
+                {{ form.phone_number }}
+              </div>
+              <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+              </div>
+              <div class="form-group">
+                {{ form.image.label_tag }}
+                {{ form.image }}
+              </div>
+            </div>
           </div>
-          <p class="text-secondary mb-1">{{ custom_user.Role }}</p>
-          <div class="mt-3">
+          
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+      </form>
+      
+        
+        <!-- <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label class="col-lg-3 control-label">First name:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="dey-dey">
+            </div>
           </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Last name:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="bootdey">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Company:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Email:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="janesemail@gmail.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Time Zone:</label>
+            <div class="col-lg-8">
+              <div class="ui-select">
+                <select id="user_time_zone" class="form-control">
+                  <option value="Hawaii">(GMT-10:00) Hawaii</option>
+                  <option value="Alaska">(GMT-09:00) Alaska</option>
+                  <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
+                  <option value="Arizona">(GMT-07:00) Arizona</option>
+                  <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
+                  <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
+                  <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
+                  <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form> -->
       </div>
   </div>
-  
-                  
-                 
-                  
-                  
-                 
-                  
-                  
-              </div>
-              <div class="col-md-9 ">
-                  <div class="card-body row">
-                          <div class="col-sm-6"> 
-  
-                            {{ form.as_p }}
-                            <div class="options">
-                              <button type="submit"  class="btn btn-success">Save Changes</button>
-                  
-                          </div>
-                          </form>
-                        {% endblock %}
-                         
-                  </div>
-                  </div>
-                 
-                    </div>
-                 
-                 
-                    
-                  </div>      
-                      
-                    
-      
-          </div>
-      </div>
-      
-       
-          
-      
-      
-      </div>
-      
-      </div>
-      </section>
-    
-
-  
-    </div>
-    
-    <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-    <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io/">AdminLTE.io</a>.</strong> All rights reserved.
-    </footer>
-    
-    <aside class="control-sidebar control-sidebar-dark">
-    
-    </aside>
-    
-    </div>
-
-    
-    
-    {% include "includes/scripts.html" %}
-    
-    <script>
-      // Function to trigger the file input when the icon is clicked
-function chooseProfilePic() {
-    document.getElementById("profile-pic-input").click();
-}
-
-// Function to handle the file selection
-document.getElementById("profile-pic-input").addEventListener("change", function(event) {
-    var file = event.target.files[0];
-
-    // Perform any necessary validation or processing with the selected file
-
-    // Example: Display the selected image
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        var imageElement = document.createElement("img");
-        imageElement.src = e.target.result;
-        imageElement.alt = "Admin";
-        imageElement.classList.add("rounded-circle");
-        imageElement.width = 150;
-
-        var containerElement = document.getElementById("profile-pic-container");
-        containerElement.innerHTML = "";
-        containerElement.appendChild(imageElement);
-    };
-    reader.readAsDataURL(file);
-});
-
-    </script>
-    </body>
+</div></div>
+</section>
+</div>
+</div>
+<hr>
+{% include 'includes/scripts.html' %}
+</body>
 </html>
+

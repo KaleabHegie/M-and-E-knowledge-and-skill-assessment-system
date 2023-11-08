@@ -20,12 +20,13 @@ class SurveyForm(forms.ModelForm):
     instruction = forms.CharField(min_length=5, widget=forms.TextInput(attrs={'class': 'form-control'}))
     start_at = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control','type':'date'}))
     end_at = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control','type':'date'}))
-
+   
     class Meta:
         model = Survey
-        fields = ['name', 'instruction', 'start_at', 'end_at', 'survey_type']
+        fields = ['name', 'instruction', 'start_at', 'end_at', 'survey_type' , 'for_line_ministry']
         widgets = {
             'survey_type': forms.Select(attrs={'class': 'form-control'}),
+            'for_line_ministry': forms.SelectMultiple(attrs={'class': 'form-control  select2'}),
         }
 
     def clean_start_at(self):
@@ -56,3 +57,8 @@ class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         fields = ['answertext']
+
+
+class CustomUserLoginForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))

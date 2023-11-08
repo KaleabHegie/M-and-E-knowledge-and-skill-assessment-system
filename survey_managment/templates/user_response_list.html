@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  {% include 'includes/head.html' %}
+
+  <body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+      {% include "includes/loader.html" %}
+       {% include 'includes/topNavbar.html' %}
+        {% include 'includes/sideNavbar.html' %}
+
+      <div class="content-wrapper">
+
+       <div class="container">
+          <div class="row">
+            <div class="col-lg p-3">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url "survey_managment:survey_detail" id=survey_id %}">Question List</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url "survey_managment:user_response_list" id=survey_id %}">User Response</a>
+                    </li>
+                </ul>
+            </div>
+          </div>
+
+       </div>
+       
+       
+
+       <section class="container-fluid">
+        <div class="container">
+          <h1 style="font-size: 2.5rem; font-weight: bold;">{{ survey.title }}</h1>
+          {% if user_responses %}
+            <div id="accordion">
+              {% for response in user_responses %}
+                <div class="card shadow mb-3">
+                  <div class="card-header bg-light" id="heading{{ response.id }}">
+                    <h5 class="mb-0">
+                      <a style="text-decoration: none; color: black;" href="{% url "survey_managment:user_response" id=survey_id response_id=response.id %}">
+                        Response by {{ response.submitted_by }} at {{ response.submitted_at }}
+                      </a>
+                    </h5>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p style="font-size: 1.2rem;">No responses found.</p>
+          {% endif %}
+        </div>
+      </section>
+      
+      
+
+
+      
+      
+      
+      </div>
+
+      <footer class="main-footer">
+        <div class="float-right d-none d-sm-block"><b>Version</b> 3.2.0</div>
+        reserved.
+      </footer>
+    </div>
+
+    {% include 'includes/scripts.html' %}
+  </body>
+
+  <script>
+  $(document).ready(function() {
+    $('#accordion .collapse').on('show.bs.collapse', function () {
+      $(this).prev().addClass('active');
+    });
+
+    $('#accordion .collapse').on('hide.bs.collapse', function () {
+      $(this).prev().removeClass('active');
+    });
+  });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</html>

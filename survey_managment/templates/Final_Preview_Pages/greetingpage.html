@@ -6,10 +6,12 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>FlexStart Bootstrap Template - Index</title>
+  <title>MoPD Website</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstr
+  <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js'></script>ap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <!-- Favicons -->
   <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
   <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
@@ -30,6 +32,33 @@
       font-size: x-small;
       font-weight: 400;
     }
+    /* Profile Picture */
+.profile-pic{
+   display: inline-block;
+   vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+   border-radius: 50%;
+}
+
+.profile-pic img{
+   width: 100%;
+   height: auto;
+   object-fit: cover;
+}
+.profile-menu .dropdown-menu {
+  right: 0;
+  left: unset;
+}
+.profile-menu .fa-fw {
+  margin-right: 10px;
+}
+
+.toggle-change::after {
+  border-top: 0;
+  border-bottom: 0.3em solid;
+}
   </style>
 </head>
 
@@ -43,20 +72,9 @@
         <img src="{% static 'assets/img/logo.png' %}" alt="">
         <span style="color: rgb(9, 109, 9);">MOPD</span>
       </a>
-
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li><a class="nav-link scrollto active" href="#hero" style="color: rgb(9, 109, 9);">Home</a></li>
-          <li><a class="nav-link scrollto" href="#about" style="color: rgb(9, 109, 9);">About</a></li>
-          <li><a class="nav-link scrollto" href="#values" style="color: rgb(9, 109, 9);">Values</a></li>
-          <li><a class="nav-link scrollto" href="#features" style="color: rgb(9, 109, 9);">Features</a></li>
-          <li><a class="nav-link scrollto" href="{% url 'survey_managment:surveys' %}" style="color: rgb(9, 109, 9);">Surveys</a></li>
-          <li><a class="nav-link scrollto" href="#contact" style="color: rgb(9, 109, 9);">Contact</a></li>
-          <li><a class="getstarted scrollto" href="#about" style="color: white; background-color: rgb(9, 109, 9);" >Get Started</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
-
+{%include "includes/navBar.html"%}
+      <!-- .navbar -->
+      
     </div>
   </header><!-- End Header -->
 
@@ -488,7 +506,7 @@ Succession planning: Assessing employees' skills can help identify potential can
           </div>
 
           <div class="col-lg-6">
-            <img src="{% static 'assets/img/features-2.png' %}" class="img-fluid" alt="">
+            <img src="{% static 'assets/img/picc.jpg' %}" class="img-fluid" alt="">
           </div>
 
         </div><!-- End Feature Tabs -->
@@ -498,7 +516,7 @@ Succession planning: Assessing employees' skills can help identify potential can
       </div>
 
     </section><!-- End Features Section -->
-
+ 
  
 
    
@@ -649,9 +667,9 @@ Succession planning: Assessing employees' skills can help identify potential can
           <div class="col-lg-2 col-6 footer-links">
             <h4>Our Services</h4>
             <ul>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> </a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> </a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> </a></li>
               
             </ul>
           </div>
@@ -694,6 +712,19 @@ Succession planning: Assessing employees' skills can help identify potential can
 
   <!-- Template Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
+  <script>
+    document.querySelectorAll('.dropdown-toggle').forEach(item => {
+  item.addEventListener('click', event => {
+ 
+    if(event.target.classList.contains('dropdown-toggle') ){
+      event.target.classList.toggle('toggle-change');
+    }
+    else if(event.target.parentElement.classList.contains('dropdown-toggle')){
+      event.target.parentElement.classList.toggle('toggle-change');
+    }
+  })
+});
+  </script>
 
 </body>
 

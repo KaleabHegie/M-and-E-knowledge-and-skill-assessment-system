@@ -1,175 +1,171 @@
-{% load static%}
 <!DOCTYPE html>
 <html lang="en">
-  {% include "includes/head.html" %}
-
-   
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
-<body class="hold-transition sidebar-mini">
-    <div class="wrapper">
+{%include "includes/head.html"%}
+<style>
+  body{
+    margin-top:20px;
+    color: #1a202c;
+    text-align: left;
+    background-color: #e2e8f0;    
+}
+.main-body {
+    padding: 15px;
+}
+.card {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+}
 
-        {% include 'includes/topNavbar.html' %}
-          {% include 'includes/sideNavbar.html' %}
-    
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1rem;
+}
+
+.gutters-sm {
+    margin-right: -8px;
+    margin-left: -8px;
+}
+
+.gutters-sm>.col, .gutters-sm>[class*=col-] {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+.mb-3, .my-3 {
+    margin-bottom: 1rem!important;
+}
+
+.bg-gray-300 {
+    background-color: #e2e8f0;
+}
+.h-100 {
+    height: 100%!important;
+}
+.shadow-none {
+    box-shadow: none!important;
+}
+</style>
+<body>
+  <div class="wrapper">
+    {% if user.is_superuser %}
+    {% include 'includes/topNavbar.html' %}
+    {% include 'includes/sideNavbar.html' %}
+    {% endif %}
     <div class="content-wrapper">
+     <div class="container">
+    <div class="main-body">
     
-    <section class="content-header">
-    <div class="container-fluid">
-    <div class="row mb-2">
-    <div class="col-sm-6">
-    <h1> My Profile</h1>
-    </div>
-    <div class="col-sm-6">
-    <ol class="breadcrumb float-sm-right">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item active">User Profile</li>
-    </ol>
-    </div>
-    </div>
-    </div>
-    </section>
+          <!-- Breadcrumb -->
+          <!-- <nav aria-label="breadcrumb" class="main-breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+              <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+            </ol>
+          </nav> -->
+          <!-- /Breadcrumb -->
     
-    <section class="content">
-    <div class="container-fluid">
-    <div class="row">
-        
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex flex-column align-items-center text-center">
-                        <img src= "{{custom_user.image.url}}" alt="Admin" class="rounded-circle" width="150">                          
-                        <p class="text-secondary mb-1">{{custom_user.Role}}</p>
-
-                        <div class="mt-3">
-                          <a href="{% url 'Account:edit_profile' %}"  style="text-decoration:none;"> Edit Profile</a>
-                          <!-- <button class="btn btn-outline-primary">Message</button> -->
-                        </div>
-                      </div>
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                    <img src="{{custom_user.image.url}}" alt="Admin" class="rounded-circle" width="150">
+                    <div class="mt-3">
+                      <h4>{{custom_user.username}}</h4>
+                      <p class="text-secondary mb-1">{{custom_user.Role}}</p>
+                      <p class="text-muted font-size-sm">Line_ministry</p>
+                      <button class="btn btn-outline-primary"><a  href="{% url 'Account:edit_profile' %}" style="text-decoration:none;"> Edit Profile</a></button>
                     </div>
-                  </div>    
+                  </div>
+                </div>
+              </div>
+           
             </div>
-            <div class="col-md-9 ">
-                <div class="card-body row">
-                        <div class="col-sm-6"> 
-
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Full Name</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        {{custom_user.first_name}} {{custom_user.last_name}}
-                      </div>
-                    </div>
-                    <hr>
-                   
-                   
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Email</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        {{custom_user.email}}                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Birth Date</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        {{custom_user.date_of_birth}}                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Phone</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        {{custom_user.phone_number}}
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Username</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-{{custom_user.username}}                        </div>
-                      </div>
-                    <hr>
-                   
-                    </div>
-                <div class="col-sm-6">
+            <div class="col-md-8">
+              <div class="card mb-3">
+                <div class="card-body">
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Line Minstry</h6>
+                      <h6 class="mb-0">Full Name</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{custom_user.Line_ministry}}
+                      {{custom_user.first_name}} {{custom_user.last_name}}
                     </div>
                   </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Role</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        (239) 816-9029
-                      </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Email</h6>
                     </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Department</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        {{custom_user.Department}}
-                      </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{custom_user.email}}
                     </div>
-                    <hr>
-                  
-                    
-                    
-                </div>
-                </div>
                   </div>
-               
-               
-                
-                </div>      
-                    
-                  
-    
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Phone</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{custom_user.phone_number}}
+
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Date of Birth</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{custom_user.date_of_birth}}
+
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Department</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{custom_user.department}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Address</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      Bay Area, San Francisco, CA
+                    </div>
+                  </div>
+                  <hr>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
     </div>
-    
-     
-        
-    
-    
-    </div>
-    
-    </div>
-    </section>
-    
-    </div>
-    
-    <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-    <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io/">AdminLTE.io</a>.</strong> All rights reserved.
-    </footer>
-    
-    <aside class="control-sidebar control-sidebar-dark">
-    
-    </aside>
-    
-    </div>
-    
-    
-    {% include "includes/scripts.html" %}
-    
-    </body>
+  </div>
+  </div>
+</body>
 </html>
