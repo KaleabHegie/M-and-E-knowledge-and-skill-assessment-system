@@ -12,8 +12,10 @@ height:200px;
 </head>
 <body>
   <div class="wrapper">
+    {% if user.is_superuser %}
     {% include 'includes/topNavbar.html' %}
     {% include 'includes/sideNavbar.html' %}
+    {% endif %}
     <div class="content-wrapper">
     
       <section class="content-header">

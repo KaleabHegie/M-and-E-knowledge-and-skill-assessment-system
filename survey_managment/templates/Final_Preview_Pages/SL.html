@@ -115,67 +115,7 @@
           <span style="color: rgb(9, 109, 9)">MOPD</span>
         </a>
 
-        <nav id="navbar" class="navbar">
-          <ul>
-            <li>
-              <a
-                class="nav-link scrollto active"
-                href="{% url 'survey_managment:greetingpage' %}"
-                style="color: rgb(9, 109, 9)"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a
-                class="nav-link scrollto"
-                href="{% url 'survey_managment:greetingpage' %}"
-                style="color: rgb(9, 109, 9)"
-                >About</a
-              >
-            </li>
-            <li>
-              <a
-                class="nav-link scrollto"
-                href="{% url 'survey_managment:greetingpage' %}"
-                style="color: rgb(9, 109, 9)"
-                >Values</a
-              >
-            </li>
-            <li>
-              <a
-                class="nav-link scrollto"
-                href="{% url 'survey_managment:greetingpage' %}"
-                style="color: rgb(9, 109, 9)"
-                >Features</a
-              >
-            </li>
-            <li>
-              <a
-                class="nav-link scrollto"
-                href="{% url 'survey_managment:surveylists' %}"
-                style="color: rgb(9, 109, 9)"
-                >Surveys</a
-              >
-            </li>
-            <li>
-              <a
-                class="nav-link scrollto"
-                href="{% url 'survey_managment:greetingpage' %}"
-                style="color: rgb(9, 109, 9)"
-                >Contact</a
-              >
-            </li>
-            <li>
-              <a
-                class="getstarted scrollto"
-                href="{% url 'survey_managment:surveylists' %}"
-                style="color: white; background-color: rgb(9, 109, 9)"
-                >Get Started</a
-              >
-            </li>
-          </ul>
-          <i class="bi bi-list mobile-nav-toggle"></i>
-        </nav>
+        {%include "includes/navBar.html"%}
         <!-- .navbar -->
       </div>
     </header>
