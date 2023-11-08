@@ -30,72 +30,33 @@
        
 
        <section class="container-fluid">
-        <div class="row justify-content-center">
-        <div class="col-lg-10">
-          
+        <div class="container">
+          <h1 style="font-size: 2.5rem; font-weight: bold;">{{ survey.title }}</h1>
           {% if user_responses %}
+            <div id="accordion">
               {% for response in user_responses %}
                 <div class="card shadow mb-3">
-
-                  <h4 class="text-info m-4"> Response by {{ user_responses.submitted_by }}</h4>
-                  
-                    <div class="card-body">
-                      {% for answer in response.answer_set.all %}
-                        <div style="margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); padding: 10px;margin-bottom:30px">
-                          {{ answer.forquestion }}  
-                        </br>
-                          <div class="bg-info p-3 d-inline-flex">   
-                          <strong>
-                            {{ answer.answertext }}
-                          </strong>
-                        </div>
-                        </div>
-                      {% endfor %}
-                    </div>
+                  <div class="card-header bg-light" id="heading{{ response.id }}">
+                    <h5 class="mb-0">
+                      <a style="text-decoration: none; color: black;" href="{% url "survey_managment:user_response" id=survey_id response_id=response.id %}">
+                        Response by {{ response.submitted_by }} at {{ response.submitted_at }}
+                      </a>
+                    </h5>
+                  </div>
                 </div>
               {% endfor %}
-            
+            </div>
           {% else %}
             <p style="font-size: 1.2rem;">No responses found.</p>
           {% endif %}
         </div>
-      </div>
       </section>
       
       
 
 
       
-      <style>
-          .accordion-button {
-              background-color: #f8f9fa;
-              color: #212529;
-              border: none;
-              border-radius: 0;
-              font-size: 1rem;
-              font-weight: 500;
-              text-align: left;
-          }
       
-          .accordion-button:focus {
-              box-shadow: none;
-          }
-      
-          .accordion-button:not(.collapsed) {
-              background-color: #e9ecef;
-          }
-      
-          .accordion-body {
-              background-color: #f8f9fa;
-              padding: 1rem;
-          }
-          .question-container {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin:10px;
-            border-radius: 4px;
-          }
-      </style>
       
       </div>
 

@@ -155,7 +155,18 @@ def survey(request):
     return render(request, 'survey.html', data)
 
 
-def user_response(request, id):
+def user_response_list(request, id):
+    survey = get_object_or_404(Survey, id=id)
+    user_responses = UserResponse.objects.filter(forsurvey=survey)
+    data = {
+        'survey_id': id,
+        'survey': survey,
+        'user_responses': user_responses,
+    }
+    return render(request, 'user_response_list.html', data)
+
+
+def user_response(request, id , response_id):
     survey = get_object_or_404(Survey, id=id)
     user_responses = UserResponse.objects.filter(forsurvey=survey)
     answers = Answer.objects.filter(response__in=user_responses)
@@ -164,8 +175,11 @@ def user_response(request, id):
         'survey': survey,
         'user_responses': user_responses,
         'answers': answers,
+        'response_id' : response_id
     }
     return render(request, 'user_response.html', data)
+
+
 
 def survey_detail(request, id):
     data = {
@@ -229,7 +243,6 @@ def displayQuestion(request, id):
             'surveys': Survey.objects.get(id=id),
             'categories': Category.objects.all(),
             'id' : id,
-
         }
 
     return render(request, 'displayQuesion.html', data)
@@ -241,9 +254,7 @@ def catagorizedQuestion(request, id):
         survey = get_object_or_404(Survey, id=id)
         for question_id in selected_questions:
             ques = get_object_or_404(Question, id=question_id)
-            
             survey.question.add(ques)
-          
         return redirect('survey_managment:Index')
     else:
         data = {
@@ -385,9 +396,9 @@ def surveyss_view(request):
     }
     return render(request, 'Final_Preview_Pages/Surveys.html',data)
 
-def survey_listss_views(request, id):
+def survey_listss_views(request):
     today = date.today()
-    surveys = Survey.objects.filter(survey_type=id, start_at__lte=today, end_at__gte=today)
+    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today)
     data = {
         'surveys': surveys
     }

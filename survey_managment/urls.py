@@ -33,10 +33,11 @@ urlpatterns = [
     path('questionCreationByType/<int:survey_id>/', views.questionCreationByType, name='questionCreationByType'),
     path('survey/', views.survey, name='survey'),
     path('survey_detail/<int:id>', views.survey_detail, name='survey_detail'),
-    path('user_response/<int:id>', views.user_response, name='user_response'),
+    path('user_response_list/<int:id>', views.user_response_list, name='user_response_list'),
+    path('user_response/<int:id>/<int:response_id>', views.user_response, name='user_response'),
     # path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:survey_id>/', views.displayQuestion, name='displayQuestion'),
-    path('jsonSender/<int:id>' , views.jsonSender , name = 'jsonSender'),
+    path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
 
    
@@ -44,7 +45,7 @@ urlpatterns = [
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),   
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
     path('surveys/', views.surveyss_view, name ='surveys'),
-    path('surveylists/<int:id>',views.survey_listss_views, name='surveylists'),
+    path('surveylists/',views.survey_listss_views, name='surveylists'),
     path('questionForSurvey/<int:id>' , views.questionForSurvey , name = 'questionForSurvey')
 
 

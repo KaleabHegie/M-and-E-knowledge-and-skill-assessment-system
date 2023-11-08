@@ -23,7 +23,7 @@ class CustomUser(AbstractUser):
     date_of_birth = models.DateField( auto_now=False, auto_now_add=False , null=True)
     Role =models.CharField( max_length=50 ,null=True)
     Department = models.CharField( max_length=50 ,null=True)
-    Line_ministry = models.ForeignKey("Line_ministry",on_delete=models.CASCADE,null=True)
+    Line_ministry = models.ForeignKey("Line_ministry",on_delete=models.CASCADE,null=True,blank=True)
     
     EMAIL_FIELD = 'email'
 
