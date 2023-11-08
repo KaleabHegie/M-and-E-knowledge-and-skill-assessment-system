@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages,auth
+from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
 from . models import *
@@ -24,8 +25,12 @@ def register_view(request):
 		phone_num = request.POST.get('phone_num')
 		role = request.POST.get('role')
 		department = request.POST.get('department')
-		line_ministry_name = request.POST.get('line_ministry_name')
+		line_ministry_id = request.POST.get('line_ministry')
+		line_ministry = Line_ministry.objects.get(id=line_ministry_id)
 		selected_gender = request.POST.get('gender')
+		is_mopd_head = request.POST.get('is_mopd_head') == 'on'
+		is_line_minister_head = request.POST.get('is_line_minister_head') == 'on'
+		is_line_minister_staff = request.POST.get('is_line_minister_staff') == 'on'
 
 
 
@@ -38,13 +43,19 @@ def register_view(request):
 					messages.error(request , 'Email Name Already Exits ')
 					return HttpResponse('Email Name Already Exits')
 				else:
-					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,first_name = first_name,last_name=last_name,
-												  phone_number=phone_num, date_of_birth=DoB,Role = role, Department = department,Line_ministry =line_ministry_name ,gender= selected_gender)
+					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,
+												  first_name = first_name,last_name=last_name,
+												  phone_number=phone_num, date_of_birth=DoB,Role = role, 
+												  Department = department,Line_ministry =line_ministry ,
+												  gender= selected_gender ,is_MoPDHead=is_mopd_head,
+            is_LineMinisterHead=is_line_minister_head,
+            is_LineMinisterStaff=is_line_minister_staff)
 					
 					custom_user.save()
 					
 					messages.success(request,'User registered Sucessfully')
-					return HttpResponse("User Registered")
+					
+					return redirect('Account:users')
 		else:
 			messages.error(request , 'Password Doest Not Match')
 			return HttpResponse('Password does not match')
@@ -60,7 +71,10 @@ def login_view(request):
 		password = request.POST['password']
 
 		user = auth.authenticate(username=username , password=password)
-		if user is not None: 
+		if user is not None and user.is_superuser: 
+			auth.login(request,user)
+			return redirect('survey_managment:Index')
+		elif user is not None : 
 			auth.login(request,user)
 			return redirect('survey_managment:surveylists')
 		else:
@@ -89,19 +103,26 @@ def view_profile(request):
 
 from .forms import UserProfileForm
 
+from django.shortcuts import render, redirect
+from .forms import UserProfileForm ,Admin_Update
+
 def edit_profile(request):
     user = request.user
     profile = CustomUser.objects.get(username=user)
 
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=profile)
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            form.save()
+            # Save the form data to the database
+            instance = form.save(commit=False)
+            instance.image = form.cleaned_data['image']
+            instance.save()
             return HttpResponse('updated')
     else:
         form = UserProfileForm(instance=profile)
 
-    return render(request, 'edit_profile.html', {'form': form,'user':user})
+    return render(request, 'edit_profile.html', {'form': form, 'user': user})
+
 
 
 def forgotPasswordView(request):
@@ -121,3 +142,23 @@ def change_password(request):
     return render(request , 'password_change.html' )
 
 
+@login_required
+def update_users(request, id):
+    users = get_object_or_404(CustomUser, id=id)
+    if request.method == 'POST':
+        form = Admin_Update(request.POST, request.FILES, instance=users)
+        if form.is_valid():
+            form.save()
+            return HttpResponse('Edited')
+    else:
+        form = Admin_Update(instance=users)
+    return render(request, './update_users.html', {'form': form})
+
+
+@login_required
+def delete_user(request, id):
+    user = get_object_or_404(CustomUser, id=id)
+    if request.method == 'POST':
+        user.delete()
+        return HttpResponse('Deleted')
+    return render(request, 'delete_user.html', {'user': user})

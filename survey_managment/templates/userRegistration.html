@@ -5,7 +5,6 @@
   <link rel="stylesheet" href="{% static 'assets/css2/style.css'%}">  
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Bootstrap Simple Success Confirmation Popup</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -97,7 +96,8 @@
  
   
   <!-- Modal HTML -->
-  <div id="myModal" class="modal fade">
+ 
+  <!-- <div id="myModal" class="modal fade">
     <div class="modal-dialog modal-confirm">
       <div class="modal-content">
         <div class="modal-header">
@@ -114,8 +114,16 @@
         </div>
       </div>
     </div>
-  </div> 
+  </div>  -->
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 <div class="wrapper">
+  {%include 'includes/loader.html'%}
 
 <form  id="wizard" action="{% url 'Account:register_view' %}" method="POST">
 
@@ -212,6 +220,24 @@
 <div class="form-group">
   <input type="text" class="form-control" id="role" name="role"
     placeholder="Role" required/>
+</div> 
+<div class="checkbox-rectangle mt-24">
+  <label>
+  <input type="checkbox" name="is_mopd_head" checked> is_MoPDHead</a>
+  <span class="checkmark"></span>
+  </label>
+</div>
+<div class="checkbox-rectangle mt-24">
+<label>
+<input type="checkbox" name="is_line_minister_head"> is_LineMinisterHead</a>
+<span class="checkmark"></span>
+</label>
+</div>
+<div class="checkbox-rectangle mt-24">
+  <label>
+  <input type="checkbox" name="is_line_minister_staff"  > is_LineMinisterStaff</a>
+  <span class="checkmark"></span>
+  </label>
 </div>
 </div>
 </div>
@@ -238,24 +264,7 @@
     <input type="password" class="form-control" id="re_password" name="re_password"
       placeholder="Password" required/>
   </div>
-  <div class="checkbox-rectangle mt-24">
-    <label>
-    <input type="checkbox" checked> is_MoPDHead</a>
-    <span class="checkmark"></span>
-    </label>
-</div>
-<div class="checkbox-rectangle mt-24">
-  <label>
-  <input type="checkbox" > is_LineMinisterHead</a>
-  <span class="checkmark"></span>
-  </label>
-</div>
-  <div class="checkbox-rectangle mt-24">
-    <label>
-    <input type="checkbox" > is_LineMinisterStaff</a>
-    <span class="checkmark"></span>
-    </label>
-</div>
+ 
 <div class="card-footer">
   <div class="text-center">
     <button type="submit" class="btn btn-primary btn-center">
@@ -270,6 +279,70 @@
 </form>
 </div>
 {%include "includes/scripts.html"%}
+<script>
+  function validateForm(){
+    var first_name= document.getElementById("first_name").value;
+    var last_name= document.getElementById("last_name").value;
+    var email= document.getElementById("email").value;
+    var phone_num= document.getElementById("phone_num").value;
+    var username= document.getElementById("username").value;
+    var dob= document.getElementById("dob").value;
+    var password= document.getElementById("password").value;
+    var re_password= document.getElementById("re_password").value;
+    var line_ministry= document.getElementById("line_ministry").value;
+    var department= document.getElementById("department").value;
+    var role= document.getElementById("role").value;
+    var profile_pic= document.getElementById("profile_pic").value;
 
+    if(first_name=""){
+      return false;
+    }
+    if(last_name=""){
+      return false;
+    }
+    
+    // Validate email
+if (!/\S+@\S+\.\S+/.test(email)) {
+  alert("Please enter a valid email address.");
+  return false;
+}
+
+// Validate phone number
+if (!/^[0-9]{10}$/.test(phone_num)) {
+  alert("Please enter a valid phone number.");
+  return false;
+}
+
+// Validate username
+if (!/^[a-zA-Z0-9_-]{3,20}$/.test(username)) {
+  alert("Please enter a valid username (3-20 characters, alphanumeric, underscore, or hyphen only).");
+  return false;
+}
+
+// Validate date of birth
+var today = new Date();
+var dobDate = new Date(dob);
+if (dobDate >= today) {
+  alert("Please enter a valid date of birth.");
+  return false;
+}
+
+// Validate password
+if (password.length < 5) {
+  alert("Password must be at least 8 characters long.");
+  return false;
+}
+
+// Validate profile picture size
+// if (profile_pic.size > 1048576) {
+//   alert("Profile picture size must be less than or equal to 1MB.");
+//   return false;
+// }
+
+// If all validation passes, allow form submission
+return true;
+}
+</script>
 </body>
+</html>
 
