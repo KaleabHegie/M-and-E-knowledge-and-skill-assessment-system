@@ -397,8 +397,7 @@ def greetingpage_view(request):
 @login_required
 def survey_listss_views(request):
     today = date.today()
-    user = request.user.Line_ministry
-    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today, for_line_ministry=user)
+    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today)
     data = {
         'surveys': surveys
     }

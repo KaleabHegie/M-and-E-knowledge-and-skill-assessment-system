@@ -65,23 +65,33 @@ def register_view(request):
 
 
 def login_view(request):
+    context = {
+		'line_ministry' : Line_ministry.objects.all()
+	}
+    if request.method == 'POST':
+        checkbox_value = request.POST.get('myCheckbox')
+        if checkbox_value == "off":
+            username = request.POST['username']
+            password = request.POST['password']
 
-	if request.method == 'POST':
-		username = request.POST['username']
-		password = request.POST['password']
+            user = auth.authenticate(request, username=username, password=password)
+            if user is not None and user.is_superuser:
+                auth.login(request, user)
+                return redirect('survey_managment:Index')
+            elif user is not None:
+                auth.login(request, user)
+                return redirect('survey_managment:surveylists')
+            else:
+                messages.error(request, 'Invalid Credentials')
+                return redirect('Account:Login')
+        else:
+            # Log in the user without authentication
+			 
+            return survey_listss_views.__wrapped__(request)
+           
+    else:
+        return render(request, 'login.html' , context)
 
-		user = auth.authenticate(request ,username=username , password=password)
-		if user is not None and user.is_superuser: 
-			auth.login(request,user)
-			return redirect('survey_managment:Index')
-		elif user is not None : 
-			auth.login(request,user)
-			return redirect('survey_managment:surveylists')
-		else:
-			messages.error(request,'Invalid Credentials')
-			return redirect('Account:Login')
-	else:
-		return render(request,'./login.html')
 
 def logout(request):
         auth.logout(request)
