@@ -3,7 +3,7 @@
   <div class="col-2">
     <select  id="year-select" class="form-select" aria-label="Default select example" name="year">
       <option value="">Select Year</option>
-      {%for survey in surveys%}
+      {%for survey in survey%}
       <option value="area_chart">{{survey.year|date:"Y"}}</option>
 {%endfor%}
     </select>
@@ -12,7 +12,7 @@
                 <select id="survey-select" name="survey" class="form-select" onchange="handleSurveySelectionChange()">
                   <option value="">Select Survey</option>
 
-                  {% for survey in surveys %}
+                  {% for survey in survey %}
                   <option value="{{ survey.id }}">{{ survey.name }}</option>
               {% endfor %}
                 </select>
@@ -31,7 +31,7 @@
               </div> -->
               
    <!-- {% if surveys %}
-  {% for survey in surveys %}
+  {% for survey in survey %}
    
       <div class="col-2 form-select questionnaires" id="questionnaires-{{ survey.id }}"  {% if not loop.first %}style="display: none;"{% endif %}>
        
@@ -62,13 +62,13 @@
   <select id="survey-select" name="survey" class="form-select">
     <option value="">Select Survey</option>
 
-    {% for survey in surveys %}
+    {% for survey in survey %}
       <option value="{{ survey.id }}">{{ survey.name }}</option>
     {% endfor %}
   </select>
 </div> -->
 
-              
+<!--               
               <div class="col-3">
                 <select id="mySelect" onchange="showDiv()" class="form-select">
                   <option value="">Select Chart</option>
@@ -91,4 +91,4 @@
                 </select>
               </div>
               
-            </div>
+            </div> -->

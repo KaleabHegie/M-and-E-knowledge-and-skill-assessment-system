@@ -44,11 +44,19 @@ def change_password(request):
 
 
 def indexView(request):
+    survey = Survey.objects.all()
     surveys = Survey.objects.all().count()
     questions = Question.objects.all().count()
     Response = UserResponse.objects.all().count()
+    selected_survey_id = request.GET.get('survey_id')
+    selected_questionnaires = Question.filter(survey_id=selected_survey_id) if selected_survey_id else None
+    selected_questions = questions.filter(questionnaire__survey_id=selected_survey_id) if selected_survey_id else None
 
-    context = {'surveys': surveys, 'questions': questions, 'Response':Response}
+
+
+    context = {'surveys': surveys, 'questions': questions, 'Response':Response , 'survey':survey , 'selected_survey_id':selected_survey_id,'selected_survey_id': selected_survey_id,
+        'selected_questionnaires': selected_questionnaires,
+        'selected_questions': selected_questions,}
     return render(request, 'index.html', context)
     # survey_id = request.GET.get('survey_id')
     # if survey_id:

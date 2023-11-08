@@ -38,7 +38,7 @@
                                                 <div class="d-block ">
                                                     <div class="fw-semibold counter" 
                                                      style="font-size: x-large; text-align: center;" > {{surveys}} </div>
-                                                    <a href="" class="nav-link text-primary">
+                                                    <a href="#" class="nav-link text-primary">
                                                         View All
                                                         <i class="bi bi-arrow-right-circle"></i>
                                                     </a>
@@ -127,26 +127,19 @@
                         <div class="row ">
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label class="textS">Survey</label>
-                                <select class="form-control ">
-                                    <option selected="selected">Alabama</option>
-                                    <option>Alaska</option>
-                                    <option>California</option>
-                                    <option>Delaware</option>
-                                    <option>Tennessee</option>
-                                    <option>Texas</option>
-                                    <option>Washington</option>
-                                </select>
+                                <select id="survey-select" class="form-control">
+                                    <option selected="selected">Select Survey</option>
+                                    {% for survey in survey %}
+                                      <option value="{{ survey.name }}">{{ survey.name }}</option>
+                                    {% endfor %}
+                                  </select>
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label class="textS">By Date</label>
                                 <select class="form-control ">
                                     <option selected="selected">Alabama</option>
                                     <option>Alaska</option>
-                                    <option>California</option>
-                                    <option>Delaware</option>
-                                    <option>Tennessee</option>
-                                    <option>Texas</option>
-                                    <option>Washington</option>
+                                   
                                 </select>
                             </div>
                         </div>
@@ -155,6 +148,10 @@
 
                 <br>
             </div>
+
+              
+            
+              
 
             <!-- table -->
             <section class="content">
@@ -165,7 +162,7 @@
 
                                 <div class="card-header" style="justify-content: space-between;">
                                     <div class="card-title">
-                                        {survey title}
+                                        <div id="selected-survey"></div>
                                     </div>
                                     <div class="d-flex" style="float: right;">
                                         <div class="me-3">
@@ -336,6 +333,16 @@
           time: 1200
         });
       });
+ 
+  const select = document.getElementById('survey-select');
+  const selectedSurvey = document.getElementById('selected-survey');
+
+  select.addEventListener('change', (event) => {
+    const surveyName = event.target.value;
+    selectedSurvey.textContent = surveyName;
+  });
+
+  
     </script>
 
 </body>
