@@ -23,26 +23,8 @@
   margin-right: 10px;
 }
 
-
-/* 
-        select {
-          width: 200px;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          font-size: 16px;
-          color: #333;
-        }
-        
-        optgroup {
-          font-weight: bold;
-        }
-        
-        option {
-          padding: 5px;
-          background-color: #e8e8e8;
-        } */
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <body>
     
         <div class="container">
@@ -95,7 +77,9 @@
                             
 
                              <!-- Category and subcategory fields -->
-                            <label for="id_category">Category:</label>
+                            <label for="id_category">Category:</label> 
+                                <button type="button" class="btn" id="addCategory" style="float: right;">
+                                <i class="bi bi-plus-circle" ></i></button>
                             <div class="category-dropdown">
                                 <select class="form-control" name="category" id="">
                                     <option value="">-- Select Category --</option>
