@@ -21,7 +21,57 @@
 
 .back-button i {
   margin-right: 10px;
+} 
+
+
+
+
+.form-controls {
+position: relative;
+margin: 20px 0;
+width: 300px;
 }
+
+
+.form-controls input {
+border: 0;
+border-bottom: 2px solid #333;
+padding: 15px 0;
+display: block;
+font-size: 18px;
+font-family: ‘Muli’, sans-serif;
+width: 100%;
+transition: 0.1s ease-in;
+}
+
+
+.form-controls input:focus,
+.form-controls input:valid {
+border-bottom-color: #007bff;
+outline: none;
+}
+
+.form-controls input:focus + label span ,
+.form-controls input:valid + label span{
+color: #1987fc;
+transform: translateY(-30px);
+}
+
+
+.form-controls label {
+position: absolute;
+top: 15px;
+left: 0;
+}
+
+.form-controls label span {
+display: inline-block;
+font-size: 18px;
+min-width: 5px;
+transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+
 
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -31,9 +81,9 @@
             <div class="row justify-content-center align-items-center" style="height:100vh">
                 <div class="col-md-6">
                     <div class="container card shadow " >
-                        <form action="" id="theForm" method="post">
+                        <form action="" id="theForm" method="post" class="container mt-3">
                             {% csrf_token %}
-                            <div class="modal-header">
+                            <div class="container">
                                 <!-- to be changed history -->
                                 <a href="#" class="back-button" onclick="window.history.back(); return false;"> 
                                     <i class="fas fa-arrow-left"></i> Back
@@ -42,7 +92,7 @@
                                 <input type="hidden" name="question_type" id="IconType1" value="{{questionType}}">
                             </div>
 
-                            <div class="modal-body">
+                            <div class="container mt-1">
                                 <!-- Question Text -->
                                 <div class="form-group">
                                     <label >Question:</label>
@@ -77,9 +127,11 @@
                             
 
                              <!-- Category and subcategory fields -->
-                            <label for="id_category">Category:</label> 
-                                <button type="button" class="btn" id="addCategory" style="float: right;">
-                                <i class="bi bi-plus-circle" ></i></button>
+                            <label for="id_category">Category:</label>
+
+                                <div id="addCategory" data-bs-toggle="modal" data-bs-target="#categoryModal" style="float: right;">
+                                <i class="bi bi-plus-circle" ></i></div>
+
                             <div class="category-dropdown">
                                 <select class="form-control" name="category" id="">
                                     <option value="">-- Select Category --</option>
@@ -108,10 +160,43 @@
                                 </div>
                                 
                         </div>
-                            <div class="modal-footer">
+                            <div class="mt-3 mb-3" style="float: right;">
                                 <!-- Submit Button -->
                                     <button type="submit" class="btn btn-primary">Add Question</button>
                             </div>
+
+
+                            <div class="modal" id="categoryModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title">Create Category</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-controls">
+                                                <input type="text" name="newCategory" required />
+                                                <label>New category</label>
+                                            </div>
+
+                                             <!-- Add new sub-category -->
+                                             <div class="form-group wave">
+                                                <label >
+                                                    <input type="checkbox" name="" id="newSubcategory">
+                                                Add Sub-category
+                                                </label>
+                                                <input class="form-control" style="display: none;" type="text" name="subcategoriesNEW" id="subcategoriesNEW">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                              </div>
+                            </div>
+
+
                         </form>
 
                     </div>
@@ -132,6 +217,7 @@
   toggleInputField('weightCHK', 'weightInput')
   toggleInputField('labelCHK', 'labelInput')
   toggleInputField('allow_doc', 'doc_label')
+  toggleInputField('newSubcategory', 'subcategoriesNEW')
 //   if allow_doc is checked display option to enter a  doc label as optional
 
 
@@ -192,6 +278,18 @@
     });
 
 
+
+
+const inputs = document.querySelectorAll('.form-controls input');
+const labels = document.querySelectorAll('.form-controls label');
+    labels.forEach(label => {
+label.innerHTML = label.innerText
+.split('')
+.map((letter, idx) => `<span style="
+transition-delay: ${idx * 50}ms
+">${letter}</span>`)
+.join('');
+});
   
     </script>
 </body>
