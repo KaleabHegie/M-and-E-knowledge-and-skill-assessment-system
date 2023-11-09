@@ -70,15 +70,20 @@ class Department(models.Model):
 
     def __str__(self) -> str:
         return self.department_name
-
+        
 class UserResponse(models.Model):
-    forsurvey = models.ForeignKey("Survey", on_delete=models.CASCADE , null=True , blank=True)
-    submitted_by =models.ForeignKey("Account.CustomUser", on_delete=models.CASCADE , null=True , blank=True)
+    forsurvey = models.ForeignKey("Survey", on_delete=models.CASCADE, null=True, blank=True)
+    submitted_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+    anonymous_user = models.IntegerField(null=True, blank=True)
     submitted_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return str(self.submitted_by)
-    
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.anonymous_user = self.id
+        super().save(*args, **kwargs)
     
 class Answer(models.Model):
     forquestion=models.ForeignKey("Question", on_delete=models.CASCADE , null=True , blank=True)

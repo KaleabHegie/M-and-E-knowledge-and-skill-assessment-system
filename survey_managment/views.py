@@ -304,46 +304,20 @@ def chooseTarget(request, survey_id, question_id):
     
     return render(request, 'chooseTarget.html', data)
 
-   
 
-def newForm(request):
-    if request.method == 'POST':
-        # new Questionnaire
-        name = request.POST.get('Title')
-        instruction = request.POST.get('Instruction')
-        created_at = datetime.now()
-        # survey = ??
-        newQuestionnaire = Questionnaire.objects.create(name=name, instruction=instruction, created_at=created_at)
-        newQuestionnaire.save()
-        request.session['questionnaire_id'] = newQuestionnaire.id 
-       
-        # new categories
-        category = request.POST.getlist('category')
-        print(category)
-        for i in category:
-            name = i
-            Category.objects.create(name=name)
-
-
-        return redirect('survey_managment:questionCreationByType' )
-    else :
-         cateForm = CategoryForm()
-         return render(request, 'createForm.html', {'cateForm' : cateForm})
-    
-
-
-def questionCreationByType(request, survey_id):
-    # survey_id = request.GET.get('survey_id')
+ # survey_id = request.GET.get('survey_id')
     # survey = Survey.objects.get(id=survey_id)
     # survey_questions = survey.question.all()
-    return render(request, 'addQuestions.html', {'survey_id':survey_id})
-
-
+def questionCreationByType(request, survey_id):
+    zsurvey = Survey.objects.get(id=survey_id)
+    questions = zsurvey.question.all()
+    return render(request, 'addQuestions.html', {'zsurvey':zsurvey, 'questions' : questions})
+ 
     
-    
 
-def newQuestion(request ,questionType ):
+def newQuestion(request,questionType, s_id ):
     categories = Category.objects.prefetch_related('subcategories')
+    survey = get_object_or_404(Survey, id=s_id)
     if request.method == 'POST':
         title = request.POST.get('title')
         label = request.POST.get('labelInput')
@@ -375,11 +349,9 @@ def newQuestion(request ,questionType ):
                 question.choice.add(newChoice)
 
         question.save()
- 
-
-        context = {'question': question,  'hasOption':hasOption }
-        return render(request, 'addQuestions.html', context )
-    
+        
+        survey.question.add(question)
+        return redirect('survey_managment:questionCreationByType', survey_id=s_id )
 
 
     context = {'questionType': questionType, 'categories': categories}
@@ -405,8 +377,7 @@ def greetingpage_view(request):
 @login_required
 def survey_listss_views(request):
     today = date.today()
-    user = request.user.Line_ministry
-    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today, for_line_ministry=user)
+    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today)
     data = {
         'surveys': surveys
     }
