@@ -44,13 +44,32 @@ def change_password(request):
 
 
 def indexView(request):
-    surveys = Survey.objects.all().count()
-    questions = Question.objects.all().count()
-    Response = UserResponse.objects.all().count()
+    survey_id = request.GET.get('survey_id')
+    if survey_id:
+        survey = get_object_or_404(Survey, id=survey_id)
+        questionnaires = survey.question_set.all()
+        context = {
+            'survey': survey,
+            'questionnaires': questionnaires,
+        }
+        return render(request, 'index.html', context)
+    else:
+        surveys = Survey.objects.all()
+        surveyType = SurveyType.objects.all()
+        surveys_count = Survey.objects.all().count()
+        questions = Question.objects.all().count()
+        Response = UserResponse.objects.all().count()
+        line_ministry = Line_ministry.objects.all()
+        form = AnalysisForm()
 
-    context = {'surveys': surveys, 'questions': questions, 'Response':Response}
-    return render(request, 'index.html', context)
-    # survey_id = request.GET.get('survey_id')
+
+        context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
+             'line_ministry':line_ministry,'form':form,'surveyType':surveyType}
+        return render(request, 'index.html', context)
+
+
+
+ # survey_id = request.GET.get('survey_id')
     # if survey_id:
     #     survey = get_object_or_404(Survey, id=survey_id)
     #     questionnaires = survey.questionnaire_set.all()
@@ -68,6 +87,31 @@ def indexView(request):
 
     #     }
     #     return render(request, 'index.html',context)
+
+
+def load_survey(request):
+    survey_type_id = request.GET.get("survey_type")
+    survey = Survey.objects.filter(survey_type_id=survey_type_id)
+   
+    return render(request ,"load_survey.html",{"survey":survey , })
+
+def load_ministry(request):
+    survey_id = request.GET.get("survey")
+    survey = Survey.objects.filter(id=survey_id).first()
+    line_ministries = survey.for_line_ministry.all() if survey else []
+    return render(request, "load_ministry.html", {"line_ministries": line_ministries})
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+
+
+def get_data(request):
+    survey_type_id = request.GET.get("survey_type")
+    survey = Survey.objects.filter(survey_type_id=survey_type_id)
+    return JsonResponse(list(survey), safe=False)
+
+   
 
 # def loginView(request):
 #     return render(request, 'login.html')
@@ -369,8 +413,7 @@ def greetingpage_view(request):
 @login_required
 def survey_listss_views(request):
     today = date.today()
-    user = request.user.Line_ministry
-    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today, for_line_ministry=user)
+    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today)
     data = {
         'surveys': surveys
     }
