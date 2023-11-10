@@ -6,7 +6,6 @@
 
 
 <body class="hold-transition sidebar-mini layout-fixed">
-
     <div class="wrapper">
         {%include 'includes/loader.html'%}
         {% include 'includes/topNavbar.html' %}
@@ -37,7 +36,7 @@
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-block ">
                                                     <div class="fw-semibold counter" 
-                                                     style="font-size: x-large; text-align: center;" > {{surveys}} </div>
+                                                     style="font-size: x-large; text-align: center;" > {{surveys_count}} </div>
                                                     <a href="#" class="nav-link text-primary">
                                                         View All
                                                         <i class="bi bi-arrow-right-circle"></i>
@@ -125,34 +124,60 @@
                     <div class="container-fluid" id="searchArea">
                         <h2 class="textS">Search Area</h2>
                         <div class="row ">
-                            <div class="form-group col-lg-6 col-sm-12">
+                            <!-- <div class="form-group col-lg-4 col-sm-6">
+                                <label class="textS">Line Ministry</label>
+                                <select id="survey-select" class="form-control">
+                                    <option selected="selected">Select Line Ministry</option>
+                                    {% for minister in line_ministry %}
+                                      <option value="{{ minister.name }}">{{ minister.name }}</option>
+                                    {% endfor %}
+                                  </select>
+                            </div> -->
+                            <!-- <div class="form-group col-lg-4 col-sm-6">
                                 <label class="textS">Survey</label>
                                 <select id="survey-select" class="form-control">
-                                    <option selected="selected">Select Survey</option>
+                                    <option selected="selected">Select Category</option>
                                     {% for survey in survey %}
                                       <option value="{{ survey.name }}">{{ survey.name }}</option>
                                     {% endfor %}
                                   </select>
+                            </div> -->
+                            <form >
+                                <div class="row">
+                                {% csrf_token %}
+                                <div class="form-group col-lg-3 col-sm-6">
+                                    <label   class="textS" for="{{ form.survey_type.id_for_label }}">Survey Type:</label>
+                                    {{ form.survey_type }}
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6">
+                                    <label  class="textS"  >Survey:</label>
+                                    {{ form.survey }}
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6">
+                                    <label  class="textS">Line Ministry:</label>
+    {{ form.line_ministry }}
+                                </div>
                             </div>
-                            <div class="form-group col-lg-6 col-sm-12">
-                                <label class="textS">By Date</label>
+                                                               
+
+                            </form>
+                            <!-- <div class="form-group col-lg-4 col-sm-6">
+                                <label class="textS">Catagory</label>
                                 <select class="form-control ">
                                     <option selected="selected">Alabama</option>
                                     <option>Alaska</option>
                                    
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
-
+                
                 <br>
             </div>
 
               
-            
-              
-
+           
             <!-- table -->
             <section class="content">
                 <div class="container-fluid">
@@ -327,6 +352,7 @@
    
     {% include "includes/scripts.html" %}
     <script>
+        
       $(document).ready(function(){
         $(".counter").counterUp({
           delay: 10,
@@ -334,15 +360,7 @@
         });
       });
  
-  const select = document.getElementById('survey-select');
-  const selectedSurvey = document.getElementById('selected-survey');
 
-  select.addEventListener('change', (event) => {
-    const surveyName = event.target.value;
-    selectedSurvey.textContent = surveyName;
-  });
-
-  
     </script>
 
 </body>
