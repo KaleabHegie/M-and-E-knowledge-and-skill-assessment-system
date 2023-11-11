@@ -53,6 +53,7 @@ def indexView(request):
             'questionnaires': questionnaires,
         }
         return render(request, 'index.html', context)
+   
     else:
         surveys = Survey.objects.all()
         surveyType = SurveyType.objects.all()
