@@ -65,12 +65,7 @@ def register_view(request):
 
 
 def login_view(request):
-    context = {
-		'line_ministry' : Line_ministry.objects.all()
-	}
     if request.method == 'POST':
-        checkbox_value = request.POST.get('myCheckbox')
-        if checkbox_value == "off":
             username = request.POST['username']
             password = request.POST['password']
 
@@ -84,13 +79,9 @@ def login_view(request):
             else:
                 messages.error(request, 'Invalid Credentials')
                 return redirect('Account:Login')
-        else:
-            # Log in the user without authentication
-			 
-            return survey_listss_views.__wrapped__(request)
            
     else:
-        return render(request, 'login.html' , context)
+        return render(request, 'login.html' )
 
 
 def logout(request):

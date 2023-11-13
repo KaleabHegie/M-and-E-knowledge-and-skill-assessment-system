@@ -26,7 +26,7 @@ class SurveyForm(forms.ModelForm):
         fields = ['name', 'instruction', 'start_at', 'end_at', 'survey_type' , 'for_line_ministry']
         widgets = {
             'survey_type': forms.Select(attrs={'class': 'form-control'}),
-            'for_line_ministry': forms.SelectMultiple(attrs={'class': 'form-control  select2'}),
+            'for_line_ministry': forms.SelectMultiple(attrs={'class': 'form-select select2'}),
         }
 
     def clean_start_at(self):
