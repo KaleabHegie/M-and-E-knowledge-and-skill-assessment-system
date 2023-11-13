@@ -35,7 +35,7 @@ urlpatterns = [
     path('displayQuestion/<int:survey_id>/', views.displayQuestion, name='displayQuestion'),
     path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
-
+    path('get_json/',views.get_data,name='get_data'),
    
     path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),   

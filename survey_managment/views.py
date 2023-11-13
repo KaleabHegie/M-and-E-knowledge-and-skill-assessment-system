@@ -105,17 +105,49 @@ def load_ministry(request):
 
 from django.shortcuts import render
 from django.http import JsonResponse
+import json
 
+from django.http import JsonResponse
+from .models import Survey, Line_ministry, CustomUser, Category, Department, Question, SurveyType, UserResponse
 
 def get_data(request):
-    survey_type_id = request.GET.get("survey_type")
-    survey = Survey.objects.filter(survey_type_id=survey_type_id)
-    return JsonResponse(list(survey), safe=False)
+    surveys = Survey.objects.all()
+    data = []
+    
+    for survey in surveys:
+        line_ministries = survey.for_line_ministry.all()
+        line_ministry_data = []
+        
+        for line_ministry in line_ministries:
+            line_ministry_data.append({
+                'id': line_ministry.id,
+                'name': line_ministry.name
+            })
+        
+        survey_data = {
+            'id': survey.id,
+            'name': survey.name,
+            'line_ministries': line_ministry_data
+        }
+        
+        data.append(survey_data)
+    
+    serialized_data = {
+        'answer': list(Answer.objects.values()),
+        'surveys': data,
+        'line_ministry': list(Line_ministry.objects.values('id', 'name')),
+        'users': list(CustomUser.objects.values()),
+        'category': list(Category.objects.values()),
+        'department': list(Department.objects.values()),
+        'questions': list(Question.objects.values()),
+        'survey_type': list(SurveyType.objects.values()),
+        'survey': list(Survey.objects.values()),
+        'user_response': list(UserResponse.objects.values()),
 
-   
+    }
+    
+    return JsonResponse(serialized_data, safe=False)
 
-# def loginView(request):
-#     return render(request, 'login.html')
 
 def forgotPasswordView(request):
     return render(request, 'forgot-password.html')
