@@ -1,171 +1,180 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-{%include "includes/head.html"%}
+
+{% include 'includes/head.html' %}
 <style>
   body{
-    margin-top:20px;
-    color: #1a202c;
-    text-align: left;
-    background-color: #e2e8f0;    
-}
-.main-body {
-    padding: 15px;
-}
-.card {
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+    background-color: #b7efc5;
+  }
+
+/* table{
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+} */
+table.rounded-corners {
+  border-spacing: 0;
+  border-collapse: separate;
+  border-radius: 10px;
 }
 
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 0 solid rgba(0,0,0,.125);
-    border-radius: .25rem;
+/* table.rounded-corners tbody tr:first-child th,
+table.rounded-corners tbody tr:first-child td {
+    border-radius: 10px;
+} */
+
+table.rounded-corners tbody tr:first-child th:first-child {
+ border-top-left-radius: 10px;
 }
 
-.card-body {
-    flex: 1 1 auto;
-    min-height: 1px;
-    padding: 1rem;
+table.rounded-corners tbody tr:last-child th:first-child {
+ border-bottom-left-radius: 10px;
 }
 
-.gutters-sm {
-    margin-right: -8px;
-    margin-left: -8px;
+table.rounded-corners tbody tr:first-child th:last-child {
+ border-top-right-radius: 10px;
 }
 
-.gutters-sm>.col, .gutters-sm>[class*=col-] {
-    padding-right: 8px;
-    padding-left: 8px;
-}
-.mb-3, .my-3 {
-    margin-bottom: 1rem!important;
+table.rounded-corners tbody tr:last-child th:last-child {
+ border-bottom-right-radius: 10px;
 }
 
-.bg-gray-300 {
-    background-color: #e2e8f0;
+table.rounded-corners tbody tr:first-child td:first-child {
+ border-top-left-radius: 10px;
 }
-.h-100 {
-    height: 100%!important;
+table.rounded-corners tbody tr:last-child td:first-child {
+ border-bottom-left-radius: 10px;
 }
-.shadow-none {
-    box-shadow: none!important;
+
+table.rounded-corners tbody tr:first-child td:last-child {
+ border-top-right-radius: 10px;
 }
+
+table.rounded-corners tbody tr:last-child td:last-child {
+ border-bottom-right-radius: 10px;
+}
+
+    tr{
+    margin: 15px;
+    
+  }
+
+  th{
+    font-weight: lighter;
+  }
+ 
+  
+  .rounded-corners>tbody>tr:nth-child(odd)>td, 
+  .rounded-corners>tbody>tr:nth-child(odd)>th {
+   background-color:rgba(178,223,219,1.0); 
+ }
+
+ .rounded-corners>tbody>tr:nth-child(even)>td, 
+  .rounded-corners>tbody>tr:nth-child(even)>th {
+   background-color: rgba(224,242,241,1.0); 
+ }
+
+ .editbtn{
+  margin: 20px;
+  float: right;
+ }
+
+.btndiv button:hover{
+  background-color: rgba(178,223,219,1.0);
+}
+
+.rounded-circle{
+  padding: 10px;
+  border: 3px solid  #40916c;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
 </style>
-<body>
-  <div class="wrapper">
+<body class="hold-transition sidebar-mini layout-fixed" style="background-color:rgb(240, 249, 249);">
+  
+  <div class="wrapper ">
     {% if user.is_superuser %}
-    {% include 'includes/topNavbar.html' %}
-    {% include 'includes/sideNavbar.html' %}
+      {% include 'includes/topNavbar.html' %}
+      {% include 'includes/sideNavbar.html' %}
     {% endif %}
-    <div class="content-wrapper">
-     <div class="container">
-    <div class="main-body">
-    
-          <!-- Breadcrumb -->
-          <!-- <nav aria-label="breadcrumb" class="main-breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
-              <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-            </ol>
-          </nav> -->
-          <!-- /Breadcrumb -->
-    
-          <div class="row gutters-sm">
-            <div class="col-md-4 mb-3">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex flex-column align-items-center text-center">
-                    <img src="{{custom_user.image.url}}" alt="Admin" class="rounded-circle" width="150">
-                    <div class="mt-3">
-                      <h4>{{custom_user.username}}</h4>
-                      <p class="text-secondary mb-1">{{custom_user.Role}}</p>
-                      <p class="text-muted font-size-sm">Line_ministry</p>
-                      <button class="btn btn-outline-primary"><a  href="{% url 'Account:edit_profile' %}" style="text-decoration:none;"> Edit Profile</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-           
-            </div>
-            <div class="col-md-8">
-              <div class="card mb-3">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Full Name</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      {{custom_user.first_name}} {{custom_user.last_name}}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Email</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      {{custom_user.email}}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Phone</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      {{custom_user.phone_number}}
+      <div class="content-wrapper" style="background-color: rgb(240, 249, 249);">
+        <div class="container-fluid">
+          <div class="container d-flex justify-content-end btndiv">
+            <button class="btn editbtn " style="border: 1px solid rgba(178,223,219,1.0);">
+              <a  href="{% url 'Account:edit_profile' %}" style="text-decoration:none; color: #40916c;">
+                 Edit Profile
+              </a>
+            </button>
+          </div>
+          <div class="row">
 
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Date of Birth</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      {{custom_user.date_of_birth}}
 
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Department</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      {{custom_user.department}}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Address</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      Bay Area, San Francisco, CA
-                    </div>
-                  </div>
-                  <hr>
-                 
-                </div>
+            <div class="col-lg-4 card-container">
+             <div class="card" width="30px" style="border-radius: 20px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+              <div class="card-body d-flex flex-column align-items-center text-center">
+                  {% if custom_user.image %}
+                    <img src="{{custom_user.image.url}}" alt="Admin" class="rounded-circle " width="150">
+                  {% endif %}
+                    <img src="{% static 'assets/Default_pp.png' %}" alt="Admin" class="rounded-circle " width="150">
+                    <br>
+                    <h4>{{custom_user.username}}</h4>
               </div>
             </div>
           </div>
 
-        </div>
-    </div>
+
+
+            <div class="col-lg-8">
+              <table class="table rounded-corners">
+                <tbody>
+                  <tr>
+                    <th scope="row"> 
+                      <span class="col"> Name </span>
+                      <span style="float:inline-end;"> : </span>
+                     </th>
+                    <td>{{custom_user.first_name}} {{custom_user.last_name}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" > 
+                      <span class="col"> Date of Birth </span>
+                      <span style="float:inline-end;"> : </span>
+                      </th>
+                    <td>{{custom_user.date_of_birth}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" > 
+                      <span class="col"> Role </span>
+                      <span style="float:inline-end;"> : </span>
+                     </th>
+                    <td> {{custom_user.Role}} </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"  class="d-flex">
+                      <span class="col"> Email </span>  
+                      <span style="float:inline-end;"> : </span>
+                    </th>
+                    <td> {{custom_user.email}} jnsdkjndsnjksdncksdjnkcjsdnksdjk </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" >
+                      <span class="col"> Contact </span>    
+                      <span style="float:inline-end;"> : </span>                  
+                    </th>
+                    <td> {{custom_user.phone_number}} </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" >
+                      <span class="col" >Department </span> 
+                      <span style="float:inline-end;"> : </span> </th>
+                    <td> {{custom_user.department}} </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
   </div>
-  </div>
+</div>
+
+
 </body>
 </html>
