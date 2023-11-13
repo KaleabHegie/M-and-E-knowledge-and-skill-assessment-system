@@ -205,10 +205,15 @@
                                 </table>
                                 <table class="table table-striped" id="survey_detail">
                                     <thead>
-                                        <td> Roll Num </td>
-                                        <th>Survey Name </th>
-                                        <th> Weighted Result </th>
+                                        <th> ጥያቄ</th>
+                                        <th> ደረጃ </th>
+                                        <th> ክብደት </th>
+
+                                        <th>የተመዘነ ደረጃ </th>
+                                        <th> የተመዘነ ደረጃ (በ100% ኛ) </th>
+                                        <th> Indicator </th>
                                         <th> Grading </th>
+
 
                                        
 
@@ -496,7 +501,8 @@ data.user_response.forEach(function(userResponse) {
     }
 });
 
-if (userResponseId !== null) {
+if (userResponseId !== null)
+ {
     var answers = data.answer.filter(function(answer) {
         return answer.response_id === userResponseId;
     });
@@ -519,30 +525,67 @@ answerValues.forEach(function(answer) {
         });
 
 
-        if (answer && !isNaN(answer.answer)) {
-                    var row = surveyTableBody_2.insertRow();
-                    row.insertCell().textContent = answer.weight;
-                    row.insertCell().textContent = answer.weight;
-                   
-              
-                  }
         if (question) {
             var weight = question.weight;
             console.log("the question :" + question.title + "the weight:" + weight)
+            
+
+
             if (!isNaN(answer.value)) {
                 weightedSum += answer.value * weight;
+
                 totalWeight += weight;
             }
-        }
-    });
 
-    if (totalWeight > 0) {
+            if (totalWeight > 0) {
         var weightedAverage = weightedSum / totalWeight;
+        var row = surveyTableBody_2.insertRow();
+            row.insertCell().textContent = question.title;
+            row.insertCell().textContent = answer.value;
+            row.insertCell().textContent = weight;
+            row.insertCell().textContent = answer.value * weight ;
+            var totalresult = answer.value * weight
+            var max_value = 10 ;
+            var weightedinPercent = ( (totalresult) / (max_value* weight) )* 100  + "%";
+            row.insertCell().textContent = weightedinPercent;
+
+           
+            var x = answer.value * weight;
+
+if (x > 90) {
+    row.insertCell().textContent =" Very Good" ;
+
+} else if (x > 79) {
+  row.insertCell().textContent = "Good" ;
+
+} else if (x > 64) {
+  row.insertCell().textContent = "Satisfactory" ;
+
+} else if (x > 49) {
+  row.insertCell().textContent = "Poor" ;
+
+} else if (x > 24) {
+  row.insertCell().textContent = "Very Poor" ;
+
+} else {
+  row.insertCell().textContent = "Extremely Poor" ;
+
+}
+
         console.log("Weighted average of answers: " + weightedAverage.toFixed(2));
     } else {
         console.log("No valid answers found for the selected line ministry.");
-    }
-} else {
+    } 
+            
+
+
+           
+        }
+    });
+
+   
+}
+ else {
     console.log("No user_response ID found for the selected line ministry.");
 }
 
