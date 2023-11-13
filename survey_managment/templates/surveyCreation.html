@@ -70,11 +70,12 @@
                       <label for="{{ form.for_line_ministry.id_for_label }}">For Ministry:</label>
                       {{ form.for_line_ministry }}
                       {% if form.for_line_ministry.errors %}
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback ">
                           {{ form.for_line_ministry.errors|join:", " }}
                         </div>
                       {% endif %}
                     </div>
+                    
                     <button type="submit" class="btn m-3" style="float: right; color: white; background-color: #0096c7;">Create</button>
                   </form>
                   

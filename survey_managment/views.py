@@ -187,6 +187,7 @@ def survey_detail(request, id):
     data = {
         'survey_id': id,
         'survey': Survey.objects.get(id=id),
+        'user_responses': UserResponse.objects.filter(forsurvey_id=id),
         'questions': Survey.objects.get(id=id).question.all()
     }
     return render(request, 'survey_detail.html', data)
@@ -356,7 +357,7 @@ def newQuestion(request,questionType, s_id ):
 
 
 ####### final preview views ################################
-
+@login_required
 def greetingpage_view(request):
     context ={
         
@@ -375,6 +376,7 @@ def survey_listss_views(request):
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
 
+@login_required
 def questionForSurvey(request, id):
     survey = get_object_or_404(Survey, id=id)
     questions = survey.question.all()

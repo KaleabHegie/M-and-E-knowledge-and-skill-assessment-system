@@ -61,6 +61,12 @@
               </div>
             </div>
           </ul>
+
+          {% if user_responses  %}
+             
+          {% else %}  
+             <a class="btn btn-primary" href="{% url "survey_managment:questionCreationByType" survey_id %}">Add Questions</a>
+          {% endif %}
           
           </div>
         </div>
