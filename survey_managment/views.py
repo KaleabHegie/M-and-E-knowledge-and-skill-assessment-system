@@ -44,13 +44,33 @@ def change_password(request):
 
 
 def indexView(request):
-    surveys = Survey.objects.all().count()
-    questions = Question.objects.all().count()
-    Response = UserResponse.objects.all().count()
+    survey_id = request.GET.get('survey_id')
+    if survey_id:
+        survey = get_object_or_404(Survey, id=survey_id)
+        questionnaires = survey.question_set.all()
+        context = {
+            'survey': survey,
+            'questionnaires': questionnaires,
+        }
+        return render(request, 'index.html', context)
+   
+    else:
+        surveys = Survey.objects.all()
+        surveyType = SurveyType.objects.all()
+        surveys_count = Survey.objects.all().count()
+        questions = Question.objects.all().count()
+        Response = UserResponse.objects.all().count()
+        line_ministry = Line_ministry.objects.all()
+        form = AnalysisForm()
 
-    context = {'surveys': surveys, 'questions': questions, 'Response':Response}
-    return render(request, 'index.html', context)
-    # survey_id = request.GET.get('survey_id')
+
+        context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
+             'line_ministry':line_ministry,'form':form,'surveyType':surveyType}
+        return render(request, 'index.html', context)
+
+
+
+ # survey_id = request.GET.get('survey_id')
     # if survey_id:
     #     survey = get_object_or_404(Survey, id=survey_id)
     #     questionnaires = survey.questionnaire_set.all()
@@ -69,8 +89,65 @@ def indexView(request):
     #     }
     #     return render(request, 'index.html',context)
 
-# def loginView(request):
-#     return render(request, 'login.html')
+
+def load_survey(request):
+    survey_type_id = request.GET.get("survey_type")
+    survey = Survey.objects.filter(survey_type_id=survey_type_id)
+   
+    return render(request ,"load_survey.html",{"survey":survey , })
+
+def load_ministry(request):
+    survey_id = request.GET.get("survey")
+    survey = Survey.objects.filter(id=survey_id).first()
+    line_ministries = survey.for_line_ministry.all() if survey else []
+    return render(request, "load_ministry.html", {"line_ministries": line_ministries})
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+import json
+
+from django.http import JsonResponse
+from .models import Survey, Line_ministry, CustomUser, Category, Department, Question, SurveyType, UserResponse
+
+def get_data(request):
+    surveys = Survey.objects.all()
+    data = []
+    
+    for survey in surveys:
+        line_ministries = survey.for_line_ministry.all()
+        line_ministry_data = []
+        
+        for line_ministry in line_ministries:
+            line_ministry_data.append({
+                'id': line_ministry.id,
+                'name': line_ministry.name
+            })
+        
+        survey_data = {
+            'id': survey.id,
+            'name': survey.name,
+            'line_ministries': line_ministry_data
+        }
+        
+        data.append(survey_data)
+    
+    serialized_data = {
+        'answer': list(Answer.objects.values()),
+        'surveys': data,
+        'line_ministry': list(Line_ministry.objects.values('id', 'name')),
+        'users': list(CustomUser.objects.values()),
+        'category': list(Category.objects.values()),
+        'department': list(Department.objects.values()),
+        'questions': list(Question.objects.values()),
+        'survey_type': list(SurveyType.objects.values()),
+        'survey': list(Survey.objects.values()),
+        'user_response': list(UserResponse.objects.values()),
+
+    }
+    
+    return JsonResponse(serialized_data, safe=False)
+
 
 def forgotPasswordView(request):
     return render(request, 'forgot-password.html')

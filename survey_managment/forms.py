@@ -62,3 +62,16 @@ class AnswerForm(forms.ModelForm):
 class CustomUserLoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+class AnalysisForm(forms.Form):
+    survey_type = forms.ModelChoiceField(queryset=SurveyType.objects.all(),
+                                  widget=forms.Select(attrs={"hx-get":"load_survey/","hx-target":"#id_survey" ,'class': ' form-control'}))
+    survey = forms.ModelChoiceField(queryset=Survey.objects.none(),
+                                     widget=forms.Select(attrs={"hx-get":"load_ministry/","hx-target":"#id_line_ministry" , 'class': 'form-control'}))
+    line_ministry = forms.ModelChoiceField(
+        queryset=Line_ministry.objects.none(),
+        widget=forms.Select(attrs={"class": "form-control"})
+    )
+    
+
+    
