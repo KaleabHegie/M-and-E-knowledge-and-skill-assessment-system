@@ -1,77 +1,65 @@
  <div class="row">
-              <div class="col-3">
-                <select id="survey_type" name="survey_type" class="form-select" onchange="">
+              <div class="col-lg-3 col-sm-6">
 
-                  <!-- {% for surveytype in surveyType %}
-                  <option value="{{ surveytype.id }}">{{ surveytype.name }}</option>
-              {% endfor %} -->
+                <select id="survey_type" name="survey_type" class="form-select" >
+
+                 <option value="">Select Survey</option>
+
                 </select>
               </div>
-                  
-      
-              
-   {% if surveys %}
-  {% for survey in surveys %}
-   
-      <div class="col-2 form-select questionnaires" id="questionnaires-{{ survey.id }}"  {% if not loop.first %}style="display: none;"{% endif %}>
-       
-          <select id="questionnaires-{{ survey.id }}" onchange="">
-            <option value="">Select Quesionnaries</option>
-            <option value="all">All</option>
-            {% for questionnaire in survey.question_set.all %}
-                  <option>{{ questionnaire.name }}</option>
-                {% endfor %}
+              <div class="form-group col-lg-4 col-sm-6">
+                <select id="survey-select" class="form-control">
+                <option selected="selected" >Select survey</option>
+                
+              </select>
+        </div>
+        <div class="form-group col-lg-4 col-sm-6">
+            <select id="ministry-select" class="form-control">
+            <option selected="selected">Select survey</option>
+            
           </select>
-       
-      
+          
     </div>
-  {% endfor %}
-{% endif %} 
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div class="col-3">
-  <select id="survey-select" name="survey" class="form-select">
-    <option value="">Select Survey</option>
-
-    {% for survey in survey %}
-      <option value="{{ survey.id }}">{{ survey.name }}</option>
-    {% endfor %}
-  </select>
-</div> -->
-
-<!--               
-              <div class="col-3">
-                <select id="mySelect" onchange="showDiv()" class="form-select">
-                  <option value="">Select Chart</option>
-                  <option value="area_chart"> Area Chart</option>
-                  <option value="line_chart">Line Chart</option>
-                  
-                  <option value="pie_chart"> Pie Chart</option>
-                  <option value="bar_chart"> Bar Chart</option>
-                  <option value="donut_chart"> Donut Chart</option>
-                  <option value="stacked_bar_chart"> Stacked Bar Chart</option>
-          
-                </select>
-            </div> 
-            <div class="col-3">
-                <select id="" onchange="" class="form-select">
-                  <option value="">Select Line Ministry</option>
-                  <option value="area_chart"> Area Chart</option>
-                 
-          
-                </select>
               </div>
+                  
+      
+
               
-            </div> -->
+              
+              <!-- <form method="POST" id="form">
+                <div class="row">
+                    {% csrf_token %}
+                    <div class="form-group col-lg-3 col-sm-6">
+                        <label class="textS" for="{{ form.survey_type.id_for_label }}">Survey
+                            Type:</label>
+                        {{ form.survey_type }}
+                    </div>
+                    <div class="form-group col-lg-3 col-sm-6">
+                        <label class="textS">Survey:</label>
+                        {{ form.survey }}
+                    </div>
+                    <div class="form-group col-lg-3 col-sm-6">
+                        <label class="textS">Line Ministry:</label>
+                        {{ form.line_ministry }}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form> -->
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

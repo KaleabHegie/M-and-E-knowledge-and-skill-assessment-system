@@ -128,102 +128,11 @@
                     <div class="container-fluid" id="searchArea">
                         <h2 class="textS">Search Area</h2>
                         <div class="row ">
-                            <!-- <div class="form-group col-lg-4 col-sm-6">
-                                <label class="textS">Line Ministry</label>
-                                <select id="survey-select" class="form-control">
-                                    <option selected="selected">Select Line Ministry</option>
-                                    {% for minister in line_ministry %}
-                                      <option value="{{ minister.name }}">{{ minister.name }}</option>
-                                    {% endfor %}
-                                  </select>
-                            </div> -->
-                            <!-- <div class="form-group col-lg-4 col-sm-6">
-                                <label class="textS">Survey</label>
-                                <select id="survey-select" class="form-control">
-                                    <option selected="selected">Select Category</option>
-                                    {% for survey in survey %}
-                                      <option value="{{ survey.name }}">{{ survey.name }}</option>
-                                    {% endfor %}
-                                  </select>
-                            </div > -->
-                            <form method="POST" id="form">
-                                <div class="row">
-                                    {% csrf_token %}
-                                    <div class="form-group col-lg-3 col-sm-6">
-                                        <label class="textS" for="{{ form.survey_type.id_for_label }}">Survey
-                                            Type:</label>
-                                        {{ form.survey_type }}
-                                    </div>
-                                    <div class="form-group col-lg-3 col-sm-6">
-                                        <label class="textS">Survey:</label>
-                                        {{ form.survey }}
-                                    </div>
-                                    <div class="form-group col-lg-3 col-sm-6">
-                                        <label class="textS">Line Ministry:</label>
-                                        {{ form.line_ministry }}
-                                    </div>
-                                </div>
 
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-                            <!-- <div class="form-group col-lg-4 col-sm-6">
-                                <label class="textS">Catagory</label>
-                                <select class="form-control ">
-                                    <option selected="selected">Alabama</option>
-                                    <option>Alaska</option>
-                                   
-                                </select>
-                            </div> -->
+
+
                             {%include "includes/select.html"%}
-                            <div class="container mt-5 mb-5 row ">
-                                <div class="form-group col-lg-4 col-sm-6">
-                                        <select id="survey-select" class="form-control">
-                                        <option selected="selected" >Select survey</option>
-                                        
-                                      </select>
-                                </div>
-                                <div class="form-group col-lg-4 col-sm-6">
-                                    <select id="ministry-select" class="form-control">
-                                    <option selected="selected">Select survey</option>
-                                    
-                                  </select>
-                                  
-                            </div>
-                                <table class="table table-striped" id="surveyTable">
-                                    <thead>
-                                        <th>Survey Name </th>
-                                        <th>Suvey instruction </th>
-                                        <th>start date </th>
-                                        <th>end date </th>
-                                        <th> created_at </th>
 
-
-                                    </thead>
-                                    <tbody id="tbody">
-
-                                    </tbody>
-                                </table>
-                                <table class="table table-striped" id="survey_detail">
-                                    <thead>
-                                        <th> ጥያቄ</th>
-                                        <th> ደረጃ </th>
-                                        <th> ክብደት </th>
-
-                                        <th>የተመዘነ ደረጃ </th>
-                                        <th> የተመዘነ ደረጃ (በ100% ኛ) </th>
-                                        <th> Indicator </th>
-                                        <th> Grading </th>
-
-
-                                       
-
-
-                                    </thead>
-                                    <tbody id="tbody">
-
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -231,6 +140,172 @@
                 <br>
             </div>
 
+            <!-- table -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card hidden-transition">
+
+                                <div class="card-header" style="justify-content: space-between;">
+                                    <div class="card-title">
+                                        <div id="selected-survey"></div>
+                                    </div>
+                                    <div class="d-flex" style="float: right;">
+                                        <div class="me-3">
+                                            <input class="form-control form-control-sm" type="text"
+                                                placeholder="Search Here" aria-label=".form-control-sm example">
+                                        </div>
+                                        <div class="dropdown">
+                                            <a href="" class="btn btn-primary btn-sm btn-wave waves-effect waves-light"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Sort By<i
+                                                    class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                                            </a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a class="dropdown-item" href="">New</a></li>
+                                                <li><a class="dropdown-item" href="">Popular</a></li>
+                                                <li><a class="dropdown-item" href="">Relevant</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table text-nowrap table-hover border table-bordered"
+                                            id="surveyTable">
+                                            <thead>
+                                                <th>Survey Name </th>
+                                                <th>Suvey instruction </th>
+                                                <th>start date </th>
+                                                <th>end date </th>
+                                                <th> created_at </th>
+
+
+                                            </thead>
+                                            <tbody id="tbody">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            Showing 6 Entries <i class="bi bi-arrow-right ms-2 fw-semibold"></i>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <nav aria-label="Page navigation" class="pagination-style-4">
+                                                <ul class="pagination mb-0">
+                                                    <li class="page-item disabled">
+                                                        <a class="page-link" href="javascript:void(0);">
+                                                            Prev
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item active"><a class="page-link"
+                                                            href="javascript:void(0);">1</a></li>
+                                                    <li class="page-item"><a class="page-link"
+                                                            href="javascript:void(0);">2</a></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link text-primary" href="javascript:void(0);">
+                                                            next
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+              <!-- table -->
+              <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card hidden-transition">
+
+                                <div class="card-header" style="justify-content: space-between;">
+                                    <div class="card-title">
+                                        <div id="selected-survey"></div>
+                                    </div>
+                                    <div class="d-flex" style="float: right;">
+                                        <div class="me-3">
+                                            <input class="form-control form-control-sm" type="text"
+                                                placeholder="Search Here" aria-label=".form-control-sm example">
+                                        </div>
+                                        <div class="dropdown">
+                                            <a href="" class="btn btn-primary btn-sm btn-wave waves-effect waves-light"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Sort By<i
+                                                    class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                                            </a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a class="dropdown-item" href="">New</a></li>
+                                                <li><a class="dropdown-item" href="">Popular</a></li>
+                                                <li><a class="dropdown-item" href="">Relevant</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table text-nowrap table-hover border table-bordered"
+                                            id="general_Survey_Info">
+                                            <thead>
+                                                <th> Survey Name </th>
+                                                <th> Weighted Result </th>
+                                                <th> Grading </th>
+                                               
+
+
+                                            </thead>
+                                            <tbody id="tbody">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            Showing 6 Entries <i class="bi bi-arrow-right ms-2 fw-semibold"></i>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <nav aria-label="Page navigation" class="pagination-style-4">
+                                                <ul class="pagination mb-0">
+                                                    <li class="page-item disabled">
+                                                        <a class="page-link" href="javascript:void(0);">
+                                                            Prev
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item active"><a class="page-link"
+                                                            href="javascript:void(0);">1</a></li>
+                                                    <li class="page-item"><a class="page-link"
+                                                            href="javascript:void(0);">2</a></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link text-primary" href="javascript:void(0);">
+                                                            next
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
 
             <!-- table -->
@@ -267,65 +342,25 @@
 
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table text-nowrap table-hover border table-bordered">
+                                        <table class="table text-nowrap table-hover border table-bordered"
+                                            id="survey_detail">
                                             <thead>
-                                                <tr>
-                                                    <th scope="col">Line Minister</th>
-                                                    <th scope="col">Question 1</th>
-                                                    <th scope="col">Question 2</th>
-                                                    <th scope="col">Question 3</th>
-                                                    <th scope="col">Question 4</th>
-                                                </tr>
+                                                <th> ጥያቄ</th>
+                                                <th> ደረጃ </th>
+                                                <th> ክብደት </th>
+
+                                                <th>የተመዘነ ደረጃ </th>
+                                                <th> የተመዘነ ደረጃ (በ100% ኛ) </th>
+                                                <th> Indicator </th>
+                                                <th> Grading </th>
+
+
+
+
+
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Manufacture</td>
-                                                    <td>Team Lead</td>
-                                                    <td>mayorkelly@gmail.com</td>
-                                                    <td>
-                                                        <div class="d-inline-flex align-items-center">
-                                                            <i class="ri-map-pin-fill text-muted fs-10"></i>
-                                                            <span class="ms-1">Germany</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>Sep 15 - Oct 12, 2023</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Manufacture</td>
-                                                    <td>Team Lead</td>
-                                                    <td>mayorkelly@gmail.com</td>
-                                                    <td>
-                                                        <div class="d-inline-flex align-items-center">
-                                                            <i class="ri-map-pin-fill text-muted fs-10"></i>
-                                                            <span class="ms-1">Germany</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>Sep 15 - Oct 12, 2023</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Manufacture</td>
-                                                    <td>Team Lead</td>
-                                                    <td>mayorkelly@gmail.com</td>
-                                                    <td>
-                                                        <div class="d-inline-flex align-items-center">
-                                                            <i class="ri-map-pin-fill text-muted fs-10"></i>
-                                                            <span class="ms-1">Germany</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>Sep 15 - Oct 12, 2023</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Manufacture</td>
-                                                    <td>Team Lead</td>
-                                                    <td>mayorkelly@gmail.com</td>
-                                                    <td>
-                                                        <div class="d-inline-flex align-items-center">
-                                                            <i class="ri-map-pin-fill text-muted fs-10"></i>
-                                                            <span class="ms-1">Germany</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>Sep 15 - Oct 12, 2023</td>
-                                                </tr>
+                                            <tbody id="tbody">
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -418,6 +453,8 @@
                 var surveyTypeInput = document.getElementById('survey_type');
                 var surveyTableBody_1 = document.getElementById('surveyTable').getElementsByTagName('tbody')[0];
                 var surveyTableBody_2 = document.getElementById('survey_detail').getElementsByTagName('tbody')[0];
+                var surveyTableBody_3 = document.getElementById('general_Survey_Info').getElementsByTagName('tbody')[0];
+
                 var select_ministry = document.getElementById("ministry-select");
                 var selectElement = document.getElementById("survey-select");
 
@@ -436,15 +473,16 @@
 
                 surveyTypeInput.addEventListener('change', function () {
                     var selectedSurveyTypeId = parseInt(surveyTypeInput.value);
-                    console.log('Selected survey:', selectedSurveyTypeId); 
+                    console.log('Selected survey:', selectedSurveyTypeId);
 
                     clearTable(surveyTableBody_1);
+                    clearTable(surveyTableBody_2);
                     clearOptions(select_ministry)
-                  
+
 
                     if (selectedSurveyTypeId) {
                         var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId);
-                      
+
                         surveys.forEach(survey => {
                             var row = surveyTableBody_1.insertRow();
                             row.insertCell().textContent = survey.name;
@@ -454,150 +492,177 @@
                             row.insertCell().textContent = survey.created_at;
 
                             var option = document.createElement("option");
-                            option.value = survey.id; 
+                            option.value = survey.id;
                             option.textContent = survey.name;
-                            selectElement.appendChild(option); 
- 
-                           selectElement.addEventListener('change', function() {
-      var selectedSurvey = selectElement.value;
-      console.log('Selected survey:', selectedSurvey); 
-  
-  var selectedSurveyId = parseInt(selectElement.value);
-  for (var i = 0; i < data.surveys.length; i++) {
-  if (data.surveys[i].id === selectedSurveyId) {
-    selectedSurvey = data.surveys[i];
-    break;
-  }
-}
+                            selectElement.appendChild(option);
 
-if (selectedSurvey) {
-  var lineMinistries = selectedSurvey.line_ministries;
-while(select_ministry.firstChild){
-    select_ministry.removeChild(select_ministry.firstChild)
-}
+                            selectElement.addEventListener('change', function () {
+                                var selectedSurvey = selectElement.value;
+                                console.log('Selected survey:', selectedSurvey);
 
-lineMinistries.forEach(function(lineMinistry){
-    var ministry_option = document.createElement("option");
-    ministry_option.value = lineMinistry.id;
-    ministry_option.textContent = lineMinistry.name;
-    select_ministry.append(ministry_option)
+                                var selectedSurveyId = parseInt(selectElement.value);
+                                for (var i = 0; i < data.surveys.length; i++) {
+                                    if (data.surveys[i].id === selectedSurveyId) {
+                                        selectedSurvey = data.surveys[i];
+                                        break;
+                                    }
+                                }
 
-});
+                                if (selectedSurvey) {
+                                    var lineMinistries = selectedSurvey.line_ministries;
+                                    while (select_ministry.firstChild) {
+                                        select_ministry.removeChild(select_ministry.firstChild)
+                                    }
 
-  console.log('Line ministries:', lineMinistries);
-} else {
-  console.log('Selected survey not found');
-}});
+                                    lineMinistries.forEach(function (lineMinistry) {
+                                        var ministry_option = document.createElement("option");
+                                        ministry_option.value = lineMinistry.id;
+                                        ministry_option.textContent = lineMinistry.name;
+                                        select_ministry.append(ministry_option)
 
-
-select_ministry.addEventListener("change", function() {
-  var selectedLineMinistry = parseInt(select_ministry.value);
-  
-  userResponseId = null;
-data.user_response.forEach(function(userResponse) {
-    if (userResponse.submitted_by_id === selectedLineMinistry) {
-        userResponseId = userResponse.id;
-        return;  // Exit the loop once a match is found
-    }
-});
-
-if (userResponseId !== null)
- {
-    var answers = data.answer.filter(function(answer) {
-        return answer.response_id === userResponseId;
-    });
-
-    console.log(answers);
-    var answerValues = answers.map(function(answer){
-        return {
-            value: parseFloat(answer.answertext),
-            questionId: answer.forquestion_id
-        };
-    });
-
-var weightedSum = 0;
-var totalWeight = 0;
-
-   
-answerValues.forEach(function(answer) {
-        var question = data.questions.find(function(q) {
-            return q.id === answer.questionId;
-        });
-
-
-        if (question) {
-            var weight = question.weight;
-            console.log("the question :" + question.title + "the weight:" + weight)
-            
-
-
-            if (!isNaN(answer.value)) {
-                weightedSum += answer.value * weight;
-
-                totalWeight += weight;
-            }
-
-            if (totalWeight > 0) {
-        var weightedAverage = weightedSum / totalWeight;
-        var row = surveyTableBody_2.insertRow();
-            row.insertCell().textContent = question.title;
-            row.insertCell().textContent = answer.value;
-            row.insertCell().textContent = weight;
-            row.insertCell().textContent = answer.value * weight ;
-            var totalresult = answer.value * weight
-            var max_value = 10 ;
-            var weightedinPercent = ( (totalresult) / (max_value* weight) )* 100  + "%";
-            row.insertCell().textContent = weightedinPercent;
-
-           
-            var x = answer.value * weight;
-
-if (x > 90) {
-    row.insertCell().textContent =" Very Good" ;
-
-} else if (x > 79) {
-  row.insertCell().textContent = "Good" ;
-
-} else if (x > 64) {
-  row.insertCell().textContent = "Satisfactory" ;
-
-} else if (x > 49) {
-  row.insertCell().textContent = "Poor" ;
-
-} else if (x > 24) {
-  row.insertCell().textContent = "Very Poor" ;
-
-} else {
-  row.insertCell().textContent = "Extremely Poor" ;
-
-}
-
-        console.log("Weighted average of answers: " + weightedAverage.toFixed(2));
-    } else {
-        console.log("No valid answers found for the selected line ministry.");
-    } 
-            
-
-
-           
-        }
-    });
-
-   
-}
- else {
-    console.log("No user_response ID found for the selected line ministry.");
-}
+                                    });
 
 
 
+                                    console.log('Line ministries:', lineMinistries);
+                                } else {
+                                    console.log('Selected survey not found');
+                                }
+                            });
+                          
+
+                            select_ministry.addEventListener("change", function () {
+                                var selectedLineMinistry = parseInt(select_ministry.value);
+
+                                userResponseId = null;
+                                weightedSum = 0;
+                                data.user_response.forEach(function (userResponse) {
+                                    if (userResponse.submitted_by_id === selectedLineMinistry) {
+                                        userResponseId = userResponse.id;
+                                        return;  // Exit the loop once a match is found
+                                    }
+                                });
+
+                                if (userResponseId !== null) {
+                                    var answers = data.answer.filter(function (answer) {
+                                        return answer.response_id === userResponseId;
+                                    });
+
+                                    console.log(answers);
+                                    var answerValues = answers.map(function (answer) {
+                                        return {
+                                            value: parseFloat(answer.answertext),
+                                            questionId: answer.forquestion_id
+                                        };
+                                    });
+
+                                    var weightedSum = 0;
+                                    var totalWeight = 0;
 
 
-  console.log("Selected line ministry: " + selectedLineMinistry);
-});
-                            var selectedSurvey = (selectElement.value);
-                         });
+                                    answerValues.forEach(function (answer) {
+                                        var question = data.questions.find(function (q) {
+                                            return q.id === answer.questionId;
+                                        });
+
+
+                                        if (question) {
+                                            var weight = question.weight;
+                                            console.log("the question :" + question.title + "the weight:" + weight)
+
+
+
+                                            if (!isNaN(answer.value)) {
+                                                weightedSum += answer.value * weight;
+
+                                                totalWeight += weight;
+                                            }
+                                            var count = 0;
+                                            var weighted__Sum = 0;
+                                            if (totalWeight > 0) {
+                                                var weightedAverage = weightedSum / totalWeight;
+                                                var row = surveyTableBody_2.insertRow();
+                                                row.insertCell().textContent = question.title;
+                                                row.insertCell().textContent = answer.value;
+                                                row.insertCell().textContent = weight;
+                                                row.insertCell().textContent = answer.value * weight;
+                                                var totalresult = answer.value * weight
+                                                var max_value = 10;
+                                                console.log()
+                                                var weightedinPercent = ((totalresult) / (max_value * weight)) * 100 ;
+                                                weighted__Sum +=  weightedinPercent;
+                                                count=+ 1;
+                                                
+                                                    
+                                                row.insertCell().textContent = weightedinPercent + "%" ;
+
+style="color"
+                                                var x = answer.value * weight;
+                                                var newCell = row.insertCell();
+                                                newCell.id = 'Indicator';
+                                                if (x > 90) {
+                                                    newCell.textContent = " Very Good";
+                                                    newCell.style.backgroundColor = "#52B788";
+                                                } else if (x > 79) {
+                                                    newCell.textContent = "Good";
+                                                    newCell.style.backgroundColor = "#C1FA61";
+                                                } else if (x > 64) {
+                                                    newCell.textContent = "Satisfactory";
+                                                    newCell.style.backgroundColor = "#C2FA41";
+
+                                                } else if (x > 49) {
+                                                    newCell.textContent = "Poor";
+                                                    newCell.style.backgroundColor = "#FAEB41";
+
+
+                                                } else if (x > 24) {
+                                                    newCell.textContent = "Very Poor";
+                                                    newCell.style.backgroundColor =" #FA7D41";
+
+
+                                                } else {
+                                                    newCell.textContent = "Extremely Poor";
+                                                    newCell.style.backgroundColor = "#FA7D41";
+
+
                                                 }
+
+
+
+
+                                                console.log("Weighted average of answers: " + weightedAverage.toFixed(2));
+                                            } else {
+                                                console.log("No valid answers found for the selected line ministry.");
+                                            }
+
+                                            
+
+
+                                        }
+                                    });
+
+
+                                }
+                                else {
+                                    console.log("No user_response ID found for the selected line ministry.");
+                                }
+
+
+
+
+
+                                console.log("Selected line ministry: " + selectedLineMinistry);
+                            });
+                            var selectedSurvey = (selectElement.value);
+                        });
+
+                        var row = surveyTableBody_3.insertRow();
+                                          
+                                          row.insertCell().textContent = survey.name;
+                                          row.insertCell().textContent = survey.name;
+                                          row.insertCell().textContent = survey.name;
+
+                    }
                 });
             })
             .catch(error => {
@@ -610,16 +675,12 @@ if (x > 90) {
             }
         }
         function clearOptions(select) {
-    while (select.firstChild) {
-        select.removeChild(select.firstChild);
-    }
-}
-
-  
+            while (select.firstChild) {
+                select.removeChild(select.firstChild);
+            }
+        }  
     </script>
 
 </body>
 
 </html>
-
-
