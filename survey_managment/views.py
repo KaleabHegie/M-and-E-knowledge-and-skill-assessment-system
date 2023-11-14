@@ -62,33 +62,15 @@ def indexView(request):
         Response = UserResponse.objects.all().count()
         line_ministry = Line_ministry.objects.all()
         form = AnalysisForm()
+       
+   
+
 
 
         context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType}
+      
         return render(request, 'index.html', context)
-
-
-
- # survey_id = request.GET.get('survey_id')
-    # if survey_id:
-    #     survey = get_object_or_404(Survey, id=survey_id)
-    #     questionnaires = survey.questionnaire_set.all()
-    #     context = {
-    #         'survey': survey,
-    #         'questionnaires': questionnaires,
-    #     }
-    #     return render(request, 'index.html', context)
-    # else:
-    #     surveys = Survey.objects.all()
-    #     count_survey = Survey.objects.all().count()
-    #     context= {
-    #         'surveys': surveys,
-    #         'count_survey':count_survey,
-
-    #     }
-    #     return render(request, 'index.html',context)
-
 
 def load_survey(request):
     survey_type_id = request.GET.get("survey_type")
@@ -112,7 +94,9 @@ from .models import Survey, Line_ministry, CustomUser, Category, Department, Que
 
 def get_data(request):
     surveys = Survey.objects.all()
-    data = []
+    data1 = []
+    data2 = []
+
     
     for survey in surveys:
         line_ministries = survey.for_line_ministry.all()
@@ -130,11 +114,30 @@ def get_data(request):
             'line_ministries': line_ministry_data
         }
         
-        data.append(survey_data)
+        data1.append(survey_data)
+
+    for survey in surveys:
+            for_question = survey.question.all()
+            question_data = []
+        
+            for question in for_question:
+                question_data.append({
+                    'id': question.id ,
+                    'name': question.title ,
+                })
+            
+            surveys_data = {
+                'id': survey.id,
+                'name': survey.name,
+                'questions': question_data
+            }
+            
+            data2.append(surveys_data)
     
     serialized_data = {
         'answer': list(Answer.objects.values()),
-        'surveys': data,
+        'surveys': data1,
+        'survey_questions' : data2 ,
         'line_ministry': list(Line_ministry.objects.values('id', 'name')),
         'users': list(CustomUser.objects.values()),
         'category': list(Category.objects.values()),
