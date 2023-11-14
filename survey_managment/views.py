@@ -145,7 +145,7 @@ def get_data(request):
         'questions': list(Question.objects.values()),
         'survey_type': list(SurveyType.objects.values()),
         'survey': list(Survey.objects.values()),
-        'user_response': list(UserResponse.objects.values()),
+        'user_response': list(UserResponse.objects.values())
 
     }
     
