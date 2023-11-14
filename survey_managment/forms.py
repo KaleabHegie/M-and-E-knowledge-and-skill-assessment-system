@@ -53,6 +53,8 @@ class UserResponseForm(forms.ModelForm):
         model = UserResponse
         fields = ['forsurvey', 'submitted_by']
 
+        
+
 class AnonymousUserResponseForm(forms.ModelForm):
     class Meta:
         model = UserResponse
