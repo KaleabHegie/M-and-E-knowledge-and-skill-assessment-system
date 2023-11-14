@@ -35,13 +35,15 @@ urlpatterns = [
     path('displayQuestion/<int:survey_id>/', views.displayQuestion, name='displayQuestion'),
     path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
-
+    path('get_json/',views.get_data,name='get_data'),
    
     path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),   
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
     path('surveylists/',views.survey_listss_views, name='surveylists'),
+    path('surveylistsAnonymous/',views.anonymous_survey_listss_views, name='anonymous_survey_listss_views'),
     path('questionForSurvey/<int:id>' , views.questionForSurvey , name = 'questionForSurvey'),
+    path('questionForSurveyAnonymous/<int:id>' , views.questionForSurveyAnonymous , name = 'questionForSurveyAnonymous'),
     path("load_survey/",views.load_survey,name ='load_survey'),
     path("load_ministry/",views.load_ministry,name ='load_ministry')
 

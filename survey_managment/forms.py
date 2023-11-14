@@ -26,7 +26,7 @@ class SurveyForm(forms.ModelForm):
         fields = ['name', 'instruction', 'start_at', 'end_at', 'survey_type' , 'for_line_ministry']
         widgets = {
             'survey_type': forms.Select(attrs={'class': 'form-control'}),
-            'for_line_ministry': forms.SelectMultiple(attrs={'class': 'form-control  select2'}),
+            'for_line_ministry': forms.SelectMultiple(attrs={'class': 'form-select select2'}),
         }
 
     def clean_start_at(self):
@@ -52,6 +52,15 @@ class UserResponseForm(forms.ModelForm):
     class Meta:
         model = UserResponse
         fields = ['forsurvey', 'submitted_by']
+
+        
+
+class AnonymousUserResponseForm(forms.ModelForm):
+    class Meta:
+        model = UserResponse
+        fields = ['year_of_experiance' , 'department' , 'age'] 
+
+
 
 class AnswerForm(forms.ModelForm):
     class Meta:

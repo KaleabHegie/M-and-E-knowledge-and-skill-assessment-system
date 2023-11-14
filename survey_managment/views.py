@@ -53,6 +53,7 @@ def indexView(request):
             'questionnaires': questionnaires,
         }
         return render(request, 'index.html', context)
+   
     else:
         surveys = Survey.objects.all()
         surveyType = SurveyType.objects.all()
@@ -61,33 +62,15 @@ def indexView(request):
         Response = UserResponse.objects.all().count()
         line_ministry = Line_ministry.objects.all()
         form = AnalysisForm()
+       
+   
+
 
 
         context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType}
+      
         return render(request, 'index.html', context)
-
-
-
- # survey_id = request.GET.get('survey_id')
-    # if survey_id:
-    #     survey = get_object_or_404(Survey, id=survey_id)
-    #     questionnaires = survey.questionnaire_set.all()
-    #     context = {
-    #         'survey': survey,
-    #         'questionnaires': questionnaires,
-    #     }
-    #     return render(request, 'index.html', context)
-    # else:
-    #     surveys = Survey.objects.all()
-    #     count_survey = Survey.objects.all().count()
-    #     context= {
-    #         'surveys': surveys,
-    #         'count_survey':count_survey,
-
-    #     }
-    #     return render(request, 'index.html',context)
-
 
 def load_survey(request):
     survey_type_id = request.GET.get("survey_type")
@@ -104,17 +87,70 @@ def load_ministry(request):
 
 from django.shortcuts import render
 from django.http import JsonResponse
+import json
 
+from django.http import JsonResponse
+from .models import Survey, Line_ministry, CustomUser, Category, Department, Question, SurveyType, UserResponse
 
 def get_data(request):
-    survey_type_id = request.GET.get("survey_type")
-    survey = Survey.objects.filter(survey_type_id=survey_type_id)
-    return JsonResponse(list(survey), safe=False)
+    surveys = Survey.objects.all()
+    data1 = []
+    data2 = []
 
-   
+    
+    for survey in surveys:
+        line_ministries = survey.for_line_ministry.all()
+        line_ministry_data = []
+        
+        for line_ministry in line_ministries:
+            line_ministry_data.append({
+                'id': line_ministry.id,
+                'name': line_ministry.name
+            })
+        
+        survey_data = {
+            'id': survey.id,
+            'name': survey.name,
+            'line_ministries': line_ministry_data
+        }
+        
+        data1.append(survey_data)
 
-# def loginView(request):
-#     return render(request, 'login.html')
+    for survey in surveys:
+            for_question = survey.question.all()
+            question_data = []
+        
+            for question in for_question:
+                question_data.append({
+                    'id': question.id ,
+                    'name': question.title ,
+                })
+            
+            surveys_data = {
+                'id': survey.id,
+                'name': survey.name,
+                'questions': question_data
+            }
+            
+            data2.append(surveys_data)
+    
+    serialized_data = {
+        'answer': list(Answer.objects.values()),
+        'surveys': data1,
+        'survey_questions' : data2 ,
+        'line_ministry': list(Line_ministry.objects.values('id', 'name')),
+        'users': list(CustomUser.objects.values()),
+        'category': list(Category.objects.values()),
+        'department': list(Department.objects.values()),
+        'questions': list(Question.objects.values()),
+        'survey_type': list(SurveyType.objects.values()),
+        'survey': list(Survey.objects.values()),
+        'user_response': list(UserResponse.objects.values())
+
+    }
+    
+    return JsonResponse(serialized_data, safe=False)
+
 
 def forgotPasswordView(request):
     return render(request, 'forgot-password.html')
@@ -231,6 +267,7 @@ def survey_detail(request, id):
     data = {
         'survey_id': id,
         'survey': Survey.objects.get(id=id),
+        'user_responses': UserResponse.objects.filter(forsurvey_id=id),
         'questions': Survey.objects.get(id=id).question.all()
     }
     return render(request, 'survey_detail.html', data)
@@ -400,7 +437,7 @@ def newQuestion(request,questionType, s_id ):
 
 
 ####### final preview views ################################
-
+@login_required
 def greetingpage_view(request):
     context ={
         
@@ -419,6 +456,7 @@ def survey_listss_views(request):
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
 
+@login_required
 def questionForSurvey(request, id):
     survey = get_object_or_404(Survey, id=id)
     questions = survey.question.all()
@@ -434,7 +472,7 @@ def questionForSurvey(request, id):
             value = request.POST.get(f'answer_{i.id}')
             Answer.objects.create(forquestion = i , answertext = value , response = userresponse)              
             value = ''
-        return redirect('survey_managment:surveys')
+        return redirect('survey_managment:surveylists')
     else:
         user_response_form = UserResponseForm()
         answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
@@ -447,6 +485,48 @@ def questionForSurvey(request, id):
     }
 
     return render(request, 'Final_Preview_Pages/questionForSurvey.html', context)
+
+
+
+
+
+def anonymous_survey_listss_views(request):
+    today = date.today()
+    survey_type = SurveyType.objects.get(name='For Employee')
+    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today , survey_type =  survey_type)
+    print(surveys)
+    data = {
+        'surveys': surveys
+    }
+    return render(request, 'Final_Preview_Pages/SL_Anonymous.html', data)
+
+def questionForSurveyAnonymous(request, id):
+    survey = get_object_or_404(Survey, id=id)
+    questions = survey.question.all()
+    if request.method == 'POST':
+        anonymous_user_response_form = AnonymousUserResponseForm(request.POST)
+        answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
+        # value = request.POST.get('answer_16')
+        # print(value)
+
+        anonymous_user_response = UserResponse.objects.create(forsurvey = survey , year_of_experiance = request.year_of_experiance , department = request.department , age = request.age)
+        for i in questions:
+            value = request.POST.get(f'answer_{i.id}')
+            Answer.objects.create(forquestion = i , answertext = value , response = anonymous_user_response)              
+            value = ''
+        return redirect('survey_managment:index')
+    else:
+        anonymous_user_response_form = AnonymousUserResponseForm()
+        answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
+
+    context = {
+        'survey': survey,
+        'questions': questions,
+        'anonymous_user_response_form': anonymous_user_response_form,
+        'answer_forms': answer_forms,
+    }
+
+    return render(request, 'Final_Preview_Pages/surveyForAnonymous.html', context)
 
 
 

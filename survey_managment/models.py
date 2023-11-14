@@ -76,6 +76,10 @@ class UserResponse(models.Model):
     submitted_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     anonymous_user = models.IntegerField(null=True, blank=True)
     submitted_at = models.DateTimeField(auto_now=True)
+    year_of_experiance = models.IntegerField(null=True , blank=True)
+    department = models.CharField( max_length=50 , null=True , blank=True)
+    age =models.IntegerField( null=True , blank=True)
+
 
     def __str__(self):
         return str(self.submitted_by)

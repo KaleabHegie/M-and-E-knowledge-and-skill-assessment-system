@@ -27,30 +27,32 @@
 
        </div>
        
-       
-
-       <section class="container-fluid">
-        <div class="container">
-          <h1 style="font-size: 2.5rem; font-weight: bold;">{{ survey.title }}</h1>
-          {% if user_responses %}
-            <div id="accordion">
-              {% for response in user_responses %}
-                <div class="card shadow mb-3">
-                  <div class="card-header bg-light" id="heading{{ response.id }}">
-                    <h5 class="mb-0">
-                      <a style="text-decoration: none; color: black;" href="{% url "survey_managment:user_response" id=survey_id response_id=response.id %}">
-                        Response by {{ response.submitted_by }} at {{ response.submitted_at }}
-                      </a>
-                    </h5>
-                  </div>
-                </div>
-              {% endfor %}
-            </div>
-          {% else %}
-            <p style="font-size: 1.2rem;">No responses found.</p>
-          {% endif %}
-        </div>
-      </section>
+     
+<section class="container-fluid">
+  <div class="container">
+    <h1 style="font-size: 2.5rem; font-weight: bold;">{{ survey.title }}</h1>
+    {% if user_responses %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Response by</th>
+            <th>Submitted at</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for response in user_responses %}
+            <tr>
+              <td><a style="text-decoration: none; color: black;" href="{% url 'survey_managment:user_response' id=survey_id response_id=response.id %}">{{ response.submitted_by }}</a></td>
+              <td>{{ response.submitted_at }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p style="font-size: 1.2rem;">No responses found.</p>
+    {% endif %}
+  </div>
+</section>
       
       
 

@@ -9,7 +9,6 @@
 <head>
 	<title>Login</title>
 	<style>
-    	/* Coded with love by Mutiullah Samim */
 		body,
 		html {
 			margin: 0;
@@ -101,8 +100,7 @@
 					<div id="contentContainer">
 						<form method="post" action="{% url 'Account:Login' %}" >
 							{%csrf_token%}
-							<input name="myCheckbox" type="checkbox" id="myCheckbox">
-					        <label for="myCheckbox">I'm an anonymous user</label>
+							
 							<div id="input-group">
 								<div class="input-group mb-3">
 									<div class="input-group-append">
@@ -117,15 +115,6 @@
 									<input type="password" name="password" class="form-control input_pass" value="" placeholder="password">
 								</div>
 							</div>
-								<div style="display: none;" id="ministries" class="form-group">
-									<label for="ministry_input">Select Ministry:</label>
-									<input type="text" class="form-control" id="ministry_input" autocomplete="off" list="ministry_list">
-									<datalist id="ministry_list">
-										{% for ministry in line_ministry %}
-											<option value="{{ ministry }}"></option>
-										{% endfor %}
-									</datalist>
-								</div>
 								
 							
 								<div class="d-flex justify-content-center mt-3 login_container">
@@ -147,16 +136,6 @@
 	</div>
 </body>
 
-<script>
-	var checkbox = document.getElementById("myCheckbox");
-	var inputgroup = document.getElementById("input-group");
-	var ministries = document.getElementById("ministries");
-  
-	checkbox.addEventListener("change", function() {
-		inputgroup.style.display = checkbox.checked ?  'none' : 'block';
-		ministries.style.display = checkbox.checked ?  'block' : 'none';
-	});
-</script>
 
 
 </html>
