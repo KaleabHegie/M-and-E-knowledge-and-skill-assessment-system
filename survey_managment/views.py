@@ -469,7 +469,7 @@ def questionForSurvey(request, id):
             value = request.POST.get(f'answer_{i.id}')
             Answer.objects.create(forquestion = i , answertext = value , response = userresponse)              
             value = ''
-        return redirect('survey_managment:surveys')
+        return redirect('survey_managment:surveylists')
     else:
         user_response_form = UserResponseForm()
         answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
@@ -482,6 +482,48 @@ def questionForSurvey(request, id):
     }
 
     return render(request, 'Final_Preview_Pages/questionForSurvey.html', context)
+
+
+
+
+
+def anonymous_survey_listss_views(request):
+    today = date.today()
+    survey_type = SurveyType.objects.get(name='For Employee')
+    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today , survey_type =  survey_type)
+    print(surveys)
+    data = {
+        'surveys': surveys
+    }
+    return render(request, 'Final_Preview_Pages/SL_Anonymous.html', data)
+
+def questionForSurveyAnonymous(request, id):
+    survey = get_object_or_404(Survey, id=id)
+    questions = survey.question.all()
+    if request.method == 'POST':
+        anonymous_user_response_form = AnonymousUserResponseForm(request.POST)
+        answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
+        # value = request.POST.get('answer_16')
+        # print(value)
+
+        anonymous_user_response = UserResponse.objects.create(forsurvey = survey , year_of_experiance = request.year_of_experiance , department = request.department , age = request.age)
+        for i in questions:
+            value = request.POST.get(f'answer_{i.id}')
+            Answer.objects.create(forquestion = i , answertext = value , response = anonymous_user_response)              
+            value = ''
+        return redirect('survey_managment:index')
+    else:
+        anonymous_user_response_form = AnonymousUserResponseForm()
+        answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
+
+    context = {
+        'survey': survey,
+        'questions': questions,
+        'anonymous_user_response_form': anonymous_user_response_form,
+        'answer_forms': answer_forms,
+    }
+
+    return render(request, 'Final_Preview_Pages/surveyForAnonymous.html', context)
 
 
 
