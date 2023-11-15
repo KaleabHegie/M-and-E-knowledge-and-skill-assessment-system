@@ -2,9 +2,19 @@
 
 <!DOCTYPE html>
 <html lang="en">
-{% include "includes/head.html" %}
 
+<head>
+    {% include "includes/head.html" %}
 
+    <style>
+        .limited-width {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+        </style>
+    </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -616,8 +626,10 @@
                                             if (totalWeight > 0) {
                                                 var weightedAverage = weightedSum / totalWeight;
                                                 var row = surveyTableBody_2.insertRow();
-                                                row.insertCell().textContent = question.title;
+                                                var question_cell =  row.insertCell();
+                                                question_cell.textContent = question.title;
                                                 row.insertCell().textContent = answer.value;
+                                                question_cell.classList.add('limited-width');
                                                 row.insertCell().textContent = weight;
                                                 console.log(totalWeight)
                                                 row.insertCell().textContent = answer.value * weight;
