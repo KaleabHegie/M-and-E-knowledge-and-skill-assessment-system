@@ -490,6 +490,28 @@ def questionForSurvey(request, id):
 
 
 
+
+def user_info(request):
+    data = {
+
+    }
+    return render ( request , 'Final_Preview_Pages/userinfopage.html', data)
+
+
+def un_approved_survey_list(request):
+    today = date.today()
+    user = request.user
+    data = {
+        "surveys" : Survey.objects.filter(userresponse__status='pending', start_at__lte=today, end_at__gte=today , for_line_ministry = user.Line_ministry),
+    }
+    return render(request, 'Final_Preview_Pages/un_approved_survey_list.html', data)
+
+def un_approved_survey(request , id):
+    data = {
+
+    }
+    return render ( request , 'Final_Preview_Pages/un_approved_survey.html', data)
+
 def anonymous_survey_listss_views(request):
     today = date.today()
     survey_type = SurveyType.objects.get(name='For Employee')
@@ -509,12 +531,12 @@ def questionForSurveyAnonymous(request, id):
         # value = request.POST.get('answer_16')
         # print(value)
 
-        anonymous_user_response = UserResponse.objects.create(forsurvey = survey , year_of_experiance = request.year_of_experiance , department = request.department , age = request.age)
+        anonymous_user_response = UserResponse.objects.create( forsurvey=survey, year_of_experiance=request.POST.get('year_of_experiance'),department=request.POST.get('department') , age=request.POST.get('age') )
         for i in questions:
             value = request.POST.get(f'answer_{i.id}')
             Answer.objects.create(forquestion = i , answertext = value , response = anonymous_user_response)              
             value = ''
-        return redirect('survey_managment:index')
+        return redirect('survey_managment:anonymous_survey_listss_views')
     else:
         anonymous_user_response_form = AnonymousUserResponseForm()
         answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
