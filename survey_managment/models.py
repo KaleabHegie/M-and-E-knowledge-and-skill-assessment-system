@@ -43,6 +43,7 @@ class Question(models.Model):
     weight = models.IntegerField(blank=True,null=True)
     allow_doc = models.BooleanField(blank=True)
     doc_label = models.TextField(null=True,blank=True)
+    # order = models.IntegerField(default=0)
 
 
     def __str__(self):
@@ -72,22 +73,21 @@ class Department(models.Model):
         return self.department_name
         
 class UserResponse(models.Model):
+    STATUS_CHOICES = [
+        ('approved', 'Approved'),
+        ('pending', 'Pending'),
+    ]
+
     forsurvey = models.ForeignKey("Survey", on_delete=models.CASCADE, null=True, blank=True)
     submitted_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
-    anonymous_user = models.IntegerField(null=True, blank=True)
     submitted_at = models.DateTimeField(auto_now=True)
     year_of_experiance = models.IntegerField(null=True , blank=True)
     department = models.CharField( max_length=50 , null=True , blank=True)
-    age =models.DateField( null=True , blank=True)
-
+    age =models.IntegerField( null=True , blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending' ,  null=True , blank=True)
 
     def __str__(self):
         return str(self.submitted_by)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.anonymous_user = self.id
-        super().save(*args, **kwargs)
     
 class Answer(models.Model):
     forquestion=models.ForeignKey("Question", on_delete=models.CASCADE , null=True , blank=True)
