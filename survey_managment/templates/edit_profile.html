@@ -3,26 +3,41 @@
 <head>
   {%include "includes/head.html"%}
   <style>
-    body{margin-top:20px;}
-.avatar{
-width:200px;
-height:200px;
-}	
+    body{
+      margin-top:20px;
+    }
+
+    .avatar{
+    width:200px;
+    height:200px;
+    }	
+
+    .line{
+      border-top: 7px solid #40916c;
+      border-radius: 15px;
+    }
+
+    .main{
+      padding-top: 25px;
+    }
+
   </style>
 </head>
-<body>
+<body style="background-color:rgb(240, 249, 249);">
   <div class="wrapper">
     {% if user.is_superuser %}
     {% include 'includes/topNavbar.html' %}
     {% include 'includes/sideNavbar.html' %}
     {% endif %}
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="background-color:rgb(240, 249, 249);">
     
       <section class="content-header">
       <div class="container-fluid">
   <div class="container bootstrap snippets bootdey">
-    <h1 class="text-primary">Edit Profile</h1>
-      <hr>
+    <h1 class="text-center" style="color: #40916c;">Edit Profile</h1>
+      <hr class="line">
+
+<div class="container main">
 	<div class="row">
       <!-- left column -->
       <div class="col-md-3">
@@ -43,7 +58,6 @@ height:200px;
           <i class="fa fa-coffee"></i>
           This is an <strong>.alert</strong>. Use this to show important messages to the user.
         </div> -->
-        <h3>Personal info</h3>
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
 
@@ -82,7 +96,9 @@ height:200px;
             </div>
           </div>
           
-          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button type="submit" class="btn saveBtn" style="float: right; background-color: rgba(178,223,219,1.0); color: #40916c;"">
+             <span> Save Changes </span>
+          </button>
       </form>
       
         
@@ -131,11 +147,13 @@ height:200px;
         </form> -->
       </div>
   </div>
-</div></div>
+</div>
+</div>
+</div>
 </section>
 </div>
 </div>
-<hr>
+
 {% include 'includes/scripts.html' %}
 </body>
 </html>

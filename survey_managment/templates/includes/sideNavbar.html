@@ -1,7 +1,6 @@
 {% load static %}
 
 {% include "includes/head.html" %}
-
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <a href="{% url 'survey_managment:Index' %}" class="brand-link">
     <img
@@ -52,18 +51,15 @@
         data-accordion="false"
       >
       <li class="nav-item">
-        <a href="{%url 'survey_managment:Index' %}" class="nav-link">
+        <a href="{%url 'survey_managment:Index' %}" class="nav-link" ">
           <i class="nav-icon fas fa-tachometer-alt"></i>
           <p>Dashboard</p>
         </a>
       </li>
      <li class="nav-item">
         <a href="#" class="nav-link">
-          <i class="fas fa-users"></i>
-          <p>
-            Users
-            <i class="fas fa-angle-left right"></i>
-          </p>
+           <i class="nav-icon fas fa-users"></i>
+          <p>Users <i class="fas fa-angle-left right"></i></p>
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
