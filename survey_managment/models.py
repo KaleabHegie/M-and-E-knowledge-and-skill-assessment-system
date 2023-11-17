@@ -43,6 +43,7 @@ class Question(models.Model):
     weight = models.IntegerField(blank=True,null=True)
     allow_doc = models.BooleanField(blank=True)
     doc_label = models.TextField(null=True,blank=True)
+    # order = models.IntegerField(default=0)
 
 
     def __str__(self):
@@ -78,7 +79,7 @@ class UserResponse(models.Model):
     submitted_at = models.DateTimeField(auto_now=True)
     year_of_experiance = models.IntegerField(null=True , blank=True)
     department = models.CharField( max_length=50 , null=True , blank=True)
-    age =models.IntegerField( null=True , blank=True)
+    age =models.IntegerField(null=True , blank=True)
 
 
     def __str__(self):
