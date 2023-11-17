@@ -506,10 +506,11 @@
 
                     clearTable(surveyTableBody_1);
                     clearTable(surveyTableBody_2);
-                    clearOptions(select_ministry)
+                    clearOptions(select_ministry);
+                    clearOptions(selectElement);
 
 
-                    if (selectedSurveyTypeId) {
+                    if (selectedSurveyTypeId && myCheckbox.checked) {
                         var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId);
 
                         surveys.forEach(survey => {
@@ -537,7 +538,7 @@
                                         break;
                                     }
                                 }
-
+                                
                                 if (selectedSurvey) {
                                     var lineMinistries = selectedSurvey.line_ministries;
                                     while (select_ministry.firstChild) {
@@ -555,7 +556,9 @@
 
 
                                     console.log('Line ministries:', lineMinistries);
-                                } else {
+                                }
+                                
+                                else {
                                     console.log('Selected survey not found');
                                 }
                             });
@@ -673,20 +676,10 @@
 
                                                 }
 
-
-
-
-
-
-
-
                                                 console.log("Weighted average of answers: " + weightedAverage.toFixed(2));
                                             } else {
                                                 console.log("No valid answers found for the selected line ministry.");
                                             }
-
-
-
 
                                         }
                                     });
@@ -711,9 +704,14 @@
                                 weightCell.textContent = weightedSum;
 
                                 var averageCell = totalRow.insertCell();
-                                averageCell.textContent = total_weightedinPercent / count + "%";
+                                var average = total_weightedinPercent / count;
+                                averageCell.textContent = average + "%";
                                 surveyTableBody_2.appendChild(totalRow);
 
+                                var row2 = surveyTableBody_3.insertRow();
+                                row2.insertCell().textContent = survey.name;
+                                row2.insertCell().textContent = weightedSum;
+                                row2.insertCell().textContent = average + "%";
 
 
                                 console.log("Selected line ministry: " + selectedLineMinistry);
@@ -723,6 +721,22 @@
 
 
 
+                    }
+                    else if(selectedSurveyTypeId && !myCheckbox.checked){
+                        var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId);     
+                        console.log(surveys)
+                                for (var i = 0; i < surveys.length; i++) {
+                                    if (surveys[i].id === data.line_ministry) {
+                                        select_ministry = data.surveys[i];
+                                        break;
+                                    }
+                                }
+
+                        console.log(select_ministry)
+
+
+
+                        
                     }
                 });
             })
@@ -774,7 +788,106 @@
         document.getElementById('exportButton_2').onclick = function () {
             exportTableToExcel('general_Survey_Info', 'exported_table');
         }
+        Highcharts.chart('pieChart', {
+            chart: {
+                type: 'variablepie'
+            },
+            title: {
+                text: 'Countries compared by population density and total area, 2022.',
+                align: 'left'
+            },
+            tooltip: {
+                headerFormat: '',
+                pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' +
+                    'Area (square km): <b>{point.y}</b><br/>' +
+                    'Population density (people per square km): <b>{point.z}</b><br/>'
+            },
+            series: [{
+                minPointSize: 10,
+                innerSize: '20%',
+                zMin: 0,
+                name: 'countries',
+                borderRadius: 5,
+                data: [{
+                    name: 'Spain',
+                    y: 505992,
+                    z: 92
+                }, {
+                    name: 'France',
+                    y: 551695,
+                    z: 119
+                }, {
+                    name: 'Poland',
+                    y: 312679,
+                    z: 121
+                }, {
+                    name: 'Czech Republic',
+                    y: 78865,
+                    z: 136
+                }, {
+                    name: 'Italy',
+                    y: 301336,
+                    z: 200
+                }, {
+                    name: 'Switzerland',
+                    y: 41284,
+                    z: 213
+                }, {
+                    name: 'Germany',
+                    y: 357114,
+                    z: 235
+                }],
+                colors: [
+                    '#4caefe',
+                    '#3dc3e8',
+                    '#2dd9db',
+                    '#1feeaf',
+                    '#0ff3a0',
+                    '#00e887',
+                    '#23e274'
+                ]
+            }]
+        });
+var myCheckbox = document.getElementById('flexCheckChecked');
+var mySelect = document.getElementById('survey-select');
+    
+    myCheckbox.addEventListener('change', function() {
+      if (!myCheckbox.checked) {
+        mySelect.disabled = true;
+        if (selectedSurveyTypeId) {
 
+                        var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId);
+
+                        surveys.forEach(function (lineMinistry) {
+                                        var ministry_option = document.createElement("option");
+                                        ministry_option.value = lineMinistry.id;
+                                        ministry_option.textContent = surveys.for_line_ministry;
+                                        select_ministry.append(ministry_option)
+
+                           
+                               
+                                        
+
+                                    });
+
+
+
+                                    console.log('Line ministries:', lineMinistries);
+                                } 
+
+
+                        
+
+
+                   
+        console.log("Selected line ministry: " + selectedLineMinistry);} else {
+    mySelect.disabled = false;
+
+}
+
+
+});
+    
 
     </script>
 
