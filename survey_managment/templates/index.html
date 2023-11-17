@@ -2,9 +2,25 @@
 
 <!DOCTYPE html>
 <html lang="en">
-{% include "includes/head.html" %}
 
+<<<<<<< HEAD
 <link rel="stylesheet" href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css" />
+=======
+<head>
+    {% include "includes/head.html" %}
+
+    <style>
+        .limited-width {
+            max-width: 500px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+
+        }
+    </style>
+</head>
+>>>>>>> e3392062c19a10cb932c0f6c2200c41ef7a0b45a
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -157,7 +173,7 @@
                                             <input class="form-control form-control-sm" type="text"
                                                 placeholder="Search Here" aria-label=".form-control-sm example">
                                         </div>
-                                        
+
                                         <div class="dropdown">
                                             <a href="" class="btn btn-primary btn-sm btn-wave waves-effect waves-light"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -185,7 +201,7 @@
                                                 <th> created_at </th>
                                                 <th>start date </th>
                                                 <th>end date </th>
-                                              
+
 
 
                                             </thead>
@@ -198,7 +214,7 @@
                                                     <td>{{ survey.start_at }}</td>
                                                     <td>{{ survey.end_at }}</td>
                                                 </tr>
-                                            {% endfor %}
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -236,8 +252,8 @@
                 </div>
             </section>
 
-              <!-- table -->
-              <section class="content">
+            <!-- table -->
+            <section class="content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
@@ -278,7 +294,7 @@
                                                 <th> Survey Name </th>
                                                 <th> Weighted Result </th>
                                                 <th> Grading </th>
-                                               
+
 
 
                                             </thead>
@@ -328,7 +344,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card hidden-transition">
-                                
+
                                 <div class="card-header" style="justify-content: space-between;">
                                     <div class="card-title">
                                         <div id="selected-survey"></div>
@@ -339,7 +355,7 @@
                                                 placeholder="Search Here" aria-label=".form-control-sm example">
                                         </div>
                                         <div class="dropdown">
-                                            
+
                                             <a href="" class="btn btn-primary btn-sm btn-wave waves-effect waves-light"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 Sort By<i
@@ -367,9 +383,8 @@
                                                 <th> ደረጃ </th>
                                                 <th> ክብደት </th>
 
-                                                <th>የተመዘነ ደረጃ </th>
-                                                <th> የተመዘነ ደረጃ (በ100% ኛ) </th>
-                                                <th> Indicator </th>
+                                                <th>የተመዘነ ደረጃ</th>
+                                                <th> በ100% ኛ </th>
                                                 <th> Grading </th>
 
 
@@ -505,7 +520,7 @@
                             row.insertCell().textContent = survey.created_at;
                             row.insertCell().textContent = survey.start_at;
                             row.insertCell().textContent = survey.end_at;
-                            
+
 
                             var option = document.createElement("option");
                             option.value = survey.id;
@@ -545,10 +560,10 @@
                                     console.log('Selected survey not found');
                                 }
                             });
-                          
+
 
                             select_ministry.addEventListener("change", function () {
-                                if(select_ministry){
+                                if (select_ministry) {
                                     clearTable(surveyTableBody_2)
                                 }
                                 var selectedLineMinistry = parseInt(select_ministry.value);
@@ -558,7 +573,7 @@
                                 data.users.forEach(function (users) {
                                     if (users.Line_ministry_id === selectedLineMinistry) {
                                         user = users.id;
-                                        return; 
+                                        return;
                                     }
                                 });
                                 userResponseId = null
@@ -599,55 +614,57 @@
                                             console.log("the question :" + question.title + "the weight:" + weight)
 
 
- var total_weight =0
+                                            var total_weight = 0
                                             if (!isNaN(answer.value)) {
                                                 weightedSum += answer.value * weight;
                                                 totalWeight += weight;
-                                                total_answer += answer.value ;
+                                                total_answer += answer.value;
 
-                                             
+
                                             }
-                                           
+
                                             var weighted__Sum = 0;
-                                           
+
                                             if (totalWeight > 0) {
                                                 var weightedAverage = weightedSum / totalWeight;
                                                 var row = surveyTableBody_2.insertRow();
-                                                row.insertCell().textContent = question.title;
+                                                var question_cell = row.insertCell();
+                                                question_cell.textContent = question.title;
                                                 row.insertCell().textContent = answer.value;
+                                                question_cell.classList.add('limited-width');
                                                 row.insertCell().textContent = weight;
                                                 console.log(totalWeight)
                                                 row.insertCell().textContent = answer.value * weight;
                                                 var totalresult = answer.value * weight
-                                                var max_value = 10 ;
-                                               
-                                                var weightedinPercent = ((totalresult) / (max_value * weight)) * 100 ;
+                                                var max_value = 10;
+
+                                                var weightedinPercent = ((totalresult) / (max_value * weight)) * 100;
                                                 count++;
-                                                total_weightedinPercent +=weightedinPercent;
+                                                total_weightedinPercent += weightedinPercent;
                                                 // console.log("hello" + total_weightedinPercent + " "+ count);
-                                                
-                                                row.insertCell().textContent = weightedinPercent + "%" ;
+
+                                                row.insertCell().textContent = weightedinPercent + "%";
                                                 var x = weightedinPercent;
                                                 var newCell = row.insertCell();
                                                 newCell.id = 'Indicator';
-                                                if (x >= 90 ) {
+                                                if (x >= 90) {
                                                     newCell.textContent = " Very Good";
                                                     newCell.style.backgroundColor = "#52B788";
-                                                } else if (x >=80 ) {
+                                                } else if (x >= 80) {
                                                     newCell.textContent = "Good";
                                                     newCell.style.backgroundColor = "#C2FA41";
-                                                } else if (x >= 60 ) {
+                                                } else if (x >= 60) {
                                                     newCell.textContent = "Satisfactory";
                                                     newCell.style.backgroundColor = "#C1FA61";
 
-                                                } else if (x >=50 ) {
+                                                } else if (x >= 50) {
                                                     newCell.textContent = "Poor";
                                                     newCell.style.backgroundColor = "#FAEB41";
 
 
-                                                } else if (x >=40) {
+                                                } else if (x >= 40) {
                                                     newCell.textContent = "Very Poor";
-                                                    newCell.style.backgroundColor =" #FA7D41";
+                                                    newCell.style.backgroundColor = " #FA7D41";
 
 
                                                 } else {
@@ -657,10 +674,10 @@
 
                                                 }
 
-                                              
 
 
-                                              
+
+
 
 
 
@@ -669,34 +686,34 @@
                                                 console.log("No valid answers found for the selected line ministry.");
                                             }
 
-                                            
+
 
 
                                         }
                                     });
-                                  
+
                                 }
 
-                                
+
                                 else {
                                     console.log("No user_response ID found for the selected line ministry.");
                                 }
-var totalRow = surveyTableBody_2.insertRow();
-var labelCell = totalRow.insertCell();
-labelCell.textContent = 'Total';
+                                var totalRow = surveyTableBody_2.insertRow();
+                                var labelCell = totalRow.insertCell();
+                                labelCell.textContent = 'Total';
 
-var valueCell = totalRow.insertCell();
-valueCell.textContent = total_answer;
+                                var valueCell = totalRow.insertCell();
+                                valueCell.textContent = total_answer;
 
-var weightCell = totalRow.insertCell();
-weightCell.textContent = totalWeight;
+                                var weightCell = totalRow.insertCell();
+                                weightCell.textContent = totalWeight;
 
-var weightCell = totalRow.insertCell();
-weightCell.textContent = weightedSum;
+                                var weightCell = totalRow.insertCell();
+                                weightCell.textContent = weightedSum;
 
-var averageCell = totalRow.insertCell();
-averageCell.textContent = total_weightedinPercent/count + "%";
-surveyTableBody_2.appendChild(totalRow);
+                                var averageCell = totalRow.insertCell();
+                                averageCell.textContent = total_weightedinPercent / count + "%";
+                                surveyTableBody_2.appendChild(totalRow);
 
 
 
@@ -705,7 +722,7 @@ surveyTableBody_2.appendChild(totalRow);
                             var selectedSurvey = (selectElement.value);
                         });
 
-                        
+
 
                     }
                 });
@@ -723,41 +740,41 @@ surveyTableBody_2.appendChild(totalRow);
             while (select.firstChild) {
                 select.removeChild(select.firstChild);
             }
-        }  
- function exportTableToExcel(tableId, filename = '') {
-  var downloadLink;
-  var dataType = 'application/vnd.ms-excel';
-  var tableSelect = document.getElementById(tableId);
-  var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+        }
+        function exportTableToExcel(tableId, filename = '') {
+            var downloadLink;
+            var dataType = 'application/vnd.ms-excel';
+            var tableSelect = document.getElementById(tableId);
+            var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
 
-  filename = filename ? filename + '.xlsb' : 'excel_data.xlsb';
+            filename = filename ? filename + '.xlsb' : 'excel_data.xlsb';
 
-  downloadLink = document.createElement("a");
+            downloadLink = document.createElement("a");
 
-  document.body.appendChild(downloadLink);
+            document.body.appendChild(downloadLink);
 
-  if (navigator.msSaveOrOpenBlob) {
-    var blob = new Blob(['\ufeff', tableHTML], {
-      type: dataType
-    });
-    navigator.msSaveOrOpenBlob(blob, filename);
-  } else {
-    downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-    downloadLink.download = filename;
-    downloadLink.click();
-  }
-}
+            if (navigator.msSaveOrOpenBlob) {
+                var blob = new Blob(['\ufeff', tableHTML], {
+                    type: dataType
+                });
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+                downloadLink.download = filename;
+                downloadLink.click();
+            }
+        }
 
-document.getElementById('exportButton').onclick = function(){
-    exportTableToExcel('survey_detail' , 'exported_table');
-}
-document.getElementById('exportButton_1').onclick = function(){
-    exportTableToExcel('surveyTable' , 'exported_table');
-}
+        document.getElementById('exportButton').onclick = function () {
+            exportTableToExcel('survey_detail', 'exported_table');
+        }
+        document.getElementById('exportButton_1').onclick = function () {
+            exportTableToExcel('surveyTable', 'exported_table');
+        }
 
-document.getElementById('exportButton_2').onclick = function(){
-    exportTableToExcel('general_Survey_Info' , 'exported_table');
-}
+        document.getElementById('exportButton_2').onclick = function () {
+            exportTableToExcel('general_Survey_Info', 'exported_table');
+        }
 
 
     </script>
@@ -765,4 +782,3 @@ document.getElementById('exportButton_2').onclick = function(){
 </body>
 
 </html>
-

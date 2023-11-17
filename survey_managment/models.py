@@ -79,7 +79,11 @@ class UserResponse(models.Model):
     submitted_at = models.DateTimeField(auto_now=True)
     year_of_experiance = models.IntegerField(null=True , blank=True)
     department = models.CharField( max_length=50 , null=True , blank=True)
+<<<<<<< HEAD
     age =models.IntegerField(null=True , blank=True)
+=======
+    age =models.DateField( null=True , blank=True)
+>>>>>>> e3392062c19a10cb932c0f6c2200c41ef7a0b45a
 
 
     def __str__(self):
