@@ -378,9 +378,6 @@ def chooseTarget(request, survey_id, question_id):
     return render(request, 'chooseTarget.html', data)
 
 
- # survey_id = request.GET.get('survey_id')
-    # survey = Survey.objects.get(id=survey_id)
-    # survey_questions = survey.question.all()
 def questionCreationByType(request, survey_id):
     zsurvey = Survey.objects.get(id=survey_id)
     questions = zsurvey.question.all()
@@ -430,6 +427,9 @@ def newQuestion(request,questionType, s_id ):
     context = {'questionType': questionType, 'categories': categories}
     return render(request, 'modal.html', context)
 
+
+def recommendationView(request):
+    return render(request, 'recommendation.html')
 
 
 

@@ -43,6 +43,7 @@ class Question(models.Model):
     weight = models.IntegerField(blank=True,null=True)
     allow_doc = models.BooleanField(blank=True)
     doc_label = models.TextField(null=True,blank=True)
+    # order = models.IntegerField(default=0)
 
 
     def __str__(self):
