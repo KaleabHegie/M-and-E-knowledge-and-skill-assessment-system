@@ -383,7 +383,22 @@ def questionCreationByType(request, survey_id):
     questions = zsurvey.question.all()
     return render(request, 'addQuestions.html', {'zsurvey':zsurvey, 'questions' : questions})
  
+def newCategory(request):
+    if request.method == 'POST':
+        s_id = request.POST.get('s_id')
+        questionType = request.POST.get('questionType')
+        newCategory = request.POST.get('newCategory')
+        subcategoriesNEW = request.POST.get('subcategoriesNEW')
+
+        newCate = Category.objects.create(name=newCategory)
+
+        if subcategoriesNEW:
+            zparent = Category.objects.get(id=newCate.id)
+            for i in subcategoriesNEW:
+                Category.objects.create(name=i, parent=zparent)
     
+        return redirect('survey_managment:newQuestion', questionType=questionType, s_id=s_id )    
+
 
 def newQuestion(request,questionType, s_id ):
     categories = Category.objects.prefetch_related('subcategories')

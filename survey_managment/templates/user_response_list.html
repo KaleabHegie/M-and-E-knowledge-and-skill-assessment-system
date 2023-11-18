@@ -30,7 +30,7 @@
      
 <section class="container-fluid">
   <div class="container">
-    <h1 style="font-size: 2.5rem; font-weight: bold;">Responses For Survey{{ survey.name }}</h1>
+    <h1 style="font-size: 2.5rem; font-weight: bold;">Responses For {{ survey.name }}</h1>
     {% if user_responses %}
       <table class="table">
         <thead>
@@ -54,110 +54,7 @@
   </div>
 </section>
       
-<div class="col-lg-12">
-  <div class="card ">
-    <div class="card-header p-2">
-      <ul class="nav nav-pills topLinks">
-        <li class="nav-item">
-          <!-- <a class="nav-link" href="{% url "survey_managment:survey_detail" id=survey_id %}"></a> -->
-          <a class="nav-link active" href="#QuestionList" data-toggle="tab">Question List</a>
-        </li>
-        <li class="nav-item">
-          <!-- <a class="nav-link" href="{% url "survey_managment:user_response_list" id=survey_id %}">User Response</a> -->
-          <a class="nav-link" href="#timeline" data-toggle="tab">User Response</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#Recommendation" data-toggle="tab">Recommendation</a>
-        </li>
-      </ul>
-    </div>
-
-
-    <div class="card-body">
-      <div class="tab-content">
-
-        <div class="active tab-pane" id="QuestionList">
-          <h4 class="text-center text-info mt-3">
-            Questions for survey {{ survey.name }}
-       </h4>
-       <ul class="list-group">
-        <div class="card mb-3 shadow">
-          <div class="card-header">
-            <div class="form-row mb-3">
-              <div class="col">
-                <input type="text" class="form-control" id="search-input" placeholder="Search question...">
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            {% for question in questions %}
-              <li class="list-group-item mb-2 shadow">
-                {{ question.title }}
-              </li>
-            {% endfor %}
-          </div>
-        </div>
-      </ul>
-
-      {% if user_responses  %}
-         
-      {% else %}  
-         <a class="btn btn-primary" href="{% url 'survey_managment:questionCreationByType' survey_id %}">Add Questions</a>
-      {% endif %}
-        </div>
-
-        <div class="tab-pane" id="timeline">
-          <div class="container">
-            <h1 style="font-size: 2.5rem; font-weight: bold;">{{ survey.title }}</h1>
-            {% if user_responses %}
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Response by</th>
-                    <th>Submitted at</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for response in user_responses %}
-                    <tr>
-                      <td><a style="text-decoration: none; color: black;" href="{% url 'survey_managment:user_response' id=survey_id response_id=response.id %}">{{ response.submitted_by }}</a></td>
-                      <td>{{ response.submitted_at }}</td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            {% else %}
-              <p style="font-size: 1.2rem;">No responses found.</p>
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="tab-pane" id="Recommendation">
-          <table id="myTable" class="display">
-            <thead>
-              <tr>
-                <th>Column 1</th>
-                <th>Column 2</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Row 1 Data 1</td>
-                <td>Row 1 Data 2</td>
-              </tr>
-              <tr>
-                <td>Row 2 Data 1</td>
-                <td>Row 2 Data 2</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-</div>
+      
 
 
       

@@ -67,6 +67,7 @@
                     <h4 class="text-center text-info mt-3">
                       Questions for survey {{ survey.name }}
                  </h4>
+                 {% if questions %}
                  <ul class="list-group">
                   <div class="card mb-3 shadow">
                     <div class="card-header">
@@ -86,6 +87,10 @@
                   </div>
                 </ul>
       
+                 {% else %}   
+                 <p style="font-size: 1.2rem;">No Questions found For this survey.</p>
+                 
+                 {% endif %}
                 {% if user_responses  %}
                    
                 {% else %}  
