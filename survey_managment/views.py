@@ -250,7 +250,7 @@ def user_response_list(request, id):
 
 def user_response(request, id , response_id):
     survey = get_object_or_404(Survey, id=id)
-    user_responses = UserResponse.objects.filter(forsurvey=survey)
+    user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
     data = {
         'survey_id': id,
@@ -450,7 +450,9 @@ def greetingpage_view(request):
 @login_required
 def survey_listss_views(request):
     today = date.today()
-    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today)
+    user = request.user
+    line_ministry = user.Line_ministry
+    surveys = Survey.objects.filter(for_line_ministry = line_ministry)
     data = {
         'surveys': surveys
     }
@@ -491,23 +493,22 @@ def questionForSurvey(request, id):
 
 
 
-def user_info(request):
-    data = {
-
-    }
-    return render ( request , 'Final_Preview_Pages/userinfopage.html', data)
 
 
+@login_required
 def un_approved_survey_list(request):
     today = date.today()
     user = request.user
+    line_ministry = user.Line_ministry
+    print(user)
+    print(line_ministry)
     data = {
-        "surveys" : Survey.objects.filter(userresponse__status='pending', start_at__lte=today, end_at__gte=today , for_line_ministry = user.Line_ministry),
+        "surveys" : Survey.objects.filter(userresponse__status='pending', for_line_ministry = line_ministry),
     }
-    return render(request, 'Final_Preview_Pages/un_approved_survey_list.html', data)
+    return render(request, 'un_approved_survey_list.html', data)
 
 
-
+@login_required
 def un_approved_survey(request, id):
     survey = get_object_or_404(Survey, id=id)
     questions = survey.question.all()
@@ -539,33 +540,77 @@ def un_approved_survey(request, id):
         'answer_forms': answer_forms,
     }
 
-    return render ( request , 'Final_Preview_Pages/un_approved_survey.html', data)
+    return render ( request , 'un_approved_survey.html', context)
 
-def anonymous_survey_listss_views(request):
+
+
+def user_info(request):
+    if request.method == 'POST':
+        form = UserResponseFormA(request.POST)
+        if form.is_valid():
+            response = form.save(commit=False)
+            response.save()
+            user_response_id = response.id   # Get the line ministry of the saved UserResponse object
+            return redirect('survey_managment:anonymous_survey_listss_views', user_response_id=user_response_id)  # Pass the line ministry as a parameter
+    else:
+        form = UserResponseFormA()
+    data = {
+        'form': form,
+    }
+    return render(request, 'Final_Preview_Pages/userinfopage.html', data)
+
+
+
+
+def anonymous_survey_listss_views(request , user_response_id):
     today = date.today()
     survey_type = SurveyType.objects.get(name='For Employee')
-    surveys = Survey.objects.filter(start_at__lte=today, end_at__gte=today , survey_type =  survey_type)
-    print(surveys)
+    user_response = UserResponse.objects.get(id=user_response_id )
+    line_ministry = user_response.line_ministry
+    surveys = Survey.objects.filter(survey_type =  survey_type , for_line_ministry = line_ministry)
     data = {
-        'surveys': surveys
+        'surveys': surveys,
+        'user_response_id' : user_response_id
     }
     return render(request, 'Final_Preview_Pages/SL_Anonymous.html', data)
 
-def questionForSurveyAnonymous(request, id):
+def questionForSurveyAnonymous(request, id , user_response_id):
     survey = get_object_or_404(Survey, id=id)
     questions = survey.question.all()
+    user_response = UserResponse.objects.get(id=user_response_id)
     if request.method == 'POST':
         anonymous_user_response_form = AnonymousUserResponseForm(request.POST)
         answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
         # value = request.POST.get('answer_16')
         # print(value)
 
-        anonymous_user_response = UserResponse.objects.create( forsurvey=survey, year_of_experiance=request.POST.get('year_of_experiance'),department=request.POST.get('department') , age=request.POST.get('age') )
-        for i in questions:
-            value = request.POST.get(f'answer_{i.id}')
-            Answer.objects.create(forquestion = i , answertext = value , response = anonymous_user_response)              
-            value = ''
-        return redirect('survey_managment:anonymous_survey_listss_views')
+        if user_response.forsurvey :
+           user_response = UserResponse.objects.create(
+           forsurvey=survey,
+           department=user_response.department,
+           age=user_response.age,
+           year_of_experiance = user_response.year_of_experiance,
+           status='approved',
+           line_ministry=user_response.line_ministry
+    )
+
+           user_response.save() 
+           for i in questions:
+               value = request.POST.get(f'answer_{i.id}')
+               Answer.objects.create(forquestion = i , answertext = value , response = user_response)              
+               value = ''
+           
+           return redirect('survey_managment:anonymous_survey_listss_views' , user_response_id=user_response_id)
+        else :
+           user_response.status = 'approved'
+           user_response.forsurvey = survey
+           user_response.save() 
+           for i in questions:
+               value = request.POST.get(f'answer_{i.id}')
+               Answer.objects.create(forquestion = i , answertext = value , response = user_response)              
+               value = ''
+          
+           return redirect('survey_managment:anonymous_survey_listss_views' , user_response_id=user_response_id)
     else:
         anonymous_user_response_form = AnonymousUserResponseForm()
         answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]

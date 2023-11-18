@@ -115,7 +115,33 @@
           <span style="color: rgb(9, 109, 9)">MOPD</span>
         </a>
 
-        {% include "includes/navBar.html" %}
+        {%load static %}
+
+        <nav id="navbar" class="navbar">
+            <ul>
+              <li><a class="nav-link scrollto active" href="{% url 'survey_managment:greetingpage' %}" style="color: rgb(9, 109, 9);">Home</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#about" style="color: rgb(9, 109, 9);">About</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#values" style="color: rgb(9, 109, 9);">Values</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#features" style="color: rgb(9, 109, 9);">Features</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'survey_managment:surveylists' %}" style="color: rgb(9, 109, 9);">New Surveys</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'survey_managment:un_approved_survey_list' %}" style="color: rgb(9, 109, 9);">Unapproved Surveys</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#contact" style="color: rgb(9, 109, 9);">Contact</a></li>
+        
+        
+              <li class="inline mb-0">
+                <li class="has-submenu parent-menu-item">
+                       
+                        <li><a class="getstarted scrollto" href="{% url 'Account:Login'%}" style="color: white; background-color: rgb(9, 109, 9);" >Get Started</a></li>
+        
+                       
+        
+                    </ul>
+                </li>
+                                </li>
+        
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+          </nav>
         <!-- .navbar -->
       </div>
     </header>
@@ -136,7 +162,7 @@
       
             {% for survey in surveys  %}
             <div class="col-md-3 col-sm-6 col-12 p-1">
-              <a href="{% url 'survey_managment:questionForSurveyAnonymous' id=survey.id %}" style="color: black;">
+              <a href="{% url 'survey_managment:questionForSurveyAnonymous' id=survey.id user_response_id=user_response_id %}" style="color: black;">
                 <div class="info-box shadow">
                   <span class="info-box-icon" style="color: rgb(9, 109, 9);">
                     <i class="far fa-copy"></i>
