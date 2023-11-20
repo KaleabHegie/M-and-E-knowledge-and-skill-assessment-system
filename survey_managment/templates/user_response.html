@@ -3,6 +3,8 @@
 <html lang="en">
   {% include 'includes/head.html' %}
 
+ 
+
   <body class="hold-transition sidebar-mini">
     <div class="wrapper">
       {% include "includes/loader.html" %}
@@ -10,6 +12,9 @@
         {% include 'includes/sideNavbar.html' %}
 
       <div class="content-wrapper">
+
+
+        {% include 'includes/message.html'  %}
 
        <div class="container">
           <div class="row">
@@ -43,10 +48,14 @@
                           <tr>
                             <td>{{ answer.forquestion }}</td>
                             <td>{{ answer.answertext }}</td>
+                            <td>{{ answer.answertext }}</td>
                           </tr>
                         {% endfor %}
                       </tbody>
                     </table>
+                    {% if response.status == 'pending' %}
+                        <a href="{% url "survey_managment:user_response_change_status" survey_id response_id %}" class="btn btn-primary p-2 mt-4"> Approve </a>
+                    {% endif %}
                   </div>
                 </div>
               {% endfor %}

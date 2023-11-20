@@ -35,6 +35,7 @@ urlpatterns = [
     path('survey_detail/<int:id>', views.survey_detail, name='survey_detail'),
     path('user_response_list/<int:id>', views.user_response_list, name='user_response_list'),
     path('user_response/<int:id>/<int:response_id>', views.user_response, name='user_response'),
+    path('user_response_change_status/<int:id>/<int:response_id>', views.user_response_change_status, name='user_response_change_status'),
     # path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:survey_id>/', views.displayQuestion, name='displayQuestion'),
     path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
