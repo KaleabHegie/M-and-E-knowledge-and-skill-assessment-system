@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
 from . models import *
-from .forms import UserProfileForm
+from .forms import UserProfileForm , PasswordChangeForm
 from django.contrib.auth import settings
 from django.contrib.auth import logout
 from survey_managment.views import survey_listss_views 
@@ -45,7 +45,7 @@ def register_view(request):
 				else:
 					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,
 												  first_name = first_name,last_name=last_name,
-												  phone_number=phone_num, date_of_birth=DoB,Role = role, 
+												  phone_number=phone_num, date_of_birth=DoB,
 												  Department = department,Line_ministry =line_ministry ,
 												  gender= selected_gender ,is_MoPDHead=is_mopd_head,
             is_LineMinisterHead=is_line_minister_head,
@@ -163,3 +163,17 @@ def delete_user(request, id):
         user.delete()
         return redirect('Account:users')
     return render(request, 'delete_user.html', {'user': user})
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, 'Your password has been successfully changed.')
+            return redirect('Account:login')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {'form': form})
