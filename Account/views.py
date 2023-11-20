@@ -23,6 +23,7 @@ def register_view(request):
 		password = request.POST.get('password')
 		re_password = request.POST.get('re_password')
 		phone_num = request.POST.get('phone_num')
+		role = request.POST.get('role')
 		department = request.POST.get('department')
 		line_ministry_id = request.POST.get('line_ministry')
 		line_ministry = Line_ministry.objects.get(id=line_ministry_id)
@@ -44,7 +45,7 @@ def register_view(request):
 				else:
 					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,
 												  first_name = first_name,last_name=last_name,
-												  phone_number=phone_num, date_of_birth=DoB, 
+												  phone_number=phone_num, date_of_birth=DoB,Role = role, 
 												  Department = department,Line_ministry =line_ministry ,
 												  gender= selected_gender ,is_MoPDHead=is_mopd_head,
             is_LineMinisterHead=is_line_minister_head,
