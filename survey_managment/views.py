@@ -9,6 +9,8 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from datetime import date
 
+from django.contrib import messages
+
 
 
 
@@ -252,6 +254,24 @@ def user_response(request, id , response_id):
     survey = get_object_or_404(Survey, id=id)
     user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
+    
+    data = {
+        'survey_id': id,
+        'survey': survey,
+        'user_responses': user_responses,
+        'answers': answers,
+        'response_id' : response_id
+    }
+    return render(request, 'user_response.html', data)
+
+def user_response_change_status(request, id , response_id):
+    survey = get_object_or_404(Survey, id=id)
+    userresponses = get_object_or_404(UserResponse, id=response_id)
+    userresponses.status = 'approved'
+    userresponses.save()
+    user_responses = UserResponse.objects.filter(id=response_id)
+    answers = Answer.objects.filter(response__in=user_responses)
+    messages.success(request , 'Succussesfuly approved')
     data = {
         'survey_id': id,
         'survey': survey,
@@ -381,6 +401,7 @@ def chooseTarget(request, survey_id, question_id):
 def questionCreationByType(request, survey_id):
     zsurvey = Survey.objects.get(id=survey_id)
     questions = zsurvey.question.all()
+    messages.success(request , 'Survey created successfully add questions to it.')
     return render(request, 'addQuestions.html', {'zsurvey':zsurvey, 'questions' : questions})
  
 def newCategory(request):
@@ -467,9 +488,11 @@ def survey_listss_views(request):
     today = date.today()
     user = request.user
     line_ministry = user.Line_ministry
-    surveys = Survey.objects.filter(for_line_ministry = line_ministry)
+    surveys = Survey.objects.filter(for_line_ministry=line_ministry)
+    surveys_without_response = UserResponse.objects.filter(submitted_by=request.user).distinct()
+    surveys_with_no_response = surveys.exclude(id__in=surveys_without_response)
     data = {
-        'surveys': surveys
+        'surveys': surveys_with_no_response
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
 

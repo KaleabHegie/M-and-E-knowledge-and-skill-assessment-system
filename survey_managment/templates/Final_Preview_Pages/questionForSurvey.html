@@ -88,8 +88,10 @@ button:hover {
   
   <form class="shadow-lg" id="regForm" method="post">
     {% csrf_token %}
+    
     <h1 class="text-info bold p-4">{{ survey }}</h1>
     <!-- One "tab" for each step in the form: -->
+    {% if questions %}
     {% for question in questions %}
     <div class="tab" id="questionsTab{{ question.id }}">
         <div class="question">
@@ -120,6 +122,9 @@ button:hover {
        {% endfor %}
       
     </div>
+    {% else %}
+    <h3 class="text-danger text-center">This survey has no questions.</h3>
+    {% endif %}
 </form>
 
 
