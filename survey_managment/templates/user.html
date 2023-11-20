@@ -2,8 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     {% include 'includes/head.html' %}
-
-<body>
+    <body>
     <div class="wrapper">
 
         {% include 'includes/topNavbar.html' %}
@@ -66,8 +65,11 @@
             <h3 class="card-title">User List</h3>
             </div>
             
-            <div class="card-body p-0">
-            <table class="table table-striped">
+            <div class="card-body p-0" >
+
+
+                
+            <table class="table table-striped" id="example" >
             <thead>
             <tr>
             <th style="width: 10px"></th>
@@ -106,7 +108,23 @@
             </div>
         </div>
         </div>
+
+
         {% include 'includes/scripts.html' %}
+
+        </script>
+        <script>
+      $(document).ready(function() {
+    var table = $('#example').DataTable( {
+        lengthChange: true,
+        buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+    } );
+ 
+    table.buttons().container()
+        .insertBefore( '#example_filter' );
+} );
+        </script>
+        
 
 </body>
 </html>
