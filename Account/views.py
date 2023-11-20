@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
 from . models import *
-from .forms import UserProfileForm , PasswordChangeForm
+from .forms import UserProfileForm , CustomPasswordChangeForm
 from django.contrib.auth import settings
 from django.contrib.auth import logout
 from survey_managment.views import survey_listss_views 
@@ -23,7 +23,6 @@ def register_view(request):
 		password = request.POST.get('password')
 		re_password = request.POST.get('re_password')
 		phone_num = request.POST.get('phone_num')
-		role = request.POST.get('role')
 		department = request.POST.get('department')
 		line_ministry_id = request.POST.get('line_ministry')
 		line_ministry = Line_ministry.objects.get(id=line_ministry_id)
@@ -164,16 +163,14 @@ def delete_user(request, id):
         return redirect('Account:users')
     return render(request, 'delete_user.html', {'user': user})
 
+
 @login_required
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
+        form = CustomPasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            messages.success(request, 'Your password has been successfully changed.')
-            return redirect('Account:login')
-        else:
-            messages.error(request, 'Please correct the error below.')
+            return redirect('Account:Login')
     else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'change_password.html', {'form': form})
+        form = CustomPasswordChangeForm(request.user)
+    return render(request, './change_password.html', {'form': form})
