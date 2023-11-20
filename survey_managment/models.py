@@ -90,9 +90,9 @@ class UserResponse(models.Model):
         return str(self.submitted_by)
     
 class Answer(models.Model):
+    response = models.ForeignKey("UserResponse", on_delete=models.CASCADE , null=True , blank=True)
     forquestion=models.ForeignKey("Question", on_delete=models.CASCADE , null=True , blank=True)
     answertext= models.CharField(max_length=500)
-    response = models.ForeignKey("UserResponse", on_delete=models.CASCADE , null=True , blank=True)
 
     def __str__(self) -> str:
         return self.answertext
