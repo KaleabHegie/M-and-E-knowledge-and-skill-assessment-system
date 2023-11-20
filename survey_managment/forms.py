@@ -55,6 +55,19 @@ class UserResponseForm(forms.ModelForm):
         fields = ['forsurvey', 'submitted_by']
 
 
+class UserResponseFormA(forms.ModelForm):
+    class Meta:
+        model = UserResponse
+        fields = ['age', 'department', 'line_ministry', 'year_of_experiance']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['age'].widget.attrs.update({'class': 'form-control'})
+        self.fields['department'].widget.attrs.update({'class': 'form-control'})
+        self.fields['line_ministry'].widget.attrs.update({'class': 'form-control'})
+        self.fields['year_of_experiance'].widget.attrs.update({'class': 'form-control'})
+
+
 
 class AnonymousUserResponseForm(forms.ModelForm):
     class Meta:

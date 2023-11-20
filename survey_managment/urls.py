@@ -21,6 +21,7 @@ urlpatterns = [
 
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('newQuestion/<str:questionType>/<int:s_id>/', views.newQuestion, name='newQuestion'),
+    path('newCategory/', views.newCategory, name='newCategory'),
     path('recommendation/', views.recommendationView, name='recommendation'),
 
 
@@ -45,9 +46,9 @@ urlpatterns = [
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
     path('surveylists/',views.survey_listss_views, name='surveylists'),
     path('user_info/',views.user_info, name='user_info'),
-    path('surveylistsAnonymous/',views.anonymous_survey_listss_views, name='anonymous_survey_listss_views'),
+    path('surveylistsAnonymous/<int:user_response_id>',views.anonymous_survey_listss_views, name='anonymous_survey_listss_views'),
     path('questionForSurvey/<int:id>' , views.questionForSurvey , name = 'questionForSurvey'),
-    path('questionForSurveyAnonymous/<int:id>' , views.questionForSurveyAnonymous , name = 'questionForSurveyAnonymous'),
+    path('questionForSurveyAnonymous/<int:id>/<int:user_response_id>' , views.questionForSurveyAnonymous , name = 'questionForSurveyAnonymous'),
     path('un_approved_survey_list/' , views.un_approved_survey_list , name = 'un_approved_survey_list'),
     path('un_approved_survey/<int:id>' , views.un_approved_survey , name = 'un_approved_survey'),
     path("load_survey/",views.load_survey,name ='load_survey'),

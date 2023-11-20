@@ -43,7 +43,7 @@ class Question(models.Model):
     weight = models.IntegerField(blank=True,null=True)
     allow_doc = models.BooleanField(blank=True)
     doc_label = models.TextField(null=True,blank=True)
-    # order = models.IntegerField(default=0)
+    order = models.IntegerField(default=0)
 
 
     def __str__(self):
@@ -85,6 +85,7 @@ class UserResponse(models.Model):
     department = models.CharField( max_length=50 , null=True , blank=True)
     age =models.IntegerField( null=True , blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending' ,  null=True , blank=True)
+    line_ministry = models.ForeignKey(Line_ministry , on_delete=models.CASCADE , null=True , blank=True)
 
     def __str__(self):
         return str(self.submitted_by)

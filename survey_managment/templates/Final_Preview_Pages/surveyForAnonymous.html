@@ -92,17 +92,7 @@ button:hover {
     <h1 class="text-info bold p-4">{{ survey }}</h1>
     <!-- One "tab" for each step in the form: -->
 
-    <div class="tab" id="questionsTabUserInfo2">
-      <label for="year_of_experience">Year of Experience:</label>
-      <input type="text" name="year_of_experiance">
-
-      <label for="age">Age:</label>
-      <input type="text" name="age">
-
-      <label for="department">Department:</label>
-      <input type="text" name="department">
-    </div>
-    
+   
     {% for question in questions %}
         <div class="tab" id="questionsTab{{ question.id }}">
           <div class="question">
