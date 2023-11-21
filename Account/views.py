@@ -16,7 +16,7 @@ def register_view(request):
 	ministry = Line_ministry.objects.all()
 	if request.method == 'POST':
 		first_name = request.POST.get('first_name')
-		last_name = request.POST.get('last_name')
+		last_name = request.POST.get('last_name')    
 		username = request.POST.get('username')
 		email = request.POST.get('email')
 		DoB= request.POST.get('dob')
@@ -45,6 +45,7 @@ def register_view(request):
 					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,
 												  first_name = first_name,last_name=last_name,
 												  phone_number=phone_num, date_of_birth=DoB,
+                                                  
 												  Department = department,Line_ministry =line_ministry ,
 												  gender= selected_gender ,is_MoPDHead=is_mopd_head,
             is_LineMinisterHead=is_line_minister_head,
