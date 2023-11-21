@@ -35,7 +35,7 @@
     transition: margin 0.3s ease-in 0s;
 }
 .onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;
     font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
     box-sizing: border-box;
 }
@@ -458,6 +458,7 @@
                             var option = document.createElement("option");
                             option.value = '';
                             option.textContent = 'Select Survey';
+                            
                             option.value = survey.id;
                             option.textContent = survey.name;
                             selectElement.appendChild(option);
@@ -473,7 +474,7 @@
                                         break;
                                     }
                                 }
-
+// Get the line ministry from the selected survey
                                 if (selectedSurvey) {
                                     var lineMinistries = selectedSurvey.line_ministries;
                                     while (select_ministry.firstChild) {
@@ -492,7 +493,11 @@
                                 else {
                                     console.log('Selected survey not found');
                                 }
-                            });
+                           
+
+                          
+
+
                             select_ministry.addEventListener("change", function () {
                                 if (select_ministry) {
                                     clearTable(surveyTableBody_2)
@@ -507,8 +512,20 @@
                                         return;
                                     }
                                 });
+                                console.log("User Id" + user);
+
+
+
+    var selectedUserResponses = data.user_response.filter(function (userResponse) {
+        return userResponse.submitted_by_id === user && userResponse.forsurvey_id === selectedSurveyId;
+    });
+
+
+    console.log("user Response for surveyID" + selectedSurveyId)
+    console.log(selectedUserResponses); 
+    
                                 userResponseId = null
-                                data.user_response.forEach(function (userResponse) {
+                                selectedUserResponses.forEach(function (userResponse) {
                                     if (userResponse.submitted_by_id === user) {
                                         userResponseId = userResponse.id;
                                         return;  // Exit the loop once a match is found
@@ -609,6 +626,7 @@
                                             } else {
                                                 console.log("No valid answers found for the selected line ministry.");
                                             }
+                                            
 
                                         }
                                     });
@@ -637,18 +655,25 @@
                                 averageCell.textContent = average.toFixed(2) + "%";
                                 surveyTableBody_2.appendChild(totalRow);
                                 option_table1.style.display = "block";
+                                console.log(average);
 
 
 
-
+                                console.log('Selected survey:', selectedSurvey);
                                 console.log("Selected line ministry: " + selectedLineMinistry);
                             });
+                        });
                             var selectedSurvey = (selectElement.value);
+                            console.log('Selected survey:', selectedSurvey);
+
                         });
 
                         // initializeDataTable();
                     }
-                    else if (selectedSurveyTypeId && !myCheckbox.checked || !myCheckbox.checked) {
+                    else if (selectedSurveyTypeId && !myCheckbox.checked || !myCheckbox.checked) 
+                    {
+                        store_average = [];
+store_survey_name = [];
                         var survey_s = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId);
                         if (survey_s) {
                             console.log("Hello");
@@ -674,7 +699,7 @@
 
                             select_ministry.addEventListener("change", function () {
                                 if (select_ministry) {
-                                    clearTable(surveyTableBody_2)
+                                    clearTable(surveyTableBody_2);
                                     var selectedLineMinistry = parseInt(select_ministry.value);
                                     console.log(selectedLineMinistry)
                                 }
@@ -835,12 +860,11 @@ var surveyName = ministry ? ministry.name : "survey not found";
 
 draw_columnChart(store_survey_name , store_average ,surveyName);
 console.log( "here");
+store_average = [];
+store_survey_name = [];
 
 console.log( store_average);
-                                    // console.log("Total ANswer" + total_answer);
-                                    // console.log("Total weight" + totalWeight);
-                                    // console.log("weighted sum" + weightedSum);
-                                    // console.log("Average ANswer" + average);
+
                                 });
                             });
 
