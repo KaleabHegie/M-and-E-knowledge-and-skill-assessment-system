@@ -5,12 +5,14 @@ from django.contrib.auth.forms import PasswordChangeForm
 
      
 
+
+
 class CustomPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['old_password'].widget.attrs.update({'class': 'form-control'})
         self.fields['new_password1'].widget.attrs.update({'class': 'form-control'})
-        self.fields['new_password2'].widget.attrs.update({'class': 'form-control'})        
+        self.fields['new_password2'].widget.attrs.update({'class': 'form-control'})       
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -25,7 +27,6 @@ class UserProfileForm(forms.ModelForm):
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter a username'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter a password'}),
         }
-        from django import forms
 class Admin_Update(forms.ModelForm):
     class Meta:
         model = CustomUser
