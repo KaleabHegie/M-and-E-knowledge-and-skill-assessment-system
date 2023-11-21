@@ -44,11 +44,7 @@ def register_view(request):
 				else:
 					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,
 												  first_name = first_name,last_name=last_name,
-<<<<<<< HEAD
-												  phone_number=phone_num, date_of_birth=DoB, 
-=======
 												  phone_number=phone_num, date_of_birth=DoB,
->>>>>>> d9e5723614c4b9b76ec5376681b5370f398347fe
 												  Department = department,Line_ministry =line_ministry ,
 												  gender= selected_gender ,is_MoPDHead=is_mopd_head,
             is_LineMinisterHead=is_line_minister_head,
