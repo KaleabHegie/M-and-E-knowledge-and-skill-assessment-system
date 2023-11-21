@@ -38,6 +38,5 @@ class Admin_Update(forms.ModelForm):
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your phone number'}),
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter a username'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter a password'}),
         }
 

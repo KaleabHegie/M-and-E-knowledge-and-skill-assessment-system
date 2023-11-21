@@ -1,16 +1,68 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit" style="background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer;">Save</button>
+  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:08 GMT -->
 
-        </form>
-</body>
-</html>
+{% include "includes/head.html" %}  
+
+
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      {% include "includes/loader.html" %}
+
+      {% include 'includes/topNavbar.html' %}
+      {% include 'includes/sideNavbar.html' %}
+
+      <div class="content-wrapper">
+        <div class="content-header">
+          <div class="container-fluid">
+               <!-- update_users.html -->
+
+  
+  
+          </div>
+        </div>
+
+        
+        <section class="container-fluid " >
+             
+            
+            <div class="container">
+                <h1>Update User</h1>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                  
+                    <div class="form-group">
+                      <label for="{{ form.Line_ministry.id_for_label }}">Line Ministry</label>
+                      {{ form.Line_ministry }}
+                      {{ form.Line_ministry.errors }}
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.Department.id_for_label }}">Department</label>
+                      {{ form.Department }}
+                      {{ form.Department.errors }}
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.role.id_for_label }}">Role</label>
+                      {{ form.role }}
+                      {{ form.role.errors }}
+                    </div>
+                  
+                    <button type="submit" class="btn btn-primary">Update</button>
+                  </form>
+              </div>
+            
+        </section>
+      </div>
+
+    </div>
+
+   
+    {% include "includes/scripts.html" %}
+
+  </body>
+
+  </html>
+
+
