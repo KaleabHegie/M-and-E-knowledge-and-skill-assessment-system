@@ -16,13 +16,6 @@
 
         {% include 'includes/message.html'  %}
 
-       <div class="container">
-          <div class="row">
-           
-          </div>
-
-       </div>
-       
        
 
        <section class="container-fluid">
@@ -36,21 +29,41 @@
                   <h4 class="text-info m-4"> Response by {{ response.submitted_by }}</h4>
                   
                   <div class="card-body">
-                    <table class="table">
+                    
+                    <table class="table table-responsive">
                       <thead>
                         <tr>
                           <th>Question</th>
+                          <th>Wight</th>
                           <th>Answer</th>
+                          <th>Document</th>
+                          {% if response.status == 'pending'  %}
+                            <th>Recomndation</th>
+                          {% endif %}
+                         
                         </tr>
                       </thead>
                       <tbody>
-                        {% for answer in response.answer_set.all %}
-                          <tr>
+                        {% for answer in answers %}
+                        <tr>
                             <td>{{ answer.forquestion }}</td>
+                            <td>{{ answer.forquestion.weight }}</td>
                             <td>{{ answer.answertext }}</td>
-                            <td>{{ answer.answertext }}</td>
-                          </tr>
-                        {% endfor %}
+                            
+                            
+                            <td>
+                                {% for document in documents %}
+                                    {% if document.foranswer == answer %}
+                                        <a href="{{ document.document.url }}">{{ document }}</a>
+                                   
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            {% if response.status == 'pending' %}
+                                <td><input type="checkbox" name="input_{{ answer.id }}"></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
                       </tbody>
                     </table>
                     {% if response.status == 'pending' %}
@@ -71,38 +84,9 @@
 
 
       
-      <style>
-          .accordion-button {
-              background-color: #f8f9fa;
-              color: #212529;
-              border: none;
-              border-radius: 0;
-              font-size: 1rem;
-              font-weight: 500;
-              text-align: left;
-          }
       
-          .accordion-button:focus {
-              box-shadow: none;
-          }
       
-          .accordion-button:not(.collapsed) {
-              background-color: #e9ecef;
-          }
-      
-          .accordion-body {
-              background-color: #f8f9fa;
-              padding: 1rem;
-          }
-          .question-container {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin:10px;
-            border-radius: 4px;
-          }
-      </style>
-      
-      </div>
+    </div>
 
       <footer class="main-footer">
         <div class="float-right d-none d-sm-block"><b>Version</b> 3.2.0</div>

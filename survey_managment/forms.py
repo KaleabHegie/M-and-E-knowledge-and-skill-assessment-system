@@ -82,6 +82,12 @@ class AnswerForm(forms.ModelForm):
         fields = ['answertext']
 
 
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ['foranswer', 'document']
+
+
 class CustomUserLoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))

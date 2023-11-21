@@ -99,4 +99,11 @@ class Answer(models.Model):
         return self.answertext
     
 
+class Document(models.Model):
+    foranswer = models.ForeignKey(Answer , on_delete=models.CASCADE)    
+    document = models.FileField(upload_to='') 
+    
+    def __str__(self) -> str:
+        return self.document.name
+
 
