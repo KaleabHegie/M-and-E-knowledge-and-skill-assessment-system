@@ -1,62 +1,123 @@
-<footer id="footer" class="footer">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-5 col-md-12 footer-info">
-            <a href="#" class="logo d-flex align-items-center">
-              <img src="assets/img/logo.png" alt="">
-              <span>MOPD</span>
-              <p>Ministry Of Plan And Development Commission.</p>
-
-            </a>
-            <div class="social-links mt-3">
-              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-            </div>
+{% load static %}
+<footer>
+  {% include "includes/style.html" %}
+  <div class="kode_footer_bg" bis_skin_checked="1">
+      <div class="container" bis_skin_checked="1">
+          <h5>Get in touch</h5>
+          <!--Footer Logo Wrap Start-->
+          <div class="kode_footer_logo" bis_skin_checked="1">
+              <figure>
+                  <img style="height:190px; width:300px;"  src="{% static 'assets/logo/EPDM-Illustration-TextSide-White.png' %}" alt="Image Here">
+              </figure>
+              <ul>
+                  <li><a href="https://www.facebook.com/MoPDETH"><i class="fa fa-facebook"></i></a></li>
+                  <li><a href="https://twitter.com/mopd_ethiopia"><i class="fa fa-twitter"></i></a></li>
+                  <li><a href="https://www.linkedin.com/company/ministry-of-planning-and-development-ethiopia/"><i class="fa fa-linkedin"></i></a></li>
+                  <li><a href=""><i class="fa fa-youtube"></i></a></li>
+                  <li><a href="https://t.me/PDC_Ethiopia"><i class="fa fa-telegram" aria-hidden="true"></i></a></li>
+              </ul>
           </div>
+          <!--Footer Logo Wrap End-->
 
-          <div class="col-lg-2 col-6 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-            
-            </ul>
-          </div>
+          <!--Footer Widget Wrap Start-->
+          <div class="kode_widgt_outr_wrap" bis_skin_checked="1">
+              <div class="row" bis_skin_checked="1">
 
-          <div class="col-lg-2 col-6 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><i class="bi bi-chevron-right"></i> <a href="#"> </a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#"> </a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#"> </a></li>
+                  <div class="col-md-3" bis_skin_checked="1">
+                      <div class="kode_widgt_touch widget_hdg" bis_skin_checked="1">
+                          <h5>About MoPD</h5>
+                          <p>Primary government institution responsible for national planning and development</p>
+                          <p>The MoPD plays a vital role in shaping Ethiopia's sustainable growth and socio-economic transformation. </p>
+                      </div>
+                  </div>
+
+
+                  <div class="col-md-3" bis_skin_checked="1">
+                      <div class="kode_widgt_touch widget_hdg" bis_skin_checked="1">
+                          <h5>Contact</h5>
+                          <ul>
+                              <li>
+                                  <i class="fa fa-map-marker"></i>
+                                  <div class="kode_widgt_des" bis_skin_checked="1">
+                                      6kilo, Addis Ababa , ET.
+                                  </div>
+                              </li>
+
+                              <li>
+                                  <i class="fa fa-phone"></i>
+                                  <div class="kode_widgt_des" bis_skin_checked="1">
+                                      0111403049
+                                  </div>
+                              </li>
+
+                              <li>
+                                  <i class="fa fa-envelope"></i>
+                                  <div class="kode_widgt_des" bis_skin_checked="1">
+                                      <a href="#">info@mopd.gov.et</a>
+                                  </div>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+
+
+                  
               
-            </ul>
+                  <div class="col-md-3" bis_skin_checked="1">
+                      <div style="display: block;" class="kode_widgt_event widget_hdg" bis_skin_checked="1">
+                          <h5>Use Full links </h5>
+                          
+                          <div class="usefulllinks" >
+                            <a  href="">Home</a>
+                          </div>
+                          <div class="usefulllinks" >
+                            <a  href="">About</a>
+                          </div>
+                          <div class="usefulllinks" >
+                            <a  href="">Contact</a>
+                          </div>
+                          <div class="usefulllinks" >
+                            <a  href="">Survey</a>
+                          </div>
+                          
+                           
+                           
+                       
+                      </div>
+                  </div>
+
+                  <div class="col-md-3" bis_skin_checked="1">
+                      <div class="kode_widgt_touch widget_hdg" bis_skin_checked="1">
+                          <h5>MoPD Affilate</h5>
+                      
+                          <figure>
+                            <img style="height:190px; width:300px;"  src="{% static 'assets/logo/EPDM-Illustration-TextSide-White.png' %}" alt="Image Here">
+       
+                          </figure>
+
+
+
+                      </div>
+                  </div>
+
+
+
+              </div>
           </div>
-        
+          <!--Footer Widget Wrap End-->
 
-          <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-            <h4>Contact Us</h4>
-            <p>
-              Addis Ababa <br>
-              Ethiopia, AA <br>
-              <br><br>
-              <strong>Phone:</strong> +1 5589 55488 55<br>
-              <strong>Email:</strong> MOPD@example.com<br>
-            </p>
+          <!--Footer Site map Wrap Start-->
+          
+          <!--Footer Site map Wrap End-->
 
+          <!--Copy Right Wrap Start-->
+          <div class="kode_copyright" bis_skin_checked="1">
+              <p>Copyright © MoPD Designed by <span><a href="#">MoPD</a></span> </p>
+              <a class="kode-back-top" href="#" id="show_me" style="opacity: 1;"><i class="fa fa-angle-up"></i></a>
           </div>
+          <!--Copy Right Wrap End-->
 
-        </div>
       </div>
-    </div>
+  </div>
 
-    <div class="container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>MOPD</span></strong>. All Rights Reserved
-      </div>
-   
-    </div>
-  </footer>
+</footer>
