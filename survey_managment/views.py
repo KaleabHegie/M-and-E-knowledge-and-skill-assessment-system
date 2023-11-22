@@ -250,17 +250,19 @@ def user_response_list(request, id):
     return render(request, 'user_response_list.html', data)
 
 
-def user_response(request, id , response_id):
+def user_response(request, id, response_id):
     survey = get_object_or_404(Survey, id=id)
     user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
-    
+    documents = Document.objects.all()
+
     data = {
         'survey_id': id,
         'survey': survey,
         'user_responses': user_responses,
         'answers': answers,
-        'response_id' : response_id
+        'documents': documents,
+        'response_id': response_id
     }
     return render(request, 'user_response.html', data)
 
@@ -485,43 +487,60 @@ def greetingpage_view(request):
 
 @login_required
 def survey_listss_views(request):
-    today = date.today()
     user = request.user
+    print(user)
+    user = CustomUser.objects.get(username = user)
     line_ministry = user.Line_ministry
     surveys = Survey.objects.filter(for_line_ministry=line_ministry)
-    surveys_without_response = UserResponse.objects.filter(submitted_by=request.user).distinct()
+    print(surveys)
+    surveys_without_response = UserResponse.objects.filter(submitted_by=request.user)
+    print(surveys_without_response)
     surveys_with_no_response = surveys.exclude(id__in=surveys_without_response)
+    print(surveys_with_no_response)
     data = {
         'surveys': surveys_with_no_response
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
 
+
+
+
+
 @login_required
 def questionForSurvey(request, id):
     survey = get_object_or_404(Survey, id=id)
     questions = survey.question.all()
-    print(request.user)
+
     if request.method == 'POST':
         user_response_form = UserResponseForm(request.POST)
         answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
-        # value = request.POST.get('answer_16')
-        # print(value)
+        document_forms = [DocumentForm(request.POST, request.FILES, prefix=str(question.id)) for question in survey.question.all()]
 
         userresponse = UserResponse.objects.create(forsurvey = survey , submitted_by = request.user)
         for i in questions:
-            value = request.POST.get(f'answer_{i.id}')
-            Answer.objects.create(forquestion = i , answertext = value , response = userresponse)              
-            value = ''
+            answer_value = request.POST.get(f'answer_{i.id}')
+
+            foranswer = Answer.objects.create(forquestion = i , answertext = answer_value , response = userresponse)              
+            
+            
+            file_value = request.FILES.get(f'file_{i.id}')
+            Document.objects.create( foranswer = foranswer , document = file_value )    
+
+            answer_value = ''             
+            file_value = ''
+               
         return redirect('survey_managment:surveylists')
     else:
         user_response_form = UserResponseForm()
         answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
+        document_forms = [DocumentForm(prefix=str(question.id)) for question in survey.question.all()]
 
     context = {
         'survey': survey,
         'questions': questions,
         'user_response_form': user_response_form,
         'answer_forms': answer_forms,
+        'document_forms' : document_forms,
     }
 
     return render(request, 'Final_Preview_Pages/questionForSurvey.html', context)
@@ -533,15 +552,18 @@ def questionForSurvey(request, id):
 
 
 
+
+
 @login_required
 def un_approved_survey_list(request):
     today = date.today()
-    user = request.user
-    line_ministry = user.Line_ministry
+    user = request.user 
+    user = CustomUser.objects.get(username = user)
+    line_ministry = request.user.Line_ministry
     print(user)
     print(line_ministry)
     data = {
-        "surveys" : Survey.objects.filter(userresponse__status='pending', for_line_ministry = line_ministry),
+        "surveys" : Survey.objects.filter(userresponse__status='pending', for_line_ministry = line_ministry , userresponse__submitted_by = user),
     }
     return render(request, 'un_approved_survey_list.html', data)
 
