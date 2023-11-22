@@ -36,8 +36,9 @@
       <div class="info">
         <a href="#" class="d-block">{{user.first_name}} {{user.last_name}}</a>
       </div>
-      {% endif %}
+      
     </div>
+    {% endif %}
 
     <div class="form-inline">
       <div class="input-group" data-widget="sidebar-search">
@@ -63,7 +64,7 @@
         data-accordion="false"
       >
       <li class="nav-item">
-        <a href="{%url 'survey_managment:Index' %}" class="nav-link" ">
+        <a href="{%url 'survey_managment:Index' %}" class="nav-link" >
           <i class="nav-icon fas fa-tachometer-alt"></i>
           <p>Dashboard</p>
         </a>
