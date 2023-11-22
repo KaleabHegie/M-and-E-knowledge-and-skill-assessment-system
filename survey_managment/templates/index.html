@@ -408,7 +408,8 @@
 
     {% include "includes/scripts.html" %}
     <script>
-       
+       var store_average = [];
+        var store_survey_name = [];
         fetch('http://127.0.0.1:8000/get_json/')
             .then(res => res.json())
             .then(data => {
@@ -423,8 +424,7 @@
                 var option_table2 = document.getElementById('section1');
                 var option_table1 = document.getElementById('section2');
                 var column_chart = document.getElementById('container');
-                var store_average = [];
-                var store_survey_name = [];
+                
 
                 // Populate the survey type options
                 data.survey_type.forEach(surveyType => {
@@ -674,8 +674,7 @@
                     }
                     else if (selectedSurveyTypeId && !myCheckbox.checked || !myCheckbox.checked) 
                     {
-                        store_average = [];
-store_survey_name = [];
+                       
                         var survey_s = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId);
                         if (survey_s) {
                             console.log("Hello");
@@ -861,10 +860,7 @@ var surveyName = ministry ? ministry.name : "survey not found";
 
 
 draw_columnChart(store_survey_name , store_average ,surveyName);
-console.log( "here");
-store_average = [];
-store_survey_name = [];
-
+console.log( "here")
 console.log( store_average);
 
                                 });
