@@ -4,6 +4,7 @@
 <html lang="en">
 
 <link rel="stylesheet" href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css" />
+
 <head>
     {% include "includes/head.html" %}
 
@@ -16,56 +17,87 @@
             word-wrap: break-word;
 
         }
+
         .onoffswitch {
-     position: relative; 
-     width: 67px;
-    -webkit-user-select:none; 
-    -moz-user-select:none; 
-    -ms-user-select: none;
-}
-.onoffswitch-checkbox {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-.onoffswitch-label {
-    display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #999999; border-radius: 20px;
-}
-.onoffswitch-inner {
-    display: block; width: 200%; margin-left: -100%;
-    transition: margin 0.3s ease-in 0s;
-}
-.onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;
-    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-    box-sizing: border-box;
-}
-.onoffswitch-inner:before {
-    content: "ON";
-    padding-left: 10px;
-    background-color: #34A7C1; color: #FFFFFF;
-}
-.onoffswitch-inner:after {
-    content: "OFF";
-    padding-right: 10px;
-    background-color: #EEEEEE; color: #999999;
-    text-align: right;
-}
-.onoffswitch-switch {
-    display: block; width: 15px; margin: 7.5px;
-    background: #FFFFFF;
-    position: absolute; top: 0; bottom: 0;
-    right: 33px;
-    border: 2px solid #999999; border-radius: 20px;
-    transition: all 0.3s ease-in 0s; 
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px; 
-}
+            position: relative;
+            width: 67px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .onoffswitch-checkbox {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .onoffswitch-label {
+            display: block;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid #999999;
+            border-radius: 20px;
+        }
+
+        .onoffswitch-inner {
+            display: block;
+            width: 200%;
+            margin-left: -100%;
+            transition: margin 0.3s ease-in 0s;
+        }
+
+        .onoffswitch-inner:before,
+        .onoffswitch-inner:after {
+            display: block;
+            float: left;
+            width: 50%;
+            height: 20px;
+            padding: 0;
+            line-height: 20px;
+            font-size: 14px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .onoffswitch-inner:before {
+            content: "ON";
+            padding-left: 10px;
+            background-color: #34A7C1;
+            color: #FFFFFF;
+        }
+
+        .onoffswitch-inner:after {
+            content: "OFF";
+            padding-right: 10px;
+            background-color: #EEEEEE;
+            color: #999999;
+            text-align: right;
+        }
+
+        .onoffswitch-switch {
+            display: block;
+            width: 15px;
+            margin: 7.5px;
+            background: #FFFFFF;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 33px;
+            border: 2px solid #999999;
+            border-radius: 20px;
+            transition: all 0.3s ease-in 0s;
+        }
+
+        .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+            margin-left: 0;
+        }
+
+        .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+            right: 0px;
+        }
     </style>
 </head>
 
@@ -73,7 +105,7 @@
 
     <div class="wrapper">
         {% include 'includes/loader.html' %}
-        {% include 'includes/topNavbar.html'  %}
+        {% include 'includes/topNavbar.html' %}
         {% include 'includes/sideNavbar.html' %}
         <div class="content-wrapper">
             <div class="content-header">
@@ -184,14 +216,13 @@
                                     <div class="card-title">
                                         <div id="selected-survey"></div>
                                     </div>
-                                    
+
                                 </div>
 
 
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table text-nowrap table-hover border table-bordered"
-                                            id="example">
+                                        <table class="table text-nowrap table-hover border table-bordered" id="example">
                                             <thead>
                                                 <th>Survey Name </th>
                                                 <th>Suvey instruction </th>
@@ -216,7 +247,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -240,7 +271,8 @@
                     <div class="container-fluid" id="searchArea">
                         <h2 class="textS">Search Area</h2>
                         <div class="onoffswitch" style="float: right;">
-                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"  id="myonoffswitch" tabindex="0" checked>
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch"
+                                tabindex="0" checked>
                             <label class="onoffswitch-label" for="myonoffswitch">
                                 <span class="onoffswitch-inner"></span>
                                 <span class="onoffswitch-switch"></span>
@@ -272,7 +304,7 @@
                                     <div class="card-title">
                                         <div id="selected-survey"></div>
                                     </div>
-                                    
+
                                     <button id="exportButton_2" class="btn btn-success">Export to Excel</button>
 
                                 </div>
@@ -298,22 +330,22 @@
                                         </table>
                                     </div>
                                 </div>
-                               
+
                             </div>
                         </div>
                         <div class="col-lg-5">
-                            <figure class="highcharts-figure" >
-                                <div id="container"  ></div>
+                            <figure class="highcharts-figure">
+                                <div id="container"></div>
                                 <p class="highcharts-description">
-                           
+
                                 </p>
-                                </figure>
+                            </figure>
                         </div>
                     </div>
                 </div>
             </section>
 
-           
+
             <!-- table -->
             <section class="content" style="display: none;" id="section2">
                 <div class="container-fluid">
@@ -325,7 +357,7 @@
                                     <div class="card-title">
                                         <div id="selected-survey"></div>
                                     </div>
-                                   
+
 
                                 </div>
 
@@ -355,13 +387,13 @@
                                         </table>
                                     </div>
                                 </div>
-                              
+
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            
+
             <!-- two graphs  -->
             <section class="content">
                 <div class="container-fluid">
@@ -408,7 +440,8 @@
 
     {% include "includes/scripts.html" %}
     <script>
-       
+        var store_average = [];
+        var store_survey_name = [];
         fetch('http://127.0.0.1:8000/get_json/')
             .then(res => res.json())
             .then(data => {
@@ -423,8 +456,7 @@
                 var option_table2 = document.getElementById('section1');
                 var option_table1 = document.getElementById('section2');
                 var column_chart = document.getElementById('container');
-                var store_average = [];
-                var store_survey_name = [];
+
 
                 // Populate the survey type options
                 data.survey_type.forEach(surveyType => {
@@ -460,7 +492,7 @@
                             var option = document.createElement("option");
                             option.value = '';
                             option.textContent = 'Select Survey';
-                            
+
                             option.value = survey.id;
                             option.textContent = survey.name;
                             selectElement.appendChild(option);
@@ -476,7 +508,7 @@
                                         break;
                                     }
                                 }
-// Get the line ministry from the selected survey
+                                // Get the line ministry from the selected survey
                                 if (selectedSurvey) {
                                     var lineMinistries = selectedSurvey.line_ministries;
                                     while (select_ministry.firstChild) {
@@ -495,176 +527,176 @@
                                 else {
                                     console.log('Selected survey not found');
                                 }
-                           
-
-                          
 
 
-                            select_ministry.addEventListener("change", function () {
-                                if (select_ministry) {
-                                    clearTable(surveyTableBody_2)
-                                }
-                                var selectedLineMinistry = parseInt(select_ministry.value);
 
-                                user = null;
-                                weightedSum = 0;
-                                data.users.forEach(function (users) {
-                                    if (users.Line_ministry_id === selectedLineMinistry) {
-                                        user = users.id;
-                                        return;
+
+
+                                select_ministry.addEventListener("change", function () {
+                                    if (select_ministry) {
+                                        clearTable(surveyTableBody_2)
                                     }
-                                });
-                                console.log("User Id" + user);
+                                    var selectedLineMinistry = parseInt(select_ministry.value);
+
+                                    user = null;
+                                    weightedSum = 0;
+                                    data.users.forEach(function (users) {
+                                        if (users.Line_ministry_id === selectedLineMinistry) {
+                                            user = users.id;
+                                            return;
+                                        }
+                                    });
+                                    console.log("User Id" + user);
 
 
 
-    var selectedUserResponses = data.user_response.filter(function (userResponse) {
-        return userResponse.submitted_by_id === user && userResponse.forsurvey_id === selectedSurveyId;
-    });
-
-
-    console.log("user Response for surveyID" + selectedSurveyId)
-    console.log(selectedUserResponses); 
-    
-                                userResponseId = null
-                                selectedUserResponses.forEach(function (userResponse) {
-                                    if (userResponse.submitted_by_id === user) {
-                                        userResponseId = userResponse.id;
-                                        return;  // Exit the loop once a match is found
-                                    }
-                                });
-                                console.log("yry " + userResponseId)
-
-                                if (userResponseId !== null) {
-                                    var answers = data.answer.filter(function (answer) {
-                                        return answer.response_id === userResponseId;
+                                    var selectedUserResponses = data.user_response.filter(function (userResponse) {
+                                        return userResponse.submitted_by_id === user && userResponse.forsurvey_id === selectedSurveyId;
                                     });
 
-                                    console.log(answers);
-                                    var answerValues = answers.map(function (answer) {
-                                        return {
-                                            value: parseFloat(answer.answertext),
-                                            questionId: answer.forquestion_id
-                                        };
-                                    });
 
-                                    var weightedSum = 0;
-                                    var totalWeight = 0;
-                                    var total_weightedinPercent = 0;
-                                    var count = 0;
-                                    var total_answer = 0;
-                                    answerValues.forEach(function (answer) {
-                                        var question = data.questions.find(function (q) {
-                                            return q.id === answer.questionId;
+                                    console.log("user Response for surveyID" + selectedSurveyId)
+                                    console.log(selectedUserResponses);
+
+                                    userResponseId = null
+                                    selectedUserResponses.forEach(function (userResponse) {
+                                        if (userResponse.submitted_by_id === user) {
+                                            userResponseId = userResponse.id;
+                                            return;  // Exit the loop once a match is found
+                                        }
+                                    });
+                                    console.log("yry " + userResponseId)
+
+                                    if (userResponseId !== null) {
+                                        var answers = data.answer.filter(function (answer) {
+                                            return answer.response_id === userResponseId;
                                         });
 
+                                        console.log(answers);
+                                        var answerValues = answers.map(function (answer) {
+                                            return {
+                                                value: parseFloat(answer.answertext),
+                                                questionId: answer.forquestion_id
+                                            };
+                                        });
 
-                                        if (question) {
-                                            var weight = question.weight;
-                                            console.log("the question :" + question.title + "the weight:" + weight)
-
-
-                                            var total_weight = 0
-                                            if (!isNaN(answer.value)) {
-                                                weightedSum += answer.value * weight;
-                                                totalWeight += weight;
-                                                total_answer += answer.value;
-
-
-                                            }
-
-                                            var weighted__Sum = 0;
-
-                                            if (totalWeight > 0) {
-                                                var weightedAverage = weightedSum / totalWeight;
-                                                var row = surveyTableBody_2.insertRow();
-                                                var question_cell = row.insertCell();
-                                                question_cell.textContent = question.title;
-                                                row.insertCell().textContent = answer.value;
-                                                question_cell.classList.add('limited-width');
-                                                row.insertCell().textContent = weight;
-                                                console.log(totalWeight)
-                                                row.insertCell().textContent = answer.value * weight;
-                                                var totalresult = answer.value * weight
-                                                var max_value = 10;
-
-                                                var weightedinPercent = ((totalresult) / (max_value * weight)) * 100;
-                                                count++;
-                                                total_weightedinPercent += weightedinPercent;
-                                                // console.log("hello" + total_weightedinPercent + " "+ count);
-
-                                                row.insertCell().textContent = weightedinPercent + "%";
-                                                var x = weightedinPercent;
-                                                var newCell = row.insertCell();
-                                                newCell.id = 'Indicator';
-                                                if (x >= 90) {
-                                                    newCell.textContent = " Very Good";
-                                                    newCell.style.backgroundColor = "#52B788";
-                                                } else if (x >= 80) {
-                                                    newCell.textContent = "Good";
-                                                    newCell.style.backgroundColor = "#C2FA41";
-                                                } else if (x >= 60) {
-                                                    newCell.textContent = "Satisfactory";
-                                                    newCell.style.backgroundColor = "#C1FA61";
-
-                                                } else if (x >= 50) {
-                                                    newCell.textContent = "Poor";
-                                                    newCell.style.backgroundColor = "#FAEB41";
+                                        var weightedSum = 0;
+                                        var totalWeight = 0;
+                                        var total_weightedinPercent = 0;
+                                        var count = 0;
+                                        var total_answer = 0;
+                                        answerValues.forEach(function (answer) {
+                                            var question = data.questions.find(function (q) {
+                                                return q.id === answer.questionId;
+                                            });
 
 
-                                                } else if (x >= 40) {
-                                                    newCell.textContent = "Very Poor";
-                                                    newCell.style.backgroundColor = " #FA7D41";
+                                            if (question) {
+                                                var weight = question.weight;
+                                                console.log("the question :" + question.title + "the weight:" + weight)
 
 
-                                                } else {
-                                                    newCell.textContent = "Extremely Poor";
-                                                    newCell.style.backgroundColor = "#FA7D41";
+                                                var total_weight = 0
+                                                if (!isNaN(answer.value)) {
+                                                    weightedSum += answer.value * weight;
+                                                    totalWeight += weight;
+                                                    total_answer += answer.value;
 
 
                                                 }
 
-                                                console.log("Weighted average of answers: " + weightedAverage.toFixed(2));
-                                            } else {
-                                                console.log("No valid answers found for the selected line ministry.");
+                                                var weighted__Sum = 0;
+
+                                                if (totalWeight > 0) {
+                                                    var weightedAverage = weightedSum / totalWeight;
+                                                    var row = surveyTableBody_2.insertRow();
+                                                    var question_cell = row.insertCell();
+                                                    question_cell.textContent = question.title;
+                                                    row.insertCell().textContent = answer.value;
+                                                    question_cell.classList.add('limited-width');
+                                                    row.insertCell().textContent = weight;
+                                                    console.log(totalWeight)
+                                                    row.insertCell().textContent = answer.value * weight;
+                                                    var totalresult = answer.value * weight
+                                                    var max_value = 10;
+
+                                                    var weightedinPercent = ((totalresult) / (max_value * weight)) * 100;
+                                                    count++;
+                                                    total_weightedinPercent += weightedinPercent;
+                                                    // console.log("hello" + total_weightedinPercent + " "+ count);
+
+                                                    row.insertCell().textContent = weightedinPercent + "%";
+                                                    var x = weightedinPercent;
+                                                    var newCell = row.insertCell();
+                                                    newCell.id = 'Indicator';
+                                                    if (x >= 90) {
+                                                        newCell.textContent = " Very Good";
+                                                        newCell.style.backgroundColor = "#52B788";
+                                                    } else if (x >= 80) {
+                                                        newCell.textContent = "Good";
+                                                        newCell.style.backgroundColor = "#C2FA41";
+                                                    } else if (x >= 60) {
+                                                        newCell.textContent = "Satisfactory";
+                                                        newCell.style.backgroundColor = "#C1FA61";
+
+                                                    } else if (x >= 50) {
+                                                        newCell.textContent = "Poor";
+                                                        newCell.style.backgroundColor = "#FAEB41";
+
+
+                                                    } else if (x >= 40) {
+                                                        newCell.textContent = "Very Poor";
+                                                        newCell.style.backgroundColor = " #FA7D41";
+
+
+                                                    } else {
+                                                        newCell.textContent = "Extremely Poor";
+                                                        newCell.style.backgroundColor = "#FA7D41";
+
+
+                                                    }
+
+                                                    console.log("Weighted average of answers: " + weightedAverage.toFixed(2));
+                                                } else {
+                                                    console.log("No valid answers found for the selected line ministry.");
+                                                }
+
+
                                             }
-                                            
+                                        });
 
-                                        }
-                                    });
-
-                                }
+                                    }
 
 
-                                else {
-                                    console.log("No user_response ID found for the selected line ministry.");
-                                }
-                                var totalRow = surveyTableBody_2.insertRow();
-                                var labelCell = totalRow.insertCell();
-                                labelCell.textContent = 'Total';
+                                    else {
+                                        console.log("No user_response ID found for the selected line ministry.");
+                                    }
+                                    var totalRow = surveyTableBody_2.insertRow();
+                                    var labelCell = totalRow.insertCell();
+                                    labelCell.textContent = 'Total';
 
-                                var valueCell = totalRow.insertCell();
-                                valueCell.textContent = total_answer;
+                                    var valueCell = totalRow.insertCell();
+                                    valueCell.textContent = total_answer;
 
-                                var weightCell = totalRow.insertCell();
-                                weightCell.textContent = totalWeight;
+                                    var weightCell = totalRow.insertCell();
+                                    weightCell.textContent = totalWeight;
 
-                                var weightCell = totalRow.insertCell();
-                                weightCell.textContent = weightedSum;
+                                    var weightCell = totalRow.insertCell();
+                                    weightCell.textContent = weightedSum;
 
-                                var averageCell = totalRow.insertCell();
-                                var average = total_weightedinPercent / count;
-                                averageCell.textContent = average.toFixed(2) + "%";
-                                surveyTableBody_2.appendChild(totalRow);
-                                option_table1.style.display = "block";
-                                console.log(average);
+                                    var averageCell = totalRow.insertCell();
+                                    var average = total_weightedinPercent / count;
+                                    averageCell.textContent = average.toFixed(2) + "%";
+                                    surveyTableBody_2.appendChild(totalRow);
+                                    option_table1.style.display = "block";
+                                    console.log(average);
 
 
 
-                                console.log('Selected survey:', selectedSurvey);
-                                console.log("Selected line ministry: " + selectedLineMinistry);
+                                    console.log('Selected survey:', selectedSurvey);
+                                    console.log("Selected line ministry: " + selectedLineMinistry);
+                                });
                             });
-                        });
                             var selectedSurvey = (selectElement.value);
                             console.log('Selected survey:', selectedSurvey);
 
@@ -672,10 +704,8 @@
 
                         // initializeDataTable();
                     }
-                    else if (selectedSurveyTypeId && !myCheckbox.checked || !myCheckbox.checked) 
-                    {
-                        store_average = [];
-store_survey_name = [];
+                    else if (selectedSurveyTypeId && !myCheckbox.checked || !myCheckbox.checked) {
+
                         var survey_s = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId);
                         if (survey_s) {
                             console.log("Hello");
@@ -828,6 +858,7 @@ store_survey_name = [];
                                     var average = total_weightedinPercent / count;
 
                                     if (average) {
+                                        
                                         var totalRow = surveyTableBody_3.insertRow();
                                         var survey = data.survey.find(function (survey) {
                                             return survey.id === surveyId;
@@ -847,25 +878,22 @@ store_survey_name = [];
                                         weightCell.textContent = weightedSum;
 
                                         var averageCell = totalRow.insertCell();
-                                        var appr =  average.toFixed(2);
+                                        var appr = average.toFixed(2);
                                         averageCell.textContent = appr + "%";
                                         store_average.push(appr);
                                         surveyTableBody_3.appendChild(totalRow);
-                                       
+                                        store_survey_name.pop(surveyName);
+
                                     }
-option_table2.style.display = "block";
-var ministry= data.line_ministry.find(function (ministry) {
-        return ministry.id === selectedLineMinistry;
-        });
-var surveyName = ministry ? ministry.name : "survey not found";
+                                    option_table2.style.display = "block";
+                                    var ministry = data.line_ministry.find(function (ministry) {
+                                        return ministry.id === selectedLineMinistry;
+                                    });
+                                    var surveyName = ministry ? ministry.name : "survey not found";
 
 
-draw_columnChart(store_survey_name , store_average ,surveyName);
-console.log( "here");
-store_average = [];
-store_survey_name = [];
-
-console.log( store_average);
+                                    draw_columnChart(store_survey_name, store_average, surveyName);
+                                    console.log("here I am" + store_average);
 
                                 });
                             });
@@ -874,12 +902,12 @@ console.log( store_average);
 
                     }
                 });
-               
+
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
-            
+
 
         function clearTable(tableBody) {
             while (tableBody.firstChild) {
@@ -985,83 +1013,83 @@ console.log( store_average);
                 ]
             }]
         });
-       function draw_columnChart(x,y,z){
-        const numericStoreAverage = y.map(value => parseFloat(value));
-        Highcharts.chart('container', {
-  chart: {
-    type: 'column'
-  },
-  title: {
-    text: z,
-    align: 'left'
-  },
-  subtitle: {
-    text:
-      'Source: <a target="_blank" ' +
-      'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
-    align: 'left'
-  },
-  xAxis: {
-    categories: x,
-    crosshair: true,
-    accessibility: {
-      description: 'Countries'
-    }
-  },
-  yAxis: {
-    min: 0,
-    title: {
-      text: ''
-    }
-  },
-  tooltip: {
-    valueSuffix: ''
-  },
-  plotOptions: {
-    column: {
-      pointPadding: 0.2,
-      borderWidth: 0
-    }
-  },
-  series: [
-    {
-      name: 'Average',
-      data: numericStoreAverage
-    }
-    // ,
-    // {
-    //   name: 'Wheat',
-    //   data: [51086, 136000, 5500, 141000, 107180, 77000]
-    // }
-  ]
-});
-}
-   
+        function draw_columnChart(x, y, z) {
+            const numericStoreAverage = y.map(value => parseFloat(value));
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: z,
+                    align: 'left'
+                },
+                subtitle: {
+                    text:
+                        'Source: <a target="_blank" ' +
+                        'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
+                    align: 'left'
+                },
+                xAxis: {
+                    categories: x,
+                    crosshair: true,
+                    accessibility: {
+                        description: 'Countries'
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: ''
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    {
+                        name: 'Average',
+                        data: numericStoreAverage
+                    }
+                    // ,
+                    // {
+                    //   name: 'Wheat',
+                    //   data: [51086, 136000, 5500, 141000, 107180, 77000]
+                    // }
+                ]
+            });
+        }
 
 
-// function initializeDataTable() {
-//     var table = $('#survey_detail').DataTable( {
-//         lengthChange: true,
-//         buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
-//     } );
- 
-//     table.buttons().container()
-//         .insertBefore( '#survey_detail_filter' );
-// }
+
+        // function initializeDataTable() {
+        //     var table = $('#survey_detail').DataTable( {
+        //         lengthChange: true,
+        //         buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+        //     } );
+
+        //     table.buttons().container()
+        //         .insertBefore( '#survey_detail_filter' );
+        // }
 
 
-$(document).ready(function() {
-    var table = $('#example').DataTable( {
-        lengthChange: true,
-        buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
-    } );
- 
-    table.buttons().container()
-        .insertBefore( '#example_filter' );
-} );
+        $(document).ready(function () {
+            var table = $('#example').DataTable({
+                lengthChange: true,
+                buttons: ['copy', 'excel', 'pdf', 'colvis']
+            });
 
-   
-   </script>
+            table.buttons().container()
+                .insertBefore('#example_filter');
+        });
+
+
+    </script>
 
 </body>
 
