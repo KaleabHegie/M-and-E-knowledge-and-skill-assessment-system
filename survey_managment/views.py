@@ -488,10 +488,12 @@ def greetingpage_view(request):
 @login_required
 def survey_listss_views(request):
     user = request.user
+    print(user)
+    user = CustomUser.objects.get(username = user)
     line_ministry = user.Line_ministry
     surveys = Survey.objects.filter(for_line_ministry=line_ministry)
     print(surveys)
-    surveys_without_response = UserResponse.objects.filter(submitted_by=request.user).distinct()
+    surveys_without_response = UserResponse.objects.filter(submitted_by=request.user)
     print(surveys_without_response)
     surveys_with_no_response = surveys.exclude(id__in=surveys_without_response)
     print(surveys_with_no_response)
@@ -555,12 +557,13 @@ def questionForSurvey(request, id):
 @login_required
 def un_approved_survey_list(request):
     today = date.today()
-    user = request.user
-    line_ministry = user.Line_ministry
+    user = request.user 
+    user = CustomUser.objects.get(username = user)
+    line_ministry = request.user.Line_ministry
     print(user)
     print(line_ministry)
     data = {
-        "surveys" : Survey.objects.filter(userresponse__status='pending', for_line_ministry = line_ministry),
+        "surveys" : Survey.objects.filter(userresponse__status='pending', for_line_ministry = line_ministry , userresponse__submitted_by = user),
     }
     return render(request, 'un_approved_survey_list.html', data)
 
