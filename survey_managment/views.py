@@ -490,12 +490,16 @@ def survey_listss_views(request):
     user = request.user
     line_ministry = user.Line_ministry
     surveys = Survey.objects.filter(for_line_ministry=line_ministry)
+    print(surveys)
     surveys_without_response = UserResponse.objects.filter(submitted_by=request.user).distinct()
+    print(surveys_without_response)
     surveys_with_no_response = surveys.exclude(id__in=surveys_without_response)
+    print(surveys_with_no_response)
     data = {
         'surveys': surveys_with_no_response
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
+
 
 
 
