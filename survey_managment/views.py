@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -255,6 +256,7 @@ def user_response(request, id, response_id):
     user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
     documents = Document.objects.all()
+    
 
     data = {
         'survey_id': id,
@@ -403,64 +405,68 @@ def chooseTarget(request, survey_id, question_id):
 def questionCreationByType(request, survey_id):
     zsurvey = Survey.objects.get(id=survey_id)
     questions = zsurvey.question.all()
-    messages.success(request , 'Survey created successfully add questions to it.')
-    return render(request, 'addQuestions.html', {'zsurvey':zsurvey, 'questions' : questions})
- 
-def newCategory(request):
-    if request.method == 'POST':
-        s_id = request.POST.get('s_id')
-        questionType = request.POST.get('questionType')
-        newCategory = request.POST.get('newCategory')
-        subcategoriesNEW = request.POST.get('subcategoriesNEW')
-
-        newCate = Category.objects.create(name=newCategory)
-
-        if subcategoriesNEW:
-            zparent = Category.objects.get(id=newCate.id)
-            for i in subcategoriesNEW:
-                Category.objects.create(name=i, parent=zparent)
+    pattern = r'/newQuestion/[^/]+/\d+/'
+    if request.META.get('HTTP_REFERER') and '/surveyCreation' in request.META['HTTP_REFERER']:
+        messages.success(request, 'Survey created successfully. Add questions to it.')  # regular expression pattern to match the URL
+    if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
+        messages.success(request, 'Survey created successfully. Add questions to it.')    
     
-        return redirect('survey_managment:newQuestion', questionType=questionType, s_id=s_id )    
+    return render(request, 'addQuestions.html', {'zsurvey': zsurvey, 'questions': questions})
+ 
+
+  
 
 
 def newQuestion(request,questionType, s_id ):
     categories = Category.objects.prefetch_related('subcategories')
     survey = get_object_or_404(Survey, id=s_id)
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        label = request.POST.get('labelInput')
-        question_type = request.POST.get('question_type')
-        has_weight = bool(request.POST.get('weightCHK'))
-        weight = int(request.POST.get('weightInput')) if has_weight else None
-        allow_doc = bool(request.POST.get('allow_doc'))
-        doc_label = request.POST.get('doc_label')
-        selected_category_id = request.POST.get('category')
+    if request.method == 'POST' and request.POST.get("questionForm"):
+       
+            title = request.POST.get('title')
+            label = request.POST.get('labelInput')
+            question_type = request.POST.get('question_type')
+            has_weight = bool(request.POST.get('weightCHK'))
+            weight = int(request.POST.get('weightInput')) if has_weight else None
+            allow_doc = bool(request.POST.get('allow_doc'))
+            doc_label = request.POST.get('doc_label')
+            selected_category_id = request.POST.get('category')
 
-        category = get_object_or_404(Category, id=selected_category_id)
+            category = get_object_or_404(Category, id=selected_category_id)
 
-        question = Question.objects.create(
-            title=title,
-            label=label,
-            question_type=question_type,
-            has_weight=has_weight,
-            weight=weight,
-            allow_doc=allow_doc,
-            doc_label=doc_label,
-            category=category,
-        )
+            question = Question.objects.create(
+                title=title,
+                label=label,
+                question_type=question_type,
+                has_weight=has_weight,
+                weight=weight,
+                allow_doc=allow_doc,
+                doc_label=doc_label,
+                category=category,
+            )
 
-        hasOption = ['choice', 'radio']
-        if question_type in hasOption:
-            options = request.POST.getlist('option')
-            for i in options:
-                newChoice = Choice.objects.create(name=i)
-                question.choice.add(newChoice)
+            hasOption = ['choice', 'radio']
+            if question_type in hasOption:
+                options = request.POST.getlist('option')
+                for i in options:
+                    newChoice = Choice.objects.create(name=i)
+                    question.choice.add(newChoice)
 
-        question.save()
-        
-        survey.question.add(question)
-        return redirect('survey_managment:questionCreationByType', survey_id=s_id )
+            question.save()
+            survey.question.add(question)
+            return redirect('survey_managment:questionCreationByType', survey_id=s_id )
 
+    elif request.method == 'POST' and request.POST.get("categoryForm"):
+            s_id = request.POST.get('s_id')
+            questionType = request.POST.get('questionType')
+            newCategory = request.POST.get('newCategory')
+            subcategoriesNEW = request.POST.get('subcategoriesNEW')
+
+            newCate = Category.objects.create(name=newCategory)
+
+            if subcategoriesNEW:
+                zparent = Category.objects.get(id=newCate.id)
+                for i in subcategoriesNEW:
+                    Category.objects.create(name=i, parent=zparent)
 
     context = {'questionType': questionType, 'categories': categories}
     return render(request, 'modal.html', context)
@@ -488,17 +494,24 @@ def greetingpage_view(request):
 @login_required
 def survey_listss_views(request):
     user = request.user
-    print(user)
-    user = CustomUser.objects.get(username = user)
+    user_responses = UserResponse.objects.filter(submitted_by=user)
+    surveys_with_responses = [response.forsurvey for response in user_responses]
+
+    user = CustomUser.objects.get(username=user)
     line_ministry = user.Line_ministry
     surveys = Survey.objects.filter(for_line_ministry=line_ministry)
-    print(surveys)
-    surveys_without_response = UserResponse.objects.filter(submitted_by=request.user)
-    print(surveys_without_response)
-    surveys_with_no_response = surveys.exclude(id__in=surveys_without_response)
-    print(surveys_with_no_response)
+    surveys_without_responses = surveys.exclude(id__in=[survey.id for survey in surveys_with_responses])
+    pattern = r'/questionForSurvey/\d+/'
+    pattern1 = r'/questionForSurveyAnonymous/\d+/\d+/'
+    if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
+        messages.success(request, 'Your Survey  is submitted succussesfuly.') 
+        print("hello") # regular expression pattern to match the URL
+    if request.META.get('HTTP_REFERER') and re.search(pattern1, request.META['HTTP_REFERER']):
+        messages.success(request, 'Your Survey is submitted succussesfuly.')    
+    
+
     data = {
-        'surveys': surveys_with_no_response
+        'surveys': surveys_without_responses
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
 

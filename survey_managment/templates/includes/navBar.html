@@ -1,5 +1,5 @@
 {%load static %}
-
+{% include "includes/head.html" %}
 <nav id="navbar" class="navbar">
     <ul>
       <li><a class="nav-link scrollto active" href="{% url 'survey_managment:greetingpage' %}" style="color: rgb(9, 109, 9);">Home</a></li>
@@ -20,7 +20,7 @@
                       {% if user.image %}
                         <img style="width:50px;height:50px" class="img-fluid img-circle" src="{{user.image.url}}" alt="Profile Picture">
                       {% else %}
-                      <img src="{% static 'assets/Default_pp.png' %}" alt="Profile Picture">
+                      <img style="width:50px;height:50px" class="img-fluid img-circle" src="{% static 'assets/Default_pp.png' %}" alt="Profile Picture">
                       {% endif %}
                      </div>
                  <!-- You can also use icon as follows: -->
@@ -43,7 +43,7 @@
 
             </ul>
         </li>
-                        </li>
+     </li>
 
     </ul>
     <i class="bi bi-list mobile-nav-toggle"></i>
