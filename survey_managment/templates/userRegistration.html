@@ -117,17 +117,18 @@ body {
                   <section id="section2"  class="section" >
                    
                     <div class="form-content">
-                                            <div class="form-group">
+                      <div class="form-group">
+                      <select class="form-control" id="line_ministry" name="line_ministry" required>
+                      <option value="">Select Line Ministry</option>
+        
+                        {%for line_ministry in ministry%}
+        
+                        <option value="{{ line_ministry.id }}">{{ line_ministry.name }}</option>
+        
+                        {% endfor %}
+                      </select>
                         
-                        <select class="form-control" id="line_ministry" name="line_ministry" required>
-                          <option value="">Select Line Ministry</option>
-          
-                          {%for line_ministry in ministry%}
-          
-                          <option value="{{ line_ministry.id }}">{{ line_ministry.name }}</option>
-          
-                          {% endfor %}
-                        </select>
+                       
                       </div>
                       <div class="form-group">
                         <input type="text" class="form-control" id="department" name="department" placeholder="Departmnet"
@@ -169,7 +170,7 @@ body {
                     <button type="submit"  id="submitBtn" class="btn btn-success" style="float: right;" > Register </button>
                   </section> 
                   <button id="prevBtn" class="btn btn-muted" style="float: left; color: white; text-decoration: none;">  <i class="bi bi-arrow-left"></i> Back</button>
-                  <button id="nextBtn" class=" btn btn-success mb-3" style="float: right; color: white; text-decoration: none;"> Next <i class="bi bi-arrow-right"></i> </button>
+                  <button id="nextBtn" class=" btn btn-success mb-3" style="float: right; color: white; text-decoration: none;" onclick="validateForm()" disabled> Next <i class="bi bi-arrow-right"></i> </button>
                   
                 </form>
               </div>
@@ -194,7 +195,6 @@ body {
         var prevBtn = document.getElementById("prevBtn");
         var nextBtn = document.getElementById("nextBtn");
         var submitBtn = document.getElementById("submitBtn");
-
         prevBtn.addEventListener("click", function() {
             if (currentSection > 1) {
                 currentSection--;
@@ -234,69 +234,82 @@ body {
         // Show the initial section
         showSection(currentSection);
 
+        function validateForm() {
+  var first_name = document.getElementById("first_name").value;
+  var last_name = document.getElementById("last_name").value;
+  var email = document.getElementById("email").value;
+  var phone_num = document.getElementById("phone_num").value;
+  var username = document.getElementById("username").value;
+  var dob = document.getElementById("dob").value;
+  var password = document.getElementById("password").value;
+  var re_password = document.getElementById("re_password").value;
+  var line_ministry = document.getElementById("line_ministry").value;
+  var department = document.getElementById("department").value;
+  var profile_pic = document.getElementById("profile_pic").value;
 
-      function validateForm() {
-        var first_name = document.getElementById("first_name").value;
-        var last_name = document.getElementById("last_name").value;
-        var email = document.getElementById("email").value;
-        var phone_num = document.getElementById("phone_num").value;
-        var username = document.getElementById("username").value;
-        var dob = document.getElementById("dob").value;
-        var password = document.getElementById("password").value;
-        var re_password = document.getElementById("re_password").value;
-        var line_ministry = document.getElementById("line_ministry").value;
-        var department = document.getElementById("department").value;
-        var role = document.getElementById("role").value;
-        var profile_pic = document.getElementById("profile_pic").value;
-  
-        if (first_name = "") {
-          return false;
-        }
-        if (last_name = "") {
-          return false;
-        }
-  
-        // Validate email
-        if (!/\S+@\S+\.\S+/.test(email)) {
-          alert("Please enter a valid email address.");
-          return false;
-        }
-  
-        // Validate phone number
-        if (!/^[0-9]{10}$/.test(phone_num)) {
-          alert("Please enter a valid phone number.");
-          return false;
-        }
-  
-        // Validate username
-        if (!/^[a-zA-Z0-9_-]{3,20}$/.test(username)) {
-          alert("Please enter a valid username (3-20 characters, alphanumeric, underscore, or hyphen only).");
-          return false;
-        }
-  
-        // Validate date of birth
-        var today = new Date();
-        var dobDate = new Date(dob);
-        if (dobDate >= today) {
-          alert("Please enter a valid date of birth.");
-          return false;
-        }
-  
-        // Validate password
-        if (password.length < 5) {
-          alert("Password must be at least 8 characters long.");
-          return false;
-        }
-  
-        // Validate profile picture size
-        // if (profile_pic.size > 1048576) {
-        //   alert("Profile picture size must be less than or equal to 1MB.");
-        //   return false;
-        // }
-  
-        // If all validation passes, allow form submission
-        return true;
-      }
-    </script>
+  // Create an array to store validation errors
+  var errors = [];
+
+  // Perform validation checks
+  if (first_name.trim() === "") {
+    
+    errors.push("Please enter your first name.");
+  }
+  if (last_name.trim() === "") {
+    errors.push("Please enter your last name.");
+  }
+  if (email.trim() === "") {
+    errors.push("Please enter your email.");
+  }
+  if (phone_num.trim() === "") {
+    errors.push("Please enter your phone number.");
+  }
+  if (username.trim() === "") {
+    errors.push("Please enter a username.");
+  }
+  if (dob.trim() === "") {
+    errors.push("Please enter your date of birth.");
+  }
+  if (password.trim() === "") {
+    errors.push("Please enter a password.");
+  }
+  if (re_password.trim() === "") {
+    errors.push("Please re-enter your password.");
+  }
+  if (password !== re_password) {
+    errors.push("Passwords do not match.");
+  }
+  if (line_ministry.trim() === "") {
+    errors.push("Please enter your line ministry.");
+  }
+  if (department.trim() === "") {
+    errors.push("Please enter your department.");
+  }
+  if (role.trim() === "") {
+    errors.push("Please enter your role.");
+  }
+  if (profile_pic.trim() === "") {
+    errors.push("Please upload a profile picture.");
+  }
+
+  // Check if there are any validation errors
+  if (errors.length > 0) {
+    // Display or handle the validation errors as desired
+    // For example, you can update a validation error message on the page or log the errors to the console
+    console.log(errors);
+    
+    // Disable the "next" button
+    document.getElementById("nextButton").disabled = true;
+    
+    return false;
+  }
+
+  // Validation passed, enable the "next" button
+  document.getElementById("nextButton").disabled = false;
+
+  // Proceed with submitting the form or performing the next step
+  // ...
+}
+ </script>
    </body>
 </html>

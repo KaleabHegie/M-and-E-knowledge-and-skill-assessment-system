@@ -3,10 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<link rel="stylesheet" href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css" />
+{% include "includes/head.html" %}
 
-<head>
-    {% include "includes/head.html" %}
+    <link rel="stylesheet" href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css" />
 
     <style>
         .limited-width {
@@ -99,10 +98,8 @@
             right: 0px;
         }
     </style>
-</head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-
     <div class="wrapper">
         {% include 'includes/loader.html' %}
         {% include 'includes/topNavbar.html' %}
@@ -730,8 +727,12 @@
                             });
 
                             select_ministry.addEventListener("change", function () {
+                                store_average = [];
+                                store_survey_name = [] ;
+                                
                                 if (select_ministry) {
-                                    clearTable(surveyTableBody_2);
+                                    clearArrays(store_average,store_survey_name)
+                                    clearTable(surveyTableBody_3);
                                     var selectedLineMinistry = parseInt(select_ministry.value);
                                     console.log(selectedLineMinistry)
                                 }
@@ -882,18 +883,20 @@
                                         averageCell.textContent = appr + "%";
                                         store_average.push(appr);
                                         surveyTableBody_3.appendChild(totalRow);
-                                        store_survey_name.pop(surveyName);
 
                                     }
                                     option_table2.style.display = "block";
                                     var ministry = data.line_ministry.find(function (ministry) {
                                         return ministry.id === selectedLineMinistry;
                                     });
-                                    var surveyName = ministry ? ministry.name : "survey not found";
+                                    var ministry_name = ministry ? ministry.name : "survey not found";
 
 
-                                    draw_columnChart(store_survey_name, store_average, surveyName);
+                                    draw_columnChart(store_survey_name, store_average, ministry_name);
                                     console.log("here I am" + store_average);
+                                    console.log("here I am" + store_survey_name);
+                                    console.log("here I am" + ministry_name);
+
 
                                 });
                             });
@@ -942,7 +945,11 @@
                 downloadLink.click();
             }
         }
-
+        function clearArrays(param1, param2) {
+  param1.length = 0;
+  param2.length = 0;
+ 
+}
         document.getElementById('exportButton').onclick = function () {
             exportTableToExcel('survey_detail', 'exported_table');
         }
@@ -1025,8 +1032,7 @@
                 },
                 subtitle: {
                     text:
-                        'Source: <a target="_blank" ' +
-                        'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
+                        '' ,
                     align: 'left'
                 },
                 xAxis: {
