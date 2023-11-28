@@ -1,4 +1,5 @@
 import re
+from django.forms import formset_factory, modelformset_factory
 from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -584,36 +585,54 @@ def un_approved_survey_list(request):
 @login_required
 def un_approved_survey(request, id):
     survey = get_object_or_404(Survey, id=id)
-    questions = survey.question.all()
+    user = request.user
+    response = get_object_or_404(UserResponse, forsurvey=survey, submitted_by=user)
 
+    questions = Question.objects.filter(survey=survey)
+    answers = []
+    documents = []
+    for question in questions:
+       ans = Answer.objects.get(response = response , forquestion = question )
+       answers.append(Answer.objects.get(response = response , forquestion = question ))
+       try :
+          documents.append(Document.objects.get(foranswer = ans ))
+       except :
+          pass
+    # print(question , answers)
     if request.method == 'POST':
-        user_response_form = UserResponseForm(request.POST)
-        answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
-
-        if user_response_form.is_valid():
-            user_response = user_response_form.save(commit=False)
-            user_response.forsurvey = survey
-            user_response.submitted_by = request.user
-            user_response.save()
-
-            for i in questions:
-                value = request.POST.get(f'answer_{i.id}')
-                Answer.objects.create(forquestion=i, answertext=value, response=user_response)
-                value = ''
-
-            return redirect('survey_managment:surveylists')
-    else:
-        user_response_form = UserResponseForm()
-        answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
+        answer_set = request.POST.getlist('answer_set')
+        document_set = request.FILES.getlist('document_set')
+        print(document_set)
+        print(answer_set)
+        for i, answer  in enumerate(answers):
+          try:
+              obj = Answer.objects.get(id=answer.id)
+              obj.answertext = answer_set[i]
+              obj.save()
+          except :
+              pass
+        for i, document in enumerate(documents):
+           print(document)
+           try:
+              objDoc = Document.objects.get(id=document.id)
+              objDoc.document = document_set[i]
+              print(document)
+              objDoc.save()
+           except :
+              pass
+        return redirect ("survey_managment:un_approved_survey_list")   
 
     context = {
-        'survey': survey,
-        'questions': questions,
-        'user_response_form': user_response_form,
-        'answer_forms': answer_forms,
+        "questions" : questions , 
+        "answers" : answers,
+        "survey"  : survey,
+        "documents" : Document.objects.all()
     }
+    return render(request, 'un_approved_survey.html', context)
 
-    return render ( request , 'un_approved_survey.html', context)
+
+
+
 
 
 

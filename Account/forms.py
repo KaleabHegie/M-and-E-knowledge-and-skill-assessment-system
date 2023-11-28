@@ -31,5 +31,4 @@ class Admin_Update(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = '__all__'
-       
 

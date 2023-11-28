@@ -115,6 +115,7 @@ body {
                  
 
                   <section id="section2"  class="section" >
+                    <h3>Job Discription</h3>
                    
                     <div class="form-content">
                       <div class="form-group">
@@ -135,11 +136,15 @@ body {
                           required />
                       </div>
                       
-                      {%for role in role %}
-          
-                          <option value="{{ role.id }}">{{ role.name }}</option>
-      
-                      {% endfor %}
+                      <div class="form-group">
+                      <label for="is_mopd_head">
+                        <input type="radio" id="is_mopd_head" name="is_mopd_head" value="mopd_head"> MOPD Head
+                      </label>
+                      <label for="is_line_minister_head">
+                        <input type="radio" id="is_line_minister_head" name="is_line_minister_head" value="line_minister_head"> Line Minister Head
+                      </label>
+                   
+                      </div>
                       
                   </section>
 
@@ -178,7 +183,7 @@ body {
           </div>
       
           <div class="col-lg-6" style="float: none; margin: auto;">
-            <img class="img-fluid mb-3  d-none d-lg-block d-xl-block d-xxl-none" src="{%static 'assets/logo/EPCD-Logo-Final-NoBg-Green-Hi-res.png'%}"  >
+            <img class="img-fluid mb-3  d-none d-lg-block d-xl-block " src="{%static 'assets/logo/EPCD-Logo-Final-NoBg-Green-Hi-res.png'%}"  >
           </div>
         </div>
 

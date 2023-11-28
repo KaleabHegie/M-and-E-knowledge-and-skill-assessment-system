@@ -103,9 +103,11 @@ button:hover {
             <p>({{ question.label }})</p>
             {% endif %}
             <p><input type="text" name="answer_{{ question.id }}" placeholder="Answer..." required></p>
+            {% if question.allow_doc == "true"  %}
             <label for="file{{ question.id }}"> {{  question.doc_label }} </label>
            
             <p><input type="file" name="file_{{ question.id }}" placeholder="File..." required></p>
+            {% endif %}
            
         </div>
     </div>
