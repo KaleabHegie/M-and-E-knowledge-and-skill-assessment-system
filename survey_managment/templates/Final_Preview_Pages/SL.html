@@ -116,6 +116,7 @@
         </a>
 
         {% include "includes/navBar.html" %}
+        <!-- .navbar -->
       </div>
     </header>
     <!-- End Header -->
@@ -135,7 +136,7 @@
       
             {% for survey in surveys  %}
             <div class="col-md-3 col-sm-6 col-12 p-1">
-              <a href="{% url 'survey_managment:questionForSurvey' id=survey.id %}" style="color: black;">
+              <a href="{% url 'survey_managment:questionForSurvey' id=survey.id %}" style="color: black;text-decoration:none;">
                 <div class="info-box shadow">
                   <span class="info-box-icon" style="color: rgb(9, 109, 9);">
                     <i class="far fa-copy"></i>
@@ -152,7 +153,7 @@
 
             {% else %}
             <div class="container-fluid" style="display: flex; align-items: center;">
-              <p style="margin: auto; color: darkgray;">No surveys found. Created surveys will appear here.</p>
+              <p style="margin: auto; color: darkgray;">No surveys found. Your Unapproved survyes will occure here.</p>
             </div>
 
             {% endif %}

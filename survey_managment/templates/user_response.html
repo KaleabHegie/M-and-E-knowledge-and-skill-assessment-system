@@ -1,6 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+  <script>
+    document.cookie = "js_enabled=true";
+</script>
   {% include 'includes/head.html' %}
 
  
@@ -36,6 +39,7 @@
                           <th>Question</th>
                           <th>Wight</th>
                           <th>Answer</th>
+                          <th>Calculated</th>
                           <th>Document</th>
                           {% if response.status == 'pending'  %}
                             <th>Recomndation</th>
@@ -49,6 +53,7 @@
                             <td>{{ answer.forquestion }}</td>
                             <td>{{ answer.forquestion.weight }}</td>
                             <td>{{ answer.answertext }}</td>
+                            <td> {{ answer.forquestion.weight}} {{answer.answertext }} </td>
                             
                             
                             <td>

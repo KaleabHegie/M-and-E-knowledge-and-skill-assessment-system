@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
 from . models import *
-from .forms import UserProfileForm , CustomPasswordChangeForm
+from .forms import *
 from django.contrib.auth import settings
 from django.contrib.auth import logout
 from survey_managment.views import survey_listss_views 
@@ -27,7 +27,9 @@ def register_view(request):
 		line_ministry_id = request.POST.get('line_ministry')
 		line_ministry = Line_ministry.objects.get(id=line_ministry_id)
 		selected_gender = request.POST.get('gender')
-		
+		is_mopd_head = request.POST.get('is_mopd_head') == 'on'
+		is_line_minister_head = request.POST.get('is_line_minister_head') == 'on'
+		is_line_minister_staff = request.POST.get('is_line_minister_staff') == 'on'
 
 
 
@@ -44,7 +46,9 @@ def register_view(request):
 												  first_name = first_name,last_name=last_name,
 												  phone_number=phone_num, date_of_birth=DoB,
 												  Department = department,Line_ministry =line_ministry ,
-												  gender= selected_gender )
+												  gender= selected_gender ,is_MoPDHead=is_mopd_head,
+            is_LineMinisterHead=is_line_minister_head,
+            is_LineMinisterStaff=is_line_minister_staff)
 					
 					custom_user.save()
 					
@@ -55,8 +59,9 @@ def register_view(request):
 			messages.error(request , 'Password Doest Not Match')
 			return HttpResponse('Password does not match')
 
-	else: 
-		return render(request,'./userRegistration.html' ,{'ministry':ministry})
+  else: 
+    return render(request,'./userRegistration.html' ,{'ministry':ministry})
+
 
 
 def login_view(request):

@@ -67,6 +67,15 @@ class UserResponseFormA(forms.ModelForm):
         self.fields['line_ministry'].widget.attrs.update({'class': 'form-control'})
         self.fields['year_of_experiance'].widget.attrs.update({'class': 'form-control'})
 
+class UserResponseFormEdit(forms.ModelForm):
+    class Meta:
+        model = UserResponse
+        fields = ['forsurvey', 'submitted_by', 'year_of_experiance', 'department', 'age', 'status', 'line_ministry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['forsurvey'].disabled = True
+        self.fields['submitted_by'].disabled = True
 
 
 class AnonymousUserResponseForm(forms.ModelForm):
@@ -79,7 +88,8 @@ class AnonymousUserResponseForm(forms.ModelForm):
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
-        fields = ['answertext']
+        fields = ['forquestion' , 'answertext']
+
 
 
 class DocumentForm(forms.ModelForm):
