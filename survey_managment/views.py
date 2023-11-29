@@ -63,6 +63,7 @@ def indexView(request):
         questions = Question.objects.all().count()
         Response = UserResponse.objects.all().count()
         line_ministry = Line_ministry.objects.all()
+        survey_years = Survey.objects.order_by('created_at__year').values('created_at__year').distinct() 
         form = AnalysisForm()
        
    
@@ -70,7 +71,7 @@ def indexView(request):
 
 
         context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
-             'line_ministry':line_ministry,'form':form,'surveyType':surveyType}
+             'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
       
         return render(request, 'index.html', context)
 
@@ -687,4 +688,16 @@ def questionForSurveyAnonymous(request, id , user_response_id):
 
 
 def compareDataView(request):
-    return render(request, 'compare.html')
+    line_ministry = Line_ministry.objects.all()
+    survey_type = SurveyType.objects.all()
+    survey = Survey.objects.all()
+    survey_years = Survey.objects.order_by('created_at__year').values('created_at__year').distinct() 
+
+
+    context = {
+        'line_ministry':line_ministry,
+        'survey_type': survey_type,
+        'survey':survey,
+        'survey_years':survey_years
+    }
+    return render(request, 'compare.html',context)

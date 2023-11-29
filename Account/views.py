@@ -27,9 +27,7 @@ def register_view(request):
 		line_ministry_id = request.POST.get('line_ministry')
 		line_ministry = Line_ministry.objects.get(id=line_ministry_id)
 		selected_gender = request.POST.get('gender')
-		is_mopd_head = request.POST.get('is_mopd_head') == 'on'
-		is_line_minister_head = request.POST.get('is_line_minister_head') == 'on'
-		is_line_minister_staff = request.POST.get('is_line_minister_staff') == 'on'
+		
 
 
 
@@ -46,9 +44,7 @@ def register_view(request):
 												  first_name = first_name,last_name=last_name,
 												  phone_number=phone_num, date_of_birth=DoB,
 												  Department = department,Line_ministry =line_ministry ,
-												  gender= selected_gender ,is_MoPDHead=is_mopd_head,
-            is_LineMinisterHead=is_line_minister_head,
-            is_LineMinisterStaff=is_line_minister_staff)
+												  gender= selected_gender )
 					
 					custom_user.save()
 					

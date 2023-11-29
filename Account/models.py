@@ -26,4 +26,3 @@ class CustomUser(AbstractUser):
 
     REQUIRED_FIELDS = ['email']   
 
-

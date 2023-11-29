@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    {% include "includes/head.html" %}
+{% include "includes/head.html" %}
 
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -18,34 +18,72 @@
                         <div class="container-fluid" style="background-color: #e3f2fd;">
                             <div class="container-fluid" id="searchArea">
                                 <div class="d-flex">
-                                    <a href="{% url 'survey_managment:Index' %}" style="text-decoration: none;">&#8249; Back</a>
-                                   <h2 class="textS" style="margin: auto;"> Compare Here </h2>
+                                    <a href="{% url 'survey_managment:Index' %}" style="text-decoration: none;">&#8249;
+                                        Back</a>
+                                    <h2 class="textS" style="margin: auto;"> Compare Here </h2>
                                 </div>
+
+
                                 <div class="row ">
-                                    <div class="form-group col-lg-6 col-sm-12">
+                                    
+                                    <div class="form-group col-lg-4 col-sm-12">
+                                        <label class="textS">Survey Type</label>
+                                        <select class="form-select " id="select_type">
+                                            <option selected="selected">Survey Type</option>
+                                            {%for type in survey_type%}
+                                            <option value="{{type.id}}">{{type.name}}</option>
+                                            {%endfor%}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-lg-4 col-sm-12">
+                                        <label class="textS">Year</label>
+                                        <select id="survey_year" name="survey_year" class="form-select" >
+                                    
+                                         <option value="">Select Year</option>
+                                    
+                                         {% for survey_year in survey_years %}
+                                         <option value="{{ survey_year.created_at__year }}">{{ survey_year.created_at__year }}</option>
+                                     {% endfor %}
+                                    
+                                        </select>
+                                        
+                                      </div> 
+                                    <div class="form-group col-lg-4 col-sm-12">
                                         <label class="textS">Survey</label>
-                                        <select class="form-control">
-                                            <option selected="selected">Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
+                                        <select class="form-select " id="selectSurvey">
+                                            <option selected="selected">select survey</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-lg-6 col-sm-12">
-                                        <label class="textS">By Date</label>
-                                        <select class="form-control ">
-                                            <option selected="selected">Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
-                                        </select>
+                                    <div class="col-lg-2">
+
+
+
                                     </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-7 col-sm-12">
+                                        <label class="textS">Ministry</label>
+                                        <div class="form-group">
+                                            <select class="select2" id="lineMinistrySelect" multiple="multiple"
+                                                data-placeholder="Select a Ministry" style="width: 100%;">
+                                                <option value="">Select Line Ministry</option>
+                                                {%for ministry in line_ministry%}
+                                                <option value="{{ministry.id}}">{{ministry.name}}</option>
+                                                {%endfor%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-sm-6">
+                                        <label class="textS">Apply</label>
+                                        <div class="form-group">
+                                            <button type="button"  id="getSelectedValuesBtn" class="btn btn-primary">Compare</button>
+
+                                        </div>
+
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -70,197 +108,507 @@
             </div>
         </div>
     </div>
- 
+    
 
     {% include "includes/scripts.html" %}
 
     <script>
-        Highcharts.chart('basicBar', {
-    chart: {
-        type: 'column'
-    },
-    title: {
-        text: 'Monthly Average Rainfall'
-    },
-    subtitle: {
-        text: 'Source: WorldClimate.com'
-    },
-    xAxis: {
-        categories: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-        ],
-        crosshair: true
-    },
-    yAxis: {
-        min: 0,
-        title: {
-            text: 'Rainfall (mm)'
-        }
-    },
-    tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-    },
-    plotOptions: {
-        column: {
-            pointPadding: 0.2,
-            borderWidth: 0
-        }
-    },
-    series: [{
-        name: 'Tokyo',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,
-            194.1, 95.6, 54.4]
+        var store_average = [];
+        var store_survey_name = [];
+        var ministries = [];
+        var store_user = [];
 
-    }, {
-        name: 'New York',
-        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5,
-            106.6, 92.3]
+ 
+        var surveyTableBody_3 = document.getElementById('general_Survey_Info').getElementsByTagName('tbody')[0];
+        var select_ministry = document.getElementById('lineMinistrySelect');
+        var select_type = document.getElementById('select_type');
+        var select_survey = document.getElementById('selectSurvey');
+        var selectYear = document.getElementById("survey_year");
 
-    }, {
-        name: 'London',
-        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3,
-            51.2]
 
-    }, {
-        name: 'Berlin',
-        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8,
-            51.1]
+        function handleButtonClick(data) {
+            var selectedSurvey = parseInt(select_survey.value);
 
-    }]
+            function getSelectedValues() 
+            {
+                var selectElement = document.getElementById('lineMinistrySelect');
+                if (selectElement === null) {
+                    console.log("Select element not found");
+                    return;
+                }
+
+                var selectedOptions = Array.from(selectElement.selectedOptions).map(function (option) {
+                    return parseInt(option.value, 10); // Convert the ID to an integer
+                });
+                console.log(selectedOptions);
+
+
+                var surveyIds = data.surveys
+  .filter(survey => selectedOptions.every(ministryId => survey.line_ministries.some(ministry => ministry.id === ministryId)))
+  .map(survey => survey.id);
+  console.log("Hey");
+  console.log(surveyIds);
+
+                // Iterate through the selected line ministries
+                selectedOptions.forEach(function (lineMinistryId) {
+                    var user = null;
+                    data.users.forEach(function (users) {
+                        if (users.Line_ministry_id === lineMinistryId) {
+                            user = users.id;
+                            store_user.push(user);
+                            console.log("Line Ministry ID: " + lineMinistryId + ", User ID: " + user);
+                            // Perform further actions with the user ID, if needed
+                            return;
+                        }
+                    });
+
+                    if (user === null) {
+                        console.log("Line Ministry ID: " + lineMinistryId + ", User ID: Unknown");
+                    }
+                });
+
+
+
+                userResponseId = null;
+                store_user.forEach(function (user) {
+                    data.user_response.forEach(function (response) {
+                        if (response.forsurvey_id === selectedSurvey && response.submitted_by_id === user) {
+                            userResponseId = response.id;
+                        }
+
+                    });
+
+                    if (userResponseId !== null)
+                     {
+                        var answers = data.answer.filter(function (answer) {
+                            return answer.response_id === userResponseId;
+                        });
+
+                        var answerValues = answers.map(function (answer) {
+                            return {
+                                value: parseFloat(answer.answertext),
+                                questionId: answer.forquestion_id
+                            };
+                        });
+
+                        var weightedSum = 0;
+                        var totalWeight = 0;
+                        var total_weightedinPercent = 0;
+                        var count = 0;
+                        var total_answer = 0;
+                        answerValues.forEach(function (answer) {
+                            var question = data.questions.find(function (q) {
+                                return q.id === answer.questionId;
+                            });
+
+
+                            if (question) {
+                                var weight = question.weight;
+                                console.log("the question :" + question.title + "the weight:" + weight)
+
+
+                                var total_weight = 0
+                                if (!isNaN(answer.value)) {
+                                    weightedSum += answer.value * weight;
+                                    totalWeight += weight;
+                                    total_answer += answer.value;
+                                }
+                                var weighted__Sum = 0;
+
+                                if (totalWeight > 0) {
+                                    var weightedAverage = weightedSum / totalWeight;
+
+                                    // console.log(totalWeight)
+
+                                    var totalresult = answer.value * weight
+                                    var max_value = 10;
+
+                                    var weightedinPercent = ((totalresult) / (max_value * weight)) * 100;
+                                    count++;
+                                    total_weightedinPercent += weightedinPercent;
+                                    // console.log("hello" + total_weightedinPercent + " "+ count);
+
+                                    var x = weightedinPercent;
+
+                                    console.log("Weighted average of answers: " + weightedAverage.toFixed(2) + "by" + user);
+                                } else {
+                                    console.log("No valid answers found for the selected line ministry.");
+                                }
+
+                            }
+
+
+                        });
+                        var average = total_weightedinPercent / count;
+                        if (average) {
+                            var totalRow = surveyTableBody_3.insertRow();
+                            var survey = data.survey.find(function (survey) {
+                                return survey.id === selectedSurvey;
+                            });
+                           
+                            var surveyName = survey ? survey.name : "survey not found";
+                            var valueCell = totalRow.insertCell();
+                            valueCell.textContent = total_answer;
+
+                            var weightCell = totalRow.insertCell();
+                            weightCell.textContent = totalWeight;
+
+                            var weightCell = totalRow.insertCell();
+                            weightCell.textContent = weightedSum;
+
+                            var averageCell = totalRow.insertCell();
+                            var appr = average.toFixed(2);
+                            averageCell.textContent = appr + "%";
+                            store_average.push(appr);
+                            surveyTableBody_3.appendChild(totalRow);
+
+                        }
+                       
+
+
+                    }
+                });
+                var numbers = store_average.map(function(value) {
+  return parseFloat(value);
 });
 
-    Highcharts.setOptions({
-        colors: ['rgba(5,141,199,0.5)', 'rgba(80,180,50,0.5)', 'rgba(237,86,27,0.5)']
-    });
 
-    const series = [{
-        name: 'Basketball',
-        id: 'basketball',
-        marker: {
-            symbol: 'circle'
+
+store_user.forEach(userId => {
+  const user = data.users.find(user => user.id === userId);
+  if (user) {
+    const lineMinistryId = user.Line_ministry_id;
+    const ministryName = data.line_ministry.find(ministry => ministry.id === lineMinistryId)?.name || "Unknown Ministry";
+    ministries.push(ministryName);
+  }
+});
+
+
+
+var survey = data.survey.find(function (survey) {
+                                return survey.id === selectedSurvey;
+                            });
+                var surveyName = survey ? survey.name : "survey not found";
+               
+
+
+
+                draw_columnChart(ministries,numbers,surveyName);
+                        console.log(store_user);
+                        console.log(numbers);
+
+            }
+            console.log("Here I am");
+            const selectedMinistries = getSelectedValues();
+
         }
-    },
-    {
-        name: 'Triathlon',
-        id: 'triathlon',
-        marker: {
-            symbol: 'triangle'
+
+        function clearArrays(param1) {
+            param1.length = 0;
         }
-    },
-    {
-        name: 'Volleyball',
-        id: 'volleyball',
-        marker: {
-            symbol: 'square'
-        }
-    }];
 
+        fetch('http://127.0.0.1:8000/get_json/')
+            .then(res => res.json())
+            .then(data => {
+                var select_ministry = document.getElementById('lineMinistrySelect');
+                var select_type = document.getElementById('select_type');
+                var select_survey = document.getElementById('selectSurvey');
 
-    async function getData() {
-        const response = await fetch(
-            'https://cdn.jsdelivr.net/gh/highcharts/highcharts@24912efc85/samples/data/olympic2012.json'
-        );
-        return response.json();
-    }
+                select_type.addEventListener('change', function () 
+                {
+                    var selectedSurveyTypeId = parseInt(select_type.value);
+                    console.log('Selected survey:', selectedSurveyTypeId);
+                    const button = document.getElementById('getSelectedValuesBtn');
+                    clearTable(surveyTableBody_3);
+                    clearOptions(select_survey);
+                    clearArrays(store_average);
+                    clearArrays(store_user);
+                    clearArrays(ministries);
+                    selectYear.addEventListener('change', function () 
+                    {
+                        var selectedYear = parseInt(selectYear.value);
+                        console.log('Selected Year:', selectedYear);
+                        clearTable(surveyTableBody_3);
+                   
+                    clearOptions(select_survey);
 
+                    button.onclick = () => handleButtonClick(data);
+                    if(selectedYear){
+                    var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() ===  selectedYear);
+                
+                    surveys.forEach(survey => {
 
-    getData().then(data => {
-        const getData = sportName => {
-            const temp = [];
-            data.forEach(elm => {
-                if (elm.sport === sportName && elm.weight > 0 && elm.height > 0) {
-                    temp.push([elm.height, elm.weight]);
+                        var option = document.createElement("option");
+                        option.value = survey.id;
+                        option.textContent = survey.name;
+                        select_survey.appendChild(option);
+                    })
                 }
-            });
-            return temp;
-        };
-        series.forEach(s => {
-            s.data = getData(s.id);
-        });
 
-        Highcharts.chart('ScatterPlot', {
+                });
+
+                select_survey.addEventListener('change', function () {
+                   
+                    clearArrays(store_average);
+                    clearArrays(store_user);
+                    clearArrays(ministries);
+                });
+
+                select_ministry.addEventListener('change', function () {
+                   
+                   clearArrays(store_average);
+                   clearArrays(store_user);
+                   clearArrays(ministries);
+               });
+
+
+            });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        function clearTable(tableBody) {
+            while (tableBody.firstChild) {
+                tableBody.removeChild(tableBody.firstChild);
+            }
+        }
+
+        function clearOptions(select) {
+            while (select.firstChild) {
+                select.removeChild(select.firstChild);
+            }
+        }
+
+function draw_columnChart(x,y,z){
+        Highcharts.chart('basicBar', {
             chart: {
-                type: 'scatter',
-                zoomType: 'xy'
+                type: 'column'
             },
             title: {
-                text: 'Olympics athletes by height and weight',
-                align: 'left'
+                text: z
             },
             subtitle: {
-                text:
-            'Source: <a href="https://www.theguardian.com/sport/datablog/2012/aug/07/olympics-2012-athletes-age-weight-height">The Guardian</a>',
-                align: 'left'
+                text: ''
             },
             xAxis: {
-                title: {
-                    text: 'Height'
-                },
-                labels: {
-                    format: '{value} m'
-                },
-                startOnTick: true,
-                endOnTick: true,
-                showLastLabel: true
+                categories: x,
+                crosshair: true
             },
             yAxis: {
+                min: 0,
                 title: {
-                    text: 'Weight'
-                },
-                labels: {
-                    format: '{value} kg'
-                }
-            },
-            legend: {
-                enabled: true
-            },
-            plotOptions: {
-                scatter: {
-                    marker: {
-                        radius: 2.5,
-                        symbol: 'circle',
-                        states: {
-                            hover: {
-                                enabled: true,
-                                lineColor: 'rgb(100,100,100)'
-                            }
-                        }
-                    },
-                    states: {
-                        hover: {
-                            marker: {
-                                enabled: false
-                            }
-                        }
-                    },
-                    jitter: {
-                        x: 0.005
-                    }
+                    text: 'Average(100%)'
                 }
             },
             tooltip: {
-                pointFormat: 'Height: {point.x} m <br/> Weight: {point.y} kg'
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} %</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
             },
-            series
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Average',
+                data: y
+
+            }]
         });
     }
-    );
+        Highcharts.setOptions({
+            colors: ['rgba(5,141,199,0.5)', 'rgba(80,180,50,0.5)', 'rgba(237,86,27,0.5)']
+        });
+
+        const series = [{
+            name: 'Basketball',
+            id: 'basketball',
+            marker: {
+                symbol: 'circle'
+            }
+        },
+        {
+            name: 'Triathlon',
+            id: 'triathlon',
+            marker: {
+                symbol: 'triangle'
+            }
+        },
+        {
+            name: 'Volleyball',
+            id: 'volleyball',
+            marker: {
+                symbol: 'square'
+            }
+        }];
+
+
+        async function getData() {
+            const response = await fetch(
+                'https://cdn.jsdelivr.net/gh/highcharts/highcharts@24912efc85/samples/data/olympic2012.json'
+            );
+            return response.json();
+        }
+
+
+        getData().then(data => {
+            const getData = sportName => {
+                const temp = [];
+                data.forEach(elm => {
+                    if (elm.sport === sportName && elm.weight > 0 && elm.height > 0) {
+                        temp.push([elm.height, elm.weight]);
+                    }
+                });
+                return temp;
+            };
+            series.forEach(s => {
+                s.data = getData(s.id);
+            });
+
+            Highcharts.chart('ScatterPlot', {
+                chart: {
+                    type: 'scatter',
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Olympics athletes by height and weight',
+                    align: 'left'
+                },
+                subtitle: {
+                    text:
+                        'Source: <a href="https://www.theguardian.com/sport/datablog/2012/aug/07/olympics-2012-athletes-age-weight-height">The Guardian</a>',
+                    align: 'left'
+                },
+                xAxis: {
+                    title: {
+                        text: 'Height'
+                    },
+                    labels: {
+                        format: '{value} m'
+                    },
+                    startOnTick: true,
+                    endOnTick: true,
+                    showLastLabel: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Weight'
+                    },
+                    labels: {
+                        format: '{value} kg'
+                    }
+                },
+                legend: {
+                    enabled: true
+                },
+                plotOptions: {
+                    scatter: {
+                        marker: {
+                            radius: 2.5,
+                            symbol: 'circle',
+                            states: {
+                                hover: {
+                                    enabled: true,
+                                    lineColor: 'rgb(100,100,100)'
+                                }
+                            }
+                        },
+                        states: {
+                            hover: {
+                                marker: {
+                                    enabled: false
+                                }
+                            }
+                        },
+                        jitter: {
+                            x: 0.005
+                        }
+                    }
+                },
+                tooltip: {
+                    pointFormat: 'Height: {point.x} m <br/> Weight: {point.y} kg'
+                },
+                series
+            });
+        }
+        );
+        // Highcharts.chart('basicBar', {
+        //     chart: {
+        //         type: 'column'
+        //     },
+        //     title: {
+        //         text: 'Monthly Average Rainfall'
+        //     },
+        //     subtitle: {
+        //         text: 'Source: WorldClimate.com'
+        //     },
+        //     xAxis: {
+        //         categories: [
+        //             'Jan',
+        //             'Feb',
+        //             'Mar',
+        //             'Apr',
+        //             'May',
+        //             'Jun',
+        //             'Jul',
+        //             'Aug',
+        //             'Sep',
+        //             'Oct',
+        //             'Nov',
+        //             'Dec'
+        //         ],
+        //         crosshair: true
+        //     },
+        //     yAxis: {
+        //         min: 0,
+        //         title: {
+        //             text: 'Rainfall (mm)'
+        //         }
+        //     },
+        //     tooltip: {
+        //         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        //         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        //             '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        //         footerFormat: '</table>',
+        //         shared: true,
+        //         useHTML: true
+        //     },
+        //     plotOptions: {
+        //         column: {
+        //             pointPadding: 0.2,
+        //             borderWidth: 0
+        //         }
+        //     },
+        //     series: [{
+        //         name: 'Tokyo',
+        //         data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,
+        //             194.1, 95.6, 54.4]
+
+        //     }, {
+        //         name: 'New York',
+        //         data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5,
+        //             106.6, 92.3]
+
+        //     }, {
+        //         name: 'London',
+        //         data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3,
+        //             51.2]
+
+        //     }, {
+        //         name: 'Berlin',
+        //         data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8,
+        //             51.1]
+
+        //     }]
+        // });
+
+       
     </script>
 </body>
+
 </html>
