@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages,auth
@@ -131,28 +132,43 @@ def user_profile(request):
     return render(request , 'profile.html' )
 
 def users(request):
-  users = CustomUser.objects.all()
-
   context ={
-    'users':users
+    'users':CustomUser.objects.all(), 
+    'ministrys' : Line_ministry.objects.all(),
+    'admins' : CustomUser.objects.filter(is_mopd_head = True)
   }
+  if request.META.get('HTTP_REFERER') and re.search( r'/account/update/\d+/' , request.META['HTTP_REFERER']):
+        messages.success(request, 'User Successusfuly Updated')    
   return render(request, 'user.html', context )
+  
 def change_password(request):
     return render(request , 'password_change.html' )
 
 
 @login_required
 def update_users(request, id):
-    users = get_object_or_404(CustomUser, id=id)
+    user = get_object_or_404(CustomUser, id=id)
     if request.method == 'POST':
-        form = Admin_Update(request.POST, request.FILES, instance=users)
+        form = Admin_Update(request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect('Account:users')
     else:
-        form = Admin_Update(instance=users)
-    return render(request, './update_users.html', {'form': form})
+        form = Admin_Update(instance=user)
+    return render(request, './update_users.html', {'form': form,'user':user})
 
+@login_required
+def add_line_ministry(request):
+    if request.method == 'POST':
+        form = LineMinistryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Account:users')  # Redirect to the line ministry list view
+    else:
+        form = LineMinistryForm()
+    
+    context = {'form': form}
+    return render(request, 'add_line_ministry.html', context)
 
 @login_required
 def delete_user(request, id):
