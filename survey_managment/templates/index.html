@@ -347,6 +347,18 @@
                 </div>
             </section>
 
+            <div class="card hidden-transition" style="display: none;" id="msg1">
+
+                <div class="card-header" style="justify-content: space-between;">
+
+                </div>
+                <div class="card-body" style="background-color: #94e299;">
+                    <p id="no_resonse_msg" style="text-align: center;"> </p>
+                </div>
+
+            </div>
+
+
 
             <!-- table -->
             <section class="content" style="display: none;" id="section2">
@@ -420,7 +432,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-12 col-md-6">
+                        <div class="col-lg-7 col-md-6">
                             <div class="card shadow hidden-transition">
                                 <div class="card-body">
                                     <div class="form-group">
@@ -453,6 +465,14 @@
 
     {% include "includes/scripts.html" %}
     <script>
+        new DataTable('#example', {
+            order: [[2, 'asc']],
+            rowGroup: {
+                dataSrc: 2
+            }
+        });
+
+
         var store_average = [];
         var store_survey_name = [];
         var ministry_info = [];
@@ -473,6 +493,9 @@
                 var option_table2 = document.getElementById('section1');
                 var option_table1 = document.getElementById('section2');
                 var column_chart = document.getElementById('container');
+                var card_msg = document.getElementById('msg1');
+
+                msg1
                 const button = document.getElementById('getSelectedValuesBtn');
 
                 button.onclick = () => handleButtonClick(data);
@@ -515,7 +538,12 @@
 
                         if (selectedSurveyTypeId && myCheckbox.checked && selectedYear) {
                             var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() === selectedYear);
+                            var emptyOption = document.createElement("option");
+                            emptyOption.value = "";
+                            emptyOption.text = "-- Select an option --";
 
+                            // Append the empty option to the select element
+                            selectElement.appendChild(emptyOption);
                             surveys.forEach(survey => {
 
                                 var option = document.createElement("option");
@@ -544,6 +572,12 @@
                                         while (select_ministry.firstChild) {
                                             select_ministry.removeChild(select_ministry.firstChild)
                                         }
+                                        var emptyOption = document.createElement("option");
+                                        emptyOption.value = "";
+                                        emptyOption.text = "-- Select an option --";
+
+                                        // Append the empty option to the select element
+                                        select_ministry.appendChild(emptyOption);
                                         lineMinistries.forEach(function (lineMinistry) {
                                             var ministry_option = document.createElement("option");
                                             ministry_option.value = lineMinistry.id;
@@ -594,6 +628,8 @@
                                         console.log("yry " + userResponseId)
 
                                         if (userResponseId !== null) {
+                                            card_msg.style.display = "none";
+
                                             var answers = data.answer.filter(function (answer) {
                                                 return answer.response_id === userResponseId;
                                             });
@@ -690,37 +726,44 @@
 
                                                 }
                                             });
+                                            var totalRow = surveyTableBody_2.insertRow();
+                                            var labelCell = totalRow.insertCell();
+                                            labelCell.textContent = 'Total';
 
+                                            var valueCell = totalRow.insertCell();
+                                            valueCell.textContent = total_answer;
+
+                                            var weightCell = totalRow.insertCell();
+                                            weightCell.textContent = totalWeight;
+
+                                            var weightCell = totalRow.insertCell();
+                                            weightCell.textContent = weightedSum;
+
+                                            var averageCell = totalRow.insertCell();
+                                            var average = total_weightedinPercent / count;
+                                            averageCell.textContent = average.toFixed(2) + "%";
+                                            surveyTableBody_2.appendChild(totalRow);
+                                            option_table1.style.display = "block";
+                                            console.log(average);
+
+
+
+                                            console.log('Selected survey:', selectedSurvey);
+                                            console.log("Selected line ministry: " + selectedLineMinistry);
                                         }
 
 
                                         else {
+                                            option_table1.style.display = "none";
+                                            var h3Element = document.getElementById("no_resonse_msg");
+                                            h3Element.textContent = 'No user_response ID found for the selected line ministry.';
+                                            card_msg.style.display = "block";
+
+
+
                                             console.log("No user_response ID found for the selected line ministry.");
                                         }
-                                        var totalRow = surveyTableBody_2.insertRow();
-                                        var labelCell = totalRow.insertCell();
-                                        labelCell.textContent = 'Total';
 
-                                        var valueCell = totalRow.insertCell();
-                                        valueCell.textContent = total_answer;
-
-                                        var weightCell = totalRow.insertCell();
-                                        weightCell.textContent = totalWeight;
-
-                                        var weightCell = totalRow.insertCell();
-                                        weightCell.textContent = weightedSum;
-
-                                        var averageCell = totalRow.insertCell();
-                                        var average = total_weightedinPercent / count;
-                                        averageCell.textContent = average.toFixed(2) + "%";
-                                        surveyTableBody_2.appendChild(totalRow);
-                                        option_table1.style.display = "block";
-                                        console.log(average);
-
-
-
-                                        console.log('Selected survey:', selectedSurvey);
-                                        console.log("Selected line ministry: " + selectedLineMinistry);
                                     });
                                 });
                                 var selectedSurvey = (selectElement.value);
@@ -756,8 +799,9 @@
                                 });
 
                                 select_ministry.addEventListener("change", function () {
-                                    store_average = [];
-                                    store_survey_name = [];
+                                    clearArrays(store_ministries);
+                                    clearArrays(store_average);
+
 
                                     if (select_ministry) {
                                         clearArrays(store_average, store_survey_name)
@@ -1127,9 +1171,9 @@
 
 
         var selectedOptions = [];
-        function handleButtonClick(data) 
-        {
+        function handleButtonClick(data) {
             function getSelectedValues() {
+                
                 var selectElement = document.getElementById('lineMinistrySelect');
                 if (selectElement === null) {
                     console.log("Select element not found");
@@ -1262,16 +1306,16 @@
                 var formattedData = [];
 
                 for (var surveyId in surveyData) {
-console.log("ghjsd");
-console.log(surveyId);
+                    console.log("ghjsd");
+                    console.log(surveyId);
 
                     var survey = data.survey.find(function (survey) {
-                                return survey.id == surveyId;
-                            });
-                var surveyName = survey ? survey.name : "survey not found";
+                        return survey.id == surveyId;
+                    });
+                    var surveyName = survey ? survey.name : "survey not found";
 
-                
-                    var surveysIds= surveyData[surveyId];
+
+                    var surveysIds = surveyData[surveyId];
                     formattedData.push({
                         name: surveyName,
                         data: surveysIds
@@ -1282,19 +1326,19 @@ console.log(surveyId);
                 });
                 var ministryNames = [];
 
-for (var i = 0; i < store_ministries.length; i++) {
-var Ministry = data.line_ministry.find(function (ministry) {
-        return ministry.id === store_ministries[i];
-                            });
-              if(Ministry){
-                ministryNames.push(Ministry.name);
-              }
-              else{
-                console.log("No name");
-              }
-}
+                for (var i = 0; i < store_ministries.length; i++) {
+                    var Ministry = data.line_ministry.find(function (ministry) {
+                        return ministry.id === store_ministries[i];
+                    });
+                    if (Ministry) {
+                        ministryNames.push(Ministry.name);
+                    }
+                    else {
+                        console.log("No name");
+                    }
+                }
 
-console.log(ministryNames);
+                console.log(ministryNames);
                 Highcharts.chart('barCharts', {
                     chart: {
                         type: 'column'

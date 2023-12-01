@@ -118,8 +118,6 @@
         var ministries = [];
         var store_user = [];
 
- 
-        var surveyTableBody_3 = document.getElementById('general_Survey_Info').getElementsByTagName('tbody')[0];
         var select_ministry = document.getElementById('lineMinistrySelect');
         var select_type = document.getElementById('select_type');
         var select_survey = document.getElementById('selectSurvey');
@@ -128,7 +126,7 @@
 
         function handleButtonClick(data) {
             var selectedSurvey = parseInt(select_survey.value);
-
+            console.log(select_survey); 
             function getSelectedValues() 
             {
                 var selectElement = document.getElementById('lineMinistrySelect');
@@ -136,19 +134,15 @@
                     console.log("Select element not found");
                     return;
                 }
-
                 var selectedOptions = Array.from(selectElement.selectedOptions).map(function (option) {
                     return parseInt(option.value, 10); // Convert the ID to an integer
                 });
                 console.log(selectedOptions);
-
-
                 var surveyIds = data.surveys
   .filter(survey => selectedOptions.every(ministryId => survey.line_ministries.some(ministry => ministry.id === ministryId)))
   .map(survey => survey.id);
   console.log("Hey");
   console.log(surveyIds);
-
                 // Iterate through the selected line ministries
                 selectedOptions.forEach(function (lineMinistryId) {
                     var user = null;
@@ -161,23 +155,17 @@
                             return;
                         }
                     });
-
                     if (user === null) {
                         console.log("Line Ministry ID: " + lineMinistryId + ", User ID: Unknown");
                     }
                 });
-
-
-
                 userResponseId = null;
                 store_user.forEach(function (user) {
                     data.user_response.forEach(function (response) {
                         if (response.forsurvey_id === selectedSurvey && response.submitted_by_id === user) {
                             userResponseId = response.id;
                         }
-
                     });
-
                     if (userResponseId !== null)
                      {
                         var answers = data.answer.filter(function (answer) {
@@ -200,13 +188,9 @@
                             var question = data.questions.find(function (q) {
                                 return q.id === answer.questionId;
                             });
-
-
                             if (question) {
                                 var weight = question.weight;
                                 console.log("the question :" + question.title + "the weight:" + weight)
-
-
                                 var total_weight = 0
                                 if (!isNaN(answer.value)) {
                                     weightedSum += answer.value * weight;
@@ -214,53 +198,29 @@
                                     total_answer += answer.value;
                                 }
                                 var weighted__Sum = 0;
-
                                 if (totalWeight > 0) {
                                     var weightedAverage = weightedSum / totalWeight;
-
-                                    // console.log(totalWeight)
-
                                     var totalresult = answer.value * weight
                                     var max_value = 10;
-
                                     var weightedinPercent = ((totalresult) / (max_value * weight)) * 100;
                                     count++;
                                     total_weightedinPercent += weightedinPercent;
-                                    // console.log("hello" + total_weightedinPercent + " "+ count);
-
                                     var x = weightedinPercent;
-
                                     console.log("Weighted average of answers: " + weightedAverage.toFixed(2) + "by" + user);
                                 } else {
                                     console.log("No valid answers found for the selected line ministry.");
                                 }
-
                             }
-
-
                         });
                         var average = total_weightedinPercent / count;
                         if (average) {
-                            var totalRow = surveyTableBody_3.insertRow();
                             var survey = data.survey.find(function (survey) {
                                 return survey.id === selectedSurvey;
                             });
                            
                             var surveyName = survey ? survey.name : "survey not found";
-                            var valueCell = totalRow.insertCell();
-                            valueCell.textContent = total_answer;
-
-                            var weightCell = totalRow.insertCell();
-                            weightCell.textContent = totalWeight;
-
-                            var weightCell = totalRow.insertCell();
-                            weightCell.textContent = weightedSum;
-
-                            var averageCell = totalRow.insertCell();
                             var appr = average.toFixed(2);
-                            averageCell.textContent = appr + "%";
                             store_average.push(appr);
-                            surveyTableBody_3.appendChild(totalRow);
 
                         }
                        
@@ -292,7 +252,6 @@ var survey = data.survey.find(function (survey) {
                
 
 
-
                 draw_columnChart(ministries,numbers,surveyName);
                         console.log(store_user);
                         console.log(numbers);
@@ -309,33 +268,39 @@ var survey = data.survey.find(function (survey) {
 
         fetch('http://127.0.0.1:8000/get_json/')
             .then(res => res.json())
-            .then(data => {
+            .then(data => 
+            {
+
                 var select_ministry = document.getElementById('lineMinistrySelect');
                 var select_type = document.getElementById('select_type');
                 var select_survey = document.getElementById('selectSurvey');
+                const button = document.getElementById('getSelectedValuesBtn');
+
+
 
                 select_type.addEventListener('change', function () 
                 {
                     var selectedSurveyTypeId = parseInt(select_type.value);
                     console.log('Selected survey:', selectedSurveyTypeId);
-                    const button = document.getElementById('getSelectedValuesBtn');
-                    clearTable(surveyTableBody_3);
-                    clearOptions(select_survey);
                     clearArrays(store_average);
                     clearArrays(store_user);
                     clearArrays(ministries);
+                    clearOptions(select_survey);
                     selectYear.addEventListener('change', function () 
                     {
                         var selectedYear = parseInt(selectYear.value);
                         console.log('Selected Year:', selectedYear);
-                        clearTable(surveyTableBody_3);
-                   
-                    clearOptions(select_survey);
-
+                        clearOptions(select_survey);
                     button.onclick = () => handleButtonClick(data);
                     if(selectedYear){
+
                     var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() ===  selectedYear);
-                
+                    var emptyOption = document.createElement("option");
+emptyOption.value = "";
+emptyOption.text = "-- Select an option --";
+
+// Append the empty option to the select element
+select_survey.appendChild(emptyOption);
                     surveys.forEach(survey => {
 
                         var option = document.createElement("option");
@@ -346,22 +311,16 @@ var survey = data.survey.find(function (survey) {
                 }
 
                 });
-
                 select_survey.addEventListener('change', function () {
-                   
                     clearArrays(store_average);
                     clearArrays(store_user);
                     clearArrays(ministries);
                 });
-
                 select_ministry.addEventListener('change', function () {
-                   
                    clearArrays(store_average);
                    clearArrays(store_user);
                    clearArrays(ministries);
                });
-
-
             });
             })
             .catch(error => {
@@ -372,13 +331,11 @@ var survey = data.survey.find(function (survey) {
                 tableBody.removeChild(tableBody.firstChild);
             }
         }
-
         function clearOptions(select) {
             while (select.firstChild) {
                 select.removeChild(select.firstChild);
             }
         }
-
 function draw_columnChart(x,y,z){
         Highcharts.chart('basicBar', {
             chart: {
@@ -537,76 +494,7 @@ function draw_columnChart(x,y,z){
             });
         }
         );
-        // Highcharts.chart('basicBar', {
-        //     chart: {
-        //         type: 'column'
-        //     },
-        //     title: {
-        //         text: 'Monthly Average Rainfall'
-        //     },
-        //     subtitle: {
-        //         text: 'Source: WorldClimate.com'
-        //     },
-        //     xAxis: {
-        //         categories: [
-        //             'Jan',
-        //             'Feb',
-        //             'Mar',
-        //             'Apr',
-        //             'May',
-        //             'Jun',
-        //             'Jul',
-        //             'Aug',
-        //             'Sep',
-        //             'Oct',
-        //             'Nov',
-        //             'Dec'
-        //         ],
-        //         crosshair: true
-        //     },
-        //     yAxis: {
-        //         min: 0,
-        //         title: {
-        //             text: 'Rainfall (mm)'
-        //         }
-        //     },
-        //     tooltip: {
-        //         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        //         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        //             '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-        //         footerFormat: '</table>',
-        //         shared: true,
-        //         useHTML: true
-        //     },
-        //     plotOptions: {
-        //         column: {
-        //             pointPadding: 0.2,
-        //             borderWidth: 0
-        //         }
-        //     },
-        //     series: [{
-        //         name: 'Tokyo',
-        //         data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,
-        //             194.1, 95.6, 54.4]
-
-        //     }, {
-        //         name: 'New York',
-        //         data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5,
-        //             106.6, 92.3]
-
-        //     }, {
-        //         name: 'London',
-        //         data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3,
-        //             51.2]
-
-        //     }, {
-        //         name: 'Berlin',
-        //         data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8,
-        //             51.1]
-
-        //     }]
-        // });
-
+       
        
     </script>
 </body>
