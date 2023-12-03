@@ -87,6 +87,7 @@ class UserResponse(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending' ,  null=True , blank=True)
     line_ministry = models.ForeignKey(Line_ministry , on_delete=models.CASCADE , null=True , blank=True)
 
+
     def __str__(self):
         return str(self.submitted_by)
     
@@ -94,6 +95,7 @@ class Answer(models.Model):
     response = models.ForeignKey("UserResponse", on_delete=models.CASCADE , null=True , blank=True)
     forquestion=models.ForeignKey("Question", on_delete=models.CASCADE , null=True , blank=True)
     answertext= models.CharField(max_length=500)
+    recommendation = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
         return self.answertext

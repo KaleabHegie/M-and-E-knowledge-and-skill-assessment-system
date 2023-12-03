@@ -247,15 +247,49 @@ def user_response(request, id, response_id):
     documents = Document.objects.all()
     
 
+    collected = {}
+    for index in range(len(answers)):
+        i = answers[index]
+        getDoc = Document.objects.filter(foranswer = i)
+        if getDoc:
+            collected[index] = {
+                'Ans' : i,
+                'Doc' : getDoc
+            }
+   
+
+    if request.method == 'POST':
+        recommendation = request.POST.get('recommendation')
+        checkedResponse = request.POST.get('checkedResp') # the checkbox value holding the answer id to be recommended
+        theAnswer = Answer.objects.filter(id=checkedResponse)     # the answer to be recommended
+        theAnswer.update(recommendation=recommendation)
+
     data = {
         'survey_id': id,
         'survey': survey,
         'user_responses': user_responses,
-        'answers': answers,
-        'documents': documents,
+        'collected' : collected,
         'response_id': response_id
     }
+    for j in collected.values():
+        for doc in j['Doc']:
+            print( j['Ans'] )
+            print(doc.document)   
+    # data = {
+    #     'survey_id': id,
+    #     'survey': survey,
+    #     'user_responses': user_responses,
+    #     'answers': answers,
+    #     'documents': documents,
+    #     'response_id': response_id
+    # }
+
+
     return render(request, 'user_response.html', data)
+
+
+
+
 
 def user_response_change_status(request, id , response_id):
     survey = get_object_or_404(Survey, id=id)
@@ -460,9 +494,6 @@ def newQuestion(request,questionType, s_id ):
     context = {'questionType': questionType, 'categories': categories}
     return render(request, 'modal.html', context)
 
-
-def recommendationView(request):
-    return render(request, 'recommendation.html')
 
 
 
