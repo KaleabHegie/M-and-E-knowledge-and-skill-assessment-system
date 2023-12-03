@@ -87,22 +87,22 @@
           <p>Users <i class="fas fa-angle-left right"></i></p>
         </a>
         <ul class="nav nav-treeview">
-          <li class="nav-item">
+          <li class="nav-item ml-4">
             <a href="{%url 'Account:register_view'%}" class="nav-link">
-              <i class="nav-icon far fa-plus"></i>
-              <p>Add User</p>
+              <i class="fa-sharp fa-solid fa-user-plus"></i>
+              <p class="ml-2">Add User</p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item ml-4">
             <a href="{% url 'Account:users' %}" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>View Users</p>
+              <i class="fa-regular fa-eye"></i>
+              <p class="ml-1">View Users</p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item ml-4">
             <a href="{% url 'Account:add_line_ministry' %}" class="nav-link">
-              <i class="nav-icon far fa-plus"></i>
-              <p>Add Line Ministry</p>
+              <i class="fa-solid fa-plus"></i>
+              <p class="ml-2">Add Line Ministry</p>
             </a>
           </li>
         </ul>
@@ -116,22 +116,29 @@
           </p>
         </a>
         <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="pages/mailbox/mailbox.html" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Inbox</p>
+          <li class="nav-item ml-4">
+            <a href="{% url "survey_managment:inbox" %}" class="nav-link">
+              <i class="fas fa-inbox"></i>  
+              <p class="ml-2"> Inbox </p>
+              <span class="badge bg-primary ml-5">12</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="pages/mailbox/compose.html" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Compose</p>
+          <li class="nav-item ml-4">
+            <a href="{% url "survey_managment:sent" %}" class="nav-link">
+              <i class="far fa-envelope"></i>  
+              <p class="ml-2"> Sent </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="pages/mailbox/read-mail.html" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Read</p>
+          <li class="nav-item ml-4">
+            <a href="{% url "survey_managment:draft" %}" class="nav-link">
+              <i class="far fa-file-alt"></i>  
+              <p class="ml-2"> Drafts </p>
+            </a>
+          </li>
+          <li class="nav-item ml-4">
+            <a href="{% url "survey_managment:trash" %}" class="nav-link">
+              <i class="far fa-trash-alt"></i>  
+              <p class="ml-2"> Trash </p>
             </a>
           </li>
         </ul>

@@ -17,14 +17,16 @@ urlpatterns = [
     path('compareData/', views.compareDataView, name='compareData'),
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('newQuestion/<str:questionType>/<int:s_id>/', views.newQuestion, name='newQuestion'),
-<<<<<<< HEAD
-    path('newCategory/', views.newCategory, name='newCategory'),
-=======
-    path('recommendation/', views.recommendationView, name='recommendation'),
->>>>>>> ecde6227061cfac5a9ab2352868a98a3c66e139d
-
+  
 
     path('survey/', views.survey, name='survey'),
+    path('inbox/', views.inbox, name='inbox'),
+    path('sent/', views.sent, name='sent'),
+    path('draft/', views.draft, name='draft'),
+    path('trash/', views.trash, name='trash'),
+    path('compose/', views.compose, name='compose'),
+    path('read/<int:id>', views.read, name='read'),
+    
     path('chooseSurvey/<int:id>/<int:choose_id>/', views.chooseSurvey, name='chooseSurvey'),
     path('displayQuestion/<int:id>/', views.displayQuestion, name='displayQuestion'),
     path('catagorizedQuestion/<int:id>/', views.catagorizedQuestion, name='catagorizedQuestion'),

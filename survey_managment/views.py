@@ -76,6 +76,36 @@ def indexView(request):
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
       
         return render(request, 'index.html', context)
+    
+def inbox(request):    
+    context = {
+        'message' : ContactUs.objects.filter(status = 'inbox')
+    }
+    return render(request ,"inbox.html" , context)
+def sent(request):    
+    context = {
+        'message' : ContactUs.objects.filter(status = 'sent')
+    }
+    return render(request ,"sent.html" , context)
+def draft(request):    
+    context = {
+        'message' : ContactUs.objects.filter(status = 'draft')
+    }
+    return render(request ,"draft.html" , context)
+def trash(request):    
+    context = {
+        'message' : ContactUs.objects.filter(status = 'trash')
+    }
+    return render(request ,"trash.html" , context)
+
+def compose(request):    
+    return render(request ,"compose.html")
+def read(request , id):    
+    context = {
+        'message' : ContactUs.objects.get(id=id)
+
+    }
+    return render(request ,"read.html" , context)
 
 def load_survey(request):
     survey_type_id = request.GET.get("survey_type")
@@ -244,52 +274,23 @@ def user_response(request, id, response_id):
     survey = get_object_or_404(Survey, id=id)
     user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
-    documents = Document.objects.all()
-    
-
-    collected = {}
-    for index in range(len(answers)):
-        i = answers[index]
-        getDoc = Document.objects.filter(foranswer = i)
-        if getDoc:
-            collected[index] = {
-                'Ans' : i,
-                'Doc' : getDoc
-            }
-   
-
+    documents = Document.objects.all()     
     if request.method == 'POST':
-        recommendation = request.POST.get('recommendation')
-        checkedResponse = request.POST.get('checkedResp') # the checkbox value holding the answer id to be recommended
-        theAnswer = Answer.objects.filter(id=checkedResponse)     # the answer to be recommended
-        theAnswer.update(recommendation=recommendation)
-
+     recommendation = request.POST.get('recommendation')
+     checkedResponse = request.POST.get('checkedResp') # the checkbox value holding the answer id to be recommended
+     theAnswer = Answer.objects.filter(id=checkedResponse)     # the answer to be recommended
+     theAnswer.update(recommendation=recommendation)
     data = {
-        'survey_id': id,
-        'survey': survey,
-        'user_responses': user_responses,
-        'collected' : collected,
-        'response_id': response_id
-    }
-    for j in collected.values():
-        for doc in j['Doc']:
-            print( j['Ans'] )
-            print(doc.document)   
-    # data = {
-    #     'survey_id': id,
-    #     'survey': survey,
-    #     'user_responses': user_responses,
-    #     'answers': answers,
-    #     'documents': documents,
-    #     'response_id': response_id
-    # }
+         'survey_id': id,
+         'survey': survey,
+         'user_responses': user_responses,
+         'answers': answers,
+         'documents': documents,
+         'response_id': response_id
+     }
 
 
     return render(request, 'user_response.html', data)
-
-
-
-
 
 def user_response_change_status(request, id , response_id):
     survey = get_object_or_404(Survey, id=id)
@@ -503,6 +504,20 @@ def newQuestion(request,questionType, s_id ):
 ####### final preview views ################################
 @login_required
 def greetingpage_view(request):
+    if request.method == 'POST':
+        # Create a new instance of the ContactUs model
+        contact = ContactUs()
+
+        # Assign form data to the corresponding fields
+        contact.name = request.POST.get('name')
+        contact.email = request.POST.get('email')
+        contact.subject = request.POST.get('subject')
+        contact.message = request.POST.get('message')
+        contact.status = 'inbox'
+
+        # Save the new object to the database
+        contact.save()
+        messages.success(request, 'Thank you for contacting us. Your Message is submitted succussesfuly.')
     context ={
         
     }
