@@ -22,7 +22,6 @@ urlpatterns = [
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('newQuestion/<str:questionType>/<int:s_id>/', views.newQuestion, name='newQuestion'),
     path('newCategory/', views.newCategory, name='newCategory'),
-    path('recommendation/', views.recommendationView, name='recommendation'),
 
 
     path('survey/', views.survey, name='survey'),

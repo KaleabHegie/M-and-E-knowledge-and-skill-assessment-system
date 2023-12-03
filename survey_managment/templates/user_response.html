@@ -2,114 +2,180 @@
 <!DOCTYPE html>
 <html lang="en">
   {% include 'includes/head.html' %}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+  <style>
+  .greenTxt{
+    color: #2da54b;
+  }
 
- 
+  .centerdtxt {
+  text-align: center;
+  }
+  .highlight-row{
+    background-color: #40916c;
+  }
+</style>
 
-  <body class="hold-transition sidebar-mini">
-    <div class="wrapper">
+  <body class="hold-transition sidebar-mini" style="background-color: white;">
+    <div class="wrapper" >
       {% include "includes/loader.html" %}
        {% include 'includes/topNavbar.html' %}
         {% include 'includes/sideNavbar.html' %}
 
-      <div class="content-wrapper">
+      <div class="content-wrapper" style="background-color: white;">
 
 
         {% include 'includes/message.html'  %}
 
        
 
-       <section class="container-fluid">
-        <div class="row justify-content-center">
-        <div class="col-lg-12 mt-3">
-          
-          {% if user_responses %}
-              {% for response in user_responses %}
-                <div class="card shadow mb-3">
-
-                  <h4 class="text-info m-4"> Response by {{ response.submitted_by }}</h4>
-                  
-                  <div class="card-body">
+        <section class="container">
+          <div class="">
+            <div class="mt-3">
+              {% if user_responses %}
+                {% for response in user_responses %}
+                 
+                    <h4 class="mt-4 text-center">Response by {{ response.submitted_by }}</h4>
+                    <hr style="border-top: 3px solid #40916c;">
                     
-                    <table class="table table-responsive">
-                      <thead>
-                        <tr>
-                          <th>Question</th>
-                          <th>Wight</th>
-                          <th>Answer</th>
-                          <th>Document</th>
-                          {% if response.status == 'pending'  %}
-                            <th>Recomndation</th>
-                          {% endif %}
-                         
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for answer in answers %}
-                        <tr>
-                            <td>{{ answer.forquestion }}</td>
-                            <td>{{ answer.forquestion.weight }}</td>
-                            <td>{{ answer.answertext }}</td>
-                            
-                            
-                            <td>
-                                {% for document in documents %}
-                                    {% if document.foranswer == answer %}
-                                        <a href="{{ document.document.url }}">{{ document }}</a>
-                                   
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                            {% if response.status == 'pending' %}
-                                <td><input type="checkbox" name="input_{{ answer.id }}"></td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                      </tbody>
-                    </table>
-                    {% if response.status == 'pending' %}
-                        <a href="{% url "survey_managment:user_response_change_status" survey_id response_id %}" class="btn btn-primary p-2 mt-4"> Approve </a>
-                    {% endif %}
-                  </div>
-                </div>
-              {% endfor %}
-            
-          {% else %}
-            <p style="font-size: 1.2rem;">No responses found.</p>
-          {% endif %}
-        </div>
-      </div>
-      </section>
-      
-      
+                      <table class="table " id="myTable">
+                        <thead>
+                          <tr>
+                            <th>Question</th>
+                            <th>Weight</th>
+                            <th>Answer</th>
+                            <th id="document-header" style="display: none;">Document</th>
+                            <!-- <th id="recommendationTH" style="display: none;" >Recommendation</th> -->
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for entry in collected.values %}
+                            <tr>
+                              <td>{{ entry.Ans.forquestion }}</td>
+                              <td class="centerdtxt">{{ entry.Ans.forquestion.weight }}</td>
+                              <td class="centerdtxt">{{ entry.Ans.answertext }}</td>
+                              {% if entry.Doc %}
+                              <td>
+                                <a href="{{ entry.Doc.document.url }}" style="text-decoration: none; color: #137b53; font-weight: bold;">{{ document }}</a>
+                              </td> 
+                              <script>
+                                document.getElementById("document-header").style.display = "";
+                              </script>  
+                              {% endif %}
 
+                              <!-- {% if response.status == 'pending' %}
+                                <td class="centerdtxt">
+                                  <div class="opensModal" name="input_{{ answer.id }}" value="{{answer.id}}" onclick="highlightRow(this)">
+                                    <i class="bi bi-patch-check"></i>                                  
+                                  </div>
+                                </td>
+                                <script>
+                                  document.getElementById("recommendationTH").style.display = "";
+                                </script>
+                              {% endif %} -->
+                              
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                     
+                      {% if response.status == 'pending' %}
+                      <a href="{% url 'survey_managment:user_response_change_status' survey_id response_id %}" class="btn mt-4"  style="float: right; background-color: #208c5c; color: white;">
+                        Approve</a>
+                        
+                    {% endif %}
+                  
+                {% endfor %}
+                
+              {% else %}
+                <p style="font-size: 1.2rem;">No responses found.</p>
+              {% endif %}
+            </div>
+          </div>
+        </section>
+      
+      
+        <!-- Recommendation Modal -->
+        <div class="modal fade" id="RecommendationModal" tabindex="-1"  aria-hidden="true">
+          <div class="modal-dialog">
+            <form action="" name="recommendationForm" id="recommendationForm" method="post">
+              {%  csrf_token %}
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="">Write Recommendation</h1>
+                  <button type="button" class="btn-close" id="closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea name="recommendation" id="recommendation" cols="60" rows="7"></textarea>
+                    <input type="number" name="checkedResp" id="checkedResp" value="" style="display: none;">
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
 
       
       
       
     </div>
 
-      <footer class="main-footer">
-        <div class="float-right d-none d-sm-block"><b>Version</b> 3.2.0</div>
-        reserved.
-      </footer>
+
     </div>
 
     {% include 'includes/scripts.html' %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+      $('#myTable').DataTable({
+              columnDefs: [
+                { targets: [4], orderable: false } ]
+            });
+          })
+    
+          function highlightRow(divElement) {
+              var row = divElement.closest('tr');
+              var modal = document.getElementById('RecommendationModal');
+              var checkedResp = document.getElementById('checkedResp');
+              var recommendation = document.getElementById('recommendation')
+              var modalForm = document.getElementById('recommendationForm');
+
+              row.classList.toggle('table-success');
+
+              var closeModal = function() {
+                row.classList.remove('table-success');
+                $(modal).modal('hide');
+                modalForm.reset();
+              };
+
+              $(modal).on('hidden.bs.modal', closeModal);
+              $(document).on('click', '.modal-backdrop', closeModal);
+
+              if (row.classList.contains('table-success')) {
+                $(modal).modal('show');
+                checkedResp.value = divElement.getAttribute('value');
+                $.ajax({
+                    url: '', 
+                    type: 'POST',
+                    data: {
+                      recommendation: recommendation.value, 
+                      checkedResp: checkedResp.value 
+                    },
+                    success: function(response) {
+                      // Handle the success response if needed
+                      // For example, you can update the UI or display a success message
+                    }
+                  });
+              }
+            }
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+
   </body>
-
-  <script>
-  $(document).ready(function() {
-    $('#accordion .collapse').on('show.bs.collapse', function () {
-      $(this).prev().addClass('active');
-    });
-
-    $('#accordion .collapse').on('hide.bs.collapse', function () {
-      $(this).prev().removeClass('active');
-    });
-  });
-</script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 
 </html>
