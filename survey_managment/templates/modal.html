@@ -80,7 +80,7 @@ transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             <div class="row justify-content-center align-items-center" style="height:100vh">
                 <div class="col-md-6">
                     <div class="container card shadow " >
-                        <form action="" id="theForm" method="post" class="container mt-3">
+                        <form action="" id="theForm" name="questionForm" method="post" class="container mt-3">
                             {% csrf_token %}
                             <div class="container">
                                 <!-- to be changed history -->
@@ -102,7 +102,8 @@ transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
                             <div id="addCategory" data-bs-toggle="modal" data-bs-target="#categoryModal" style="float: right;">
                             <i class="bi bi-plus-circle" ></i></div>
 
-                        <div class="category-dropdown">
+                       
+                            <div class="category-dropdown">
                             <select class="form-control" name="category" id="">
                                 <option value="">-- Select Category --</option>
                                 {% for category in categories %}
@@ -174,7 +175,7 @@ transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
                         <div class="modal" id="categoryModal" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                <form action="{% url 'survey_managment:newCategory' %}" method="post">
+                                <form  name="categoryForm" method="post">
                                     {% csrf_token %}
                                     <div class="modal-content">
                                         <input type="hidden" id="s_id" name="s_id" value="{{ s_id }}">

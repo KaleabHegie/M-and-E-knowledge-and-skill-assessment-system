@@ -1,141 +1,137 @@
 
-<!------ Include the above in your HEAD tag ---------->
-{%load static%}
-{% include 'includes/scripts.html' %}
 
+{% load static %}
 <!DOCTYPE html>
-<html>
-    {%include "includes/head.html"%}
+<html lang="en">
 <head>
-	<title>Login</title>
-	<style>
-		body,
-		html {
-			margin: 0;
-			padding: 0;
-			height: 100%;
-		}
-		.user_card {
-			height: 400px;
-			width: 700px;
-			margin-top: auto;
-			margin-bottom: auto;
-			background: #fdfdfd;
-			position: relative;
-			display: flex;
-			justify-content: center;
-			flex-direction: column;
-			padding: 10px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			border-radius: 5px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    *{
+  padding: 0;
+  margin: 0;
+}
+/* 27AE60 */
+body {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(
+    to left,
+    white 0%,
+    white 50%,
+    rgb(109,163,49) 50%,
+    #27AE60 100%
+  );
+}
+ .card {
+      background: linear-gradient(to left, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(109, 163, 49, 0.8) 50%, rgba(39, 174, 96, 0.8) 100%);
+      width: 60%;
+      
+    }
 
-		}
-		.brand_logo_container {
-			position: absolute;
-			height: 170px;
-			width: 170px;
-			top: -75px;
-			border-radius: 50%;
-			background:#74C69D;
-			padding: 10px;
-			text-align: center;
-		}
-		.brand_logo {
-			height: 150px;
-			width: 150px;
-			border-radius: 50%;
-			border: 2px solid white;
-		}
-		.form_container {
-			margin-top: 100px;
-		}
-		.login_btn {
-			width: 70%;
-			background: #40916C !important;
-			color: white !important;
-		}
-		.login_btn:focus {
-			box-shadow: none !important;
-			outline: 0px !important;
-		}
-		.login_container {
-			padding: 0 2rem;
-		}
-		.input-group-text {
-			background: #40916C;
-			color: white !important;
-			border: 0 !important;
-			border-radius: 0.25rem 0 0 0.25rem !important;
-		}
-		.input_user,
-		.input_pass:focus {
-			box-shadow: none !important;
-			outline: 0px !important;
-		}
-		.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
-			background-color:  #40916C;
-		}
-		.input{
-			width: 70%;
-			align-self: center;
-		}
-</style>
+    .row {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(85px);
+    }
+
+    .welcome-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 36px;
+  font-weight: 600;
+  text-align: center;
+  color: #27AE60;
+  letter-spacing: 2px;
+}
+
+.welcome-text::first-letter {
+  font-size: 48px;
+  font-weight: 700;
+  color: #27ae60;
+}
+
+.gender label{
+  color: white;
+}
+
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.form-group input{
+  margin: 10px;
+}
+#submitBtn {
+    display: none;
+}
+label{
+	font-size: 20px;
+	font-weight: bolder;
+	color: white;
+}
+
+
+
+  </style>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
 </head>
-<!--Coded with love by Mutiullah Samim-->
 <body>
+    <div class="main container ">
+      
+      <div class="card " >
+        <div class="row">
 
-	<div class="container h-100">
-		<div class="d-flex justify-content-center h-100">
-			<div class="user_card">
-				<div class="d-flex justify-content-center">
-					<div class="brand_logo_container">
-						<img src="{% static 'assets/logo/EPDM-Illustration-Text_Green.png' %}" class="brand_logo" alt="Logo">
-					</div>
-                    
-				</div>
-				<div class="input justify-content-center form_container">
+			<div class="left col-lg-6" style="margin-top:70px;">
+				<div class="glass-wrapper">
+				  <div class="m-3 p-3">
+
+					<form method="post" action="{% url 'Account:Login' %}" >
+				          {%csrf_token%}
+				
+						  <div class="form-group">
+							<label  for="">
+								User name
+							</label>
+							<input type="text" class="form-control" id="username" name="username" placeholder="Enter Username"
+							  required />
+						  </div>
+						  <div class="form-group">
+							<label  for="">
+								Password
+							</label>
+							<input type="password" class="form-control" id="password" name="password" placeholder="Password"
+							  required />
+						  </div>
+				
+					<div class="d-flex justify-content-center mt-3 login_container">
+		   	         <button type="submit" name="button" class="btn btn-primary">Login</button>
+		   </div>
+			</form>
 					
-					<div id="contentContainer">
-						<form method="post" action="{% url 'Account:Login' %}" >
-							{%csrf_token%}
-							
-							<div id="input-group">
-								<div class="input-group mb-3">
-									<div class="input-group-append">
-										<span class="input-group-text"><i class="fas fa-user"></i></span>
-									</div>
-									<input type="text" name="username" class="form-control input_user" value="" placeholder="username">
-								</div>
-								<div class="input-group mb-2">
-									<div class="input-group-append">
-										<span class="input-group-text"><i class="fas fa-key"></i></span>
-									</div>
-									<input type="password" name="password" class="form-control input_pass" value="" placeholder="password">
-								</div>
-							</div>
-								
-							
-								<div class="d-flex justify-content-center mt-3 login_container">
-						 <button type="submit" name="button" class="btn login_btn">Login</button>
-					   </div>
-						</form>
-	
-					</div>
 				  </div>
-		
-				<div class="mt-4">
-					
-					<div class="d-flex justify-content-center links">
-						<!-- <a href="#">Forgot your password?</a> -->
-					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-</body>
+			  </div>
 
+			
 
+           
+          <div class="col-lg-6" style="float: none; margin: auto;">
+            <img class="img-fluid mb-3  d-none d-lg-block d-xl-block " src="{%static 'assets/logo/EPCD-Logo-Final-NoBg-Green-Hi-res.png'%}"  >
+          </div>
+        </div>
 
+      </div>
+    </div>
+
+    
+   </body>
 </html>

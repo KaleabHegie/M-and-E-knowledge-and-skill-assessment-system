@@ -136,7 +136,7 @@
       
             {% for survey in surveys  %}
             <div class="col-md-3 col-sm-6 col-12 p-1">
-              <a href="{% url 'survey_managment:questionForSurvey' id=survey.id %}" style="color: black;">
+              <a href="{% url 'survey_managment:un_approved_survey' id=survey.id %}" style="color: black;text-decoration:none;">
                 <div class="info-box shadow">
                   <span class="info-box-icon" style="color: rgb(9, 109, 9);">
                     <i class="far fa-copy"></i>

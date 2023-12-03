@@ -1,15 +1,33 @@
  
  <div class="row">
-              <div class="col-lg-4 col-sm-6">
+
+
+  
+              <div class="col-lg-3 col-sm-6">
 
                 <select id="survey_type" name="survey_type" class="form-select" >
 
-                 <option value="">Select Survey</option>
+                 <option value="">Select Type</option>
 
                 </select>
                 
               </div>
-              <div class="form-group col-lg-4 col-sm-6">
+
+
+              <div class="col-lg-3 col-sm-6">
+
+                <select id="survey_year" name="survey_year" class="form-select" >
+            
+                 <option value="">Select Year</option>
+            
+                 {% for survey_year in survey_years %}
+                 <option value="{{ survey_year.created_at__year }}">{{ survey_year.created_at__year }}</option>
+             {% endfor %}
+            
+                </select>
+                
+              </div> 
+              <div class="form-group col-lg-3 col-sm-6">
 
                 <select id="survey-select" class="form-control">
                 <option value="" >Select Survey</option>
@@ -18,7 +36,7 @@
         </div>
 
        
-        <div class="form-group col-lg-4 col-sm-6">
+        <div class="form-group col-lg-3 col-sm-6">
             <select id="ministry-select" class="form-control">
             <option  value="" >Select Line Ministry</option>
             

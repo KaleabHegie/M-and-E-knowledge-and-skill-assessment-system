@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages,auth
@@ -5,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
 from . models import *
-from .forms import UserProfileForm , CustomPasswordChangeForm
+from .forms import *
 from django.contrib.auth import settings
 from django.contrib.auth import logout
 from survey_managment.views import survey_listss_views 
@@ -13,54 +14,54 @@ from survey_managment.views import survey_listss_views
 
 # Create your views here.
 def register_view(request):
-	ministry = Line_ministry.objects.all()
-	if request.method == 'POST':
-		first_name = request.POST.get('first_name')
-		last_name = request.POST.get('last_name')
-		username = request.POST.get('username')
-		email = request.POST.get('email')
-		DoB= request.POST.get('dob')
-		password = request.POST.get('password')
-		re_password = request.POST.get('re_password')
-		phone_num = request.POST.get('phone_num')
-		department = request.POST.get('department')
-		line_ministry_id = request.POST.get('line_ministry')
-		line_ministry = Line_ministry.objects.get(id=line_ministry_id)
-		selected_gender = request.POST.get('gender')
-		is_mopd_head = request.POST.get('is_mopd_head') == 'on'
-		is_line_minister_head = request.POST.get('is_line_minister_head') == 'on'
-		is_line_minister_staff = request.POST.get('is_line_minister_staff') == 'on'
+  ministry = Line_ministry.objects.all()
+  if request.method == 'POST':
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    username = request.POST.get('username')
+    email = request.POST.get('email')
+    DoB= request.POST.get('dob')
+    password = request.POST.get('password')
+    re_password = request.POST.get('re_password')
+    phone_num = request.POST.get('phone_num')
+    department = request.POST.get('department')
+    line_ministry_id = request.POST.get('line_ministry')
+    line_ministry = Line_ministry.objects.get(id=line_ministry_id)
+    selected_gender = request.POST.get('gender')
+    is_mopd_head = request.POST.get('is_mopd_head') == 'on'
+    is_line_minister_head = request.POST.get('is_line_minister_head') == 'on'
+    
 
 
 
-		if password == re_password:
-			if CustomUser.objects.filter(username=username).exists():
-					messages.error(request , 'User Name Already Taken')
-					return HttpResponse('User Name Already Taken')
-			else:
-				if CustomUser.objects.filter(email=email).exists():
-					messages.error(request , 'Email Name Already Exits ')
-					return HttpResponse('Email Name Already Exits')
-				else:
-					custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,
-												  first_name = first_name,last_name=last_name,
-												  phone_number=phone_num, date_of_birth=DoB,
-												  Department = department,Line_ministry =line_ministry ,
-												  gender= selected_gender ,is_MoPDHead=is_mopd_head,
-            is_LineMinisterHead=is_line_minister_head,
-            is_LineMinisterStaff=is_line_minister_staff)
-					
-					custom_user.save()
-					
-					messages.success(request,'User registered Sucessfully')
-					
-					return redirect('Account:users')
-		else:
-			messages.error(request , 'Password Doest Not Match')
-			return HttpResponse('Password does not match')
+    if password == re_password:
+      if CustomUser.objects.filter(username=username).exists():
+          messages.error(request , 'User Name Already Taken')
+          return HttpResponse('User Name Already Taken')
+      else:
+        if CustomUser.objects.filter(email=email).exists():
+          messages.error(request , 'Email Name Already Exits ')
+          return HttpResponse('Email Name Already Exits')
+        else:
+          custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,
+                          first_name = first_name,last_name=last_name,
+                          phone_number=phone_num, date_of_birth=DoB,
+                          Department = department,Line_ministry =line_ministry ,
+                          gender= selected_gender ,is_mopd_head=is_mopd_head,
+            is_line_minister_head=is_line_minister_head)
+          
+          custom_user.save()
+          
+          messages.success(request,'User registered Sucessfully')
+          
+          return redirect('Account:users')
+    else:
+      messages.error(request , 'Password Doest Not Match')
+      return HttpResponse('Password does not match')
 
-	else: 
-		return render(request,'./userRegistration.html' ,{'ministry':ministry})
+  else: 
+    return render(request,'./userRegistration.html' ,{'ministry':ministry})
+
 
 
 def login_view(request):
@@ -109,7 +110,6 @@ from .forms import UserProfileForm ,Admin_Update
 def edit_profile(request):
     user = request.user
     profile = CustomUser.objects.get(username=user)
-
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
@@ -132,28 +132,43 @@ def user_profile(request):
     return render(request , 'profile.html' )
 
 def users(request):
-	users = CustomUser.objects.all()
-
-	context ={
-		'users':users
-	}
-	return render(request, 'user.html', context )
+  context ={
+    'users':CustomUser.objects.all(), 
+    'ministrys' : Line_ministry.objects.all(),
+    'admins' : CustomUser.objects.filter(is_mopd_head = True)
+  }
+  if request.META.get('HTTP_REFERER') and re.search( r'/account/update/\d+/' , request.META['HTTP_REFERER']):
+        messages.success(request, 'User Successusfuly Updated')    
+  return render(request, 'user.html', context )
+  
 def change_password(request):
     return render(request , 'password_change.html' )
 
 
 @login_required
 def update_users(request, id):
-    users = get_object_or_404(CustomUser, id=id)
+    user = get_object_or_404(CustomUser, id=id)
     if request.method == 'POST':
-        form = Admin_Update(request.POST, request.FILES, instance=users)
+        form = Admin_Update(request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect('Account:users')
     else:
-        form = Admin_Update(instance=users)
-    return render(request, './update_users.html', {'form': form})
+        form = Admin_Update(instance=user)
+    return render(request, './update_users.html', {'form': form,'user':user})
 
+@login_required
+def add_line_ministry(request):
+    if request.method == 'POST':
+        form = LineMinistryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Account:users')  # Redirect to the line ministry list view
+    else:
+        form = LineMinistryForm()
+    
+    context = {'form': form}
+    return render(request, 'add_line_ministry.html', context)
 
 @login_required
 def delete_user(request, id):

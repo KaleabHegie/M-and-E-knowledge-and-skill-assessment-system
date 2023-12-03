@@ -7,6 +7,14 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 
 
+class LineMinistryForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    
+    class Meta:
+        model = Line_ministry
+        fields = ['name']
+
+
 class CustomPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,9 +35,19 @@ class UserProfileForm(forms.ModelForm):
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter a username'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter a password'}),
         }
+
 class Admin_Update(forms.ModelForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    phone_number = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'}))
+    Department = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    
+    
     class Meta:
         model = CustomUser
-        fields = '__all__'
-       
-
+        fields = ['first_name', 'last_name', 'email', 'date_of_birth', 'phone_number', 'username', 'image', 'Line_ministry', 'Department']
+    

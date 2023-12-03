@@ -1,3 +1,5 @@
+import re
+from django.forms import formset_factory, modelformset_factory
 from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -63,6 +65,7 @@ def indexView(request):
         questions = Question.objects.all().count()
         Response = UserResponse.objects.all().count()
         line_ministry = Line_ministry.objects.all()
+        survey_years = Survey.objects.order_by('created_at__year').values('created_at__year').distinct() 
         form = AnalysisForm()
        
    
@@ -70,7 +73,7 @@ def indexView(request):
 
 
         context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
-             'line_ministry':line_ministry,'form':form,'surveyType':surveyType}
+             'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
       
         return render(request, 'index.html', context)
 
@@ -255,6 +258,7 @@ def user_response(request, id, response_id):
     user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
     documents = Document.objects.all()
+    
 
     collected = {}
     for index in range(len(answers)):
@@ -437,64 +441,68 @@ def chooseTarget(request, survey_id, question_id):
 def questionCreationByType(request, survey_id):
     zsurvey = Survey.objects.get(id=survey_id)
     questions = zsurvey.question.all()
-    messages.success(request , 'Survey created successfully add questions to it.')
-    return render(request, 'addQuestions.html', {'zsurvey':zsurvey, 'questions' : questions})
- 
-def newCategory(request):
-    if request.method == 'POST':
-        s_id = request.POST.get('s_id')
-        questionType = request.POST.get('questionType')
-        newCategory = request.POST.get('newCategory')
-        subcategoriesNEW = request.POST.get('subcategoriesNEW')
-
-        newCate = Category.objects.create(name=newCategory)
-
-        if subcategoriesNEW:
-            zparent = Category.objects.get(id=newCate.id)
-            for i in subcategoriesNEW:
-                Category.objects.create(name=i, parent=zparent)
+    pattern = r'/newQuestion/[^/]+/\d+/'
+    if request.META.get('HTTP_REFERER') and '/surveyCreation' in request.META['HTTP_REFERER']:
+        messages.success(request, 'Survey created successfully. Add questions to it.')  # regular expression pattern to match the URL
+    if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
+        messages.success(request, 'Survey created successfully. Add questions to it.')    
     
-        return redirect('survey_managment:newQuestion', questionType=questionType, s_id=s_id )    
+    return render(request, 'addQuestions.html', {'zsurvey': zsurvey, 'questions': questions})
+ 
+
+  
 
 
 def newQuestion(request,questionType, s_id ):
     categories = Category.objects.prefetch_related('subcategories')
     survey = get_object_or_404(Survey, id=s_id)
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        label = request.POST.get('labelInput')
-        question_type = request.POST.get('question_type')
-        has_weight = bool(request.POST.get('weightCHK'))
-        weight = int(request.POST.get('weightInput')) if has_weight else None
-        allow_doc = bool(request.POST.get('allow_doc'))
-        doc_label = request.POST.get('doc_label')
-        selected_category_id = request.POST.get('category')
+    if request.method == 'POST' and request.POST.get("questionForm"):
+       
+            title = request.POST.get('title')
+            label = request.POST.get('labelInput')
+            question_type = request.POST.get('question_type')
+            has_weight = bool(request.POST.get('weightCHK'))
+            weight = int(request.POST.get('weightInput')) if has_weight else None
+            allow_doc = bool(request.POST.get('allow_doc'))
+            doc_label = request.POST.get('doc_label')
+            selected_category_id = request.POST.get('category')
 
-        category = get_object_or_404(Category, id=selected_category_id)
+            category = get_object_or_404(Category, id=selected_category_id)
 
-        question = Question.objects.create(
-            title=title,
-            label=label,
-            question_type=question_type,
-            has_weight=has_weight,
-            weight=weight,
-            allow_doc=allow_doc,
-            doc_label=doc_label,
-            category=category,
-        )
+            question = Question.objects.create(
+                title=title,
+                label=label,
+                question_type=question_type,
+                has_weight=has_weight,
+                weight=weight,
+                allow_doc=allow_doc,
+                doc_label=doc_label,
+                category=category,
+            )
 
-        hasOption = ['choice', 'radio']
-        if question_type in hasOption:
-            options = request.POST.getlist('option')
-            for i in options:
-                newChoice = Choice.objects.create(name=i)
-                question.choice.add(newChoice)
+            hasOption = ['choice', 'radio']
+            if question_type in hasOption:
+                options = request.POST.getlist('option')
+                for i in options:
+                    newChoice = Choice.objects.create(name=i)
+                    question.choice.add(newChoice)
 
-        question.save()
-        
-        survey.question.add(question)
-        return redirect('survey_managment:questionCreationByType', survey_id=s_id )
+            question.save()
+            survey.question.add(question)
+            return redirect('survey_managment:questionCreationByType', survey_id=s_id )
 
+    elif request.method == 'POST' and request.POST.get("categoryForm"):
+            s_id = request.POST.get('s_id')
+            questionType = request.POST.get('questionType')
+            newCategory = request.POST.get('newCategory')
+            subcategoriesNEW = request.POST.get('subcategoriesNEW')
+
+            newCate = Category.objects.create(name=newCategory)
+
+            if subcategoriesNEW:
+                zparent = Category.objects.get(id=newCate.id)
+                for i in subcategoriesNEW:
+                    Category.objects.create(name=i, parent=zparent)
 
     context = {'questionType': questionType, 'categories': categories}
     return render(request, 'modal.html', context)
@@ -519,17 +527,24 @@ def greetingpage_view(request):
 @login_required
 def survey_listss_views(request):
     user = request.user
-    print(user)
-    user = CustomUser.objects.get(username = user)
+    user_responses = UserResponse.objects.filter(submitted_by=user)
+    surveys_with_responses = [response.forsurvey for response in user_responses]
+
+    user = CustomUser.objects.get(username=user)
     line_ministry = user.Line_ministry
     surveys = Survey.objects.filter(for_line_ministry=line_ministry)
-    print(surveys)
-    surveys_without_response = UserResponse.objects.filter(submitted_by=request.user)
-    print(surveys_without_response)
-    surveys_with_no_response = surveys.exclude(id__in=surveys_without_response)
-    print(surveys_with_no_response)
+    surveys_without_responses = surveys.exclude(id__in=[survey.id for survey in surveys_with_responses])
+    pattern = r'/questionForSurvey/\d+/'
+    pattern1 = r'/questionForSurveyAnonymous/\d+/\d+/'
+    if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
+        messages.success(request, 'Your Survey  is submitted succussesfuly.') 
+        print("hello") # regular expression pattern to match the URL
+    if request.META.get('HTTP_REFERER') and re.search(pattern1, request.META['HTTP_REFERER']):
+        messages.success(request, 'Your Survey is submitted succussesfuly.')    
+    
+
     data = {
-        'surveys': surveys_with_no_response
+        'surveys': surveys_without_responses
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
 
@@ -602,36 +617,54 @@ def un_approved_survey_list(request):
 @login_required
 def un_approved_survey(request, id):
     survey = get_object_or_404(Survey, id=id)
-    questions = survey.question.all()
+    user = request.user
+    response = get_object_or_404(UserResponse, forsurvey=survey, submitted_by=user)
 
+    questions = Question.objects.filter(survey=survey)
+    answers = []
+    documents = []
+    for question in questions:
+       ans = Answer.objects.get(response = response , forquestion = question )
+       answers.append(Answer.objects.get(response = response , forquestion = question ))
+       try :
+          documents.append(Document.objects.get(foranswer = ans ))
+       except :
+          pass
+    # print(question , answers)
     if request.method == 'POST':
-        user_response_form = UserResponseForm(request.POST)
-        answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
-
-        if user_response_form.is_valid():
-            user_response = user_response_form.save(commit=False)
-            user_response.forsurvey = survey
-            user_response.submitted_by = request.user
-            user_response.save()
-
-            for i in questions:
-                value = request.POST.get(f'answer_{i.id}')
-                Answer.objects.create(forquestion=i, answertext=value, response=user_response)
-                value = ''
-
-            return redirect('survey_managment:surveylists')
-    else:
-        user_response_form = UserResponseForm()
-        answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
+        answer_set = request.POST.getlist('answer_set')
+        document_set = request.FILES.getlist('document_set')
+        print(document_set)
+        print(answer_set)
+        for i, answer  in enumerate(answers):
+          try:
+              obj = Answer.objects.get(id=answer.id)
+              obj.answertext = answer_set[i]
+              obj.save()
+          except :
+              pass
+        for i, document in enumerate(documents):
+           print(document)
+           try:
+              objDoc = Document.objects.get(id=document.id)
+              objDoc.document = document_set[i]
+              print(document)
+              objDoc.save()
+           except :
+              pass
+        return redirect ("survey_managment:un_approved_survey_list")   
 
     context = {
-        'survey': survey,
-        'questions': questions,
-        'user_response_form': user_response_form,
-        'answer_forms': answer_forms,
+        "questions" : questions , 
+        "answers" : answers,
+        "survey"  : survey,
+        "documents" : Document.objects.all()
     }
+    return render(request, 'un_approved_survey.html', context)
 
-    return render ( request , 'un_approved_survey.html', context)
+
+
+
 
 
 
@@ -718,4 +751,16 @@ def questionForSurveyAnonymous(request, id , user_response_id):
 
 
 def compareDataView(request):
-    return render(request, 'compare.html')
+    line_ministry = Line_ministry.objects.all()
+    survey_type = SurveyType.objects.all()
+    survey = Survey.objects.all()
+    survey_years = Survey.objects.order_by('created_at__year').values('created_at__year').distinct() 
+
+
+    context = {
+        'line_ministry':line_ministry,
+        'survey_type': survey_type,
+        'survey':survey,
+        'survey_years':survey_years
+    }
+    return render(request, 'compare.html',context)
