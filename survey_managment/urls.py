@@ -15,10 +15,6 @@ urlpatterns = [
     # path('login/', views.loginView, name='login'),
 
     path('compareData/', views.compareDataView, name='compareData'),
-    path('survey_questionnaire/', views.surveyQuestionnaireView, name='survey_questionnaire'),
-
-    path('survey_questionnaire_detail/<int:survey_id>/<int:questionnaire_id>/', views.surveyQuestionnaireDetailView, name='survey_questionnaire_detail'),
-
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('newQuestion/<str:questionType>/<int:s_id>/', views.newQuestion, name='newQuestion'),
     path('recommendation/', views.recommendationView, name='recommendation'),
@@ -31,6 +27,7 @@ urlpatterns = [
     path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
     path('questionCreationByType/<int:survey_id>/', views.questionCreationByType, name='questionCreationByType'),
     path('survey/', views.survey, name='survey'),
+    path("pending_response/",views.pending_response,name ='pending_response'),
     path('survey_detail/<int:id>', views.survey_detail, name='survey_detail'),
     path('user_response_list/<int:id>', views.user_response_list, name='user_response_list'),
     path('user_response/<int:id>/<int:response_id>', views.user_response, name='user_response'),

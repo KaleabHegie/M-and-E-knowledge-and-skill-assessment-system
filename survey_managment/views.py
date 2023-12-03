@@ -81,7 +81,17 @@ def load_survey(request):
     survey_type_id = request.GET.get("survey_type")
     survey = Survey.objects.filter(survey_type_id=survey_type_id)
    
-    return render(request ,"load_survey.html",{"survey":survey , })
+    return render(request ,"load_survey.html",{"survey":survey  })
+
+def pending_response(request):
+    user_responses = UserResponse.objects.filter(status='pending')
+    responses = UserResponse.objects.filter(status='pending').count()
+    data = {
+        'user_responses': user_responses,
+        "responses" : responses,
+    }
+    return render(request , 'pendingResponse.html' , data )
+
 
 def load_ministry(request):
     survey_id = request.GET.get("survey")
@@ -206,33 +216,10 @@ def jsonSender(request):
     }
     return JsonResponse(data)
 
-def surveyQuestionnaireView(request):
-    surveys = Survey.objects.all()
-
-    data = {
-        'surveys': surveys,
-        'categories' : Category.objects.all()
-    }
-
-    return render(request, 'surveyQuestionnaire.html', data)
-
-def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
-    questions = Question.objects.filter(for_questionnaire = questionnaire_id)
-
-    data = {
-        'questions': questions,
-    }
-    return render(request, 'surveyQuestionnaireDetail.html', data)
 
 
 
 
-
-def questionnaireView(request):
-    return render(request, 'questionnaires.html')
-
-def questionnaireDetailView(request):
-    return render(request, 'questionnaireDetail.html')
 
 
 def survey(request):
