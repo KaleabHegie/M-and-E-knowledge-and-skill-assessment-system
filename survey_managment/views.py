@@ -274,20 +274,51 @@ def user_response(request, id, response_id):
     survey = get_object_or_404(Survey, id=id)
     user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
-    documents = Document.objects.all()     
+    documents = Document.objects.all()
+    
+
+    collected = {}
+
+    for index in range(len(answers)):
+        i = answers[index]
+        getDoc = Document.objects.filter(foranswer = i).first()
+        if getDoc:
+            collected[index] = {
+                'Ans' : i,
+                'Doc' : getDoc
+            }
+        else:
+            collected[index] = {
+                'Ans' : i,
+                
+            }
+   
+
     if request.method == 'POST':
      recommendation = request.POST.get('recommendation')
      checkedResponse = request.POST.get('checkedResp') # the checkbox value holding the answer id to be recommended
      theAnswer = Answer.objects.filter(id=checkedResponse)     # the answer to be recommended
      theAnswer.update(recommendation=recommendation)
     data = {
-         'survey_id': id,
-         'survey': survey,
-         'user_responses': user_responses,
-         'answers': answers,
-         'documents': documents,
-         'response_id': response_id
-     }
+        'survey_id': id,
+        'survey': survey,
+        'user_responses': user_responses,
+        'collected' : collected,
+        'response_id': response_id
+    }
+    for j in collected.values():
+        # for doc in j['Doc']:
+        #     print( j['Ans'] )
+        #     print(doc.document)  
+        print(j) 
+    # data = {
+    #     'survey_id': id,
+    #     'survey': survey,
+    #     'user_responses': user_responses,
+    #     'answers': answers,
+    #     'documents': documents,
+    #     'response_id': response_id
+    # }
 
 
     return render(request, 'user_response.html', data)

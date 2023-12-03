@@ -17,22 +17,20 @@
   .highlight-row{
     background-color: #40916c;
   }
-</style>
+  body{
+    background-color: white;
+  }
+ </style>
 
-  <body class="hold-transition sidebar-mini" style="background-color: white;">
+  <body class="hold-transition sidebar-mini layout-fixed" >
     <div class="wrapper" >
-      {% include "includes/loader.html" %}
-       {% include 'includes/topNavbar.html' %}
-        {% include 'includes/sideNavbar.html' %}
+      {% include 'includes/loader.html' %}
+      {% include 'includes/topNavbar.html' %}
+      {% include 'includes/sideNavbar.html' %}
 
       <div class="content-wrapper" style="background-color: white;">
-
-
         {% include 'includes/message.html'  %}
-
-       
         <section class="container ">
-          <div class="">
             <div class="mt-3">
               {% if user_responses %}
                 {% for response in user_responses %}
@@ -47,27 +45,39 @@
                             <th>Weight</th>
                             <th>Answer</th>
                             <th>Document</th>
-                            {% if response.status == 'pending' %}
-                              <th>Recommendation</th>
-                            {% endif %}
+                            
+                            <th>
+                              {% if response.status == 'pending' %}
+                              Recommendation
+                              {% endif %}
+                            </th>
+                           
                           </tr>
                         </thead>
                         <tbody>
                           {% for answer in answers %}
                             <tr>
-                              <td>{{ answer.forquestion }}</td>
-                              <td class="centerdtxt">{{ answer.forquestion.weight }}</td>
-                              <td class="centerdtxt">{{ answer.answertext }}</td>
+                              <td>{{ entry.Ans.forquestion }}</td>
+                              <td class="centerdtxt">{{ entry.Ans.forquestion.weight }}</td>
+                              <td class="centerdtxt">{{ entry.Ans.answertext }}</td>
                               <td>
-                                  {% if documents %}
-                                    <a href="{{ document.document.url }}" style="text-decoration: none; color: #137b53; font-weight: bold;">{{ document }}</a>
+                                {% if entry.Doc %}
+                                    <a href="{{ entry.Doc.document.url }}" style="text-decoration: none; color: #137b53; font-weight: bold;">
+                                      {{ entry.Doc }}</a>
+                                  {% else %} 
+                                      <div class="centerdtxt"> -  </div>
                                   {% endif %}
                               </td>
+                              <td class="centerdtxt">
                               {% if response.status == 'pending' %}
-                                <td class="centerdtxt">
-                                  <div class="opensModal" name="input_{{ answer.id }}" value="{{answer.id}}" onclick="highlightRow(this)">
-                                    <i class="bi bi-patch-check"></i>                                  
-                                  </div>                              {% endif %}
+                             
+                              
+                                <div class="opensModal"name="" value="{{entry.Ans}}" onclick="highlightRow(this)">
+                                  <i class="bi bi-patch-check"></i>                                  
+                                </div> 
+                                             
+                              {% endif %}
+                            </td> 
                             </tr>
                           {% endfor %}
                         </tbody>
@@ -75,8 +85,8 @@
                      
                       {% if response.status == 'pending' %}
                       <a href="{% url 'survey_managment:user_response_change_status' survey_id response_id %}" class="btn mt-4"  style="float: right; background-color: #208c5c; color: white;">
-                        Approve</a>
-                        
+                        Approve
+                      </a> 
                     {% endif %}
                   
                 {% endfor %}
@@ -85,7 +95,6 @@
                 <p style="font-size: 1.2rem;">No responses found.</p>
               {% endif %}
             </div>
-          </div>
         </section>
       
         <!-- Recommendation Modal -->
@@ -111,12 +120,10 @@
         </div>
 
       
-      
+      </div>
       
     </div>
 
-
-    </div>
 
     {% include 'includes/scripts.html' %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

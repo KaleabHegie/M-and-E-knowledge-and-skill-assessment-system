@@ -17,7 +17,8 @@ urlpatterns = [
     path('compareData/', views.compareDataView, name='compareData'),
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('newQuestion/<str:questionType>/<int:s_id>/', views.newQuestion, name='newQuestion'),
-  
+    # path('newCategory/', views.newCategory, name='newCategory'),
+
 
     path('survey/', views.survey, name='survey'),
     path('inbox/', views.inbox, name='inbox'),
