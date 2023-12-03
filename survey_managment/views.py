@@ -227,14 +227,6 @@ def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
 
 
 
-
-def questionnaireView(request):
-    return render(request, 'questionnaires.html')
-
-def questionnaireDetailView(request):
-    return render(request, 'questionnaireDetail.html')
-
-
 def survey(request):
     data = {
         'surveys': Survey.objects.all(),
@@ -261,13 +253,19 @@ def user_response(request, id, response_id):
     
 
     collected = {}
+
     for index in range(len(answers)):
         i = answers[index]
-        getDoc = Document.objects.filter(foranswer = i)
+        getDoc = Document.objects.filter(foranswer = i).first()
         if getDoc:
             collected[index] = {
                 'Ans' : i,
                 'Doc' : getDoc
+            }
+        else:
+            collected[index] = {
+                'Ans' : i,
+                
             }
    
 
@@ -285,9 +283,10 @@ def user_response(request, id, response_id):
         'response_id': response_id
     }
     for j in collected.values():
-        for doc in j['Doc']:
-            print( j['Ans'] )
-            print(doc.document)   
+        # for doc in j['Doc']:
+        #     print( j['Ans'] )
+        #     print(doc.document)  
+        print(j) 
     # data = {
     #     'survey_id': id,
     #     'survey': survey,
