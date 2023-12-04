@@ -17,7 +17,8 @@ urlpatterns = [
     path('forgotPassword/', views.forgotPasswordView,name='forgotPassword'),
     path('update/<str:id>/', views.update_users, name='update_users'),
     path('delete/<str:id>/', views.delete_user, name='delete_users'),
-    path('change_password' , views.change_password , name='change_password')
+    path('change_password' , views.change_password , name='change_password'),
+     path('add_line_ministry', views.add_line_ministry, name='add_line_ministry'),
 
 
 

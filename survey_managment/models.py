@@ -94,6 +94,7 @@ class Answer(models.Model):
     response = models.ForeignKey("UserResponse", on_delete=models.CASCADE , null=True , blank=True)
     forquestion=models.ForeignKey("Question", on_delete=models.CASCADE , null=True , blank=True)
     answertext= models.CharField(max_length=500)
+    recommendation = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
         return self.answertext
@@ -107,3 +108,20 @@ class Document(models.Model):
         return self.document.name
 
 
+class ContactUs(models.Model):
+    STATUS_CHOICES = (
+        ('sent', 'Sent'),
+        ('draft', 'Draft'),
+        ('inbox', 'Inbox'),
+        ('trash', 'Trash'),
+    )
+
+    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=254)
+    subject = models.CharField(max_length=150)
+    message = models.TextField()
+    sent_at = models.DateTimeField(auto_now=True, null=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES , null=True)
+
+    def __str__(self):
+        return self.name

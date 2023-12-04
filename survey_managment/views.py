@@ -76,12 +76,52 @@ def indexView(request):
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
       
         return render(request, 'index.html', context)
+    
+def inbox(request):    
+    context = {
+        'message' : ContactUs.objects.filter(status = 'inbox')
+    }
+    return render(request ,"inbox.html" , context)
+def sent(request):    
+    context = {
+        'message' : ContactUs.objects.filter(status = 'sent')
+    }
+    return render(request ,"sent.html" , context)
+def draft(request):    
+    context = {
+        'message' : ContactUs.objects.filter(status = 'draft')
+    }
+    return render(request ,"draft.html" , context)
+def trash(request):    
+    context = {
+        'message' : ContactUs.objects.filter(status = 'trash')
+    }
+    return render(request ,"trash.html" , context)
+
+def compose(request):    
+    return render(request ,"compose.html")
+def read(request , id):    
+    context = {
+        'message' : ContactUs.objects.get(id=id)
+
+    }
+    return render(request ,"read.html" , context)
 
 def load_survey(request):
     survey_type_id = request.GET.get("survey_type")
     survey = Survey.objects.filter(survey_type_id=survey_type_id)
    
-    return render(request ,"load_survey.html",{"survey":survey , })
+    return render(request ,"load_survey.html",{"survey":survey  })
+
+def pending_response(request):
+    user_responses = UserResponse.objects.filter(status='pending')
+    responses = UserResponse.objects.filter(status='pending').count()
+    data = {
+        'user_responses': user_responses,
+        "responses" : responses,
+    }
+    return render(request , 'pendingResponse.html' , data )
+
 
 def load_ministry(request):
     survey_id = request.GET.get("survey")
@@ -206,33 +246,10 @@ def jsonSender(request):
     }
     return JsonResponse(data)
 
-def surveyQuestionnaireView(request):
-    surveys = Survey.objects.all()
-
-    data = {
-        'surveys': surveys,
-        'categories' : Category.objects.all()
-    }
-
-    return render(request, 'surveyQuestionnaire.html', data)
-
-def surveyQuestionnaireDetailView(request, survey_id, questionnaire_id):
-    questions = Question.objects.filter(for_questionnaire = questionnaire_id)
-
-    data = {
-        'questions': questions,
-    }
-    return render(request, 'surveyQuestionnaireDetail.html', data)
 
 
 
 
-
-def questionnaireView(request):
-    return render(request, 'questionnaires.html')
-
-def questionnaireDetailView(request):
-    return render(request, 'questionnaireDetail.html')
 
 
 def survey(request):
@@ -260,14 +277,50 @@ def user_response(request, id, response_id):
     documents = Document.objects.all()
     
 
+    collected = {}
+
+    for index in range(len(answers)):
+        i = answers[index]
+        getDoc = Document.objects.filter(foranswer = i).first()
+        if getDoc:
+            collected[index] = {
+                'Ans' : i,
+                'Doc' : getDoc
+            }
+        else:
+            collected[index] = {
+                'Ans' : i,
+                
+            }
+   
+
+    if request.method == 'POST':
+     recommendation = request.POST.get('recommendation')
+     checkedResponse = request.POST.get('checkedResp') # the checkbox value holding the answer id to be recommended
+     theAnswer = Answer.objects.filter(id=checkedResponse)     # the answer to be recommended
+     theAnswer.update(recommendation=recommendation)
     data = {
         'survey_id': id,
         'survey': survey,
         'user_responses': user_responses,
-        'answers': answers,
-        'documents': documents,
+        'collected' : collected,
         'response_id': response_id
     }
+    for j in collected.values():
+        # for doc in j['Doc']:
+        #     print( j['Ans'] )
+        #     print(doc.document)  
+        print(j) 
+    # data = {
+    #     'survey_id': id,
+    #     'survey': survey,
+    #     'user_responses': user_responses,
+    #     'answers': answers,
+    #     'documents': documents,
+    #     'response_id': response_id
+    # }
+
+
     return render(request, 'user_response.html', data)
 
 def user_response_change_status(request, id , response_id):
@@ -474,9 +527,6 @@ def newQuestion(request,questionType, s_id ):
     return render(request, 'modal.html', context)
 
 
-def recommendationView(request):
-    return render(request, 'recommendation.html')
-
 
 
 
@@ -485,6 +535,20 @@ def recommendationView(request):
 ####### final preview views ################################
 @login_required
 def greetingpage_view(request):
+    if request.method == 'POST':
+        # Create a new instance of the ContactUs model
+        contact = ContactUs()
+
+        # Assign form data to the corresponding fields
+        contact.name = request.POST.get('name')
+        contact.email = request.POST.get('email')
+        contact.subject = request.POST.get('subject')
+        contact.message = request.POST.get('message')
+        contact.status = 'inbox'
+
+        # Save the new object to the database
+        contact.save()
+        messages.success(request, 'Thank you for contacting us. Your Message is submitted succussesfuly.')
     context ={
         
     }

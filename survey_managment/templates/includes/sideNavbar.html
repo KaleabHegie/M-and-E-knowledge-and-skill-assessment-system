@@ -1,16 +1,26 @@
 {% load static %}
+<style>
+  p, i{
+    color: rgb(69, 68, 68);
+  }
+  .hoverEffect>li>a:hover{
+    border-left: 6px solid #208c5c;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  }
+ 
+</style>
 
 {% include "includes/head.html" %}
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-  <a href="{% url 'survey_managment:Index' %}" class="brand-link">
+<aside class="main-sidebar  elevation-4" style="background-color: white;">
+  <a href="{% url 'survey_managment:Index' %}" style="background-color: #208c5c  ;" class="brand-link">
     <img
       src="{% static 'assets/logo/EPDM-Logo-Final-Hi-res.png' %}"
       
-      alt="AdminLTE Logo"
+      alt="Logo"
       class="brand-image img-circle elevation-3"
       style="opacity: 0.8"
     />
-    <span class="brand-text font-weight-light">MOPD</span>
+    <span class="brand-text font-weight-light" style="color: black;">MOPD</span>
   </a>
 
   <div class="sidebar">
@@ -33,14 +43,16 @@
       />
       {% endif %}
       </div>
-      <div class="info">
-        <a href="#" class="d-block">{{user.first_name}} {{user.last_name}}</a>
+      <div class="info" >
+        <a href="#" class="d-block" style="color: black; text-decoration: none;">{{user.first_name}} {{user.last_name}}</a>
       </div>
       
     </div>
     {% endif %}
 
-    <div class="form-inline">
+    
+
+    <div class="form-inline" style="background-color: #208c5c;">
       <div class="input-group" data-widget="sidebar-search">
         <input
           class="form-control form-control-sidebar"
@@ -58,7 +70,7 @@
 
     <nav class="mt-2">
       <ul
-        class="nav nav-pills nav-sidebar flex-column"
+        class="nav nav-pills nav-sidebar flex-column hoverEffect"
         data-widget="treeview"
         role="menu"
         data-accordion="false"
@@ -75,16 +87,22 @@
           <p>Users <i class="fas fa-angle-left right"></i></p>
         </a>
         <ul class="nav nav-treeview">
-          <li class="nav-item">
+          <li class="nav-item ml-4">
             <a href="{%url 'Account:register_view'%}" class="nav-link">
-              <i class="nav-icon far fa-plus"></i>
-              <p>Add User</p>
+              <i class="fa-sharp fa-solid fa-user-plus"></i>
+              <p class="ml-2">Add User</p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item ml-4">
             <a href="{% url 'Account:users' %}" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>View Users</p>
+              <i class="fa-regular fa-eye"></i>
+              <p class="ml-1">View Users</p>
+            </a>
+          </li>
+          <li class="nav-item ml-4">
+            <a href="{% url 'Account:add_line_ministry' %}" class="nav-link">
+              <i class="fa-solid fa-plus"></i>
+              <p class="ml-2">Add Line Ministry</p>
             </a>
           </li>
         </ul>
@@ -98,22 +116,29 @@
           </p>
         </a>
         <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="pages/mailbox/mailbox.html" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Inbox</p>
+          <li class="nav-item ml-4">
+            <a href="{% url "survey_managment:inbox" %}" class="nav-link">
+              <i class="fas fa-inbox"></i>  
+              <p class="ml-2"> Inbox </p>
+              <span class="badge bg-primary ml-5">12</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="pages/mailbox/compose.html" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Compose</p>
+          <li class="nav-item ml-4">
+            <a href="{% url "survey_managment:sent" %}" class="nav-link">
+              <i class="far fa-envelope"></i>  
+              <p class="ml-2"> Sent </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="pages/mailbox/read-mail.html" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Read</p>
+          <li class="nav-item ml-4">
+            <a href="{% url "survey_managment:draft" %}" class="nav-link">
+              <i class="far fa-file-alt"></i>  
+              <p class="ml-2"> Drafts </p>
+            </a>
+          </li>
+          <li class="nav-item ml-4">
+            <a href="{% url "survey_managment:trash" %}" class="nav-link">
+              <i class="far fa-trash-alt"></i>  
+              <p class="ml-2"> Trash </p>
             </a>
           </li>
         </ul>
@@ -122,6 +147,12 @@
         <a href="{%url 'survey_managment:survey'%}" class="nav-link">
           <i class="nav-icon fas fa-copy"></i>
           <p>Survey</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{%url 'survey_managment:pending_response'%}" class="nav-link">
+          <i class="nav-icon fas fa-spinner"></i>
+          <p>Pending Responses</p>
         </a>
       </li>
     </ul>
