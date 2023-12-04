@@ -592,7 +592,8 @@
                                         console.log('Selected survey not found');
                                     }
 
-                                    select_ministry.addEventListener("change", function () {
+                                    select_ministry.addEventListener("change", function () 
+                                    {
                                         if (select_ministry) {
                                             clearTable(surveyTableBody_2)
                                         }
@@ -1172,8 +1173,8 @@
 
         var selectedOptions = [];
         function handleButtonClick(data) {
-            function getSelectedValues() {
-                
+            function getSelectedValues() 
+            {    
                 var selectElement = document.getElementById('lineMinistrySelect');
                 if (selectElement === null) {
                     console.log("Select element not found");
