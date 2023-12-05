@@ -220,7 +220,7 @@
 
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table text-nowrap table-hover border table-bordered" id="example">
+                                        <table class="table text-nowrap table-hover border table-bordered" id="surveys">
                                             <thead>
                                                 <th>Survey Name </th>
                                                 <th>Suvey Type </th>
@@ -466,7 +466,13 @@
 
     {% include "includes/scripts.html" %}
     <script>
-        new DataTable('#example', {
+        new DataTable('#surveys', {
+            order: [[2, 'asc']],
+            rowGroup: {
+                dataSrc: 2
+            }
+        });
+        new DataTable('#survey_detail', {
             order: [[2, 'asc']],
             rowGroup: {
                 dataSrc: 2
@@ -495,8 +501,6 @@
                 var option_table1 = document.getElementById('section2');
                 var column_chart = document.getElementById('container');
                 var card_msg = document.getElementById('msg1');
-
-                msg1
                 const button = document.getElementById('getSelectedValuesBtn');
 
                 button.onclick = () => handleButtonClick(data);
@@ -537,7 +541,8 @@
 
 
 
-                        if (selectedSurveyTypeId && myCheckbox.checked && selectedYear) {
+                        if (selectedSurveyTypeId && myCheckbox.checked && selectedYear)
+                         {
                             var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() === selectedYear);
                             var emptyOption = document.createElement("option");
                             emptyOption.value = "";
@@ -773,8 +778,11 @@
 
                             });
 
-                            // initializeDataTable();
+                       
+
                         }
+
+
                         else if (selectedSurveyTypeId && !myCheckbox.checked || selectYear) {
 
                             var survey_s = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() === selectedYear);
@@ -975,6 +983,7 @@
 
                                     });
                                 });
+                                
 
                             }
 
@@ -989,44 +998,8 @@
             });
 
 
-        function clearTable(tableBody) {
-            while (tableBody.firstChild) {
-                tableBody.removeChild(tableBody.firstChild);
-            }
-        }
-        function clearOptions(select) {
-            while (select.firstChild) {
-                select.removeChild(select.firstChild);
-            }
-        }
-        function exportTableToExcel(tableId, filename = '') {
-            var downloadLink;
-            var dataType = 'application/vnd.ms-excel';
-            var tableSelect = document.getElementById(tableId);
-            var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+ 
 
-            filename = filename ? filename + '.xlsb' : 'excel_data.xlsb';
-
-            downloadLink = document.createElement("a");
-
-            document.body.appendChild(downloadLink);
-
-            if (navigator.msSaveOrOpenBlob) {
-                var blob = new Blob(['\ufeff', tableHTML], {
-                    type: dataType
-                });
-                navigator.msSaveOrOpenBlob(blob, filename);
-            } else {
-                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-                downloadLink.download = filename;
-                downloadLink.click();
-            }
-        }
-        function clearArrays(param1, param2) {
-            param1.length = 0;
-            param2.length = 0;
-
-        }
         document.getElementById('exportButton').onclick = function () {
             exportTableToExcel('survey_detail', 'exported_table');
         }
@@ -1148,32 +1121,24 @@
             });
         }
 
+//  $(document).ready(function () {
+//             var table = $('#example').DataTable({
+//                 lengthChange: true,
+//                 buttons: ['copy', 'excel', 'pdf', 'colvis']
+//             });
+
+//             table.buttons().container()
+//                 .insertBefore('#example_filter');
+//         });
 
 
-        // function initializeDataTable() {
-        //     var table = $('#example').DataTable( {
-        //         lengthChange: true,
-        //         buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
-        //     } );
-
-        //     table.buttons().container()
-        //         .insertBefore( '#example_filter' );
-        // }
-
-
-        $(document).ready(function () {
-            var table = $('#example').DataTable({
-                lengthChange: true,
-                buttons: ['copy', 'excel', 'pdf', 'colvis']
-            });
-
-            table.buttons().container()
-                .insertBefore('#example_filter');
-        });
-
-
+       
+        var chart = null;
+        function handleButtonClick(data)
+         {
+        surveyData = {};
         var selectedOptions = [];
-        function handleButtonClick(data) {
+        var ministryNames = [];
             function getSelectedValues() 
             {    
                 var selectElement = document.getElementById('lineMinistrySelect');
@@ -1302,9 +1267,6 @@
                 console.log(average);
                 console.log("-----------------");
                 console.log(surveyData);
-                draw_chart_withMultiple_column();
-
-            } function draw_chart_withMultiple_column() {
                 var formattedData = [];
 
                 for (var surveyId in surveyData) {
@@ -1339,9 +1301,26 @@
                         console.log("No name");
                     }
                 }
+                clearAndRedrawChart(ministryNames,formattedData);
+                ministryNames = [];
+                formattedData = [];
+                ministry_info= [];
+                
+                console.log("The abovd is FD");
+                console.log(formattedData);
+                console.log(ministry_info);
+                               console.log(surveyData);
 
-                console.log(ministryNames);
-                Highcharts.chart('barCharts', {
+           
+            console.log("MInistry Names " + ministryNames);
+            console.log("Formatted Data "+  formattedData);
+            } 
+            
+        }
+
+
+        function clearAndRedrawChart(ministryNames , formattedData) {
+        Highcharts.chart('barCharts', {
                     chart: {
                         type: 'column'
                     },
@@ -1360,9 +1339,57 @@
                         }
                     },
                     series: formattedData
-                });
+                });  
+}
+              
+
+
+
+function clearTable(tableBody) {
+            while (tableBody.firstChild) {
+                tableBody.removeChild(tableBody.firstChild);
             }
         }
+function clearOptions(select) {
+            while (select.firstChild) {
+                select.removeChild(select.firstChild);
+            }
+        }
+function exportTableToExcel(tableId, filename = '') 
+        {
+            var downloadLink;
+            var dataType = 'application/vnd.ms-excel';
+            var tableSelect = document.getElementById(tableId);
+            var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+            filename = filename ? filename + '.xlsb' : 'excel_data.xlsb';
+
+            downloadLink = document.createElement("a");
+
+            document.body.appendChild(downloadLink);
+
+            if (navigator.msSaveOrOpenBlob) {
+                var blob = new Blob(['\ufeff', tableHTML], {
+                    type: dataType
+                });
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+                downloadLink.download = filename;
+                downloadLink.click();
+            }
+        }
+function clearArrays(param1) {
+  if (Array.isArray(param1)) {
+    param1.length = 0;
+  } else if (param1) {
+    // Convert param1 into an array
+    param1 = Array.from(param1); // or param1 = [...param1];
+    param1.length = 0;
+  } else {
+    console.error('param1 is not an array');
+  }
+}
     </script>
 
 </body>
