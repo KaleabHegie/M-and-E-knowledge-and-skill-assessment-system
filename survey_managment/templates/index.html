@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css" />
 
 <style>
-   
     .limited-width {
         max-width: 500px;
         white-space: nowrap;
@@ -100,7 +99,7 @@
     }
 </style>
 
-<body class="hold-transition sidebar-mini layout-fixed" >
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         {% include 'includes/loader.html' %}
         {% include 'includes/topNavbar.html' %}
@@ -133,7 +132,8 @@
                                                     <div class="fw-semibold counter"
                                                         style="font-size: x-large; text-align: center;">
                                                         {{surveys_count}} </div>
-                                                    <a href="{% url 'survey_managment:survey' %}" class="nav-link text-primary">
+                                                    <a href="{% url 'survey_managment:survey' %}"
+                                                        class="nav-link text-primary">
                                                         View All
                                                         <i class="bi bi-arrow-right-circle"></i>
                                                     </a>
@@ -541,8 +541,7 @@
 
 
 
-                        if (selectedSurveyTypeId && myCheckbox.checked && selectedYear)
-                         {
+                        if (selectedSurveyTypeId && myCheckbox.checked && selectedYear) {
                             var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() === selectedYear);
                             var emptyOption = document.createElement("option");
                             emptyOption.value = "";
@@ -598,8 +597,7 @@
                                         console.log('Selected survey not found');
                                     }
 
-                                    select_ministry.addEventListener("change", function () 
-                                    {
+                                    select_ministry.addEventListener("change", function () {
                                         if (select_ministry) {
                                             clearTable(surveyTableBody_2)
                                         }
@@ -767,7 +765,6 @@
                                             card_msg.style.display = "block";
 
 
-
                                             console.log("No user_response ID found for the selected line ministry.");
                                         }
 
@@ -778,7 +775,7 @@
 
                             });
 
-                       
+
 
                         }
 
@@ -983,7 +980,7 @@
 
                                     });
                                 });
-                                
+
 
                             }
 
@@ -998,7 +995,7 @@
             });
 
 
- 
+
 
         document.getElementById('exportButton').onclick = function () {
             exportTableToExcel('survey_detail', 'exported_table');
@@ -1121,26 +1118,24 @@
             });
         }
 
-//  $(document).ready(function () {
-//             var table = $('#example').DataTable({
-//                 lengthChange: true,
-//                 buttons: ['copy', 'excel', 'pdf', 'colvis']
-//             });
+        //  $(document).ready(function () {
+        //             var table = $('#example').DataTable({
+        //                 lengthChange: true,
+        //                 buttons: ['copy', 'excel', 'pdf', 'colvis']
+        //             });
 
-//             table.buttons().container()
-//                 .insertBefore('#example_filter');
-//         });
+        //             table.buttons().container()
+        //                 .insertBefore('#example_filter');
+        //         });
 
 
-       
+
         var chart = null;
-        function handleButtonClick(data)
-         {
-        surveyData = {};
-        var selectedOptions = [];
-        var ministryNames = [];
-            function getSelectedValues() 
-            {    
+        function handleButtonClick(data) {
+            surveyData = {};
+            var selectedOptions = [];
+            var ministryNames = [];
+            function getSelectedValues() {
                 var selectElement = document.getElementById('lineMinistrySelect');
                 if (selectElement === null) {
                     console.log("Select element not found");
@@ -1301,62 +1296,61 @@
                         console.log("No name");
                     }
                 }
-                clearAndRedrawChart(ministryNames,formattedData);
+                clearAndRedrawChart(ministryNames, formattedData);
                 ministryNames = [];
                 formattedData = [];
-                ministry_info= [];
-                
+                ministry_info = [];
+
                 console.log("The abovd is FD");
                 console.log(formattedData);
                 console.log(ministry_info);
-                               console.log(surveyData);
+                console.log(surveyData);
 
-           
-            console.log("MInistry Names " + ministryNames);
-            console.log("Formatted Data "+  formattedData);
-            } 
-            
+
+                console.log("MInistry Names " + ministryNames);
+                console.log("Formatted Data " + formattedData);
+            }
+
         }
 
 
-        function clearAndRedrawChart(ministryNames , formattedData) {
-        Highcharts.chart('barCharts', {
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: ''
-                    },
-                    xAxis: {
-                        categories: ministryNames
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        column: {
-                            borderRadius: '25%'
-                        }
-                    },
-                    series: formattedData
-                });  
-}
-              
+        function clearAndRedrawChart(ministryNames, formattedData) {
+            Highcharts.chart('barCharts', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: ministryNames
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    column: {
+                        borderRadius: '25%'
+                    }
+                },
+                series: formattedData
+            });
+        }
 
 
 
-function clearTable(tableBody) {
+
+        function clearTable(tableBody) {
             while (tableBody.firstChild) {
                 tableBody.removeChild(tableBody.firstChild);
             }
         }
-function clearOptions(select) {
+        function clearOptions(select) {
             while (select.firstChild) {
                 select.removeChild(select.firstChild);
             }
         }
-function exportTableToExcel(tableId, filename = '') 
-        {
+        function exportTableToExcel(tableId, filename = '') {
             var downloadLink;
             var dataType = 'application/vnd.ms-excel';
             var tableSelect = document.getElementById(tableId);
@@ -1379,17 +1373,17 @@ function exportTableToExcel(tableId, filename = '')
                 downloadLink.click();
             }
         }
-function clearArrays(param1) {
-  if (Array.isArray(param1)) {
-    param1.length = 0;
-  } else if (param1) {
-    // Convert param1 into an array
-    param1 = Array.from(param1); // or param1 = [...param1];
-    param1.length = 0;
-  } else {
-    console.error('param1 is not an array');
-  }
-}
+        function clearArrays(param1) {
+            if (Array.isArray(param1)) {
+                param1.length = 0;
+            } else if (param1) {
+                // Convert param1 into an array
+                param1 = Array.from(param1); // or param1 = [...param1];
+                param1.length = 0;
+            } else {
+                console.error('param1 is not an array');
+            }
+        }
     </script>
 
 </body>
