@@ -53,6 +53,10 @@
                   </div>
                 </div>
 
+                <form methode="POST" action="">
+                  
+                  {% csrf_token %}
+
                 <div class="card-body p-0">
                   <div class="mailbox-controls">
                     <button
@@ -62,7 +66,7 @@
                       <i class="far fa-square"></i>
                     </button>
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default btn-sm">
+                      <button type="submit" class="btn btn-default btn-sm" name='trash'>
                         <i class="far fa-trash-alt"></i>
                       </button>
                       <button type="button" class="btn btn-default btn-sm">
@@ -93,11 +97,11 @@
 
                         {% for message in message   %}
 
-                        <tr>
+                        <tr data-messageId="{{message.id}}">
                           <td>
                             <div class="icheck-primary">
-                              <input type="checkbox" value id="check1" />
-                              <label for="check1"></label>
+                              <input name="messageId" type="checkbox" value="{{message.id}}" id="check{{message.id}}" />
+                              <label for="check{{message.id}}"></label>
                             </div>
                           </td>
                           <td class="mailbox-star">
@@ -121,6 +125,9 @@
                     </table>
                   </div>
                 </div>
+
+                
+              </form>
 
                 
               </div>

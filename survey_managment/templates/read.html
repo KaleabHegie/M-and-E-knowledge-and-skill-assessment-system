@@ -26,6 +26,8 @@
               </div>
 
               <div class="col-md-9">
+                <form action="" method="post">
+                  {% csrf_token %}
                 <div class="card card-primary card-outline">
                   <div class="card-header">
                     <h3 class="card-title">Read Mail</h3>
@@ -64,25 +66,27 @@
                     <div class="mailbox-read-message">
                     Message : {{message.message}}
                     </div>
+                    <input type="hidden" name="messageId" value="{{ message.id }}">
                   </div>
 
                   <div class="card-footer">
                     <div class="float-right">
-                      <button type="button" class="btn btn-default">
+                      <button type="submit" class="btn btn-default" name="replay">
                         <i class="fas fa-reply"></i> Reply
                       </button>
-                      <button type="button" class="btn btn-default">
+                      <button type="submit" class="btn btn-default" name="forward">
                         <i class="fas fa-share"></i> Forward
                       </button>
                     </div>
-                    <button type="button" class="btn btn-default">
+                    <button type="submit" class="btn btn-default" name="delete">
                       <i class="far fa-trash-alt"></i> Delete
                     </button>
-                    <button type="button" class="btn btn-default">
+                    <button type="submit" class="btn btn-default" name="print">
                       <i class="fas fa-print"></i> Print
                     </button>
                   </div>
                 </div>
+              </form>
               </div>
             </div>
           </div>

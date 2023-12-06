@@ -12,6 +12,9 @@ from django.core.paginator import Paginator
 from datetime import date
 
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 
 
@@ -78,10 +81,24 @@ def indexView(request):
         return render(request, 'index.html', context)
     
 def inbox(request):    
-    context = {
-        'message' : ContactUs.objects.filter(status = 'inbox')
-    }
-    return render(request ,"inbox.html" , context)
+    if request.method == 'POST': 
+      if 'trash' in request.POST:  
+        messageIds = request.POST.getlist('messageId')
+        print(messageIds)
+        for i in range(len(messageIds)):
+          messageId = messageIds[i]
+          message = ContactUs.objects.get(id=messageId)
+          print(message)
+          message.status = 'trash'
+          message.save()
+        return redirect( 'survey_managment:trash')
+      else:
+       pass
+    else : 
+      context = {
+          'message' : ContactUs.objects.filter(status = 'inbox')
+      }
+      return render(request ,"inbox.html" , context)
 def sent(request):    
     context = {
         'message' : ContactUs.objects.filter(status = 'sent')
@@ -92,20 +109,71 @@ def draft(request):
         'message' : ContactUs.objects.filter(status = 'draft')
     }
     return render(request ,"draft.html" , context)
+
 def trash(request):    
     context = {
         'message' : ContactUs.objects.filter(status = 'trash')
     }
     return render(request ,"trash.html" , context)
 
-def compose(request):    
-    return render(request ,"compose.html")
-def read(request , id):    
-    context = {
-        'message' : ContactUs.objects.get(id=id)
-
-    }
-    return render(request ,"read.html" , context)
+def compose(request):
+    if request.method == 'POST':
+      if 'send' in request.POST:  
+        form_data = request.POST
+        to = form_data['to']
+        subject = form_data['subject']
+        message = form_data['message']
+        user = request.user
+        # Create a new message object
+        new_message = ContactUs(name = user , email = user.email , subject=subject , message=message , status= 'sent')
+        new_message.save()
+        try:
+            validate_email(to)
+        except ValidationError:
+            # Invalid email address
+            error_message = "Invalid email address"
+            return render(request, 'compose.html', {'error_message': error_message})
+        
+        # Send the email
+        send_mail(
+            subject,
+            message,
+            'benjiyg400@gmail.com',  # Replace with your email address
+            [to],
+            fail_silently=False,
+        )
+        return redirect( 'survey_managment:sent')
+      else:
+        form_data = request.POST
+        to = form_data['to']
+        subject = form_data['subject']
+        message = form_data['message']
+        user = request.user
+        # Create a new message object
+        new_message = ContactUs(name = user , email = user.email , subject=subject , message=message , status= 'draft')
+        new_message.save()
+        return redirect( 'survey_managment:draft')
+    else:
+        # Render the initial form
+        return render(request, 'compose.html')
+    
+def read(request , id):  
+    if request.method == 'POST': 
+      if 'delete' in request.POST:  
+        messageId = request.POST.get('messageId')
+        print(messageId)
+        message = ContactUs.objects.get(id=messageId)
+        message.status = 'trash'
+        message.save()
+        return redirect( 'survey_managment:trash')
+      else:
+       pass
+    else : 
+        context = {
+            'message' : ContactUs.objects.get(id=id)
+    
+        }
+        return render(request ,"read.html" , context)
 
 def load_survey(request):
     survey_type_id = request.GET.get("survey_type")
