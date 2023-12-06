@@ -53,7 +53,7 @@
                   </div>
                 </div>
 
-                <form methode="POST" action="">
+                <form method="POST">
                   
                   {% csrf_token %}
 
@@ -95,6 +95,7 @@
                     <table class="table table-hover table-striped">
                       <tbody>
 
+                        {% if message %}
                         {% for message in message   %}
 
                         <tr data-messageId="{{message.id}}">
@@ -120,6 +121,12 @@
                         </tr>
 
                         {% endfor %}
+                        {% else %}
+                           <tr>
+                            <td class="text-center text-warning">  No Inbox Message here </td>
+                           </tr>
+                        {% endif %}
+                       
                        
                       </tbody>
                     </table>
