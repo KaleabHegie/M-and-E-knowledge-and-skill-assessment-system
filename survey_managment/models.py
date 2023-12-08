@@ -122,6 +122,7 @@ class ContactUs(models.Model):
     message = models.TextField()
     sent_at = models.DateTimeField(auto_now=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES , null=True)
+    
 
     def __str__(self):
         return self.name

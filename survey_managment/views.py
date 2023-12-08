@@ -1,32 +1,24 @@
+from audioop import reverse
 import re
 from django.forms import formset_factory, modelformset_factory
-from django.shortcuts import get_object_or_404, render, HttpResponse
+from django.shortcuts import get_object_or_404, render, HttpResponse, redirect
 from django.contrib import messages
-from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from .models import Category, Question
-from django.http import JsonResponse
-
-from django.core.paginator import Paginator
-from datetime import date
-
-from django.contrib import messages
-
-
-
-
+from datetime import date, datetime
+from django.core.mail import send_mail
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse_lazy
-from datetime import datetime
-from .forms import CategoryForm
 from .forms import *
-
-
 from .models import *
-
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+import json
+
 
 
 # Create your views here.
@@ -44,7 +36,6 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'survey_managment/change_password.html', {'form': form})
-
 
 
 def indexView(request):
@@ -77,65 +68,251 @@ def indexView(request):
       
         return render(request, 'index.html', context)
     
-def inbox(request):    
-    context = {
-        'message' : ContactUs.objects.filter(status = 'inbox')
-    }
-    return render(request ,"inbox.html" , context)
-def sent(request):    
-    context = {
-        'message' : ContactUs.objects.filter(status = 'sent')
-    }
-    return render(request ,"sent.html" , context)
-def draft(request):    
-    context = {
-        'message' : ContactUs.objects.filter(status = 'draft')
-    }
-    return render(request ,"draft.html" , context)
+
+
+
+####### Message Views ################################
+
+
+def inbox(request):
+    if request.method == 'POST':
+        if 'trash' in request.POST:
+            messageIds = request.POST.getlist('messageId')
+            print(messageIds)
+            for messageId in messageIds:
+                message = ContactUs.objects.get(id=messageId)
+                print('hello')
+                message.status = 'trash'
+                message.save()
+            return redirect('survey_managment:trash')
+        else:
+            pass
+    else:
+        context = {
+            'message': ContactUs.objects.filter(status='inbox')
+        }
+        return render(request, "inbox.html", context)
+    
+
+def sent(request):  
+    if request.method == 'POST':
+        if 'trash' in request.POST:
+            messageIds = request.POST.getlist('messageId')
+            print(messageIds)
+            for messageId in messageIds:
+                message = ContactUs.objects.get(id=messageId)
+                print('hello')
+                message.status = 'trash'
+                message.save()
+            return redirect('survey_managment:trash')
+        else:
+            pass
+    else:  
+       context = {
+           'message' : ContactUs.objects.filter(status = 'sent')
+       }
+       return render(request ,"sent.html" , context)
+
+
+def draft(request):  
+    if request.method == 'POST':
+        if 'trash' in request.POST:
+            messageIds = request.POST.getlist('messageId')
+            print(messageIds)
+            for messageId in messageIds:
+                message = ContactUs.objects.get(id=messageId)
+                print('hello')
+                message.status = 'trash'
+                message.save()
+            return redirect('survey_managment:trash')
+        else:
+            pass
+    else:  
+      context = {
+          'message' : ContactUs.objects.filter(status = 'draft')
+      }
+      return render(request ,"draft.html" , context)
+
+
 def trash(request):    
+    if request.method == 'POST':
+        if 'trash' in request.POST:
+            messageIds = request.POST.getlist('messageId')
+            print(messageIds)
+            for messageId in messageIds:
+                message = ContactUs.objects.get(id=messageId)
+                message.delete()
+            return redirect('survey_managment:trash')
+        else:
+            pass
+    else:  
+      context = {
+          'message' : ContactUs.objects.filter(status = 'trash')
+      }
+      return render(request ,"trash.html" , context)
+
+
+def compose(request):
+    if request.method == 'POST':
+      if 'send' in request.POST:  
+        form_data = request.POST
+        to = form_data['to']
+        subject = form_data['subject']
+        message = form_data['message']
+        user = request.user
+        # Create a new message object
+        new_message = ContactUs(name = user , email = user.email , subject=subject , message=message , status= 'sent')
+        new_message.save()
+        try:
+            validate_email(to)
+        except ValidationError:
+            # Invalid email address
+            error_message = "Invalid email address"
+            return render(request, 'compose.html', {'error_message': error_message})
+        
+        # Send the email
+        send_mail(
+            subject,
+            message,
+            'benjiyg400@gmail.com',  # Replace with your email address
+            [to],
+            fail_silently=False,
+        )
+        return redirect( 'survey_managment:sent')
+      else:
+        form_data = request.POST
+        to = form_data['to']
+        subject = form_data['subject']
+        message = form_data['message']
+        user = request.user
+        # Create a new message object
+        new_message = ContactUs(name = user , email = user.email , subject=subject , message=message , status= 'draft')
+        new_message.save()
+        return redirect( 'survey_managment:draft')
+    else:
+        # Render the initial form
+        return render(request, 'compose.html')
+
+
+def reply_to_message(request, message_id):
+    message = get_object_or_404(ContactUs, id=message_id)
+
+    if request.method == 'POST':
+        form = ContactUsForm(request.POST)
+        user = request.user
+
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+
+            subject = cleaned_data['subject']
+            body = cleaned_data['message']
+            recipient_list = [message.email]
+            sender = user.email
+
+            send_mail(subject, body, sender, recipient_list)
+
+            # Duplicate the original message
+            duplicate_message = ContactUs.objects.create(
+                email=message.email,
+                subject=f"RE: {message.subject}",
+                message=message.message,
+                status='sent'
+            )
+
+            # Redirect to a success page or display a success message
+            return render(request, 'sent.html')
+    else:
+        initial_data = {'subject': f"RE: {message.subject}", 'message': message.message}
+        form = ContactUsForm(initial=initial_data)
+
     context = {
-        'message' : ContactUs.objects.filter(status = 'trash')
+        'form': form,
+        'message': message,
     }
-    return render(request ,"trash.html" , context)
 
-def compose(request):    
-    return render(request ,"compose.html")
-def read(request , id):    
-    context = {
-        'message' : ContactUs.objects.get(id=id)
+    return render(request, 'reply_form.html', context)
 
-    }
-    return render(request ,"read.html" , context)
 
-def load_survey(request):
-    survey_type_id = request.GET.get("survey_type")
-    survey = Survey.objects.filter(survey_type_id=survey_type_id)
-   
-    return render(request ,"load_survey.html",{"survey":survey  })
+def read(request , id):  
+    if request.method == 'POST': 
+      if 'delete' in request.POST:  
+        messageId = request.POST.get('messageId')
+        print(messageId)
+        message = ContactUs.objects.get(id=messageId)
+        message.status = 'trash'
+        message.save()
+        return redirect( 'survey_managment:trash')
+      else:
+       pass
+    else : 
+        context = {
+            'message' : ContactUs.objects.get(id=id)
+    
+        }
+        return render(request ,"read.html" , context)
 
-def pending_response(request):
-    user_responses = UserResponse.objects.filter(status='pending')
-    responses = UserResponse.objects.filter(status='pending').count()
+
+####### User Views ################################
+
+
+
+def user_profile(request):
+    return render(request , 'profile.html' )
+
+
+def edit_profile(request):
+    return render(request , 'edit_profile.html' )
+
+
+def users(request):
+    return render(request , 'user.html' )
+
+
+def change_password(request):
+    return render(request , 'password_change.html' )
+
+
+def forgotPasswordView(request):
+    return render(request, 'forgot-password.html')
+
+
+
+
+
+
+####### Analsis views ################################
+
+
+
+def Mychartanalysis(request):
+    data={}
+    return render(request,'chart_analysis.html',data)
+
+
+def jsonSender(request):
     data = {
-        'user_responses': user_responses,
-        "responses" : responses,
+        'questions' : list(Question.objects.all().values()),
+        'categories': list(Category.objects.all().values()),
+        'surveys':    list(Survey.objects.all().values()),
     }
-    return render(request , 'pendingResponse.html' , data )
+    return JsonResponse(data)
 
 
-def load_ministry(request):
-    survey_id = request.GET.get("survey")
-    survey = Survey.objects.filter(id=survey_id).first()
-    line_ministries = survey.for_line_ministry.all() if survey else []
-    return render(request, "load_ministry.html", {"line_ministries": line_ministries})
+def compareDataView(request):
+    line_ministry = Line_ministry.objects.all()
+    survey_type = SurveyType.objects.all()
+    survey = Survey.objects.all()
+    survey_years = Survey.objects.order_by('created_at__year').values('created_at__year').distinct() 
 
 
-from django.shortcuts import render
-from django.http import JsonResponse
-import json
+    context = {
+        'line_ministry':line_ministry,
+        'survey_type': survey_type,
+        'survey':survey,
+        'survey_years':survey_years
+    }
+    return render(request, 'compare.html',context)
 
-from django.http import JsonResponse
-from .models import Survey, Line_ministry, CustomUser, Category, Department, Question, SurveyType, UserResponse
 
 def get_data(request):
     surveys = Survey.objects.all()
@@ -197,58 +374,8 @@ def get_data(request):
     return JsonResponse(serialized_data, safe=False)
 
 
-def forgotPasswordView(request):
-    return render(request, 'forgot-password.html')
 
-
-
-def surveyCreationView(request):
-    if request.method == 'POST':
-        form = SurveyForm(request.POST)
-        if form.is_valid():
-            survey = form.save()  
-            print(survey.id)  # Check if the object has been saved to the database
-            # redirect_url = f'survey_managment:questionCreationByType/?survey_id=survey.id'
-            return redirect('survey_managment:questionCreationByType',survey_id=survey.id )  # Pass the survey ID to the success page
-        else:
-            print(form.errors)  # Print any validation errors
-    else:
-        form = SurveyForm()
-    return render(request, 'surveyCreation.html', {'form': form})
-
-def user_profile(request):
-    return render(request , 'profile.html' )
-
-def edit_profile(request):
-    return render(request , 'edit_profile.html' )
-
-def users(request):
-    return render(request , 'user.html' )
-
-
-
-def change_password(request):
-    return render(request , 'password_change.html' )
-# def user_registration(request):
-#     return render(request , 'userRegistration.html' )
-
-def Mychartanalysis(request):
-    data={}
-    return render(request,'chart_analysis.html',data)
-
-
-
-def jsonSender(request):
-    data = {
-        'questions' : list(Question.objects.all().values()),
-        'categories': list(Category.objects.all().values()),
-        'surveys':    list(Survey.objects.all().values()),
-    }
-    return JsonResponse(data)
-
-
-
-
+####### Survey , User Response and Question views ################################
 
 
 
@@ -274,54 +401,24 @@ def user_response(request, id, response_id):
     survey = get_object_or_404(Survey, id=id)
     user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
-    documents = Document.objects.all()
-    
-
-    collected = {}
-
-    for index in range(len(answers)):
-        i = answers[index]
-        getDoc = Document.objects.filter(foranswer = i).first()
-        if getDoc:
-            collected[index] = {
-                'Ans' : i,
-                'Doc' : getDoc
-            }
-        else:
-            collected[index] = {
-                'Ans' : i,
-                
-            }
-   
-
+    documents = Document.objects.all()     
     if request.method == 'POST':
-     recommendation = request.POST.get('recommendation')
-     checkedResponse = request.POST.get('checkedResp') # the checkbox value holding the answer id to be recommended
-     theAnswer = Answer.objects.filter(id=checkedResponse)     # the answer to be recommended
-     theAnswer.update(recommendation=recommendation)
+        recommendation = request.POST.get('recommendation')
+        checkedResponse = request.POST.get('checkedResp') # the checkbox value holding the answer id to be recommended
+        theAnswer = Answer.objects.filter(id=checkedResponse)     # the answer to be recommended
+        theAnswer.update(recommendation=recommendation)
     data = {
         'survey_id': id,
         'survey': survey,
         'user_responses': user_responses,
-        'collected' : collected,
+        'answers': answers,
+        'documents': documents,
         'response_id': response_id
     }
-    for j in collected.values():
-        # for doc in j['Doc']:
-        #     print( j['Ans'] )
-        #     print(doc.document)  
-        print(j) 
-    # data = {
-    #     'survey_id': id,
-    #     'survey': survey,
-    #     'user_responses': user_responses,
-    #     'answers': answers,
-    #     'documents': documents,
-    #     'response_id': response_id
-    # }
 
 
     return render(request, 'user_response.html', data)
+
 
 def user_response_change_status(request, id , response_id):
     survey = get_object_or_404(Survey, id=id)
@@ -341,7 +438,6 @@ def user_response_change_status(request, id , response_id):
     return render(request, 'user_response.html', data)
 
 
-
 def survey_detail(request, id):
     data = {
         'survey_id': id,
@@ -350,6 +446,7 @@ def survey_detail(request, id):
         'questions': Survey.objects.get(id=id).question.all()
     }
     return render(request, 'survey_detail.html', data)
+
 
 def create_question(request , survey_id , questionnaire_id):
     if request.method == 'POST':
@@ -375,6 +472,7 @@ def create_question(request , survey_id , questionnaire_id):
     else:
         return redirect("survey_managment:displayQuestion" , survey_id , questionnaire_id)  # Redirect to an error page if the request method is not POST
 
+
 def chooseSurvey(request , id , choose_id ):
     data = {
         'choose_id':choose_id,
@@ -382,8 +480,6 @@ def chooseSurvey(request , id , choose_id ):
         'surveys': Survey.objects.all(),
         }
     return render(request, 'chooseSurvey.html' , data)
-
-
 
 
 def displayQuestion(request, id):
@@ -432,9 +528,6 @@ def catagorizedQuestion(request, id):
     return render(request, 'catagorizedQuestion.html', data)
 
 
-
-
-
 def chooseTarget(request, survey_id, question_id):
     question = get_object_or_404(Question, id=question_id)
     survey = get_object_or_404(Survey, id=survey_id)
@@ -467,10 +560,7 @@ def questionCreationByType(request, survey_id):
         messages.success(request, 'Survey created successfully. Add questions to it.')    
     
     return render(request, 'addQuestions.html', {'zsurvey': zsurvey, 'questions': questions})
- 
-
-  
-
+   
 
 def newQuestion(request,questionType, s_id ):
     categories = Category.objects.prefetch_related('subcategories')
@@ -527,12 +617,53 @@ def newQuestion(request,questionType, s_id ):
     return render(request, 'modal.html', context)
 
 
+def load_survey(request):
+    survey_type_id = request.GET.get("survey_type")
+    survey = Survey.objects.filter(survey_type_id=survey_type_id)
+   
+    return render(request ,"load_survey.html",{"survey":survey  })
+
+
+def pending_response(request):
+    user_responses = UserResponse.objects.filter(status='pending')
+    responses = UserResponse.objects.filter(status='pending').count()
+    data = {
+        'user_responses': user_responses,
+        "responses" : responses,
+    }
+    return render(request , 'pendingResponse.html' , data )
+
+
+def load_ministry(request):
+    survey_id = request.GET.get("survey")
+    survey = Survey.objects.filter(id=survey_id).first()
+    line_ministries = survey.for_line_ministry.all() if survey else []
+    return render(request, "load_ministry.html", {"line_ministries": line_ministries})
+
+
+def surveyCreationView(request):
+    if request.method == 'POST':
+        form = SurveyForm(request.POST)
+        if form.is_valid():
+            survey = form.save()  
+            print(survey.id)  # Check if the object has been saved to the database
+            # redirect_url = f'survey_managment:questionCreationByType/?survey_id=survey.id'
+            return redirect('survey_managment:questionCreationByType',survey_id=survey.id )  # Pass the survey ID to the success page
+        else:
+            print(form.errors)  # Print any validation errors
+    else:
+        form = SurveyForm()
+    return render(request, 'surveyCreation.html', {'form': form})
+
+
+
 
 
 
 
 
 ####### final preview views ################################
+
 @login_required
 def greetingpage_view(request):
     if request.method == 'POST':
@@ -553,7 +684,6 @@ def greetingpage_view(request):
         
     }
     return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
-
 
 
 
@@ -580,8 +710,6 @@ def survey_listss_views(request):
         'surveys': surveys_without_responses
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
-
-
 
 
 
@@ -626,13 +754,6 @@ def questionForSurvey(request, id):
 
 
 
-
-
-
-
-
-
-
 @login_required
 def un_approved_survey_list(request):
     today = date.today()
@@ -645,6 +766,7 @@ def un_approved_survey_list(request):
         "surveys" : Survey.objects.filter(userresponse__status='pending', for_line_ministry = line_ministry , userresponse__submitted_by = user),
     }
     return render(request, 'un_approved_survey_list.html', data)
+
 
 
 @login_required
@@ -697,10 +819,6 @@ def un_approved_survey(request, id):
 
 
 
-
-
-
-
 def user_info(request):
     if request.method == 'POST':
         form = UserResponseFormA(request.POST)
@@ -718,7 +836,6 @@ def user_info(request):
 
 
 
-
 def anonymous_survey_listss_views(request , user_response_id):
     today = date.today()
     survey_type = SurveyType.objects.get(name='For Employee')
@@ -730,6 +847,8 @@ def anonymous_survey_listss_views(request , user_response_id):
         'user_response_id' : user_response_id
     }
     return render(request, 'Final_Preview_Pages/SL_Anonymous.html', data)
+
+
 
 def questionForSurveyAnonymous(request, id , user_response_id):
     survey = get_object_or_404(Survey, id=id)
@@ -783,17 +902,3 @@ def questionForSurveyAnonymous(request, id , user_response_id):
 
 
 
-def compareDataView(request):
-    line_ministry = Line_ministry.objects.all()
-    survey_type = SurveyType.objects.all()
-    survey = Survey.objects.all()
-    survey_years = Survey.objects.order_by('created_at__year').values('created_at__year').distinct() 
-
-
-    context = {
-        'line_ministry':line_ministry,
-        'survey_type': survey_type,
-        'survey':survey,
-        'survey_years':survey_years
-    }
-    return render(request, 'compare.html',context)

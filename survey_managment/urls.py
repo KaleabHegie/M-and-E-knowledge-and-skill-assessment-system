@@ -22,6 +22,7 @@ urlpatterns = [
 
     path('survey/', views.survey, name='survey'),
     path('inbox/', views.inbox, name='inbox'),
+    path('inbox/<int:message_id>/reply/', views.reply_to_message, name='reply_to_message'),
     path('sent/', views.sent, name='sent'),
     path('draft/', views.draft, name='draft'),
     path('trash/', views.trash, name='trash'),
