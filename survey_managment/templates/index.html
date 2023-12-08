@@ -493,7 +493,7 @@
         var total_answer = 0;
         fetch('http://127.0.0.1:8000/get_json/')
             .then(res => res.json())
-            .then(data => {
+            .then(data => { 
                 var surveyTypeInput = document.getElementById('survey_type');
                 // var surveyTableBody_1 = document.getElementById('surveyTable').getElementsByTagName('tbody')[0];
                 var surveyTableBody_2 = document.getElementById('survey_detail').getElementsByTagName('tbody')[0];
