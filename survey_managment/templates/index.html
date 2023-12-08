@@ -485,16 +485,7 @@
         var ministry_info = [];
         var surveyData = {};
         var store_ministries = [];
-
-        var weightedSum = 0;
-        var totalWeight = 0;
-        var total_weightedinPercent = 0;
-        var count = 0;
-        var total_answer = 0;
-        fetch('http://127.0.0.1:8000/get_json/')
-            .then(res => res.json())
-            .then(data => { 
-                var surveyTypeInput = document.getElementById('survey_type');
+        var surveyTypeInput = document.getElementById('survey_type');
                 // var surveyTableBody_1 = document.getElementById('surveyTable').getElementsByTagName('tbody')[0];
                 var surveyTableBody_2 = document.getElementById('survey_detail').getElementsByTagName('tbody')[0];
                 var surveyTableBody_3 = document.getElementById('general_Survey_Info').getElementsByTagName('tbody')[0];
@@ -508,6 +499,10 @@
                 var column_chart = document.getElementById('container');
                 var card_msg = document.getElementById('msg1');
                 const button = document.getElementById('getSelectedValuesBtn');
+        fetch('http://127.0.0.1:8000/get_json/')
+            .then(res => res.json())
+            .then(data => {
+               
 
                 button.onclick = () => handleButtonClick(data);
                 // Populate the survey type options
@@ -603,7 +598,8 @@
                                                 return; 
                                             }
                                         });
-                                        if (userResponseId !== null) {
+                                        if (userResponseId !== null) 
+                                        {
                                             card_msg.style.display = "none";
                                             var answers = data.answer.filter(function (answer) {
                                                 return answer.response_id === userResponseId;
@@ -697,7 +693,7 @@
                                             var h3Element = document.getElementById("no_resonse_msg");
                                             h3Element.textContent = 'No user_response ID found for the selected line ministry.';
                                             card_msg.style.display = "block";
-                                        }
+                                        }                                      
                                     });
                                 });
                                 var selectedSurvey = (selectElement.value);
@@ -770,9 +766,59 @@
                                                 return;
                                             }
                                         });
-                                        calculateAverage(userResponseId, data);
-                                        var average = calculateAverage(userResponseId, data);
+                                        if (userResponseId !== null) 
+                                        {
+                                            var answers = data.answer.filter(function (answer) {
+                                                return answer.response_id === userResponseId;
+                                            });
+
+                                            var answerValues = answers.map(function (answer) {
+                                                return {
+                                                    value: parseFloat(answer.answertext),
+                                                    questionId: answer.forquestion_id
+                                                };
+                                            });
+
+                                            var weightedSum = 0;
+                                            var totalWeight = 0;
+                                            var total_weightedinPercent = 0;
+                                            var count = 0;
+                                            var total_answer = 0;
+                                            answerValues.forEach(function (answer) 
+                                            {
+                                                var question = data.questions.find(function (q) {
+                                                    return q.id === answer.questionId;
+                                                });
+                                                if (question) {
+                                                    var weight = question.weight;
+                                                    total_weight = 0
+                                                    if (!isNaN(answer.value)) {
+                                                        weightedSum += answer.value * weight;
+                                                        totalWeight += weight;
+                                                        total_answer += answer.value;
+                                                    }
+                                                    var weighted__Sum = 0;
+                                                    if (totalWeight > 0) {
+                                                        var weightedAverage = weightedSum / totalWeight;
+                                                        var totalresult = answer.value * weight
+                                                        var max_value = 10;
+
+                                                        var weightedinPercent = ((totalresult) / (max_value * weight)) * 100;
+                                                        count++;
+                                                        total_weightedinPercent += weightedinPercent;
+                                                        var x = weightedinPercent;
+                                                        console.log("Weighted average of answers: " + weightedAverage.toFixed(2));
+                                                    } else {
+                                                        console.log("No valid answers found for the selected line ministry.");
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        var average = total_weightedinPercent / count;
+
                                         if (average) {
+
                                             var totalRow = surveyTableBody_3.insertRow();
                                             var survey = data.survey.find(function (survey) {
                                                 return survey.id === surveyId;
@@ -944,11 +990,16 @@
                 var selectedOptions = Array.from(selectElement.selectedOptions).map(function (option) {
                     return parseInt(option.value, 10); // Convert the ID to an integer
                 });
-                var surveyIds = data.surveys
-                    .filter(survey => selectedOptions.every(ministryId => survey.line_ministries.some(ministry => ministry.id === ministryId)))
-                    .map(survey => survey.id);
+                var surveyIds = data.surveys.filter(survey =>
+  selectedOptions.every(ministryId =>
+    survey.line_ministries.some(ministry => ministry.id === ministryId)
+  ) && data.user_response.some(response => response.forsurvey_id === survey.id)
+).map(survey => survey.id);
+  console.log(surveyIds);
                 userResponseId = null;
-                for (var i = 0; i < surveyIds.length; i++) {
+                
+                for (var i = 0; i < surveyIds.length; i++) 
+                {
                     var surveyId = surveyIds[i];
                     for (var j = 0; j < selectedOptions.length; j++) {
                         var lineMinistryId = selectedOptions[j];
@@ -1006,9 +1057,6 @@
                                         total_weightedinPercent += weightedinPercent;
                                         var x = weightedinPercent;
                                         console.log("Weighted average of answers: " + weightedAverage.toFixed(2) + "by   " + user.id + "for survey " + surveyId);
-                                        var average = total_weightedinPercent / count;
-
-                                        return average;
                                     } else {
                                         console.log("No valid answers found for the selected line ministry.");
                                     }
@@ -1108,57 +1156,7 @@
             });
         }
 
-function calculateAverage(userResponseId , data){
-    if (userResponseId !== null) 
-                                        {
-                                            var answers = data.answer.filter(function (answer) {
-                                                return answer.response_id === userResponseId;
-                                            });
 
-                                            var answerValues = answers.map(function (answer) {
-                                                return {
-                                                    value: parseFloat(answer.answertext),
-                                                    questionId: answer.forquestion_id
-                                                };
-                                            });
-
-                                           
-                                            answerValues.forEach(function (answer) 
-                                            {
-                                                var question = data.questions.find(function (q) {
-                                                    return q.id === answer.questionId;
-                                                });
-                                                if (question) {
-                                                    var weight = question.weight;
-                                                    total_weight = 0
-                                                    if (!isNaN(answer.value)) {
-                                                        weightedSum += answer.value * weight;
-                                                        totalWeight += weight;
-                                                        total_answer += answer.value;
-                                                    }
-                                                    var weighted__Sum = 0;
-                                                    if (totalWeight > 0) {
-                                                        var weightedAverage = weightedSum / totalWeight;
-                                                        var totalresult = answer.value * weight
-                                                        var max_value = 10;
-
-                                                        var weightedinPercent = ((totalresult) / (max_value * weight)) * 100;
-                                                        count++;
-                                                        total_weightedinPercent += weightedinPercent;
-                                                        var x = weightedinPercent;
-                                                        console.log("Weighted average of answers: " + weightedAverage.toFixed(2));
-                                                    } else {
-                                                        console.log("No valid answers found for the selected line ministry.");
-                                                    }
-                                                }
-                                            });
-                                            var average = total_weightedinPercent / count;
-
-                                            return average
-                                        }
-
-                                        
-}
 
 
         function clearTable(tableBody) {
@@ -1204,6 +1202,9 @@ function calculateAverage(userResponseId , data){
             } else {
                 console.error('is not an array');
             }
+        }
+        function calculate_average(userResponseId, data){
+         
         }
     </script>
 
