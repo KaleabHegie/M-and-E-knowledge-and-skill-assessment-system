@@ -76,6 +76,7 @@ class UserResponse(models.Model):
     STATUS_CHOICES = [
         ('approved', 'Approved'),
         ('pending', 'Pending'),
+        ('recomended', 'Recomended'),
     ]
 
     forsurvey = models.ForeignKey("Survey", on_delete=models.CASCADE, null=True, blank=True)
@@ -122,6 +123,7 @@ class ContactUs(models.Model):
     message = models.TextField()
     sent_at = models.DateTimeField(auto_now=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES , null=True)
+    read = models.BooleanField(default=False)
     
 
     def __str__(self):

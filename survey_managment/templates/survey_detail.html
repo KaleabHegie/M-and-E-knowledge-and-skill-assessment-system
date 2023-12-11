@@ -109,6 +109,7 @@
                             <tr>
                               <th>Response by</th>
                               <th>Submitted at</th>
+                              <th>Statues </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -116,6 +117,15 @@
                               <tr>
                                 <td><a style="text-decoration: none; color: black;" href="{% url 'survey_managment:user_response' id=survey_id response_id=response.id %}">{{ response.submitted_by }}</a></td>
                                 <td>{{ response.submitted_at }}</td>
+                                {% if response.status == pending %}
+                                <td> <span class="info-box-text text-info">   <i class="nav-icon fas fa-spinner"></i> Pending </span> </td>
+                                {% elif response.status == approved %}
+                                <td> <span class="info-box-text text-info">    <i class="nav-icon fas fa-check"></i> Approved </span> </td>
+                                {% else %}
+                                <td> <span class="info-box-text text-info">    <i class="nav-icon fas fa-spinner"></i> Recomended </span> </td>
+                                {% endif %}
+
+                        
                               </tr>
                             {% endfor %}
                           </tbody>

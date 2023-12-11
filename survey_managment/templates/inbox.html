@@ -1,14 +1,13 @@
 {% load static %}
 
-<!DOCTYPE html>
 <html lang="en">
-  {% include "includes/head.html" %}
+  
   <link
     rel="stylesheet"
     href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css"
   />
-  <style></style>
 
+  {% include "includes/head.html" %}
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
       {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
@@ -92,23 +91,30 @@
                     </div>
                   </div>
                   <div class="table-responsive mailbox-messages">
-                    <table class="table table-hover table-striped">
+                    <table class="table table-hover">
                       <tbody>
 
                         {% if message %}
                         {% for message in message   %}
 
-                        <tr data-messageId="{{message.id}}">
+                       
+
+                        <tr  data-messageId="{{message.id}}">
                           <td>
                             <div class="icheck-primary">
                               <input name="messageId" type="checkbox" value="{{message.id}}" id="check{{message.id}}" />
                               <label for="check{{message.id}}"></label>
                             </div>
                           </td>
+                         
                           <td class="mailbox-star">
-                            <a href="#"
-                              ><i class="fas fa-star text-warning"></i
-                            ></a>
+                           
+                            {% if message.read == False %}
+                              <i class="fas fa-star text-warning"></i>
+                            {% else  %}  
+                              <i class="fas fa-star text-white"></i>
+                            {% endif %}
+                            
                           </td>
                           <td class="mailbox-name">
                             <a href="{% url "survey_managment:read" message.id %}">{{ message.name }}</a>
@@ -119,6 +125,8 @@
                           <td class="mailbox-attachment"></td>
                           <td class="mailbox-date">{{message.sent_at}}</td>
                         </tr>
+
+                       
 
                         {% endfor %}
                         {% else %}
@@ -204,5 +212,6 @@
           });
       });
   </script>
+  {% include "includes/scripts.html" %}
   </body>
 </html>

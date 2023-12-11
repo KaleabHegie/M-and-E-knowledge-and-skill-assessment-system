@@ -110,17 +110,15 @@
       <li class="nav-item">
         <a href="#" class="nav-link">
           <i class="nav-icon far fa-envelope"></i>
-          <p>
-            Mailbox
-            <i class="fas fa-angle-left right"></i>
-          </p>
-        </a>
+         <p>Mailbox <i class="fas fa-angle-left right"></i></p>
+         <span class="badge bg-primary ml-5"> {{ unread_count }}</span>
+       </a>
         <ul class="nav nav-treeview">
           <li class="nav-item ml-4">
             <a href="{% url "survey_managment:inbox" %}" class="nav-link">
               <i class="fas fa-inbox"></i>  
               <p class="ml-2"> Inbox </p>
-              <span class="badge bg-primary ml-5">12</span>
+              <span class="badge bg-primary ml-5"> {{ unread_count }}</span>
             </a>
           </li>
           <li class="nav-item ml-4">
@@ -153,6 +151,7 @@
         <a href="{%url 'survey_managment:pending_response'%}" class="nav-link">
           <i class="nav-icon fas fa-spinner"></i>
           <p>Pending Responses</p>
+          <span class="badge bg-primary ml-2 "> {{ pending_responses }}</span>
         </a>
       </li>
     </ul>
