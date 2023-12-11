@@ -45,8 +45,8 @@
 
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
-        <i class="far fa-comments"></i>
-        <span class="badge badge-danger navbar-badge">{{ unread_count }}</span>
+        <i class="far fa-comments"></i> <!-- Icon for the navigation link -->
+        <span class="badge badge-danger navbar-badge" style="position: absolute; top: -1px; right: 0;">{{ unread_count }}</span> <!-- Badge for the unread count -->
       </a>
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           {% for unread in unread %}
@@ -76,7 +76,7 @@
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown"  href="#" >
         <i class="far fa-bell"></i>
-        <span class="badge badge-warning navbar-badge ml-2">{{pending_responses}}</span>
+        <span class="badge badge-warning navbar-badge ml-2" style="position: absolute; top: -1px; right: 0;">{{pending_responses}}</span>
       </a>
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
         <span class="dropdown-item dropdown-header">Notifications</span>
