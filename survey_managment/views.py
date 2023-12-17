@@ -25,19 +25,6 @@ import json
 
 
 
-def change_password(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)
-            messages.success(request, 'Password changed Succesussfuly')
-            return redirect('/')
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'survey_managment/change_password.html', {'form': form})
-
-
 def indexView(request):
     survey_id = request.GET.get('survey_id')
     if survey_id:
@@ -72,6 +59,7 @@ def indexView(request):
 
 
 ####### Message Views ################################
+
 
 
 def inbox(request):
@@ -211,8 +199,8 @@ def reply_to_message(request, message_id):
 
             send_mail(subject, body, sender, recipient_list)
 
-            # Duplicate the original message
-            duplicate_message = ContactUs.objects.create(
+           
+            ContactUs.objects.create(
                 email=message.email,
                 subject=f"RE: {message.subject}",
                 message=message.message,
@@ -233,7 +221,10 @@ def reply_to_message(request, message_id):
     return render(request, 'reply_form.html', context)
 
 
-def read(request , id):  
+def read(request , id):
+    message = get_object_or_404(ContactUs, id=id)  
+    message.read = True  # Update the read field to True
+    message.save() 
     if request.method == 'POST': 
       if 'delete' in request.POST:  
         messageId = request.POST.get('messageId')
@@ -252,6 +243,7 @@ def read(request , id):
         return render(request ,"read.html" , context)
 
 
+
 ####### User Views ################################
 
 
@@ -268,13 +260,21 @@ def users(request):
     return render(request , 'user.html' )
 
 
-def change_password(request):
-    return render(request , 'password_change.html' )
-
-
 def forgotPasswordView(request):
     return render(request, 'forgot-password.html')
 
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Password changed Succesussfuly')
+            return redirect('/')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'survey_managment/change_password.html', {'form': form})
 
 
 
@@ -438,6 +438,37 @@ def user_response(request, id, response_id):
     answers = Answer.objects.filter(response__in=user_responses)
     documents = Document.objects.all()     
     if request.method == 'POST':
+     if 'approve' in request.POST:  
+        survey = get_object_or_404(Survey, id=id)
+        userresponses = get_object_or_404(UserResponse, id=response_id)
+        userresponses.status = 'approved'
+        userresponses.save()
+        user_responses = UserResponse.objects.filter(id=response_id)
+        answers = Answer.objects.filter(response__in=user_responses)
+        for answer in answers:
+            answer.recommendation = ''
+            answer.save()
+        messages.success(request , 'Succussesfuly approved')
+        data = {
+              'survey_id': id,
+              'survey': survey,
+              'user_responses': user_responses,
+              'answers': answers,
+              'response_id' : response_id
+                }
+        return render(request, 'user_response.html', data)
+       
+     if 'done' in request.POST:
+        data = {
+              'survey_id': id,
+              'survey': survey,
+              'user_responses': user_responses,
+              'answers': answers,
+              'response_id' : response_id
+                }
+        userresponses.status = 'recomended'
+        return redirect('survey_managment:survey_detail' , id)
+     else :  
         recommendation = request.POST.get('recommendation')
         checkedResponse = request.POST.get('checkedResp') # the checkbox value holding the answer id to be recommended
         theAnswer = Answer.objects.filter(id=checkedResponse)     # the answer to be recommended
@@ -449,26 +480,6 @@ def user_response(request, id, response_id):
         'answers': answers,
         'documents': documents,
         'response_id': response_id
-    }
-
-
-    return render(request, 'user_response.html', data)
-
-
-def user_response_change_status(request, id , response_id):
-    survey = get_object_or_404(Survey, id=id)
-    userresponses = get_object_or_404(UserResponse, id=response_id)
-    userresponses.status = 'approved'
-    userresponses.save()
-    user_responses = UserResponse.objects.filter(id=response_id)
-    answers = Answer.objects.filter(response__in=user_responses)
-    messages.success(request , 'Succussesfuly approved')
-    data = {
-        'survey_id': id,
-        'survey': survey,
-        'user_responses': user_responses,
-        'answers': answers,
-        'response_id' : response_id
     }
     return render(request, 'user_response.html', data)
 
@@ -790,7 +801,7 @@ def questionForSurvey(request, id):
 
 
 @login_required
-def un_approved_survey_list(request):
+def recomended_survey_list(request):
     today = date.today()
     user = request.user 
     user = CustomUser.objects.get(username = user)
@@ -798,14 +809,14 @@ def un_approved_survey_list(request):
     print(user)
     print(line_ministry)
     data = {
-        "surveys" : Survey.objects.filter(userresponse__status='pending', for_line_ministry = line_ministry , userresponse__submitted_by = user),
+        "surveys" : Survey.objects.filter(userresponse__status='recomended', for_line_ministry = line_ministry , userresponse__submitted_by = user),
     }
-    return render(request, 'un_approved_survey_list.html', data)
+    return render(request, 'recomended_survey_list.html', data)
 
 
 
 @login_required
-def un_approved_survey(request, id):
+def recomended_survey(request, id):
     survey = get_object_or_404(Survey, id=id)
     user = request.user
     response = get_object_or_404(UserResponse, forsurvey=survey, submitted_by=user)
@@ -842,7 +853,7 @@ def un_approved_survey(request, id):
               objDoc.save()
            except :
               pass
-        return redirect ("survey_managment:un_approved_survey_list")   
+        return redirect ("survey_managment:recomended_survey_list")   
 
     context = {
         "questions" : questions , 
@@ -850,8 +861,17 @@ def un_approved_survey(request, id):
         "survey"  : survey,
         "documents" : Document.objects.all()
     }
-    return render(request, 'un_approved_survey.html', context)
+    return render(request, 'recomended_survey.html', context)
 
+
+@login_required
+def previous_analysis(request ):
+    previous_responses = UserResponse.objects.filter(submitted_by=request.user)
+
+    context = {
+        'previous_responses': previous_responses
+    }
+    return (request , 'previous_analysis.html' , context )
 
 
 def user_info(request):
