@@ -15,7 +15,7 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="container-fluid" style="background-color: #e3f2fd;">
+                        <div class="col-lg-12" style="background-color: #e3f2fd;" id="sectionA">
                             <div class="container-fluid" id="searchArea">
                                 <div class="d-flex">
                                     <a href="{% url 'survey_managment:Index' %}" style="text-decoration: none;">&#8249;
@@ -87,6 +87,7 @@
                                 </div>
                             </div>
                         </div>
+                    
                     </div>
                 </div>
             </div>
@@ -106,6 +107,8 @@
                     </div>
                 </div>
             </div>
+
+          
         </div>
     </div>
     
@@ -122,6 +125,8 @@
         var select_type = document.getElementById('select_type');
         var select_survey = document.getElementById('selectSurvey');
         var selectYear = document.getElementById("survey_year");
+        var sectionA = document.getElementById("sectionA");
+        var sectionB = document.getElementById("sectionB");
 
 
         function handleButtonClick(data) {
@@ -141,7 +146,6 @@
                 var surveyIds = data.surveys
   .filter(survey => selectedOptions.every(ministryId => survey.line_ministries.some(ministry => ministry.id === ministryId)))
   .map(survey => survey.id);
-  console.log("Hey");
   console.log(surveyIds);
                 // Iterate through the selected line ministries
                 selectedOptions.forEach(function (lineMinistryId) {
@@ -276,8 +280,15 @@ var survey = data.survey.find(function (survey) {
                 var select_survey = document.getElementById('selectSurvey');
                 const button = document.getElementById('getSelectedValuesBtn');
 
+                sectionA.addEventListener("change", function(event){
+                    console.log("attribute selected from sectionA");
 
+});
 
+sectionB.addEventListener("change", function(event){
+    console.log("attribute selected from sectionB");
+});
+  
                 select_type.addEventListener('change', function () 
                 {
                     var selectedSurveyTypeId = parseInt(select_type.value);
@@ -292,6 +303,7 @@ var survey = data.survey.find(function (survey) {
                         console.log('Selected Year:', selectedYear);
                         clearOptions(select_survey);
                     button.onclick = () => handleButtonClick(data);
+                    
                     if(selectedYear){
 
                     var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() ===  selectedYear);

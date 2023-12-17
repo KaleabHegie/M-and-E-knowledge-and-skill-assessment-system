@@ -318,8 +318,20 @@ def get_data(request):
     surveys = Survey.objects.all()
     data1 = []
     data2 = []
+    data3 = []
+    categories = Category.objects.all()
 
-    
+    for catagory in categories:
+        catagory_data = {
+           "name": catagory.name,
+           "has_parent": catagory.parent is not None ,
+            "parent_name" : catagory.parent.name if catagory.parent else None,
+            "questions" : []
+        }
+        questions = catagory.question_set.all()
+        for question in questions:
+            catagory_data["questions"].append(question.title)
+        data3.append(catagory_data)
     for survey in surveys:
         line_ministries = survey.for_line_ministry.all()
         line_ministry_data = []
@@ -337,6 +349,7 @@ def get_data(request):
         }
         
         data1.append(survey_data)
+    
 
     for survey in surveys:
             for_question = survey.question.all()
@@ -355,16 +368,38 @@ def get_data(request):
             }
             
             data2.append(surveys_data)
-    
+    questions = []
+    for question_obj in Question.objects.all():
+        question_info = {
+            'id' : question_obj.id,
+            'title': question_obj.title,
+            'has_category': question_obj.category is not None if question_obj.category else None,
+            'category_name': question_obj.category.name if question_obj.category else None,
+            'category_id': question_obj.category.id if question_obj.category else None,
+            'has_parent': question_obj.category.parent is not None if question_obj.category else None,
+            'parent_name': question_obj.category.parent.name if question_obj.category and question_obj.category.parent else None,
+            'parent_id': question_obj.category.parent.id if question_obj.category and question_obj.category.parent else None,
+            "label": question_obj.label,
+            "question_type": question_obj.question_type,
+            "has_weight": question_obj.has_weight,
+            "weight": question_obj.weight,
+            "allow_doc": question_obj.allow_doc,
+            "doc_label": question_obj.doc_label,
+            "order": question_obj.order
+
+        }
+        questions.append(question_info)
+            
     serialized_data = {
         'answer': list(Answer.objects.values()),
         'surveys': data1,
         'survey_questions' : data2 ,
+        'questions_with_their_category': data3,
         'line_ministry': list(Line_ministry.objects.values('id', 'name')),
         'users': list(CustomUser.objects.values()),
         'category': list(Category.objects.values()),
         'department': list(Department.objects.values()),
-        'questions': list(Question.objects.values()),
+        'questions': questions,
         'survey_type': list(SurveyType.objects.values()),
         'survey': list(Survey.objects.values()),
         'user_response': list(UserResponse.objects.values()),
