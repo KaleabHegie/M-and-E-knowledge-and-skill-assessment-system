@@ -46,7 +46,7 @@ def change_password(request):
     return render(request, 'survey_managment/change_password.html', {'form': form})
 
 
-
+@login_required
 def indexView(request):
     survey_id = request.GET.get('survey_id')
     if survey_id:
@@ -68,7 +68,7 @@ def indexView(request):
         survey_years = Survey.objects.order_by('created_at__year').values('created_at__year').distinct() 
         form = AnalysisForm()
        
-   
+        
 
 
 
@@ -217,14 +217,6 @@ def jsonSender(request):
     return JsonResponse(data)
 
 
-
-
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 64a6277dab80cb23649af2d6e12bd688b8ecb662
 def survey(request):
     data = {
         'surveys': Survey.objects.all(),
