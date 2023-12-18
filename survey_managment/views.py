@@ -56,11 +56,40 @@ def indexView(request):
         return render(request, 'index.html', context)
     
 
+def filter(request):
+    survey_id = request.GET.get('survey_id')
+    if survey_id:
+        survey = get_object_or_404(Survey, id=survey_id)
+        questionnaires = survey.question_set.all()
+        context = {
+            'survey': survey,
+            'questionnaires': questionnaires,
+        }
+        return render(request, 'index.html', context)
+   
+    else:
+        surveys = Survey.objects.all()
+        surveyType = SurveyType.objects.all()
+        surveys_count = Survey.objects.all().count()
+        questions = Question.objects.all().count()
+        Response = UserResponse.objects.all().count()
+        line_ministry = Line_ministry.objects.all()
+        survey_years = Survey.objects.order_by('created_at__year').values('created_at__year').distinct() 
+        form = AnalysisForm()
+       
+   
 
+
+
+        context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
+             'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
+      
+        return render(request, 'filter.html', context)
 
 ####### Message Views ################################
 
-
+def average(request):
+    return render(request , 'averages.html' )
 
 def inbox(request):
     if request.method == 'POST':
@@ -319,6 +348,30 @@ def get_data(request):
     data1 = []
     data2 = []
     data3 = []
+    data4 = []
+
+    userResponse = UserResponse.objects.all()
+    for response in userResponse:
+        respone_data = {
+            "id": response.id,
+            "forsurvey_id": response.forsurvey_id,
+            "submitted_by_id":response.submitted_by_id ,
+            "submitted_by_lineMinistry": ["hello"],
+            "submitted_at": response.submitted_at,
+            "year_of_experiance": response.year_of_experiance,
+            "department": response.department,
+            "age": response.age,
+            "status": response.status,
+            "line_ministry_id": response.line_ministry_id,
+        }
+        try:
+            user = CustomUser.objects.get(id=response.submitted_by_id)
+            line_ministry = user.Line_ministry.id
+            respone_data["submitted_by_lineMinistry"] = str(line_ministry)
+        except CustomUser.DoesNotExist:
+            respone_data["submitted_by_lineMinistry"] = None
+
+        data4.append(respone_data)
     categories = Category.objects.all()
 
     for catagory in categories:
@@ -330,7 +383,8 @@ def get_data(request):
         }
         questions = catagory.question_set.all()
         for question in questions:
-            catagory_data["questions"].append(question.title)
+            answer = question.id
+            catagory_data["questions"].append(answer)
         data3.append(catagory_data)
     for survey in surveys:
         line_ministries = survey.for_line_ministry.all()
@@ -386,7 +440,6 @@ def get_data(request):
             "allow_doc": question_obj.allow_doc,
             "doc_label": question_obj.doc_label,
             "order": question_obj.order
-
         }
         questions.append(question_info)
             
@@ -402,7 +455,7 @@ def get_data(request):
         'questions': questions,
         'survey_type': list(SurveyType.objects.values()),
         'survey': list(Survey.objects.values()),
-        'user_response': list(UserResponse.objects.values()),
+        'user_response': data4,
 
     }
     

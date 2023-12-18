@@ -44,7 +44,9 @@ urlpatterns = [
     path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
     path('get_json/',views.get_data,name='get_data'),
-   
+    path('filter_data/',views.filter,name='filter'),
+    path('average_data/',views.average,name='average'),
+
     path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),   
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),

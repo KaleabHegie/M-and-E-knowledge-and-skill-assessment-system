@@ -15,7 +15,7 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-12" style="background-color: #e3f2fd;" id="sectionA">
+                        <div class="col-lg-12" style="background-color: #e3f2fd;">
                             <div class="container-fluid" id="searchArea">
                                 <div class="d-flex">
                                     <a href="{% url 'survey_managment:Index' %}" style="text-decoration: none;">&#8249;
@@ -65,10 +65,8 @@
                                         <div class="form-group">
                                             <select class="select2" id="lineMinistrySelect" multiple="multiple"
                                                 data-placeholder="Select a Ministry" style="width: 100%;">
-                                                <option value="">Select Line Ministry</option>
-                                                {%for ministry in line_ministry%}
-                                                <option value="{{ministry.id}}">{{ministry.name}}</option>
-                                                {%endfor%}
+                                                <option selected="selected">select ministry</option>
+                                               
                                             </select>
                                         </div>
                                     </div>
@@ -122,9 +120,7 @@
         var select_type = document.getElementById('select_type');
         var select_survey = document.getElementById('selectSurvey');
         var selectYear = document.getElementById("survey_year");
-        var sectionA = document.getElementById("sectionA");
-        var sectionB = document.getElementById("sectionB");
-
+    
 
         function handleButtonClick(data) {
             var selectedSurvey = parseInt(select_survey.value);
@@ -276,15 +272,6 @@ var survey = data.survey.find(function (survey) {
                 var select_type = document.getElementById('select_type');
                 var select_survey = document.getElementById('selectSurvey');
                 const button = document.getElementById('getSelectedValuesBtn');
-
-                sectionA.addEventListener("change", function(event){
-                    console.log("attribute selected from sectionA");
-
-});
-
-sectionB.addEventListener("change", function(event){
-    console.log("attribute selected from sectionB");
-});
   
                 select_type.addEventListener('change', function () 
                 {
@@ -320,11 +307,45 @@ select_survey.appendChild(emptyOption);
                 }
 
                 });
+                
+
                 select_survey.addEventListener('change', function () {
-                    clearArrays(store_average);
+                    var selectedSurvey = select_survey.value;
+                                    console.log('Selected survey:', selectedSurvey);
+                                    var selectedSurveyId = parseInt(select_survey.value);
+                                    for (var i = 0; i < data.surveys.length; i++) {
+                                        if (data.surveys[i].id === selectedSurveyId) {
+                                            selectedSurvey = data.surveys[i];
+                                            break;
+                                        }
+                                    }
+                                    if (selectedSurvey) {
+                                        var lineMinistries = selectedSurvey.line_ministries;
+                                        while (select_ministry.firstChild) {
+                                            select_ministry.removeChild(select_ministry.firstChild)
+                                        }
+                                        var emptyOption = document.createElement("option");
+                                        emptyOption.value = "";
+                                        emptyOption.text = "-- Select an option --";
+                                        select_ministry.appendChild(emptyOption);
+                                        lineMinistries.forEach(function (lineMinistry) {
+                                            var ministry_option = document.createElement("option");
+                                            ministry_option.value = lineMinistry.id;
+                                            ministry_option.textContent = lineMinistry.name;
+                                            select_ministry.append(ministry_option)
+
+                                        });
+                                    }
+                                    else {
+                                        console.log('Selected survey not found');
+                                    }
+
+
+                   clearArrays(store_average);
                     clearArrays(store_user);
                     clearArrays(ministries);
                 });
+                
                 select_ministry.addEventListener('change', function () {
                    clearArrays(store_average);
                    clearArrays(store_user);
