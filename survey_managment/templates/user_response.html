@@ -30,8 +30,14 @@
 
       <div class="content-wrapper" style="background-color: white;">
         {% include 'includes/message.html'  %}
+     
+        
+
         <section class="container ">
+          <div class="">
             <div class="mt-3">
+              <form action="" name="recommendationForm" id="recommendationForm" method="post">
+                {%  csrf_token %}
               {% if user_responses %}
                 {% for response in user_responses %}
                  
@@ -45,48 +51,38 @@
                             <th>Weight</th>
                             <th>Answer</th>
                             <th>Document</th>
-                            
-                            <th>
-                              {% if response.status == 'pending' %}
-                              Recommendation
-                              {% endif %}
-                            </th>
-                           
+                            {% if response.status == 'pending' %}
+                              <th>Recommendation</th>
+                            {% endif %}
                           </tr>
                         </thead>
                         <tbody>
-                          {% for entry in collected.values %}
+                          {% for answer in answers %}
                             <tr>
-                              <td>{{ entry.Ans.forquestion }}</td>
-                              <td class="centerdtxt">{{ entry.Ans.forquestion.weight }}</td>
-                              <td class="centerdtxt">{{ entry.Ans.answertext }}</td>
+                              <td>{{ answer.forquestion }}</td>
+                              <td class="centerdtxt">{{ answer.forquestion.weight }}</td>
+                              <td class="centerdtxt">{{ answer.answertext }}</td>
                               <td>
-                                {% if entry.Doc %}
-                                    <a href="{{ entry.Doc.document.url }}" style="text-decoration: none; color: #137b53; font-weight: bold;">
-                                      {{ entry.Doc }}</a>
-                                  {% else %} 
-                                      <div class="centerdtxt"> -  </div>
+                                  {% if documents %}
+                                    <a href="{{ document.document.url }}" style="text-decoration: none; color: #137b53; font-weight: bold;">{{ document }}</a>
                                   {% endif %}
                               </td>
-                              <td class="centerdtxt">
                               {% if response.status == 'pending' %}
-                             
-                              
-                                <div class="opensModal"name="" value="{{entry.Ans}}" onclick="highlightRow(this)">
-                                  <i class="bi bi-patch-check"></i>                                  
-                                </div> 
-                                             
-                              {% endif %}
-                            </td> 
+                                <td class="centerdtxt">
+                                  <div class="opensModal" name="input_{{ answer.id }}" value="{{answer.id}}" onclick="highlightRow(this)">
+                                    <i class="bi bi-patch-check"></i>                                  
+                                  </div>                              {% endif %}
                             </tr>
                           {% endfor %}
                         </tbody>
                       </table>
                      
                       {% if response.status == 'pending' %}
-                      <a href="{% url 'survey_managment:user_response_change_status' survey_id response_id %}" class="btn mt-4"  style="float: right; background-color: #208c5c; color: white;">
-                        Approve
-                      </a> 
+                      <button type="submit" name="approve" class="btn mt-4"  style="float: right; background-color: #208c5c; color: white;">
+                        Approve</button>
+                        <button type="submit" name="done" class="btn mt-4"  style="float: left; background-color: #208c5c; color: white;">
+                          Send survey</button>
+                        
                     {% endif %}
                   
                 {% endfor %}
@@ -95,14 +91,13 @@
                 <p style="font-size: 1.2rem;">No responses found.</p>
               {% endif %}
             </div>
+          </div>
         </section>
-      
       
         <!-- Recommendation Modal -->
         <div class="modal fade" id="RecommendationModal" tabindex="-1"  aria-hidden="true">
           <div class="modal-dialog">
-            <form action="" name="recommendationForm" id="recommendationForm" method="post">
-              {%  csrf_token %}
+     
               <div class="modal-content">
                 <div class="modal-header">
                   <h1 class="modal-title fs-5" id="">Write Recommendation</h1>

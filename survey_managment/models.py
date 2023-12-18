@@ -76,6 +76,7 @@ class UserResponse(models.Model):
     STATUS_CHOICES = [
         ('approved', 'Approved'),
         ('pending', 'Pending'),
+        ('recomended', 'Recomended'),
     ]
 
     forsurvey = models.ForeignKey("Survey", on_delete=models.CASCADE, null=True, blank=True)
@@ -95,7 +96,6 @@ class Answer(models.Model):
     forquestion=models.ForeignKey("Question", on_delete=models.CASCADE , null=True , blank=True)
     answertext= models.CharField(max_length=500)
     recommendation = models.TextField(null=True, blank=True)
-    
     def __str__(self) -> str:
         return self.answertext
     
@@ -108,9 +108,22 @@ class Document(models.Model):
         return self.document.name
 
 
-class Document(models.Model):
-    foranswer = models.ForeignKey(Answer , on_delete=models.CASCADE)    
-    document = models.FileField(upload_to='') 
+class ContactUs(models.Model):
+    STATUS_CHOICES = (
+        ('sent', 'Sent'),
+        ('draft', 'Draft'),
+        ('inbox', 'Inbox'),
+        ('trash', 'Trash'),
+    )
+
+    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=254)
+    subject = models.CharField(max_length=150)
+    message = models.TextField()
+    sent_at = models.DateTimeField(auto_now=True, null=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES , null=True)
+    read = models.BooleanField(default=False)
     
-    def __str__(self) -> str:
-        return self.document.name
+
+    def __str__(self):
+        return self.name

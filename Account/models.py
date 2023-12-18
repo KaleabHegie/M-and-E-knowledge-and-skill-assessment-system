@@ -18,6 +18,7 @@ class CustomUser(AbstractUser):
     Line_ministry = models.ForeignKey("Line_ministry",on_delete=models.CASCADE,null=True,blank=True)
     is_mopd_head = models.BooleanField(null=True , blank=True)
     is_line_minister_head  = models.BooleanField(null=True , blank=True)
+    is_first_time = models.BooleanField(default=True)
     
     EMAIL_FIELD = 'email'
 

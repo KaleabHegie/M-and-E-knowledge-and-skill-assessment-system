@@ -125,42 +125,18 @@
     <section id="hero" class="hero mt-3 align-items-center">
      
     <div class="container">
-      <div class="text-center mb-5">
-        <h3  style="font-size: 40px;color:rgb(9, 109, 9);font-weight: bold;">Unapproved Survey Lists</h3>
+      <div class="text-center mb-3 mt-3">
+        {% include "includes/greetingSurveyNav.html"%}
+        <h3  style="font-size: 40px;color:rgb(9, 109, 9);font-weight: bold;">Analysis</h3>
       </div>
 
 
       <div class="row">
+ 
 
-       {% if surveys %}
-      
-            {% for survey in surveys  %}
-            <div class="col-md-3 col-sm-6 col-12 p-1">
-              <a href="{% url 'survey_managment:un_approved_survey' id=survey.id %}" style="color: black;text-decoration:none;">
-                <div class="info-box shadow">
-                  <span class="info-box-icon" style="color: rgb(9, 109, 9);">
-                    <i class="far fa-copy"></i>
-                  </span>                   
-                  <div class="info-box-content">
-                        <span class="info-box-text">{{ survey.name }}</span>
-                        <span class="info-box-number">{{  survey.start_at | date:'b, d' | capfirst }} - {{  survey.end_at | date:'b, d' | capfirst }}</span>
-                        <span class="info-box-number">{{  survey.start_at.year }}</span>
-                    </div>
-                </div>
-            </a>
-            </div>
-            {% endfor %}
-
-            {% else %}
-            <div class="container-fluid" style="display: flex; align-items: center;">
-              <p style="margin: auto; color: darkgray;">No surveys found. Your Unapproved survyes will occure here.</p>
-            </div>
-
-            {% endif %}
-
-          </div>
-
-    </div>
+          
+             
+       </div>
     </section>
     <!-- End Hero -->
     <!-- ======= Services Section ======= -->
@@ -192,5 +168,8 @@
 
     <!-- Template Main JS File -->
     <script src="{% static 'assets/js/main.js' %}"></script>
+
+
+    
   </body>
 </html>

@@ -184,7 +184,9 @@ def change_password(request):
     if request.method == 'POST':
         form = CustomPasswordChangeForm(request.user, request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.is_first_time = False
+            user.save()
             return redirect('Account:Login')
     else:
         form = CustomPasswordChangeForm(request.user)

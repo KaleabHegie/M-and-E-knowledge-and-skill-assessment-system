@@ -11,21 +11,18 @@
         {% include 'includes/topNavbar.html' %}
         {% include 'includes/sideNavbar.html' %}
 
-        <div class="content-wrapper ">
+        <div class="content-wrapper">
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="container-fluid" style="background-color: #e3f2fd;">
+                        <div class="col-lg-12" style="background-color: #e3f2fd;">
                             <div class="container-fluid" id="searchArea">
                                 <div class="d-flex">
                                     <a href="{% url 'survey_managment:Index' %}" style="text-decoration: none;">&#8249;
                                         Back</a>
                                     <h2 class="textS" style="margin: auto;"> Compare Here </h2>
                                 </div>
-
-
                                 <div class="row ">
-                                    
                                     <div class="form-group col-lg-4 col-sm-12">
                                         <label class="textS">Survey Type</label>
                                         <select class="form-select " id="select_type">
@@ -68,10 +65,8 @@
                                         <div class="form-group">
                                             <select class="select2" id="lineMinistrySelect" multiple="multiple"
                                                 data-placeholder="Select a Ministry" style="width: 100%;">
-                                                <option value="">Select Line Ministry</option>
-                                                {%for ministry in line_ministry%}
-                                                <option value="{{ministry.id}}">{{ministry.name}}</option>
-                                                {%endfor%}
+                                                <option selected="selected">select ministry</option>
+                                               
                                             </select>
                                         </div>
                                     </div>
@@ -87,6 +82,7 @@
                                 </div>
                             </div>
                         </div>
+                    
                     </div>
                 </div>
             </div>
@@ -106,6 +102,8 @@
                     </div>
                 </div>
             </div>
+
+          
         </div>
     </div>
     
@@ -122,7 +120,7 @@
         var select_type = document.getElementById('select_type');
         var select_survey = document.getElementById('selectSurvey');
         var selectYear = document.getElementById("survey_year");
-
+    
 
         function handleButtonClick(data) {
             var selectedSurvey = parseInt(select_survey.value);
@@ -141,7 +139,6 @@
                 var surveyIds = data.surveys
   .filter(survey => selectedOptions.every(ministryId => survey.line_ministries.some(ministry => ministry.id === ministryId)))
   .map(survey => survey.id);
-  console.log("Hey");
   console.log(surveyIds);
                 // Iterate through the selected line ministries
                 selectedOptions.forEach(function (lineMinistryId) {
@@ -275,9 +272,7 @@ var survey = data.survey.find(function (survey) {
                 var select_type = document.getElementById('select_type');
                 var select_survey = document.getElementById('selectSurvey');
                 const button = document.getElementById('getSelectedValuesBtn');
-
-
-
+  
                 select_type.addEventListener('change', function () 
                 {
                     var selectedSurveyTypeId = parseInt(select_type.value);
@@ -292,6 +287,7 @@ var survey = data.survey.find(function (survey) {
                         console.log('Selected Year:', selectedYear);
                         clearOptions(select_survey);
                     button.onclick = () => handleButtonClick(data);
+                    
                     if(selectedYear){
 
                     var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() ===  selectedYear);
@@ -311,11 +307,45 @@ select_survey.appendChild(emptyOption);
                 }
 
                 });
+                
+
                 select_survey.addEventListener('change', function () {
-                    clearArrays(store_average);
+                    var selectedSurvey = select_survey.value;
+                                    console.log('Selected survey:', selectedSurvey);
+                                    var selectedSurveyId = parseInt(select_survey.value);
+                                    for (var i = 0; i < data.surveys.length; i++) {
+                                        if (data.surveys[i].id === selectedSurveyId) {
+                                            selectedSurvey = data.surveys[i];
+                                            break;
+                                        }
+                                    }
+                                    if (selectedSurvey) {
+                                        var lineMinistries = selectedSurvey.line_ministries;
+                                        while (select_ministry.firstChild) {
+                                            select_ministry.removeChild(select_ministry.firstChild)
+                                        }
+                                        var emptyOption = document.createElement("option");
+                                        emptyOption.value = "";
+                                        emptyOption.text = "-- Select an option --";
+                                        select_ministry.appendChild(emptyOption);
+                                        lineMinistries.forEach(function (lineMinistry) {
+                                            var ministry_option = document.createElement("option");
+                                            ministry_option.value = lineMinistry.id;
+                                            ministry_option.textContent = lineMinistry.name;
+                                            select_ministry.append(ministry_option)
+
+                                        });
+                                    }
+                                    else {
+                                        console.log('Selected survey not found');
+                                    }
+
+
+                   clearArrays(store_average);
                     clearArrays(store_user);
                     clearArrays(ministries);
                 });
+                
                 select_ministry.addEventListener('change', function () {
                    clearArrays(store_average);
                    clearArrays(store_user);

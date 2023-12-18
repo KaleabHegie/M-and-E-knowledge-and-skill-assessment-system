@@ -8,26 +8,47 @@
 
 
 <style>
-  body{
-      margin-top:20px;
-    }
+  .container.main {
+      padding-top: 50px;
+  }
 
-    .avatar{
-    width:200px;
-    height:200px;
-    }	
+  .card.shadow {
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 
-    .line{
-      border-top: 7px solid #40916c;
-      border-radius: 15px;
-    }
+  .card-header {
+      background-color: #f8f9fa;
+      border-bottom: none;
+  }
 
-    .main{
-      padding-top: 25px;
-    }
+  .card-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #17a2b8;
+      margin-bottom: 0;
+  }
 
+  .form-group label {
+      font-weight: bold;
+      color: #333;
+  }
+  #btn-custom {
+    background-color: #208c5c;
+    border-color: ##208c5c;
+    color: #fff;
+    padding: 10px 25px;
+    margin-bottom:20px ;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+#btn-custom:hover {
+    background-color: primary;
+    transform: translateY(-2px);
+}
 </style>
-
 
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -37,37 +58,31 @@
       {% include 'includes/sideNavbar.html' %}
 
       <div class="content-wrapper">
-        <div class="content-header">
-          <div class="container-fluid">
-               <!-- update_users.html -->
-
-  
-  
-          </div>
-        </div>
+       
 
         
         <section class="container-fluid " >
 
 
              
-          <div class="container main ">
+          <div class="container main">
             <div class="row justify-content-center">
-                <div class="col-lg-8 card shadow ">
-                <h3 class="text-info text-center m-3"> Add New Line Ministry <h3>
+                <div class="col-lg-8 card shadow">
+                    <div class="card-header">
+                        <h3 class="card-title text-center">Add New Line Ministry</h3>
+                    </div>
                     <form class="gap-5" method="POST">
                         {% csrf_token %}
-                        <div class="form-group">
-                          <label for="{{ form.name.id_for_label }}">Name:</label>
-                          {{ form.name }}
+                        <div class="form-group mt-4">
+                            <label for="{{ form.name.id_for_label }}">Name:</label>
+                            {{ form.name }}
                         </div>
-                        <button type="submit" class="btn btn-primary">Add</button>
-                      </form>
+                        <button id="btn-custom" type="submit" class="btn  btn-custom">Add</button>
+                    </form>
                 </div>
             </div>
-
-          </div>
-            
+        </div>
+        
         </section>
       </div>
 
@@ -77,6 +92,7 @@
     {% include "includes/scripts.html" %}
 
   </body>
+  
 
   </html>
 
