@@ -96,7 +96,6 @@ class Answer(models.Model):
     forquestion=models.ForeignKey("Question", on_delete=models.CASCADE , null=True , blank=True)
     answertext= models.CharField(max_length=500)
     recommendation = models.TextField(null=True, blank=True)
-
     def __str__(self) -> str:
         return self.answertext
     
