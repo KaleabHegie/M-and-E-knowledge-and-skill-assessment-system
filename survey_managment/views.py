@@ -77,7 +77,7 @@ def filter(request):
         survey_years = Survey.objects.order_by('created_at__year').values('created_at__year').distinct() 
         form = AnalysisForm()
        
-   
+        
 
 
 
@@ -925,6 +925,7 @@ def previous_analysis(request ):
         'previous_responses': previous_responses
     }
     return (request , 'previous_analysis.html' , context )
+
 
 
 def user_info(request):
