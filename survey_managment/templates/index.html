@@ -2,12 +2,36 @@
 
 <!DOCTYPE html>
 <html lang="en">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {% include "includes/head.html" %}
 
 <link rel="stylesheet" href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css" />
 
 <style>
+    .nav-tabs>.nav-item>a {
+        color:#208c5c;
+    }
+
+    .truncate-text {
+    max-width: 150px; /* Adjust the maximum width as needed */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    }
+
+    canvas {
+      max-width: 200px; /* Set a maximum width for the chart canvas */
+    }
+
+    .highcharts-tooltip > span {
+    background: white;
+    border: 1px solid silver;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px #888;
+    padding: 8px;
+    }
+
     .limited-width {
         max-width: 500px;
         white-space: nowrap;
@@ -106,16 +130,18 @@
         {% include 'includes/sideNavbar.html' %}
         
         <div class="content-wrapper" style="background-color: white">
-            <ul class="nav nav-tabs" style="margin: 10px;">
+            <ul class="nav nav-tabs" style="margin: 10px; justify-content: center;">
                 <li class="nav-item">
-                    <a class="nav-link active shadow" aria-current="page" href="#"
+                    <a class="nav-link active" aria-current="page" href="#"
                         style="background-color: transparent;">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'survey_managment:filter' %}">Filter</a>
+                    <a class="nav-link" aria-current="page" 
+                    href="{% url 'survey_managment:filter' %}"
+                    style="background-color: transparent;" >Filter</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active shadow" aria-current="page"  href="{% url 'survey_managment:average' %}"
+                    <a class="nav-link" aria-current="page"  href="{% url 'survey_managment:average' %}"
                     style="background-color: transparent;">Average</a>
                 </li>
             </ul>
@@ -123,7 +149,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-8">
-                            <div class="card shadow hidden-transition">
+                            <div class=" hidden-transition">
                                 <!-- <div class="card-body">
                                     <figure class="highcharts-figure">
                                         <div id="splineChart"></div>
@@ -131,16 +157,36 @@
                                         </p>
                                     </figure>
                                 </div> -->
-                            <table>
-                                <thead>
-                                    <th></th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                    <table class="table table-borderless">
+                                        <caption>List of Line Ministries</caption>
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th colspan="2">System Assessment</th>
+                                                <th colspan="2">Skill Assessment</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                    
+                                        {% for i in line_ministry %}
+                                        <tr>
+                                            <td data-bs-toggle="tooltip" class="truncate-text"
+                                                data-bs-placement="top" title="{{ i.name }}">{{ i.name }}</td>
+                                            <td>1</td>
+                                            <td>
+                                                <canvas class="sparkline-chart" 
+                                                data-sparkline="56, 12, 8, 25" width="100" height="30"></canvas>
+                                            </td>
+                                            <td>1</td>
+                                            <td>
+                                                <canvas class="sparkline-chart" 
+                                                data-sparkline="56, 12, 8, 25" width="100" height="30"></canvas>
+                                            </td>                                        
+                                        </tr>
+                                        {% endfor %}
+                                        
+                                        </tbody>
+                                    </table>
                             </div>
                         </div>
 
@@ -291,6 +337,9 @@
 
     {% include "includes/scripts.html" %}
     <script>
+        $(function () { $('[data-bs-toggle="tooltip"]').tooltip() })
+    </script>
+    <script>
 
         new DataTable('#surveys', {
             order: [[2, 'asc']],
@@ -300,6 +349,38 @@
         });
         
     </script>
+  <script>
+    // Retrieve the sparkline chart data from the data-sparkline attribute
+    var sparklineData = document.querySelectorAll('canvas[data-sparkline]');
+    sparklineData.forEach(function(canvas) {
+      var data = canvas.getAttribute('data-sparkline').split(',').map(Number);
+      var ctx = canvas.getContext('2d');
+
+      // Create the sparkline chart using Chart.js
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['', '', '', ''], // Add empty labels to match the data points
+          datasets: [{
+            data: data,
+            fill: false,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            tension: 0.4
+          }]
+        },
+        options: {
+          maintainAspectRatio: false, // Allow the chart to exceed the canvas size
+          legend: {
+            display: false // Hide the legend
+          },
+          scales: {
+            x: { display: false }, // Hide the x-axis
+            y: { display: false } // Hide the y-axis
+          }
+        }
+      });
+    });
+  </script>
 
 </body>
 
