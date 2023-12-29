@@ -144,19 +144,37 @@
           </li>
         </ul>
       </li>
+
       <li class="nav-item">
-        <a href="{%url 'survey_managment:survey'%}" class="nav-link">
-          <i class="nav-icon fas fa-copy"></i>
-          <p>Survey</p>
-        </a>
+        <a href="#" class="nav-link">
+          <i class="nav-icon fas fa-users"></i>
+         <p> Evaluation <i class="fas fa-angle-left right"></i></p>
+       </a>
+      
+        <ul class="nav nav-treeview">
+          <li class="nav-item ml-2">
+            <a href="{% url 'survey_managment:survey'%}" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>Survey </p>
+            </a>
+          </li>
+          <li class="nav-item ml-2">
+            <a href="{% url 'survey_managment:QuestionCategories' %}" class="nav-link">
+              <i class="nav-icon fa-solid fa-chart-bar"></i>
+              <p class="">Question Category </p>
+            </a>
+          </li>
+          <li class="nav-item ml-2">
+            <a href="{%url 'survey_managment:pending_response'%}" class="nav-link">
+              <i class="nav-icon fas fa-spinner"></i>
+              <p>Pending Responses</p>
+              <span class="badge bg-primary ml-2 "> {{ pending_responses }}</span>
+            </a>
+          </li>
+        
+        </ul>
       </li>
-      <li class="nav-item">
-        <a href="{%url 'survey_managment:pending_response'%}" class="nav-link">
-          <i class="nav-icon fas fa-spinner"></i>
-          <p>Pending Responses</p>
-          <span class="badge bg-primary ml-2 "> {{ pending_responses }}</span>
-        </a>
-      </li>
+    
     </ul>
   </nav>
 </div>
