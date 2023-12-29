@@ -4,7 +4,7 @@
 
 {% include 'includes/head.html' %}
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" >
     <style>
         .custom-list {
             display: grid;
@@ -42,8 +42,9 @@
         justify-content: space-between;
         padding: 1.25rem;
         margin: 1rem;
-        box-shadow: 4px 4px 16px #E1E1E1, -2px -2px 16px #FFF;
-        border-radius: 2rem;
+        border: 1px solid gray;
+        /* box-shadow: 4px 4px 16px #E1E1E1, -2px -2px 16px #FFF;
+        border-radius: 2rem; */
         cursor: grab;
        }
 
@@ -83,7 +84,7 @@
         {% include 'includes/sideNavbar.html' %}
         
 
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="background-color: white;">
 
             {% include "includes/message.html" %}
 
@@ -115,7 +116,7 @@
                                     
                                     <ul class="custom-list">
                                         <li class="nav-item">
-                                            <a href="{% url 'survey_managment:newQuestion' questionType='text'  s_id=zsurvey.id %}" class="nav-link" title="Text" 
+                                            <a href="" id="oneT" class="nav-link" title="Text" 
                                                data-bs-placement="right"> 
                                                 <i class="bi bi-textarea-t"></i> Text
                                             </a>
@@ -190,19 +191,31 @@
                         {% if questions %}
                         {% for question in questions %}
                             <div class="drop_card">
-                            <div class="question-title p-3">{{ question.title }}</div>
-                            {% if question.label %} <p class="pl-3">{{ question.label }}</p> {% endif %}  
+                                <button type="button" class="btn" style="float: right;">    
+                                    <i class="bi bi-pencil "></i>
+                                </button>
+                            <div class="question-title p-3">
+                                {% if question.order == 0 %}
+                                    <span> - </span>
+                                {% else %}
+                                    <span> {{question.order}}  , </span>
+                                {% endif %}
+                                <span>  {{ question.title }} </span> 
+                            </div>
+                            {% if question.label %}
+                                 <p class="pl-3">{{ question.label }}</p> 
+                            {% endif %}  
 
                             {% if question.choice.all %}
                             <ul class="question-options pl-3">
                                 {% for choice in question.choice.all %}
                                 <li class="question-option" >
-                                    <input type="checkbox" name="" id="" value="{{choice.id}}"> {{ choice.name }}
+                                    <input class="form-check-input mt-0" type="checkbox" name="" id="" value="{{choice.id}}"> {{ choice.name }}
                                 </li>
                                 {% endfor %}
                             </ul>
                             {% else %}
-                                <input type="{{ question.question_type }}" name="dynamic_field" value="" class="pl-3 inputs">                            
+                                <input type="{{ question.question_type }}" name="dynamic_field" value="" class="ml-3 form-control">                            
                             {% endif %}
 
                             {% if question.allow_doc %}
@@ -242,6 +255,10 @@
     chosenClass: "sortable-chosen",
     dragClass: "sortable-drag",
 });
+
+    document.getElementById('oneT').addEventListener('click', function(){
+        
+    })
 </script>
 
 
