@@ -74,7 +74,7 @@ def filter(request):
         questions = Question.objects.all().count()
         Response = UserResponse.objects.all().count()
         line_ministry = Line_ministry.objects.all()
-        survey_years = Survey.objects.order_by('created_at').values_list('created_at__year', flat=True).distinct()      
+        survey_years = Survey.objects.order_by('created_at__year').values('created_at__year').distinct() 
         form = AnalysisForm()
        
         
