@@ -943,6 +943,7 @@ def previous_analysis(request ):
     return (request , 'previous_analysis.html' , context )
 
 
+
 def user_info(request):
     if request.method == 'POST':
         form = UserResponseFormA(request.POST)
