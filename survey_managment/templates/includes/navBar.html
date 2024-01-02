@@ -6,7 +6,10 @@
       <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#about" style="color: rgb(9, 109, 9);">About</a></li>
       <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#values" style="color: rgb(9, 109, 9);">Values</a></li>
       <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#features" style="color: rgb(9, 109, 9);">Features</a></li>
-      <li><a class="nav-link scrollto" href="{% url 'survey_managment:surveylists' %}" style="color: rgb(9, 109, 9);">Surveys</a></li>
+      <li><a class="nav-link scrollto" href="{% url 'survey_managment:surveylists' %}" style="color: rgb(9, 109, 9);">
+      
+        <span class="badge badge-warning navbar-badge ml-2" style="position: absolute; top: -5px; right: -12px;">{{ surveys_count }}</span> Surveys</a></li>
+      
       <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#contact" style="color: rgb(9, 109, 9);">Contact</a></li>
 
 

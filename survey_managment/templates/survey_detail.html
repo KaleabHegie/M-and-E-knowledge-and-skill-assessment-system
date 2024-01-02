@@ -56,6 +56,10 @@
                     <!-- <a class="nav-link" href="{% url "survey_managment:user_response_list" id=survey_id %}">User Response</a> -->
                     <a class="nav-link" href="#timeline" data-toggle="tab">User Response</a>
                   </li>
+                  <li class="nav-item">
+                    <!-- <a class="nav-link" href="{% url "survey_managment:user_response_list" id=survey_id %}">User Response</a> -->
+                    <a class="nav-link" href="#for_line_ministries" data-toggle="tab">For Line Ministries</a>
+                  </li>
                 </ul>
               </div>
 
@@ -66,7 +70,7 @@
                   <div class="active tab-pane" id="QuestionList">
                     <h4 class="text-center text-info mt-3">
                       Questions for survey {{ survey.name }}
-                 </h4>
+                     </h4>
                  {% if questions %}
                  <ul class="list-group">
                   <div class="card mb-3 shadow">
@@ -133,6 +137,21 @@
                       {% else %}
                         <p style="font-size: 1.2rem;">No responses found.</p>
                       {% endif %}
+                    </div>
+                  </div>
+
+                  <div class="tab-pane" id="for_line_ministries">
+                    <div class="container card shadow mt-2">
+                      <h4 class="text-center text-info mb-3">
+                        For Line Ministries
+                    </h4>
+                        {% for line_ministrie  in line_ministries  %}
+                          
+                          <div class="card shadow p-2 m-3">
+                             <h5> {{line_ministrie}} </h5>
+                          </div>
+                         
+                        {% endfor %}
                     </div>
                   </div>
 
