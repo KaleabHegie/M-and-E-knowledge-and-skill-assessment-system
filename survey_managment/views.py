@@ -512,6 +512,8 @@ def user_response(request, id, response_id):
         return render(request, 'user_response.html', data)
        
      if 'done' in request.POST:
+        survey = get_object_or_404(Survey, id=id)
+        userresponses = get_object_or_404(UserResponse, id=response_id)
         data = {
               'survey_id': id,
               'survey': survey,
@@ -542,7 +544,8 @@ def survey_detail(request, id):
         'survey_id': id,
         'survey': Survey.objects.get(id=id),
         'user_responses': UserResponse.objects.filter(forsurvey_id=id),
-        'questions': Survey.objects.get(id=id).question.all()
+        'questions': Survey.objects.get(id=id).question.all(),
+        'line_ministries' : Survey.objects.get(id=id).for_line_ministry.all()
     }
     return render(request, 'survey_detail.html', data)
 
@@ -791,13 +794,18 @@ def greetingpage_view(request):
         contact.subject = request.POST.get('subject')
         contact.message = request.POST.get('message')
         contact.status = 'inbox'
+        line_ministry = request.user.Line_ministry
+        user = request.user 
+        user = CustomUser.objects.get(username = user)
+    
 
         # Save the new object to the database
         contact.save()
         messages.success(request, 'Thank you for contacting us. Your Message is submitted succussesfuly.')
     context ={
-        
+        'surveys_count' : Survey.objects.filter(userresponse__status='recomended', for_line_ministry = line_ministry , userresponse__submitted_by = user).count(),
     }
+    
     return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
 
 
@@ -878,8 +886,8 @@ def recomended_survey_list(request):
     print(user)
     print(line_ministry)
     data = {
-        "surveys" : Survey.objects.filter(userresponse__status='recomended', for_line_ministry = line_ministry , userresponse__submitted_by = user),
-    }
+        "surveys" : Survey.objects.filter(userresponse__status='recomended', for_line_ministry = line_ministry , userresponse__submitted_by = user)
+        }
     return render(request, 'recomended_survey_list.html', data)
 
 

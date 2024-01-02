@@ -50,15 +50,17 @@
                             <th>Question</th>
                             <th>Weight</th>
                             <th>Answer</th>
-                            <th>Document</th>
-                            {% if response.status == 'pending' %}
+                            <th>
+                                Document    
+                            </th>
+                            {% if response.status == 'pending' or 'recomended' %}
                               <th>Recommendation</th>
                             {% endif %}
                           </tr>
                         </thead>
                         <tbody>
                           {% for answer in answers %}
-                            <tr>
+                            <tr  {% if answer.recommendation %}class="table-success"{% endif %}>
                               <td>{{ answer.forquestion }}</td>
                               <td class="centerdtxt">{{ answer.forquestion.weight }}</td>
                               <td class="centerdtxt">{{ answer.answertext }}</td>
@@ -67,17 +69,24 @@
                                     <a href="{{ document.document.url }}" style="text-decoration: none; color: #137b53; font-weight: bold;">{{ document }}</a>
                                   {% endif %}
                               </td>
-                              {% if response.status == 'pending' %}
+                              {% if response.status == 'pending' or 'recomended' %}
                                 <td class="centerdtxt">
                                   <div class="opensModal" name="input_{{ answer.id }}" value="{{answer.id}}" onclick="highlightRow(this)">
                                     <i class="bi bi-patch-check"></i>                                  
-                                  </div>                              {% endif %}
+<<<<<<< HEAD
+                                  </div> 
+                                </td> 
+                                {% endif %}
+=======
+                                  </div>          
+                                </td>                    {% endif %}
+>>>>>>> 442bac16117518b0c906b350c25caf34040fde83
                             </tr>
                           {% endfor %}
                         </tbody>
                       </table>
                      
-                      {% if response.status == 'pending' %}
+                      {% if response.status == 'pending' or 'recomended' %}
                       <button type="submit" name="approve" class="btn mt-4"  style="float: right; background-color: #208c5c; color: white;">
                         Approve</button>
                         <button type="submit" name="done" class="btn mt-4"  style="float: left; background-color: #208c5c; color: white;">
