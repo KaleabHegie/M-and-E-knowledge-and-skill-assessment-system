@@ -34,6 +34,7 @@ urlpatterns = [
     path('catagorizedQuestion/<int:id>/', views.catagorizedQuestion, name='catagorizedQuestion'),
     path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),
     path('questionCreationByType/<int:survey_id>/', views.questionCreationByType, name='questionCreationByType'),
+    path('QuestionCategories/', views.QuestionCategories, name='QuestionCategories'),
     path('survey/', views.survey, name='survey'),
     path("pending_response/",views.pending_response,name ='pending_response'),
     path('survey_detail/<int:id>', views.survey_detail, name='survey_detail'),

@@ -169,9 +169,9 @@
                                             id="general_Survey_Info">
                                             <thead>
                                                 <th> Survey Name </th>
-                                                <th> Total Weight </th>
-                                                <th> Total Answer </th>
-                                                <th> Weighted Sum </th>
+                                                <th id="total_weight"> Total Weight </th>
+                                                <th id="total_answer"> Total Answer </th>
+                                                <th id="weighted_sum"> Weighted Sum </th>
                                                 <th> Average </th>
 
 
@@ -264,26 +264,10 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
-                            <div class="card shadow hidden-transition">
-                                <div class="card-body">
-                                    <div class="flex-fill">
-                                        <div class="form-group">
-                                            <select class="form-control " style="width: 100%;">
-                                                <option selected="selected">choose chart</option>
-                                                <option>Radial bar chart </option>
-                                                <option>California</option>
-
-                                            </select>
-                                        </div>
-                                        <figure class="highcharts-figure mb-0">
-                                            <!-- <div id="pieChart"></div> -->
-                                        </figure>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </div>
 
-                        <div class="col-lg-7 col-md-6">
+                        <div class="col-lg-12 col-md-12">
                             <div class="card shadow hidden-transition">
                                 <div class="card-body">
                                     <div class="form-group">
@@ -295,8 +279,8 @@
                                             {%endfor%}
                                         </select>
                                     </div>
-                                    <button id="getSelectedValuesBtn" class="btn btn-primary">Get Selected
-                                        Values</button>
+                                    <button id="getSelectedValuesBtn" class="btn" style="background-color: #5fb68f;">Show selected Ministry Data </button>
+                                      
                                     <figure class="highcharts-figure mb-0">
                                         <div id="barCharts"></div>
                                         <p class="highcharts-description"></p>
@@ -309,26 +293,21 @@
             </section>
         </div>
     </div>
-
-
-
-    {% include "includes/scripts.html" %}
+{% include "includes/scripts.html" %}
     <script>
 
-        new DataTable('#survey_detail', {
-            order: [[2, 'asc']],
-            rowGroup: {
-                dataSrc: 2
-            }
-        });
-        new DataTable('#surveys', {
-            order: [[2, 'asc']],
-            rowGroup: {
-                dataSrc: 2
-            }
-        });
-
-
+        // new DataTable('#survey_detail', {
+        //     order: [[2, 'asc']],
+        //     rowGroup: {
+        //         dataSrc: 2
+        //     }
+        // });
+        // new DataTable('#surveys', {
+        //     order: [[2, 'asc']],
+        //     rowGroup: {
+        //         dataSrc: 2
+        //     }
+        // });
         var store_average = [];
         var store_survey_name = [];
         var ministry_info = [];
@@ -356,6 +335,9 @@
                 button.onclick = () => handleButtonClick(data);
                 // Populate the survey type options
                 data.survey_type.forEach(surveyType => {
+                    var emptyOption = document.createElement("option");
+                            emptyOption.value = "";
+                            emptyOption.text = "-- Select an option --";
                     var option = document.createElement('option');
                     option.value = surveyType.id;
                     option.textContent = surveyType.name;
@@ -388,8 +370,9 @@
                             selectElement.appendChild(emptyOption);
                             surveys.forEach(survey => {
                                 var option = document.createElement("option");
-                                option.value = '';
-                                option.textContent = 'Select Survey';
+                                var emptyOption = document.createElement("option");
+                            emptyOption.value = "";
+                            emptyOption.text = "-- Select Survey --";
                                 option.value = survey.id;
                                 option.textContent = survey.name;
                                 selectElement.appendChild(option);
@@ -558,7 +541,16 @@
                             });
 
                         }
+                        
                         else if (selectedSurveyTypeId && !myCheckbox.checked || selectYear) {
+
+                            
+                            var total_weight = document.getElementById('total_weight');
+                            var total_answer = document.getElementById('total_answer');
+                            var weighted_sum = document.getElementById('weighted_sum');
+                            total_answer.style.display = 'none';
+                            total_weight.style.display = 'none';
+                            weighted_sum.style.display = 'none';
                             var survey_s = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() === selectedYear);
                             if (survey_s) {
                                 var lineMinistries = []
@@ -572,9 +564,12 @@
                                 var uniqueLineMinistries = lineMinistries.filter((ministry, index, self) =>
                                     index === self.findIndex(m => m.name === ministry.name)
                                 );
-
+                                
                                 uniqueLineMinistries.forEach(function (lineMinistry) {
+                                    
                                     var ministry_option = document.createElement("option");
+                                    ministry_option.value = "";
+                            ministry_option.text = "-- Select an option --";
                                     ministry_option.value = lineMinistry.id;
                                     ministry_option.textContent = lineMinistry.name;
                                     select_ministry.append(ministry_option)
@@ -673,7 +668,7 @@
                                         }
 
                                         var average = total_weightedinPercent / count;
-
+                                       
                                         if (average) {
 
                                             var totalRow = surveyTableBody_3.insertRow();
@@ -683,12 +678,6 @@
                                             var surveyName = survey ? survey.name : "survey not found";
                                             store_survey_name.push(surveyName);
                                             totalRow.insertCell().textContent = surveyName;
-                                            var valueCell = totalRow.insertCell();
-                                            valueCell.textContent = total_answer;
-                                            var weightCell = totalRow.insertCell();
-                                            weightCell.textContent = totalWeight;
-                                            var weightCell = totalRow.insertCell();
-                                            weightCell.textContent = weightedSum;
                                             var averageCell = totalRow.insertCell();
                                             var appr = average.toFixed(2);
                                             averageCell.textContent = appr + "%";
@@ -720,7 +709,6 @@
         document.getElementById('exportButton_1').onclick = function () {
             exportTableToExcel('surveyTable', 'exported_table');
         }
-
         document.getElementById('exportButton_2').onclick = function () {
             exportTableToExcel('general_Survey_Info', 'exported_table');
         }
@@ -845,7 +833,8 @@
                 });
                 var surveyIds = data.surveys.filter(survey =>
                     selectedOptions.every(ministryId =>
-                        survey.line_ministries.some(ministry => ministry.id === ministryId)
+                        survey.line_ministries.some(ministry => ministry.id === ministryId) &&
+                        data.user_response.some(response => response.forsurvey_id == survey.id)
                     ) 
                 ).map(survey => survey.id);
                 console.log(surveyIds);
@@ -854,8 +843,9 @@
            
                 userResponseId = null;
                 for (var i = 0; i < surveyIds.length; i++) {
-                    var surveyId = surveyIds[i];
-                    for (var j = 0; j < selectedOptions.length; j++) {
+                     var surveyId = surveyIds[i];
+                    for (var j = 0; j < selectedOptions.length; j++)
+                     {
                         var lineMinistryId = selectedOptions[j];
                         var userFound = false;
                         for (var k = 0; k < data.users.length; k++) {
@@ -865,7 +855,7 @@
                                 for (var l = 0; l < data.user_response.length; l++) {
                                     var response = data.user_response[l];
 
-                                    if (response.forsurvey_id === surveyId && response.submitted_by_id === user.id) {
+                                    if (response.forsurvey_id === surveyId && response.submitted_by_id === user.id ) {
                                         userResponseId = response.id;
                                         break;
                                     }
@@ -873,7 +863,10 @@
                                 break;
                             }
                         }
-                        if (userResponseId !== null) {
+                        console.log(isLineMinistryInUserResponse);
+                        var isLineMinistryInUserResponse = data.user_response.some(response => response.submitted_by_lineMinistry == lineMinistryId);
+
+                        if (userResponseId !== null && isLineMinistryInUserResponse) {
                             var answers = data.answer.filter(function (answer) {
                                 return answer.response_id === userResponseId;
                             });
@@ -914,15 +907,12 @@
                                         console.log("No valid answers found for the selected line ministry.");
                                     }
                                 }
-
-
                             });
                             var average = total_weightedinPercent / count;
                             var Objects = {};
                             Objects.lineMinistries = lineMinistryId;
                             Objects.survey = surveyId;
                             Objects.average = average
-
                             ministry_info.push(Objects);
                         }
                     }

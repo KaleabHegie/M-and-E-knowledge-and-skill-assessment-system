@@ -78,60 +78,20 @@ transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 <body>
         <div class="container">
             <div class="row justify-content-center align-items-center" style="height:100vh">
-                <div class="col-md-6">
+                <div class="">
                     <div class="container card shadow " >
                         <form action="" id="theForm" name="questionForm" method="post" class="container mt-3">
                             {% csrf_token %}
-                            <div class="container">
-                                <!-- to be changed history -->
-                                <a href="#" class="back-button" onclick="window.history.back(); return false;"> 
-                                    <i class="fas fa-arrow-left"></i> Back
-                                  </a>
+                               <!-- to be changed history -->
+                               <a href="#" class="back-button mb-3" onclick="window.history.back(); return false;"> 
+                                <i class="fas fa-arrow-left"></i> Back
+                              </a> 
+                        <div class="container row">
+                            <div class="col-lg-6">
                                 <!-- <h6 id="IconType" style="position: absolute; right: 10%;">{{questionType}} </h6> -->
                                 <input type="hidden" name="question_type" id="IconType1" value="{{questionType}}">
-                            </div>
-
-                            <br> 
-                            <div class="container mt-1">
-
-                                <div class="form-group">
-                                    
-                             <!-- Category and subcategory fields -->
-                            <label for="id_category">Category:</label>
-
-                            <div id="addCategory" data-bs-toggle="modal" data-bs-target="#categoryModal" style="float: right;">
-                            <i class="bi bi-plus-circle" ></i></div>
-
-                       
-                            <div class="category-dropdown">
-                            <select class="form-control" name="category" id="">
-                                <option value="">-- Select Category --</option>
-                                {% for category in categories %}
-                                    {% if category.subcategories.exists %}
-                                        <optgroup class="category-group" label="{{ category.name }}">
-                                            {% for subcategory in category.subcategories.all %}
-                                                <option value="{{ subcategory.id }}">- {{ subcategory.name }}</option>
-                                            {% endfor %}
-                                        </optgroup>
-                                    {% else %}
-                                        <option value="{{ category.id }}">{{ category.name }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
 
 
-                            <!-- Options (for multi-select questions) -->
-                            <div id="optionList" style="display: none;">
-                                <div id="options-container">
-                                    <!--  options will be added here -->
-                                </div>
-                                
-                                <!-- Add Option Button -->
-                                <button type="button" id="add-option-btn" class="btn btn-secondary">Add Option</button>
-                            </div>
-                            
-                        </div>
-                                </div>
 
 
                                 <!-- Question Text -->
@@ -140,35 +100,85 @@ transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
                                     <input type="text" name="title" class="form-control" required>
                                 </div>
 
-                                <!-- Question label optional -->
-                                <div class="form-group">
-                                    <label >
-                                        <input type="checkbox" id="labelCHK">
-                                        Label (optional) </label>
-                                    <input type="text" name="labelInput" id="labelInput" class="form-control" style="display: none;">
-                                </div>
+                               
 
-                                <!-- check weight -->
-                                <div class="form-group">
-                                    <label >
-                                        <input type="checkbox" id="weightCHK" name="weightCHK">
-                                        Has Weight 
-                                    </label>
-                                    <input class="form-control" style="display: none;" type="number" name="weightInput" id="weightInput">
-                                </div>
 
-                                 <!-- Adds Doc field for the question -->
-                                 <div class="form-group">
-                                    <label >
-                                        <input type="checkbox" id="allow_doc" name="allow_doc">
-                                        Requires Document 
-                                    </label>
-                                    <textarea class="form-control" style="display: none;" name="doc_label" id="doc_label" rows="4" cols="50"></textarea>
+                                 <!-- Options (for multi-select questions) -->
+                                <div id="optionList" style="display: none;">
+                                    <div id="options-container">
+                                        <!--  options will be added here -->
+                                    </div>
+                                    
+                                    <!-- Add Option Button -->
+                                    <button type="button" id="add-option-btn" class="btn"
+                                    style="background-color: rgba(178,223,219,1.0);">
+                                        Add Option</button>
                                 </div>
+                            </div>
+
+                                <div class="col-lg-6">
+                                    <!-- question number -->
+                                    <div class="form-group">
+                                        <label >Question Number </label>
+                                        <input type="number" min="1" name="orderNum" id="orderNum" class="form-control">
+                                    </div>
+
+                                     <!-- Category and subcategory fields -->
+                                    <label for="id_category">Category:</label>
+                                    <div id="addCategory" data-bs-toggle="modal" data-bs-target="#categoryModal" style="float: right;">
+                                        <i class="bi bi-plus-circle" ></i>
+                                    </div>
+
+                                    <select class="form-control mb-3" name="category" id="">
+                                        <option value="">-- Select Category --</option>
+                                        {% for category in categories %}
+                                            {% if category.subcategories.exists %}
+                                                <optgroup class="category-group" label="{{ category.name }}">
+                                                    {% for subcategory in category.subcategories.all %}
+                                                        <option value="{{ subcategory.id }}">- {{ subcategory.name }}</option>
+                                                    {% endfor %}
+                                                </optgroup>
+                                            {% else %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+
+                                     <!-- Question label optional -->
+                                     <div class="form-group">
+                                        <label >
+                                            <input type="checkbox" id="labelCHK">
+                                            Label (optional) </label>
+                                        <input type="text" name="labelInput" id="labelInput" class="form-control" style="display: none;">
+                                    </div>
+
+                                    <!-- check weight -->
+                                    <div class="form-group">
+                                        <label >
+                                            <input type="checkbox" id="weightCHK" name="weightCHK">
+                                            Has Weight 
+                                        </label>
+                                        <input class="form-control" style="display: none;" type="number" name="weightInput" id="weightInput">
+                                    </div>
+
+                                    <!-- Adds Doc field for the question -->
+                                    <div class="form-group">
+                                        <label >
+                                            <input type="checkbox" id="allow_doc" name="allow_doc">
+                                            Requires Document 
+                                        </label>
+                                        <textarea class="form-control" style="display: none;" name="doc_label" id="doc_label" rows="4" cols="50"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                           
                             
-                            <div class="mt-3 mb-3" style="float: right;">
+                            <div class="mt-3 mb-3" style="float: right; ">
                                 <!-- Submit Button -->
-                                    <button type="submit" class="btn btn-primary">Add Question</button>
+                                    <button type="submit" class="btn text-white" 
+                                    style="background-color: #208c5c;" > Create Question</button>
                             </div>
                         </form>
 

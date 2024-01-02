@@ -666,8 +666,7 @@ def questionCreationByType(request, survey_id):
 def newQuestion(request,questionType, s_id ):
     categories = Category.objects.prefetch_related('subcategories')
     survey = get_object_or_404(Survey, id=s_id)
-    if request.method == 'POST' and request.POST.get("questionForm"):
-       
+    if request.method == 'POST':
             title = request.POST.get('title')
             label = request.POST.get('labelInput')
             question_type = request.POST.get('question_type')
@@ -701,21 +700,38 @@ def newQuestion(request,questionType, s_id ):
             survey.question.add(question)
             return redirect('survey_managment:questionCreationByType', survey_id=s_id )
 
-    elif request.method == 'POST' and request.POST.get("categoryForm"):
-            s_id = request.POST.get('s_id')
-            questionType = request.POST.get('questionType')
-            newCategory = request.POST.get('newCategory')
-            subcategoriesNEW = request.POST.get('subcategoriesNEW')
+    # elif request.method == 'POST' and request.POST.get("categoryForm"):
+    #         s_id = request.POST.get('s_id')
+    #         questionType = request.POST.get('questionType')
+    #         newCategory = request.POST.get('newCategory')
+    #         subcategoriesNEW = request.POST.get('subcategoriesNEW')
 
-            newCate = Category.objects.create(name=newCategory)
+    #         newCate = Category.objects.create(name=newCategory)
 
-            if subcategoriesNEW:
-                zparent = Category.objects.get(id=newCate.id)
-                for i in subcategoriesNEW:
-                    Category.objects.create(name=i, parent=zparent)
+    #         if subcategoriesNEW:
+    #             zparent = Category.objects.get(id=newCate.id)
+    #             for i in subcategoriesNEW:
+    #                 Category.objects.create(name=i, parent=zparent)
 
     context = {'questionType': questionType, 'categories': categories}
     return render(request, 'modal.html', context)
+
+
+def QuestionCategories(request):
+    categories = Category.objects.all()
+    context = {'categories' : categories}
+
+    if request.method == 'POST':
+        zcategory = request.POST.get('zcategory')
+        parent = request.POST.get('parent')
+
+        if parent:
+            Category.objects.create(name=zcategory, parent=parent)
+        else:
+            Category.objects.create(name=zcategory)
+        
+
+    return render(request, 'category.html', context)
 
 
 def load_survey(request):
