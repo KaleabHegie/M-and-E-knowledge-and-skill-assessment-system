@@ -512,6 +512,8 @@ def user_response(request, id, response_id):
         return render(request, 'user_response.html', data)
        
      if 'done' in request.POST:
+        survey = get_object_or_404(Survey, id=id)
+        userresponses = get_object_or_404(UserResponse, id=response_id)
         data = {
               'survey_id': id,
               'survey': survey,

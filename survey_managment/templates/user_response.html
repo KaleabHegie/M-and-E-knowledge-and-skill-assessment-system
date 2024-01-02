@@ -50,7 +50,9 @@
                             <th>Question</th>
                             <th>Weight</th>
                             <th>Answer</th>
-                            <th>Document</th>
+                            <th>
+                                Document    
+                            </th>
                             {% if response.status == 'pending' %}
                               <th>Recommendation</th>
                             {% endif %}
@@ -77,7 +79,7 @@
                         </tbody>
                       </table>
                      
-                      {% if response.status == 'pending' %}
+                      {% if response.status == 'pending' or 'recomended' %}
                       <button type="submit" name="approve" class="btn mt-4"  style="float: right; background-color: #208c5c; color: white;">
                         Approve</button>
                         <button type="submit" name="done" class="btn mt-4"  style="float: left; background-color: #208c5c; color: white;">
