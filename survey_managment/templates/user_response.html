@@ -53,7 +53,7 @@
                             <th>
                                 Document    
                             </th>
-                            {% if response.status == 'pending' %}
+                            {% if response.status == 'pending' or 'recomended' %}
                               <th>Recommendation</th>
                             {% endif %}
                           </tr>
@@ -69,11 +69,12 @@
                                     <a href="{{ document.document.url }}" style="text-decoration: none; color: #137b53; font-weight: bold;">{{ document }}</a>
                                   {% endif %}
                               </td>
-                              {% if response.status == 'pending' %}
+                              {% if response.status == 'pending' or 'recomended' %}
                                 <td class="centerdtxt">
                                   <div class="opensModal" name="input_{{ answer.id }}" value="{{answer.id}}" onclick="highlightRow(this)">
                                     <i class="bi bi-patch-check"></i>                                  
-                                  </div>                              {% endif %}
+                                  </div>          
+                                </td>                    {% endif %}
                             </tr>
                           {% endfor %}
                         </tbody>

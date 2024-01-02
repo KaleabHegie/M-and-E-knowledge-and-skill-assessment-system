@@ -124,7 +124,7 @@
               <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#values" style="color: rgb(9, 109, 9);">Values</a></li>
               <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#features" style="color: rgb(9, 109, 9);">Features</a></li>
               <li><a class="nav-link scrollto" href="{% url 'survey_managment:surveylists' %}" style="color: rgb(9, 109, 9);">New Surveys</a></li>
-              <li><a class="nav-link scrollto" href="{% url 'survey_managment:un_approved_survey_list' %}" style="color: rgb(9, 109, 9);">Unapproved Surveys</a></li>
+              {% comment %} <li><a class="nav-link scrollto" href="{% url 'survey_managment:un_approved_survey_list' %}" style="color: rgb(9, 109, 9);">Unapproved Surveys</a></li> {% endcomment %}
               <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}#contact" style="color: rgb(9, 109, 9);">Contact</a></li>
         
         
@@ -176,6 +176,8 @@
             </a>
             </div>
             {% endfor %}
+
+            
 
             {% else %}
             <div class="container-fluid" style="display: flex; align-items: center;">
