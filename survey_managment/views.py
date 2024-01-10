@@ -784,6 +784,10 @@ def surveyCreationView(request):
 
 @login_required
 def greetingpage_view(request):
+    
+    user = request.user 
+    user = CustomUser.objects.get(username = user)
+    line_ministry = request.user.Line_ministry
     if request.method == 'POST':
         # Create a new instance of the ContactUs model
         contact = ContactUs()
@@ -865,7 +869,24 @@ def questionForSurvey(request, id):
         answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
         document_forms = [DocumentForm(prefix=str(question.id)) for question in survey.question.all()]
 
+    cat_list = []
+    for cat in Category.objects.all():
+        question_filtered = survey.question.filter(category=cat)
+        questions_list = []
+        for question in question_filtered:
+            questions_list.append(question.title)
+        cat_list.append({"category":cat.name,"questions":questions_list})
+    
+    question_cat_none = survey.question.filter(category=None)
+    questions_list = []
+    for question in question_cat_none:
+        questions_list.append(question)
+    cat_list.append({"category":'No category',"questions":questions_list})
+    
+    
     context = {
+        'survey': survey,
+        'cat_list': cat_list,
         'survey': survey,
         'questions': questions,
         'user_response_form': user_response_form,
@@ -874,7 +895,6 @@ def questionForSurvey(request, id):
     }
 
     return render(request, 'Final_Preview_Pages/questionForSurvey.html', context)
-
 
 
 @login_required
