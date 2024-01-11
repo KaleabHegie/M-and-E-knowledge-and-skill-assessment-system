@@ -149,21 +149,39 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-8">
+<<<<<<< HEAD
+                            <div class="card shadow hidden-transition">
+                                <div class="card-body">
+=======
                             <div class=" hidden-transition">
                                 <!-- <div class="card-body">
+>>>>>>> 0f1cf235d4feab6522402269702e5c7332798cf8
                                     <figure class="highcharts-figure">
                                         <div id="splineChart"></div>
                                         <p class="highcharts-description">
                                         </p>
                                     </figure>
+<<<<<<< HEAD
+                                </div>
+                            <table>
+                                <thead>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+=======
                                 </div> -->
                                     <table class="table table-borderless">
                                         <caption>List of Line Ministries</caption>
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th colspan="2">System Assessment</th>
-                                                <th colspan="2">Skill Assessment</th>
+                                                <th colspan="3">System Assessment</th>
+                                                <th colspan="3">Skill Assessment</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -173,11 +191,13 @@
                                             <td data-bs-toggle="tooltip" class="truncate-text"
                                                 data-bs-placement="top" title="{{ i.name }}">{{ i.name }}</td>
                                             <td>1</td>
+                                            <td>20%</td>
                                             <td>
                                                 <canvas class="sparkline-chart" 
                                                 data-sparkline="56, 12, 8, 25" width="100" height="30"></canvas>
                                             </td>
                                             <td>1</td>
+                                            <td>25%</td>
                                             <td>
                                                 <canvas class="sparkline-chart" 
                                                 data-sparkline="56, 12, 8, 25" width="100" height="30"></canvas>
@@ -187,6 +207,7 @@
                                         
                                         </tbody>
                                     </table>
+>>>>>>> 0f1cf235d4feab6522402269702e5c7332798cf8
                             </div>
                         </div>
 
@@ -244,12 +265,11 @@
                                 </div>
                             </div>
 
-
                             <div class="card hidden-transition">
                                 <div class="card-body">
                                     <div class="d-flex align-items-top ">
                                         <div class="flex-fill">
-                                            <h5 class="d-block fw-semibold  mb-1"> Responses </h5>
+                                            <h5 class="d-block fw-semibold  mb-1"> Approved Responses </h5>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-block ">
                                                     <div class=" counter"
@@ -262,6 +282,31 @@
                                                 </div>
                                                 <a class="btn btn-app"
                                                     style="background-color: #7ae582; border-radius: 10px;">
+                                                    <i class="bi bi-card-checklist bi-main"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card hidden-transition">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-top ">
+                                        <div class="flex-fill">
+                                            <h5 class="d-block fw-semibold  mb-1">Pending Responses </h5>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-block ">
+                                                    <div class=" counter"
+                                                        style="font-size: x-large; text-align: center;"> {{Response}}
+                                                    </div>
+                                                    <a href="" class="nav-link " style="color: #d18d4f;">
+                                                        View All
+                                                        <i class="bi bi-arrow-right-circle"></i>
+                                                    </a>
+                                                </div>
+                                                <a class="btn btn-app"
+                                                    style="background-color: #d18d4f; border-radius: 10px;">
                                                     <i class="bi bi-card-checklist bi-main"></i>
                                                 </a>
                                             </div>

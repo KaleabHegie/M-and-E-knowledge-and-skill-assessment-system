@@ -60,7 +60,7 @@
                         </thead>
                         <tbody>
                           {% for answer in answers %}
-                            <tr>
+                            <tr  {% if answer.recommendation %}class="table-success"{% endif %}>
                               <td>{{ answer.forquestion }}</td>
                               <td class="centerdtxt">{{ answer.forquestion.weight }}</td>
                               <td class="centerdtxt">{{ answer.answertext }}</td>
@@ -73,8 +73,14 @@
                                 <td class="centerdtxt">
                                   <div class="opensModal" name="input_{{ answer.id }}" value="{{answer.id}}" onclick="highlightRow(this)">
                                     <i class="bi bi-patch-check"></i>                                  
+<<<<<<< HEAD
+                                  </div> 
+                                </td> 
+                                {% endif %}
+=======
                                   </div>          
                                 </td>                    {% endif %}
+>>>>>>> 442bac16117518b0c906b350c25caf34040fde83
                             </tr>
                           {% endfor %}
                         </tbody>
