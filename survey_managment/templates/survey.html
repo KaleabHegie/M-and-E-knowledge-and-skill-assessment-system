@@ -42,9 +42,12 @@
         <section class="container-fluid " >
           <div class="row " style="padding: 15px;">
 
-            {% if surveys %}
+            <h5 class="text-info"> Survey For Organization </h5>
+            {% if surveys_org %}
+
+           
       
-            {% for survey in surveys  %}
+            {% for survey in surveys_org  %}
             <div class="col-md-3 col-sm-6 col-12 p-1 hidden-transition">
               <a href="{% url 'survey_managment:survey_detail' id=survey.id %}" style="color: black; text-decoration: none;">
                 <div class="info-box shadow">
@@ -63,7 +66,36 @@
 
             {% else %}
             <div class="container-fluid" style="display: flex; align-items: center;">
-              <p style="margin: auto; color: darkgray;">No surveys found. Created surveys will appear here.</p>
+              <p style="margin: auto; color: darkgray;">No surveys for organization found. Created surveys will appear here.</p>
+            </div>
+
+            {% endif %}
+
+            <h5 class="text-info"> Survey For Employees </h5>
+
+            {% if survey in surveys_employee %}
+            
+            {% for survey in surveys_employee  %}
+            <div class="col-md-3 col-sm-6 col-12 p-1 hidden-transition">
+              <a href="{% url 'survey_managment:survey_detail' id=survey.id %}" style="color: black; text-decoration: none;">
+                <div class="info-box shadow">
+                  <span class="info-box-icon" style="color: #0096c7;">
+                    <i class="far fa-copy"></i>
+                  </span>                   
+                  <div class="info-box-content">
+                        <span class="info-box-text">{{ survey.name }}</span>
+                        <span class="info-box-number">{{ survey.created_at }}</span>
+                       
+                    </div>
+                </div>
+            </a>
+            </div>
+            {% endfor %}
+            
+
+            {% else %}
+            <div class="container-fluid" style="display: flex; align-items: center;">
+              <p style="margin: auto; color: darkgray;">No surveys for organization found. Created surveys will appear here.</p>
             </div>
 
             {% endif %}
