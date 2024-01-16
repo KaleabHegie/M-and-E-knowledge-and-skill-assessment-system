@@ -472,7 +472,8 @@ def get_data(request):
 
 def survey(request):
     data = {
-        'surveys': Survey.objects.all(),
+        'surveys_employee': Survey.objects.filter(survey_type__name = "For Employee"),
+        'surveys_org': Survey.objects.filter(survey_type__name ="For Organization"),
         }
     return render(request, 'survey.html', data)
 
@@ -787,6 +788,10 @@ def surveyCreationView(request):
 
 @login_required
 def greetingpage_view(request):
+    
+    user = request.user 
+    user = CustomUser.objects.get(username = user)
+    line_ministry = request.user.Line_ministry
     if request.method == 'POST':
         # Create a new instance of the ContactUs model
         contact = ContactUs()
@@ -843,33 +848,44 @@ def survey_listss_views(request):
 def questionForSurvey(request, id):
     survey = get_object_or_404(Survey, id=id)
     questions = survey.question.all()
+    cat_list = []
+    for cat in Category.objects.all():
+        question_filtered = survey.question.filter(category=cat)
+        questions_list = []
+        for question in question_filtered:
+            questions_list.append(question.title)
+        cat_list.append({"category":cat.name,"questions":questions_list})
+    
+    question_cat_none = survey.question.filter(category=None)
+    questions_list = []
+    for question in question_cat_none:
+        questions_list.append(question)
+    cat_list.append({"category":'No category',"questions":questions_list})
 
     if request.method == 'POST':
         user_response_form = UserResponseForm(request.POST)
         answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
         document_forms = [DocumentForm(request.POST, request.FILES, prefix=str(question.id)) for question in survey.question.all()]
-
         userresponse = UserResponse.objects.create(forsurvey = survey , submitted_by = request.user)
-        for i in questions:
-            answer_value = request.POST.get(f'answer_{i.id}')
-
-            foranswer = Answer.objects.create(forquestion = i , answertext = answer_value , response = userresponse)              
-            
-            
-            file_value = request.FILES.get(f'file_{i.id}')
-            Document.objects.create( foranswer = foranswer , document = file_value )    
-
-            answer_value = ''             
-            file_value = ''
-               
+        for category in cat_list:
+            for question_title in category['questions']:
+                question = Question.objects.get(title=question_title)
+                print(question)
+                answer_text = request.POST.get(f'answer_{question.id}')
+                answer = Answer.objects.create(response=userresponse, forquestion=question, answertext=answer_text)
+                answer.save()
+                file = request.FILES.get(f'file_{question.id}')   
+                document = Document(foranswer=answer, document=file)   
+                document.save()
+              
         return redirect('survey_managment:surveylists')
     else:
         user_response_form = UserResponseForm()
         answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]
-        document_forms = [DocumentForm(prefix=str(question.id)) for question in survey.question.all()]
-
+        document_forms = [DocumentForm(prefix=str(question.id)) for question in survey.question.all()]    
     context = {
         'survey': survey,
+        'cat_list': cat_list,
         'questions': questions,
         'user_response_form': user_response_form,
         'answer_forms': answer_forms,
@@ -877,7 +893,6 @@ def questionForSurvey(request, id):
     }
 
     return render(request, 'Final_Preview_Pages/questionForSurvey.html', context)
-
 
 
 @login_required
