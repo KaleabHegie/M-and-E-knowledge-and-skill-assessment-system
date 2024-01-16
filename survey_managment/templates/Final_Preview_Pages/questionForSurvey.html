@@ -105,8 +105,6 @@
 
       <div id="questions-container" class="tab">
         {% for i in cat_list %}
-
-        
           <ul class="question-list" style="list-style: none">
             {% if i.questions %}
             <h5 class="text-gray mb-5">{{ i.category }}</h5>
@@ -160,7 +158,8 @@
               <br />
               <hr style="background-color: black" />
             </li>
-            {% endfor %} {% endif %}
+            {% endfor %} 
+            {% endif %}
           </ul>
         
         {% endfor %}

@@ -25,8 +25,8 @@
                       <label for="{{ form.name.id_for_label }}">Name:</label>
                       {{ form.name }}
                       {% if form.name.errors %}
-                        <div class="invalid-feedback">
-                          {{ form.name.errors|join:", " }}
+                        <div class="invalid-feedback" style="display: block;" style="display: block;">
+                          {{ form.name.errors.0}}
                         </div>
                       {% endif %}
                     </div>
@@ -34,8 +34,8 @@
                       <label for="{{ form.instruction.id_for_label }}">Instruction:</label>
                       {{ form.instruction }}
                       {% if form.instruction.errors %}
-                        <div class="invalid-feedback">
-                          {{ form.instruction.errors|join:", " }}
+                        <div class="invalid-feedback" style="display: block;">
+                          {{ form.instruction.errors}}
                         </div>
                       {% endif %}
                     </div>
@@ -44,8 +44,8 @@
                         <label for="{{ form.start_at.id_for_label }}">Start Date:</label>
                         {{ form.start_at }}
                         {% if form.start_at.errors %}
-                          <div class="invalid-feedback">
-                            {{ form.start_at.errors|join:", " }}
+                          <div class="invalid-feedback" style="display: block;">
+                            {{ form.start_at.errors}}
                           </div>
                         {% endif %}
                       </div>
@@ -53,8 +53,8 @@
                         <label for="{{ form.end_at.id_for_label }}">End Date:</label>
                         {{ form.end_at }}
                         {% if form.end_at.errors %}
-                          <div class="invalid-feedback">
-                            {{ form.end_at.errors|join:", " }}
+                          <div class="invalid-feedback" style="display: block;">
+                            {{ form.end_at.errors}}
                           </div>
                         {% endif %}
                       </div>
@@ -63,8 +63,8 @@
                       <label for="{{ form.survey_type.id_for_label }}">Survey Type:</label>
                       {{ form.survey_type }}
                       {% if form.survey_type.errors %}
-                        <div class="invalid-feedback">
-                          {{ form.survey_type.errors|join:", " }}
+                        <div class="invalid-feedback" style="display: block;">
+                          {{ form.survey_type.errors}}
                         </div>
                       {% endif %}
                     </div>
@@ -73,13 +73,30 @@
                       {{ form.for_line_ministry }}
                       {% if form.for_line_ministry.errors %}
                         <div class="invalid-feedback ">
-                          {{ form.for_line_ministry.errors|join:", " }}
+                          {{ form.for_line_ministry.errors}}
                         </div>
                       {% endif %}
                     </div>
                     
                     <button type="submit" class="btn m-3" style="float: right; color: white; background-color: #0096c7;">Create</button>
                   </form>
+
+
+
+
+                  {% comment %} {% if form.errors %}
+                  <div class="alert alert-danger mt-3">
+                      <strong>Error:</strong>
+                      <ul>
+                          {% for field in form %}
+                              {% for error in field.errors %}
+                                  <li>{{ error }}</li>
+                              {% endfor %}
+                          {% endfor %}
+                      </ul>
+                  </div>
+              {% endif %}
+       {% endcomment %}
                   
              
               
