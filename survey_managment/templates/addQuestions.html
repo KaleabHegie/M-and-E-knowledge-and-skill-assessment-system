@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -109,50 +110,63 @@
             </a>
           </div>
 
-          <h3 class="text-center">{{zsurvey.name}}</h3>
+<h3 class="text-center">{{zsurvey.name}}</h3>
           <!-- Question Displayer HTML -->
           <div class="question-container drop">
             <div class="drop_container" id="drop-items">
               {% if questions %} {% for question in questions %}
-              <div class="drop_card">
-                <button type="button" class="btn" style="float: right"></button>
-                <div class="question-title p-3">
-                  {% if question.order == 0 %}
-                  <span>{{ forloop.counter }})</span>
-                  {% else %}
-                  <span> {{question.order}} , </span>
-                  {% endif %}
-                  <span> {{ question.title }} </span>
+              <li style="border-left: 6px solid #04aa6d; border-radius: 8px;list-style:none">
+                <div class="row">
+                  <div class="col-1">
+                    <span class="ml-2" style="color: #04aa6d; font-weight: bold">
+                      Question:
+                    </span>
+                  </div>
+                  <div class="col-11">
+                    <p>{{ question.title }}</p>
+                  </div>
                 </div>
+  
                 {% if question.label %}
-                <p class="pl-3">{{ question.label }}</p>
-                {% endif %} {% if question.choice.all %}
-                <ul class="question-options pl-3">
-                  {% for choice in question.choice.all %}
-                  <li class="question-option">
-                    <input
-                      class="form-check-input mt-0"
-                      type="checkbox"
-                      name=""
-                      id=""
-                      value="{{choice.id}}"
-                    />
-                    {{ choice.name }}
-                  </li>
-                  {% endfor %}
-                </ul>
-                {% else %}
-                <input
-                  type="{{ question.question_type }}"
-                  name="dynamic_field"
-                  value=""
-                  class="ml-3 form-control"
-                />
-                {% endif %} {% if question.allow_doc %}
-                <p>Document Label: {{ question.doc_label }}</p>
-                <input type="file" name="" id="" />
+                <div class="row">
+                  <div class="col-1">
+                    <span class="ml-2" style="color: #04aa6d; font-weight: bold">
+                      Discription:
+                    </span>
+                  </div>
+                  <div class="col-11">
+                    <p class="ml-3">{{ question.label }}</p>
+                  </div>
+                </div>
                 {% endif %}
-              </div>
+                <p>
+                  <input
+                    class="m-3 ml-4 form-control"
+                    type="text"
+                    name="answer_{{ question.id }}"
+                    placeholder="Answer..."
+                    required
+                    disabled
+                  />
+                </p>
+                {% if question.allow_doc %}
+                <input
+                  class="form-control m-3 ml-4"
+                  type="file"
+                  name="file_{{ question.id }}"
+                  placeholder="File..."
+                  required
+                  disabled
+                />
+                {% if question.doc_label %}
+                <label class="ml-4" for="file{{ question.id }}"
+                  >Document label: {{ question.doc_label }}</label
+                >
+                {% endif %} {% endif %}
+                <br />
+                <hr style="background-color: black" />
+              </li>
+         
               {% endfor %} {% else %}
               <div class="container" style="display: flex; align-items: center">
                 <p style="margin: auto; color: darkgray">
