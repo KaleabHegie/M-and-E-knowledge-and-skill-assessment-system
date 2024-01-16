@@ -6,7 +6,6 @@ app_name = 'survey_managment'
 
 
 urlpatterns = [
-
     path('',views.indexView, name='Index'),
     path('surveyCreation/',views.surveyCreationView, name='SurveyCreation'),
     path('ChartAnalysis/',views.Mychartanalysis, name='ChartAnalysis'),
@@ -18,7 +17,8 @@ urlpatterns = [
     path('questionCreationByType/', views.questionCreationByType, name='questionCreationByType'),
     path('newQuestion/<str:questionType>/<int:s_id>/', views.newQuestion, name='newQuestion'),
     # path('newCategory/', views.newCategory, name='newCategory'),
-
+    path('createQuestion/<int:survey_id>/', views.createQuestion, name='createQuestion'),
+    path('save_category/' , views.save_category, name='save_category'),
 
     path('survey/', views.survey, name='survey'),
     path('inbox/', views.inbox, name='inbox'),
