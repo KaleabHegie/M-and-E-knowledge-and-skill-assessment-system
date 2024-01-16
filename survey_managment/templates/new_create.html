@@ -1,80 +1,4 @@
 {% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-
-<!-- Mirrored from adminlte.io/themes/v3/pages/examples/recover-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:54 GMT -->
-
-<script
-    nonce="73214733-d91b-425c-b991-0847d80e54a7">(function (w, d) { !function (bg, bh, bi, bj) { bg[bi] = bg[bi] || {}; bg[bi].executed = []; bg.zaraz = { deferred: [], listeners: [] }; bg.zaraz.q = []; bg.zaraz._f = function (bk) { return async function () { var bl = Array.prototype.slice.call(arguments); bg.zaraz.q.push({ m: bk, a: bl }) } }; for (const bm of ["track", "set", "debug"]) bg.zaraz[bm] = bg.zaraz._f(bm); bg.zaraz.init = () => { var bn = bh.getElementsByTagName(bj)[0], bo = bh.createElement(bj), bp = bh.getElementsByTagName("title")[0]; bp && (bg[bi].t = bh.getElementsByTagName("title")[0].text); bg[bi].x = Math.random(); bg[bi].w = bg.screen.width; bg[bi].h = bg.screen.height; bg[bi].j = bg.innerHeight; bg[bi].e = bg.innerWidth; bg[bi].l = bg.location.href; bg[bi].r = bh.referrer; bg[bi].k = bg.screen.colorDepth; bg[bi].n = bh.characterSet; bg[bi].o = (new Date).getTimezoneOffset(); if (bg.dataLayer) for (const bt of Object.entries(Object.entries(dataLayer).reduce(((bu, bv) => ({ ...bu[1], ...bv[1] })), {}))) zaraz.set(bt[0], bt[1], { scope: "page" }); bg[bi].q = []; for (; bg.zaraz.q.length;) { const bw = bg.zaraz.q.shift(); bg[bi].q.push(bw) } bo.defer = !0; for (const bx of [localStorage, sessionStorage]) Object.keys(bx || {}).filter((bz => bz.startsWith("_zaraz_"))).forEach((by => { try { bg[bi]["z_" + by.slice(7)] = JSON.parse(bx.getItem(by)) } catch { bg[bi]["z_" + by.slice(7)] = bx.getItem(by) } })); bo.referrerPolicy = "origin"; bo.src = "../../../../cdn-cgi/zaraz/sd0d9.js?z=" + btoa(encodeURIComponent(JSON.stringify(bg[bi]))); bn.parentNode.insertBefore(bo, bn) };["complete", "interactive"].includes(bh.readyState) ? zaraz.init() : bg.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, "zarazData", "script"); })(window, document);</script>
-</head>
-
-<body class="hold-transition login-page">
-   
-    <div class="login-box">
-        <div class="login-logo">
-            <a href="../../index2.html"><b>MoPD</b> User</a>
-        </div>
-
-        <div class="card">
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">You are only one step a way from your new password, recover your password now.
-                </p>
-
-
-                <form action="https://adminlte.io/themes/v3/pages/examples/login.html" method="post">
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control"  name='old_password' placeholder="Old Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" name='new1_password' placeholder="New Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" name='new2_password' placeholder="Confirm Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary btn-block">Change password</button>
-                        </div>
-
-                    </div>
-                </form>
-
-
-                <p class="mt-3 mb-1">
-                </p>
-            </div>
-
-        </div>
-    </div>
-
-    {% include "includes/scripts.html" %}
-
-
-</body>
-
-<!-- Mirrored from adminlte.io/themes/v3/pages/examples/recover-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:54 GMT -->
-
-</html>
-
-
-
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 {% include "includes/head.html" %}
@@ -152,6 +76,8 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
+         {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
+
         <div class="content-wrapper mt-1 p-4" style="background-color: white">
             <section class="content ">
                 <div class="container-fluid">
@@ -220,12 +146,23 @@
                                             </div>
                                             <div class="row m-3" >
                                                 <div class="form-group col-lg-3">
-                                                    <select class="form-control category" name="category">
-                                                        {%for category in categories%}
-                                                        <option value="{{category.id}}">{{category.name}}</option>
-                                                        {%endfor%}
-                                                    </select>
+                                                    
+                                                      <div class="row">
+                                                        <div class="col-lg-10">
+                                                            <select class="form-control category" name="category" id="categorySelect">
+                                                                {%for category in categories%}
+                                                                <option value="{{category.id}}">{{category.name}}</option>
+                                                                {%endfor%}
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <i class="bi-clipboard-plus" name="add_category" id="addCategoryBtn"></i>
+                                                        </div>
+                                                      </div>
+                                                   
+                                                    
                                                 </div>
+
                                                 <div class="form-group col-lg-2">
                                                     <label for="myCheckbox">
                                                         <input type="checkbox" class="myCheckbox" name="weightCHK">
@@ -269,15 +206,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-8">
                                                     </div>
-                                                    <div class="col-sm-4">
-                                                        <i class="bi bi-copy" style="margin-left:15px ;"></i>
-                                                        <span>
-                                                            <!-- <button type="button" name="remove_btn"></button> -->
-                                                        </span>
-                                                        <input type="radio" name="required" required
-                                                            style="margin-left:25px ;" />
-                                                        <label> Required</label>
-                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -295,18 +224,84 @@
                             </div>
                         </div>
                         <input type="hidden" name="objects" id="objects-input">
-                        <button type="this"  class="btn m-3" style=" color: white; background-color:  #46b583;" name="add_objects">Add Question</button>
+                        <button type="submit"  class="btn m-3" style=" color: white; background-color:  #46b583;" name="add_objects">Add Question</button>
                 </div>
                 <!-- <button type="button" class="btn btn-secondary" name="add_objects" >Add Question</button> -->
 
-        </div>
+    </div>
         </form>
+       
+        <div class="modal" id="categoryModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <!-- Modal header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Add Category</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <!-- Form to add category using AJAX -->
+                  <form id="categoryForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="categoryName">Category Name:</label>
+                      <input type="text" class="form-control" id="categoryName" name="categoryName">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+                   
     </div>
     </section>
     </div>
 
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
     <script>
+   $(document).ready(function(){
+  // Show the modal when the button is clicked
+  $("#addCategoryBtn").click(function(){
+    $("#categoryModal").modal("show");
+  });
+
+  // Handle form submission using AJAX
+  $("#categoryForm").submit(function(event){
+    event.preventDefault();
+    var categoryName = $("#categoryName").val();
+    $.ajax({
+      type: "POST",
+      url: '/save_category/', // Replace with the actual URL to process the category creation
+      data: { categoryName: categoryName },
+      beforeSend: function(xhr, settings) {
+    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+  },
+      success: function(response){
+        // Handle the response from the server
+        console.log(response);
+
+        if (response.success) {
+        // Clear existing options
+        $("#categorySelect").empty();
+
+        // Add new options based on the response
+        for (var i = 0; i < response.categories.length; i++) {
+          var category = response.categories[i];
+          var option = $("<option>").attr("value", category.id).text(category.name);
+          $("#categorySelect").append(option);
+        }
+
+        // Close the modal
+        $("#categoryModal").modal("hide");
+      } else {
+        console.log("Category saving failed.");
+      }
+    }
+    });
+  });
+});
 
 
 const addDivBtn = document.getElementById('add-div-btn');
@@ -335,6 +330,7 @@ const questionCardBody = document.getElementsByName('questionCardBody')[0];
 let optionList = document.getElementsByName('optionList')[0];
 let optionsContainer = document.getElementsByName('options-container')[0];
 
+
 // cards.addEventListener('click', function (event) {
 //     getCardId(event);
 //     console.log(" getCardId Clicked form origin");
@@ -346,7 +342,12 @@ let needOptions = ['Checkbox', 'Radio'];
 questionTypeDropdown.addEventListener('change', function (event) {
     handleQuestionTypeChange(event, questionTypeDropdown, questionCardBody, optionList, optionsContainer);
 });
-
+function clearOptions(optionsContainer) {
+    // Remove all child elements from the options container
+    while (optionsContainer.firstChild) {
+        optionsContainer.firstChild.remove();
+    }
+}
 function handleQuestionTypeChange(event, questionTypeDropdown, questionCardBody, optionList, optionsContainer) {
     let selectedType = questionTypeDropdown.value;
     console.log(selectedType);
@@ -358,7 +359,7 @@ function handleQuestionTypeChange(event, questionTypeDropdown, questionCardBody,
     console.log("questionCardBody");
     console.log(questionCardBody);
     if (selectedType === 'text') {
-        clearOptions();
+        clearOptions(optionsContainer);
         add_option_btn.style.display = 'none';
         const inputElement = document.createElement('input');
         inputElement.type = 'text';
@@ -375,7 +376,7 @@ function handleQuestionTypeChange(event, questionTypeDropdown, questionCardBody,
         questionCardBody.appendChild(formGroup);
     }
     else if (selectedType === 'number') {
-        clearOptions();
+        clearOptions(optionsContainer);
         add_option_btn.style.display = 'none';
         const inputElement = document.createElement('input');
         inputElement.type = 'number';
@@ -391,9 +392,59 @@ function handleQuestionTypeChange(event, questionTypeDropdown, questionCardBody,
 
         questionCardBody.appendChild(formGroup);
     }
-   
+    else if (selectedType === 'checkbox')
+     { clearOptions(optionsContainer);
+        optionList.style.display = 'block';
+        // Create default options
+        for (var i = 1; i <= 2; i++) {
+            let newOption = document.createElement('div');
+  newOption.classList.add('form-group');
+  
+  let inputContainer = document.createElement('div');
+  inputContainer.style.position = 'relative';
+
+            var input = document.createElement('input');
+            input.setAttribute('type', 'text');
+            input.setAttribute('placeholder','Option ' + i  );
+            input.setAttribute('name', 'option');
+            input.classList.add('form-control');
+            input.required = true;
+
+            let iconRemove = document.createElement('i');
+  iconRemove.classList.add('bi', 'bi-dash'); 
+  iconRemove.style.position = 'absolute';
+  iconRemove.style.right = '10px';
+  iconRemove.style.top = '50%';
+  iconRemove.style.transform = 'translateY(-50%)';
+  iconRemove.style.cursor = 'pointer';
+  
+  iconRemove.addEventListener('click', function (event) {
+    event.preventDefault();
+    newOption.remove();
+  });
+  
+  let iconAdd = document.createElement('i');
+  iconAdd.classList.add('bi', 'bi-plus');  
+  iconAdd.style.position = 'absolute';
+  iconAdd.style.right = '40px';
+  iconAdd.style.top = '50%';
+  input.setAttribute('name', 'add-option-btn');
+  iconAdd.style.transform = 'translateY(-50%)';
+  iconAdd.style.cursor = 'pointer';
+  
+  iconAdd.addEventListener('click', function (event) {
+    event.preventDefault();
+    addOptions(event, optionsContainer);
+  });
+  inputContainer.appendChild(input);
+  inputContainer.appendChild(iconAdd);
+  
+  newOption.appendChild(inputContainer);
+  optionsContainer.appendChild(newOption);}
+    }
+
     else if (selectedType === 'radio')  {
-         clearOptions();
+         clearOptions(optionsContainer);
         optionList.style.display = 'block';
         // Create default options
         for (var i = 1; i <= 2; i++) {
@@ -455,12 +506,7 @@ let cards = document.querySelectorAll('.mycard');
 
 
 // Function to clear the options container
-function clearOptions() {
-    // Remove all child elements from the options container
-    while (optionsContainer.firstChild) {
-        optionsContainer.firstChild.remove();
-    }
-}
+
 let storeCards = ['card-0'];
 function addEventListenersToCard(card) {
     let questionTypeDropdown = card.querySelector('[name="question_type"]');
@@ -476,8 +522,59 @@ function addEventListenersToCard(card) {
     let dropbtn = card.querySelector('[name="dropdbtn"]');
     let dropubtn = card.querySelector('[name="dropubtn"]');
     let quesAttr = card.querySelector('[name="quesAttr"]');
+    let category_select = document.querySelectorAll('[name="category"]');
+    let add_cat = card.querySelector('[name="add_category"]');
 
+   $(document).ready(function(){
+  // Show the modal when the button is clicked
+  $(add_cat).click(function(){
+    $("#categoryModal").modal("show");
+  });
+// Handle form submission using AJAX
+  $("#categoryForm").submit(function(event){
+    event.preventDefault();
+    var categoryName = $("#categoryName").val();
+    $.ajax({
+      type: "POST",
+      url: '/save_category/', // Replace with the actual URL to process the category creation
+      data: { categoryName: categoryName },
+      beforeSend: function(xhr, settings) {
+    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+  },
+      success: function(response){
+        // Handle the response from the server
+        console.log(response);
 
+        if (response.success) {
+        // Clear existing options
+            let op = [];
+        // Add new options based on the response
+        console.log("bye")
+        console.log(category_select)
+        for (let j= 0; j<category_select.length;j++){
+            let x = category_select[j];
+                let y = category_select[category_select.length-1];
+        for (var i = 0; i < response.categories.length; i++) {
+          var category = response.categories[i];
+          var optionElement = document.createElement("option");
+
+         // Set the value and text content for the option
+         optionElement.value = category.id;
+         optionElement.textContent = category.name;
+         x.appendChild(optionElement);
+        }
+    }
+    
+        // Close the modal
+        $("#categoryModal").modal("hide");
+      } else {
+        console.log("Category saving failed.");
+      }
+    }
+    });
+  });
+  
+});
     
     if (questionTypeDropdown) {
         questionTypeDropdown.addEventListener('change', function (event) {
@@ -531,7 +628,7 @@ function addCardAfter(event) {
     const cardId = `card-${count}`;
     newCard.id = cardId;
     newCard.classList.add('mycard');
-    newCard.innerHTML =`
+    newCard.innerHTML = `
     <div class="custom-div">
                                 <div class="row mt-0 ">
                                     <div class="col-md-10">
@@ -580,13 +677,18 @@ function addCardAfter(event) {
                                             </div>
                                             <div  name="quesAttr">
                                             <div class="row m-3" name="quesAttr">
-                                                <div class="form-group col-lg-3">
-                                                    <select class="form-control category" name="category">
-                                                        {%for category in categories%}
-                                                        <option value="{{category.id}}">{{category.name}}</option>
-                                                        {%endfor%}
-                                                    </select>
-                                                </div>
+                                                <div class="row">
+                                                        <div class="col-lg-10">
+                                                            <select class="form-control category" name="category">
+                                                                {%for category in categories%}
+                                                                <option value="{{category.id}}">{{category.name}}</option>
+                                                                {%endfor%}
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <i class="bi-clipboard-plus" name="add_category"></i>
+                                                        </div>
+                                                      </div>
                                                 <div class="form-group col-lg-2">
                                                     <label for="myCheckbox">
                                                         <input type="checkbox" class="myCheckbox" name="weightCHK">
@@ -629,15 +731,7 @@ function addCardAfter(event) {
                                                 <div class="row">
                                                     <div class="col-sm-8">
                                                     </div>
-                                                    <div class="col-sm-4">
-                                                        <i class="bi bi-copy" style="margin-left:15px ;"></i>
-                                                        <span>
-                                                            <!-- <button type="button" name="remove_btn"></button> -->
-                                                        </span>
-                                                        <input type="radio" name="required" required
-                                                            style="margin-left:25px ;" />
-                                                        <label> Required</label>
-                                                    </div>
+                                                
                                                 </div>
                                             </div>
                                         </div>
@@ -763,7 +857,10 @@ function handleCardSubmit() {
 // console.log(options);
 let optionValues = [];
 let optionsContainer = card.querySelector('[name="options-container"]');
-let optionInputs = optionsContainer.querySelectorAll('input[name="option"]');
+console.log(optionsContainer);
+let optionInputs = optionsContainer.querySelectorAll('input');
+console.log("optionInputs");
+console.log(optionInputs);
 optionInputs.forEach(function(input) {
     optionValues.push(input.value);
 });

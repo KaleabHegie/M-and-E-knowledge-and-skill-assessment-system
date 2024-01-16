@@ -1,44 +1,42 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+  {% include 'includes/head.html' %}
 
-{% include 'includes/head.html' %}
-
-<body class="hold-transition sidebar-mini" >
+  <body class="hold-transition sidebar-mini">
     <style>
-        .custom-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .custom-list li {
-            border: 2px solid #e9ecef;
-            padding: 10px;
-            border-radius: 5px;
-            color: black;
-        }
-        .custom-list li:hover {
+      .custom-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .custom-list li {
+        border: 2px solid #e9ecef;
+        padding: 10px;
+        border-radius: 5px;
+        color: black;
+      }
+      .custom-list li:hover {
         border-color: #4c956c;
-        }
+      }
 
-
-        /* CSS Styles for the Question Displayer */
-        .question-options{
-            list-style: none;
-        }
-       .drop {
+      /* CSS Styles for the Question Displayer */
+      .question-options {
+        list-style: none;
+      }
+      .drop {
         align-items: center;
         justify-content: center;
         margin-top: 10px;
-       }
-       .drop_container{
+      }
+      .drop_container {
         row-gap: 1rem;
         padding: 2rem;
-       }
-       .drop_card{
+      }
+      .drop_card {
         justify-content: space-between;
         padding: 1.25rem;
         margin: 1rem;
@@ -46,223 +44,142 @@
         /* box-shadow: 4px 4px 16px #E1E1E1, -2px -2px 16px #FFF;
         border-radius: 2rem; */
         cursor: grab;
-       }
+      }
 
-       /* class name for chosen item */
-       .sortable-chosen{
-        box-shadow: 8px 8px 32px #E1E1E1;
-       }
-       /* class name for dragging item */
-       .sortable-drag{
+      /* class name for chosen item */
+      .sortable-chosen {
+        box-shadow: 8px 8px 32px #e1e1e1;
+      }
+      /* class name for dragging item */
+      .sortable-drag {
         opacity: 0;
-       }
+      }
 
-       .inputs {
-    position: relative;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    padding: 8px;
-    background-color: transparent;
-    transition: border-color 0.3s ease;
-    outline: none;
-}
+      .inputs {
+        position: relative;
+        border: none;
+        border-bottom: 2px solid #ccc;
+        padding: 8px;
+        background-color: transparent;
+        transition: border-color 0.3s ease;
+        outline: none;
+      }
 
+      .inputs:focus::before {
+        width: 100%;
+      }
 
-.inputs:focus::before {
-    width: 100%;
-}
-
-.inputs:focus {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+      .inputs:focus {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
     </style>
     <div class="wrapper">
-        {%include 'includes/loader.html'%}
+      {%include 'includes/loader.html'%} {% include 'includes/topNavbar.html' %}
+      {% include 'includes/sideNavbar.html' %}
 
-        {% include 'includes/topNavbar.html' %}
-        {% include 'includes/sideNavbar.html' %}
-        
+      <div class="content-wrapper" style="background-color: white">
+        {% include "includes/message.html" %}
 
-        <div class="content-wrapper" style="background-color: white;">
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6"></div>
+            </div>
+          </div>
+        </section>
 
-            {% include "includes/message.html" %}
+        <section>
+          <div class="container-fluid">
+            <a
+              class="btn"
+              href="{% url 'survey_managment:createQuestion' survey_id=zsurvey.id %}"
+              style="float: right; color: white; background-color: #208c5c"
+            >
+              <i class="bi bi-plus-circle" style="color: white"></i> Question
+            </a>
 
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
+            <a
+              class="btn"
+              href="{% url 'survey_managment:displayQuestion' zsurvey.id %}"
+              style="color: white; background-color: #208c5c"
+            >
+              <i class="bi bi-box-arrow-in-left" style="color: white"></i>
+              Import
+            </a>
+          </div>
 
-                        </div>
-                    </div>
+          <h3 class="text-center">{{zsurvey.name}}</h3>
+          <!-- Question Displayer HTML -->
+          <div class="question-container drop">
+            <div class="drop_container" id="drop-items">
+              {% if questions %} {% for question in questions %}
+              <div class="drop_card">
+                <button type="button" class="btn" style="float: right"></button>
+                <div class="question-title p-3">
+                  {% if question.order == 0 %}
+                  <span>{{ forloop.counter }})</span>
+                  {% else %}
+                  <span> {{question.order}} , </span>
+                  {% endif %}
+                  <span> {{ question.title }} </span>
                 </div>
-            </section>
+                {% if question.label %}
+                <p class="pl-3">{{ question.label }}</p>
+                {% endif %} {% if question.choice.all %}
+                <ul class="question-options pl-3">
+                  {% for choice in question.choice.all %}
+                  <li class="question-option">
+                    <input
+                      class="form-check-input mt-0"
+                      type="checkbox"
+                      name=""
+                      id=""
+                      value="{{choice.id}}"
+                    />
+                    {{ choice.name }}
+                  </li>
+                  {% endfor %}
+                </ul>
+                {% else %}
+                <input
+                  type="{{ question.question_type }}"
+                  name="dynamic_field"
+                  value=""
+                  class="ml-3 form-control"
+                />
+                {% endif %} {% if question.allow_doc %}
+                <p>Document Label: {{ question.doc_label }}</p>
+                <input type="file" name="" id="" />
+                {% endif %}
+              </div>
+              {% endfor %} {% else %}
+              <div class="container" style="display: flex; align-items: center">
+                <p style="margin: auto; color: darkgray">
+                  Sorry, No Questions Created!
+                </p>
+              </div>
 
-            <section>
-                <div class="container-fluid">
-                    <button class="btn" data-bs-toggle="modal" data-bs-target="#ICONS"
-                     style="float: right; color: white;  background-color: #208c5c;" >
-                        <i class="bi bi-plus-circle"  style="color: white;"></i>  Question
-                    </button> 
-
-
-                    <div class="modal" id="ICONS" tabindex="-1"  aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" >
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                  <h1 class="modal-title fs-5">Select Question Type</h1>
-                                </div>
-                                <div class="modal-body">
-                                    
-                                    <ul class="custom-list">
-                                        <li class="nav-item">
-                                            <a href="" id="oneT" class="nav-link" title="Text" 
-                                               data-bs-placement="right"> 
-                                                <i class="bi bi-textarea-t"></i> Text
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{% url 'survey_managment:newQuestion' questionType='number' s_id=zsurvey.id %}" class="nav-link " title="Numbers" data-bs-placement="right" >
-                                                <i class="bi bi-123"></i> Numbers
-                                            </a>
-                                        </li>
-    
-                                        <li class="nav-item">
-                                            <a href="{% url 'survey_managment:newQuestion' questionType='checkbox'  s_id=zsurvey.id %}" class="nav-link" title="Checkbox" data-bs-placement="right">
-                                                <i class="bi bi-check-all"></i> Multi-select
-                                            </a>
-                                        </li>
-    
-                                        <li class="nav-item">
-                                            <a href="{% url 'survey_managment:newQuestion' questionType='radio'  s_id=zsurvey.id %}" class="nav-link " title="Radio" data-bs-placement="right" >
-                                                <i class="bi bi-check2-circle"></i> Uni-select
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{% url 'survey_managment:newQuestion' questionType='textarea'  s_id=zsurvey.id %}" class="nav-link " title="description" data-bs-placement="right">
-                                                <i class="bi bi-card-text"></i> Description
-                                            </a>
-                                        </li>
-                                    
-                                        <li>
-                                            <a href="{% url 'survey_managment:newQuestion' questionType='url'  s_id=zsurvey.id %}" class="nav-link " title="url"  data-bs-placement="right" >
-                                                <i class="bi bi-link"></i> URL
-                                            </a>
-                                        </li>
-    
-                                        <li>
-                                            <a href="{% url 'survey_managment:newQuestion' questionType='date'  s_id=zsurvey.id %}" class="nav-link " title="date"  data-bs-placement="right" >
-                                                <i class="bi bi-calendar4-week"></i> Date
-                                            </a>
-                                        </li>
-    
-                                        <li>
-                                            <a href="{% url 'survey_managment:newQuestion' questionType='email'  s_id=zsurvey.id %}" class="nav-link " title="Email"  data-bs-placement="right" >
-                                                <i class="bi bi-envelope-at"></i> Email
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{% url 'survey_managment:newQuestion' questionType='rating'  s_id=zsurvey.id %}" class="nav-link " title="Rating"  data-bs-placement="right">
-                                                <i class="bi bi-star-half"></i> Rating
-                                            </a>
-                                        </li>
-    
-                                        <li>
-                                            <a href="{% url 'survey_managment:newQuestion' questionType='file'  s_id=zsurvey.id %}" class="nav-link " title="Document" data-bs-placement="right" >
-                                                <i class="bi bi-file-earmark-arrow-up"></i> File
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                              </div>
-                        </div>
-                    </div>
-                    <a class="btn " href="{% url 'survey_managment:displayQuestion' zsurvey.id %}" 
-                    style=" color: white;  background-color: #208c5c;" >
-                        <i class="bi bi-box-arrow-in-left" style="color: white;"></i> Import
-                    </a>
-                </div>
-
-
-                <h3 class="text-center"> {{zsurvey.name}} </h3>
-                    <!-- Question Displayer HTML -->
-                    <div class="question-container drop ">
-                        <div class="drop_container" id="drop-items">
-                        {% if questions %}
-                        {% for question in questions %}
-                            <div class="drop_card">
-                                <button type="button" class="btn" style="float: right;">    
-                                    <i class="bi bi-pencil "></i>
-                                </button>
-                            <div class="question-title p-3">
-                                {% if question.order == 0 %}
-                                    <span> - </span>
-                                {% else %}
-                                    <span> {{question.order}}  , </span>
-                                {% endif %}
-                                <span>  {{ question.title }} </span> 
-                            </div>
-                            {% if question.label %}
-                                 <p class="pl-3">{{ question.label }}</p> 
-                            {% endif %}  
-
-                            {% if question.choice.all %}
-                            <ul class="question-options pl-3">
-                                {% for choice in question.choice.all %}
-                                <li class="question-option" >
-                                    <input class="form-check-input mt-0" type="checkbox" name="" id="" value="{{choice.id}}"> {{ choice.name }}
-                                </li>
-                                {% endfor %}
-                            </ul>
-                            {% else %}
-                                <input type="{{ question.question_type }}" name="dynamic_field" value="" class="ml-3 form-control">                            
-                            {% endif %}
-
-                            {% if question.allow_doc %}
-                                <p>Document Label: {{ question.doc_label }}</p>
-                                <input type="file" name="" id="">
-                            {% endif %}
-                        </div>
-                        {% endfor %}
-
-                        {% else %}
-                            <div class="container" style="display: flex; align-items: center;">
-                                <p style="margin: auto; color: darkgray;"> Sorry, No Questions Created! </p>
-                            </div>
-
-                        {% endif %}
-                    </div>
-                    </div>
-
-
-              
-            </section>
-
-        </div>
-
-
+              {% endif %}
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
 
+    {% include 'includes/scripts.html' %}
 
-{% include 'includes/scripts.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script>
+      // JavaScript code for Drag and Drop reordering
+      const dropItems = document.getElementById("drop-items");
+      new Sortable(dropItems, {
+        animation: 150,
+        chosenClass: "sortable-chosen",
+        dragClass: "sortable-drag",
+      });
 
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
-<script>
-    // JavaScript code for Drag and Drop reordering
-    const dropItems = document.getElementById('drop-items')
-    new Sortable(dropItems, {
-    animation: 150,
-    chosenClass: "sortable-chosen",
-    dragClass: "sortable-drag",
-});
-
-    document.getElementById('oneT').addEventListener('click', function(){
-        
-    })
-</script>
-
-
-
-</body>
-
+      document.getElementById("oneT").addEventListener("click", function () {});
+    </script>
+  </body>
 </html>

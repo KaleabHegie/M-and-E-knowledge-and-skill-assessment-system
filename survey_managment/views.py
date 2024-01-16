@@ -23,7 +23,8 @@ import json
 
 # Create your views here.
 
-
+def new_page(request):
+    return render(request,'new_create.html')
 
 def indexView(request):
     survey_id = request.GET.get('survey_id')
@@ -54,7 +55,9 @@ def indexView(request):
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
       
         return render(request, 'index.html', context)
+def ministries(request):
     
+    return render(request , 'ministries.html')
 
 def filter(request):
     survey_id = request.GET.get('survey_id')
@@ -1000,7 +1003,6 @@ def questionForSurveyAnonymous(request, id , user_response_id):
            age=user_response.age,
            year_of_experiance = user_response.year_of_experiance,
            status='approved',
-           line_ministry=user_response.line_ministry
     )
 
            user_response.save() 
@@ -1033,5 +1035,66 @@ def questionForSurveyAnonymous(request, id , user_response_id):
 
     return render(request, 'Final_Preview_Pages/surveyForAnonymous.html', context)
 
+import json
+def createQuestion(request,survey_id ):
+    zsurvey = Survey.objects.get(id=survey_id)
+    categories = Category.objects.all()
+    survey = get_object_or_404(Survey, id=survey_id)
+    if request.method == 'POST':
+            objects_json = request.POST.get('objects')
+            objects = json.loads(objects_json)
+            for obj in objects:
+                category_id = obj['category']
+                category = get_object_or_404(Category ,id=category_id)
+                has_weight= obj['hasWeight']
+                has_doc = obj['hasDoc']
+                if has_weight=="on":
+                    has_weight= True  
+                else:
+                    has_weight= False  
+                
+                if has_doc=="on":
+                    has_doc= True  
+                else:
+                    has_doc= False  
+                question = Question(title=obj['question'],
+                question_type=obj['questionType'],
+                has_weight= has_weight,
+                weight=obj['weight'],
+                allow_doc=has_doc,
+                doc_label=obj['Doclable'],
+                category=category,
+                )
+                question.save()
 
+                question_type =obj['questionType']
+                print(question_type)
+                hasOption = ["checkbox", "radio"]
+                if question_type in hasOption:
+                    options = obj['options']
+                    for i in options:
+                        newChoice = Choice.objects.create(name=i)
+                        question.choice.add(newChoice.id)
+                        print("The new choice name " + str(newChoice.name))
+                        print("The new choice id " + str(newChoice.id))
 
+                survey.question.add(question)
+            return redirect('survey_managment:questionCreationByType', survey_id=survey_id )
+
+   
+
+    context = {'categories': categories,'zsurvey':zsurvey}
+    return render(request, 'new_create.html', context)
+
+def save_category(request):
+    if request.method == 'POST':
+        new_category_name = request.POST.get('categoryName')
+        category = Category(name=new_category_name)
+        category.save()
+
+        categories = Category.objects.all()
+        categories_data = [{'id': cat.id, 'name': cat.name} for cat in categories]
+
+        return JsonResponse({'success': True, 'categories': categories_data})
+    else:
+        return JsonResponse({'success': False})
