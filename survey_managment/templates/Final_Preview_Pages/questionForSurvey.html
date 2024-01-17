@@ -95,21 +95,19 @@
 
       <h1 style="color: #04aa6d" class="bold p-4">{{ survey }}</h1>
 
-      <div style="text-align: center; margin-top: 40px">
-        {% for i in cat_list %} {% if i.questions %}
-        <span class="step"></span>
-        {% endif %} {% endfor %}
-       
-      </div>
       <br> <br>
 
-      <div id="questions-container" class="tab">
+      <div id="questions-container" class="">
         {% for i in cat_list %}
-          <ul class="question-list" style="list-style: none">
+
+        <div class="">
+          <ul class="question-list tab" style="list-style: none">
             {% if i.questions %}
+            <hr class="mt-5" style="border: black solid 1px;">
             <h5 class="text-gray mb-5">{{ i.category }}</h5>
+            
             {% for question in i.questions %}
-            <li style="border-left: 6px solid #04aa6d; border-radius: 8px">
+            <li  style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 30px;">
               <div class="row">
                 <div class="col-1">
                   <span class="ml-2" style="color: #04aa6d; font-weight: bold">
@@ -161,19 +159,12 @@
             {% endfor %} 
             {% endif %}
           </ul>
+          </div>
         
         {% endfor %}
       </div>
 
-      <div class="tab">
-         <div class="text-center">
-             <img class="img-fluid" src="{% static 'assets/img/succ.png' %}"  alt="">
-             <div style="float: left ; background-color: #04aa6d;">
-               <a class="p-3 text-dark"  href="{% url 'survey_managment:questionForSurvey' id=survey.id %}">  Retake  </a> 
-             </div>
-         </div>
-
-      </div>
+    
 
       <div style="overflow: auto">
         <div style="float: right">

@@ -657,15 +657,30 @@ def chooseTarget(request, survey_id, question_id):
 
 
 def questionCreationByType(request, survey_id):
+   
     zsurvey = Survey.objects.get(id=survey_id)
     questions = zsurvey.question.all()
+    cat_list = []
+    for cat in Category.objects.all():
+        question_filtered = zsurvey.question.filter(category=cat)
+        questions_list = []
+        for question in question_filtered:
+            questions_list.append(question.title)
+        cat_list.append({"category":cat.name,"questions":questions_list})
+    
+    question_cat_none = zsurvey.question.filter(category=None)
+    questions_list = []
+    for question in question_cat_none:
+        questions_list.append(question)
+    cat_list.append({"category":'No category',"questions":questions_list})
+   
     pattern = r'/newQuestion/[^/]+/\d+/'
     if request.META.get('HTTP_REFERER') and '/surveyCreation' in request.META['HTTP_REFERER']:
         messages.success(request, 'Survey created successfully. Add questions to it.')  # regular expression pattern to match the URL
     if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
         messages.success(request, 'Survey created successfully. Add questions to it.')    
     
-    return render(request, 'addQuestions.html', {'zsurvey': zsurvey, 'questions': questions})
+    return render(request, 'addQuestions.html', {'zsurvey': zsurvey, 'cat_list': cat_list})
    
 
 def newQuestion(request,questionType, s_id ):
@@ -1050,7 +1065,7 @@ def questionForSurveyAnonymous(request, id , user_response_id):
 
     return render(request, 'Final_Preview_Pages/surveyForAnonymous.html', context)
 
-import json
+
 def createQuestion(request,survey_id ):
     zsurvey = Survey.objects.get(id=survey_id)
     categories = Category.objects.all()
@@ -1079,6 +1094,7 @@ def createQuestion(request,survey_id ):
                 allow_doc=has_doc,
                 doc_label=obj['Doclable'],
                 category=category,
+                label = obj['question_lable'],
                 )
                 question.save()
 
