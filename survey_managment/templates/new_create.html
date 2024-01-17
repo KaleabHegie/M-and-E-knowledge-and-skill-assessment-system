@@ -76,7 +76,6 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-         {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
 
         <div class="content-wrapper mt-1 p-4" style="background-color: white">
             <section class="content ">
@@ -118,31 +117,17 @@
                                             
                                                     </div>
                                                  </h3>
+                                                 
 
                                                 <div class="card-tools mt-3">
-                                                    <select class="form-select questionTypeDropdown"
-                                                        name="question_type">
+                                                    <select class="form-select questionTypeDropdown" name="question_type">
                                                         <option value="" selected disabled>Select an option</option>
-                                                        <option value="text">
-                                                            <span class="icon"><i class="bi bi-textarea-t"></i></span>
-                                                            Text
-                                                        </option>
-                                                        <option value="number">
-                                                            <span class="icon"><i class="bi bi-123"></i></span> Numbers
-                                                        </option>
-                                                        <option value="checkbox">
-                                                            <span class="icon"><i class="bi bi-check-all"></i></span>
-                                                            Multi-select
-                                                        </option>
-                                                        <option value="radio">
-                                                            <span class="icon"><i
-                                                                    class="bi bi-check2-circle"></i></span>
-                                                            Uni-select
-                                                        </option>
-                                                        <!-- <option value="textarea">
-                                                            <span class="icon"><i class="bi bi-card-text"></i></span>
-                                                            Description
-                                                        </option> -->
+                                                        {% for choice in type_field_choices %}
+                                                            <option value="{{ choice.0 }}">
+                                                                <span class="icon"><i class="bi {% if choice.0 == 'text' %}bi-textarea-t{% elif choice.0 == 'number' %}bi-123{% elif choice.0 == 'checkbox' %}bi-check-all{% elif choice.0 == 'radio' %}bi-check2-circle{% elif choice.0 == 'textarea' %}bi-card-text{% elif choice.0 == 'url' %}bi-link-45deg{% elif choice.0 == 'email' %}bi-envelope{% elif choice.0 == 'date' %}bi-calendar3{% elif choice.0 == 'rating' %}bi-star{% endif %}"></i></span>
+                                                                {{ choice.1 }}
+                                                            </option>
+                                                        {% endfor %}
                                                     </select>
                                                 </div>
 
@@ -762,7 +747,6 @@ function addCardAfter(event) {
     storeCards.push(cardId);
     count++;
 }
-
 const addButtons = document.querySelectorAll(".add-button");
 addButtons.forEach((button) => {
     button.addEventListener("click", addCardAfter);

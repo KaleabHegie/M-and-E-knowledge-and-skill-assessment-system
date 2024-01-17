@@ -6,7 +6,4 @@ def unread_messages(request):
     unread = ContactUs.objects.filter(status='inbox', read=False)
     user = request.user 
    
-   
-    
-
     return {'unread_count': unread_count , "unread" : unread  ,"pending_responses" : pending_responses }

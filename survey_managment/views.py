@@ -21,7 +21,6 @@ import json
 
 
 
-# Create your views here.
 
 def new_page(request):
     return render(request,'new_create.html')
@@ -55,6 +54,7 @@ def indexView(request):
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
       
         return render(request, 'index.html', context)
+
 def ministries(request):
     
     return render(request , 'ministries.html')
@@ -88,8 +88,6 @@ def filter(request):
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
       
         return render(request, 'filter.html', context)
-
-####### Message Views ################################
 
 def average(request):
     return render(request , 'averages.html' )
@@ -275,11 +273,6 @@ def read(request , id):
         return render(request ,"read.html" , context)
 
 
-
-####### User Views ################################
-
-
-
 def user_profile(request):
     return render(request , 'profile.html' )
 
@@ -307,13 +300,6 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'survey_managment/change_password.html', {'form': form})
-
-
-
-
-
-####### Analsis views ################################
-
 
 
 def Mychartanalysis(request):
@@ -463,11 +449,6 @@ def get_data(request):
     }
     
     return JsonResponse(serialized_data, safe=False)
-
-
-
-####### Survey , User Response and Question views ################################
-
 
 
 def survey(request):
@@ -792,15 +773,6 @@ def surveyCreationView(request):
         form = SurveyForm()
     return render(request, 'surveyCreation.html', {'form': form})
 
-
-
-
-
-
-
-
-####### final preview views ################################
-
 @login_required
 def greetingpage_view(request):
     
@@ -830,8 +802,6 @@ def greetingpage_view(request):
     }
     
     return render(request, 'Final_Preview_Pages/greetingpage.html' , context)
-
-
 
 @login_required
 def survey_listss_views(request):
@@ -924,7 +894,6 @@ def recomended_survey_list(request):
     return render(request, 'recomended_survey_list.html', data)
 
 
-
 @login_required
 def recomended_survey(request, id):
     survey = get_object_or_404(Survey, id=id)
@@ -984,7 +953,6 @@ def previous_analysis(request ):
     return (request , 'previous_analysis.html' , context )
 
 
-
 def user_info(request):
     if request.method == 'POST':
         form = UserResponseFormA(request.POST)
@@ -1001,7 +969,6 @@ def user_info(request):
     return render(request, 'Final_Preview_Pages/userinfopage.html', data)
 
 
-
 def anonymous_survey_listss_views(request , user_response_id):
     today = date.today()
     survey_type = SurveyType.objects.get(name='For Employee')
@@ -1013,7 +980,6 @@ def anonymous_survey_listss_views(request , user_response_id):
         'user_response_id' : user_response_id
     }
     return render(request, 'Final_Preview_Pages/SL_Anonymous.html', data)
-
 
 
 def questionForSurveyAnonymous(request, id , user_response_id):
@@ -1096,6 +1062,20 @@ def createQuestion(request,survey_id ):
                 category=category,
                 label = obj['question_lable'],
                 )
+                weight = obj['weight']
+                doc_label=obj['Doclable']
+                category = category
+                if weight or doc_label or category :
+                    try:
+                        question.weight = float(weight)
+                        question.doc_label = doc_label
+                        question.category = category
+                    except ValueError:
+                        pass
+                else:
+                    question.weight =None
+                    question.doc_label = None
+                    question.category = None
                 question.save()
 
                 question_type =obj['questionType']
@@ -1114,8 +1094,9 @@ def createQuestion(request,survey_id ):
 
    
 
-    context = {'categories': categories,'zsurvey':zsurvey}
+    context = {'categories': categories,'zsurvey':zsurvey ,'type_field_choices': TYPE_FIELD}
     return render(request, 'new_create.html', context)
+
 
 def save_category(request):
     if request.method == 'POST':
