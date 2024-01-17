@@ -114,8 +114,8 @@
           <!-- Question Displayer HTML -->
           <div class="question-container drop">
             <div class="drop_container" id="drop-items">
-              {% if questions %} {% for question in questions %}
-              <li style="border-left: 6px solid #04aa6d; border-radius: 8px;list-style:none">
+                {% if questions %} {% for question in questions %}
+                <li style="border-left: 6px solid #04aa6d; border-radius: 8px;list-style:none">
                 <div class="row">
                   <div class="col-1">
                     <span class="ml-2" style="color: #04aa6d; font-weight: bold">
@@ -124,6 +124,7 @@
                   </div>
                   <div class="col-11">
                     <p>{{ question.title }}</p>
+
                   </div>
                 </div>
   
@@ -131,24 +132,39 @@
                 <div class="row">
                   <div class="col-1">
                     <span class="ml-2" style="color: #04aa6d; font-weight: bold">
-                      Discription:
+                      Description:
                     </span>
                   </div>
                   <div class="col-11">
                     <p class="ml-3">{{ question.label }}</p>
                   </div>
                 </div>
-                {% endif %}
-                <p>
-                  <input
-                    class="m-3 ml-4 form-control"
-                    type="text"
-                    name="answer_{{ question.id }}"
-                    placeholder="Answer..."
-                    required
-                    disabled
-                  />
-                </p>
+                {% endif %} {% if question.choice.all %}
+
+               {% if question.choice.all %}
+        <ul class="question-options pl-5">
+          {% for choice in question.choice.all %}
+          <li class="question-option">
+            <input
+              class="form-check-input mt-0"
+              type="{{question.question_type}}"
+              name="choose"
+              id=""
+              value="{{choice.id}}"
+            />
+            {{ choice.name }}
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <input
+          type="{{ question.question_type }}"
+          name="dynamic_field"
+          value=""
+          class="ml-3 form-control"
+        />
+        {% endif %}
+        {% endif %}
                 {% if question.allow_doc %}
                 <input
                   class="form-control m-3 ml-4"

@@ -20,6 +20,8 @@ from django.shortcuts import render
 import json
 
 
+
+
 def new_page(request):
     return render(request,'new_create.html')
 
@@ -1044,6 +1046,20 @@ def createQuestion(request,survey_id ):
                 doc_label=obj['Doclable'],
                 category=category,
                 )
+                weight = obj['weight']
+                doc_label=obj['Doclable']
+                category = category
+                if weight or doc_label or category :
+                    try:
+                        question.weight = float(weight)
+                        question.doc_label = doc_label
+                        question.category = category
+                    except ValueError:
+                        pass
+                else:
+                    question.weight =None
+                    question.doc_label = None
+                    question.category = None
                 question.save()
 
                 question_type =obj['questionType']
@@ -1062,7 +1078,7 @@ def createQuestion(request,survey_id ):
 
    
 
-    context = {'categories': categories,'zsurvey':zsurvey}
+    context = {'categories': categories,'zsurvey':zsurvey ,'type_field_choices': TYPE_FIELD}
     return render(request, 'new_create.html', context)
 
 
