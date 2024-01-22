@@ -114,7 +114,8 @@
           <!-- Question Displayer HTML -->
           <div class="question-container drop">
             <div class="drop_container" id="drop-items">
-                {% if questions %} {% for question in questions %}
+                {% if questions %} 
+                  {% for question in questions %}
                 <li style="border-left: 6px solid #04aa6d; border-radius: 8px;list-style:none">
                 <div class="row">
                   <div class="col-1">
@@ -139,7 +140,8 @@
                     <p class="ml-3">{{ question.label }}</p>
                   </div>
                 </div>
-                {% endif %} {% if question.choice.all %}
+                {% endif %} 
+                <!-- {% if question.choice.all %} -->
 
                {% if question.choice.all %}
         <ul class="question-options pl-5">
@@ -157,14 +159,9 @@
           {% endfor %}
         </ul>
         {% else %}
-        <input
-          type="{{ question.question_type }}"
-          name="dynamic_field"
-          value=""
-          class="ml-3 form-control"
-        />
+        <input type="{{ question.question_type }}" name="dynamic_field" value="" class="ml-3 form-control"/>
         {% endif %}
-        {% endif %}
+        <!-- {% endif %} -->
                 {% if question.allow_doc %}
                 <input
                   class="form-control m-3 ml-4"
@@ -178,12 +175,14 @@
                 <label class="ml-4" for="file{{ question.id }}"
                   >Document label: {{ question.doc_label }}</label
                 >
-                {% endif %} {% endif %}
+                {% endif %} 
+                {% endif %}
                 <br />
                 <hr style="background-color: black" />
               </li>
          
-              {% endfor %} {% else %}
+              {% endfor %} 
+              {% else %}
               <div class="container" style="display: flex; align-items: center">
                 <p style="margin: auto; color: darkgray">
                   Sorry, No Questions Created!
