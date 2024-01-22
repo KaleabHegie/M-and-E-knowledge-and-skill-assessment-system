@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -124,14 +125,14 @@
                   <div class="col-11">
                     <p>{{ question.title }}</p>
 
-                  </div>
+</div>
                 </div>
   
                 {% if question.label %}
                 <div class="row">
                   <div class="col-1">
                     <span class="ml-2" style="color: #04aa6d; font-weight: bold">
-                      Description:
+                      Label:
                     </span>
                   </div>
                   <div class="col-11">
@@ -143,15 +144,15 @@
                {% if question.choice.all %}
         <ul class="question-options pl-5">
           {% for choice in question.choice.all %}
-          <li class="question-option">
+          <li class="question-option p-2 ml-5 ">
             <input
-              class="form-check-input mt-0"
+              class="form-check-input"
               type="{{question.question_type}}"
               name="choose"
               id=""
               value="{{choice.id}}"
             />
-            {{ choice.name }}
+           <span style="font-size:15px"> {{ choice.name }} </span> 
           </li>
           {% endfor %}
         </ul>
@@ -188,10 +189,10 @@
                   Sorry, No Questions Created!
                 </p>
               </div>
-            
-            {% endfor %}
+
+              {% endif %}
+            </div>
           </div>
-    
         </section>
       </div>
     </div>

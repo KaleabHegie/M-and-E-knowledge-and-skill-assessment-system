@@ -4,7 +4,7 @@ from Account.models import CustomUser , Line_ministry
 # Create your models here.
 class Survey(models.Model):
     name = models.CharField(max_length=200)
-    instruction = models.TextField(null=True)
+    instruction = models.TextField(null=True,blank=True)
     start_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     end_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     survey_type = models.ForeignKey("SurveyType" , on_delete=models.CASCADE , null=True)

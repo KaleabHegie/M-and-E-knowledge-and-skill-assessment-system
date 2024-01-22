@@ -51,14 +51,11 @@
         transition: 0.1s ease-in;
         
     }
-
-
     .form-controls input:focus,
     .form-controls input:valid {
         border-bottom: 2px solid #46b583;
         outline: none;
     }
-
     .form-controls input:focus+label span,
     .form-controls input:valid+label span {
         color: #1987fc;
@@ -76,6 +73,8 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
+     {% include 'includes/topNavbar.html' %}
+      {% include 'includes/sideNavbar.html' %}
 
         <div class="content-wrapper mt-1 p-4" style="background-color: white">
             <section class="content ">
@@ -105,7 +104,7 @@
                                         <div class="card card-outline" style="border-left: 4px solid #46b583;">
 
                                             <div class="card-header mt-0">
-                                                <i class="fa fa-angle-up" aria-hidden="true" style="float: right;" data-toggle="collapse" name=" dropicon"
+                                                <i class="fa fa-angle-up" aria-hidden="true" style="float: right;" data-toggle="collapse" name="dropicon"
                                                 href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"></i>
                                                 <h3 class="card-title form-group" style="width: 75%;">
                                                     
@@ -134,20 +133,19 @@
                                             </div>
                                             <div class="row m-3" >
                                                     
-                                                    <div class="row  mb-3">
-                                                        <div class="col-lg-10">
-                                                            <label> Category </label>
-                                                            <select class="category form-select" name="category">
-                                                                <option selected disabled value="">Select Category</option>
-                                                                {%for category in categories%}
-                                                                <option value="{{category.id}}">{{category.name}}</option>
-                                                                {%endfor%}
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-lg-2" style="margin-top:33px">
-                                                            <i style="font-size: 2rem;" class="bi-clipboard-plus d-flex" name="add_category"></i>
-                                                        </div>
-                                                      </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-lg-10">
+                                                        <select class="form-control category" name="category" id="categorySelect">
+                                                            <option value="" selected disabled>Select an Category</option>
+                                                            {%for category in categories%}
+                                                            <option value="{{category.id}}">{{category.name}}</option>
+                                                            {%endfor%}
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <i style="font-size:2rem" class="bi-clipboard-plus" name="add_category" id="addCategoryBtn"></i>
+                                                    </div>
+                                                  </div>
                                                    
                                                     
                                                 
@@ -276,9 +274,12 @@
         $("#categorySelect").empty();
 
         // Add new options based on the response
-        for (var i = 0; i < response.categories.length; i++) {
-          var category = response.categories[i];
-          var option = $("<option>").attr("value", category.id).text(category.name);
+        for (let i = 0; i < response.categories.length; i++) {
+          let category = response.categories[i];
+          let option = $("<option>").attr("value", category.id).text(category.name);
+          if (i == (response.categories.length) -1){
+            option.attr("selected" , "selected")
+          }
           $("#categorySelect").append(option);
         }
 
@@ -542,6 +543,7 @@ function addEventListenersToCard(card) {
         // Add new options based on the response
         console.log("bye")
         console.log(category_select)
+        
         for (let j= 0; j<category_select.length;j++){
             let x = category_select[j];
                 let y = category_select[category_select.length-1];
