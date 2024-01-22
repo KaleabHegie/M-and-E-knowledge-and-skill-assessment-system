@@ -71,25 +71,73 @@
                     <h4 class="text-center text-info mt-3">
                       Questions for survey {{ survey.name }}
                      </h4>
-                 {% if questions %}
-                 <ul class="list-group">
-                  <div class="card mb-3 shadow">
-                    <div class="card-header">
-                      <div class="form-row mb-3">
-                        <div class="col">
-                          <input type="text" class="form-control" id="search-input" placeholder="Search question...">
+                 {% if cat_list %}
+                 <div id="questions-container">
+                  {% for i in cat_list %}
+                    <ul class="question-list " style="list-style: none">
+                      {% if i.questions %}
+                      <hr class="mt-5" style="border: black solid 1px;">
+                      <div class="tab">
+                         <h5 class="mb-3"> {{ i.category }} <h5>
+                      {% for question in i.questions %}
+                      <li  style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 30px;">
+                        <div class="row" style="margin-left:30px">
+                          <div class="col-11" >
+                            <p style="padding-top:40px">{{ question.title }}</p>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      {% for question in questions %}
-                        <li class="list-group-item mb-2 shadow">
-                          {{ question.title }}
-                        </li>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </ul>
+          
+                        {% if question.label %}
+                        <div class="row" style="margin-left:30px">
+                          <div class="col-2">
+                            <span style="color: #04aa6d; font-weight: bold">
+                              Discription:
+                            </span>
+                          </div>
+                          <div class="col-10">
+                            <p class="ml-3">{{ question.label }}</p>
+                          </div>
+                        </div>
+                        {% endif %}
+                        <p style="margin-left:30px">
+                          <input
+                            class="m-3 ml-4 form-control"
+                            type="text"
+                            name="answer_{{ question.id }}"
+                            placeholder="Answer..."
+                            required
+                            disabled
+                          />
+                        </p>
+                        {% if question.allow_doc %}
+                        <input
+                          style = "margin-left:30px"
+                          class="form-control m-3 ml-4"
+                          type="file"
+                          name="file_{{ question.id }}"
+                          placeholder="File..."
+                          required
+                          disabled
+                        />
+                        {% endif %}
+                        {% if question.doc_label %}
+                        <label style="margin-left:30px;font-weight:bold" class="ml-4" for="file{{ question.id }}"
+                          >Document label</label>
+                          {{ question.doc_label }} 
+                         {% endif %}
+                        <br />
+                        <hr style="background-color: black" />
+                      </li>
+                      {% endfor %} 
+                    </div> 
+                      {% endif %}
+                    </ul>
+          
+                  
+                    
+                  
+                  {% endfor %}
+                </div>
       
                  {% else %}   
                  <p style="font-size: 1.2rem;">No Questions found For this survey.</p>
@@ -135,7 +183,7 @@
                           </tbody>
                         </table>
                       {% else %}
-                        <p style="font-size: 1.2rem;">No responses found.</p>
+                        <p class="text-center text-danger" style="font-size: 1.2rem;">No responses found.</p>
                       {% endif %}
                     </div>
                   </div>
@@ -148,7 +196,12 @@
                         {% for line_ministrie  in line_ministries  %}
                           
                           <div class="card shadow p-2 m-3">
-                             <h5> {{line_ministrie}} </h5>
+                            <ul style="list-style:none"> 
+                              <li>
+                                <h6> {{line_ministrie}} </h6>
+                            </li> 
+                            <ul>
+                            
                           </div>
                          
                         {% endfor %}

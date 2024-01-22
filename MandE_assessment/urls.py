@@ -8,7 +8,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('survey_managment.urls')) ,
-    # path('froala_editor/', include('froala_editor.urls')),
+    path('froala_editor/', include('froala_editor.urls')),
     path('account/', include('Account.urls'))
 
 ]

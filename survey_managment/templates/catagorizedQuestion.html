@@ -29,72 +29,67 @@
        
        
 
-        <section class="container-fluid">
-          {% for category in categories %}
-              {% if not category.parent and category.question_set.exists %}
-                  <div class="accordion" id="#collapse-{{ category.id }}">
-                      <div class="accordion-item">
-                          <div class="accordion-header" id="heading-{{ category.id }}">
-                              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ category.id }}" aria-expanded="true" aria-controls="collapse-{{ category.id }}">
-                                  {{ category.name }}
-                              </button>
-                          </div>
-                          <div id="collapse-{{ category.id }}" class="accordion-collapse collapse show" aria-labelledby="heading-{{ category.id }}" data-bs-parent="#collapse-{{ category.id }}">
-                              <div class="accordion-body">
-                                  
-                                      {% for question in category.question_set.all %}
-                                      <div class="question-container">
-                                          <div class="question-item">
-                                              <label class="checkbox-container">
-                                                  <input type="checkbox" name="selected_questions" value="{{ question.id }}">
-                                                  {{ question.title }}
-                                                  <span class="checkmark"></span>
-                                              </label>
-                                          </div>
-                                        </div>
-                                          <!-- Add more question items as needed -->
-                                      {% endfor %}
-                                  
-                                  {% for subcategory in category.subcategories.all %}
-                                      {% if subcategory.question_set.exists %}
-                                          <div class="accordion">
-                                              <div class="accordion-item">
-                                                  <div class="accordion-header" id="heading-{{ subcategory.id }}">
-                                                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ subcategory.id }}" aria-expanded="true" aria-controls="collapse-{{ subcategory.id }}">
-                                                          {{ subcategory.name }}
-                                                      </button>
-                                                  </div>
-                                                  <div id="collapse-{{ subcategory.id }}" class="accordion-collapse collapse show" aria-labelledby="heading-{{ subcategory.id }}" data-bs-parent="#accordion">
-                                                      <div class="accordion-body">
-                                                          
-                                                              {% for question in subcategory.question_set.all %}
-                                                              <div class="question-container">
-                                                                  <div class="question-item">
-                                                                      <label class="checkbox-container">
-                                                                          <input type="checkbox" name="selected_questions" value="{{ question.id }}">
-                                                                          {{ question.title }}
-                                                                          <span class="checkmark"></span>
-                                                                      </label>
-                                                                  </div>
-                                                                </div>
-                                                                  <!-- Add more question items as needed -->
-                                                              {% endfor %}
-                                                         
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      {% endif %}
-                                  {% endfor %}
-                              </div>
-                          </div>
+       <section class="container-fluid">
+        {% for category in categories %}
+          {% if not category.parent and category.question_set.exists %}
+            <div class="accordion" id="accordion-{{ category.id }}">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-{{ category.id }}">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ category.id }}" aria-expanded="true" aria-controls="collapse-{{ category.id }}">
+                    {{ category.name }}
+                  </button>
+                </h2>
+                <div id="collapse-{{ category.id }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ category.id }}" data-bs-parent="#accordion-{{ category.id }}">
+                  <div class="accordion-body">
+                    {% for question in category.question_set.all %}
+                      <div class="question-container">
+                        <div class="question-item">
+                          <label class="checkbox-container">
+                            <input type="checkbox" name="selected_questions" value="{{ question.id }}">
+                            {{ question.title }}
+                            <span class="checkmark"></span>
+                          </label>
+                        </div>
                       </div>
+                      <!-- Add more question items as needed -->
+                    {% endfor %}
+                    {% for subcategory in category.subcategories.all %}
+                      {% if subcategory.question_set.exists %}
+                        <div class="accordion" id="accordion-{{ subcategory.id }}">
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-{{ subcategory.id }}">
+                              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ subcategory.id }}" aria-expanded="true" aria-controls="collapse-{{ subcategory.id }}">
+                                {{ subcategory.name }}
+                              </button>
+                            </h2>
+                            <div id="collapse-{{ subcategory.id }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ subcategory.id }}" data-bs-parent="#accordion-{{ subcategory.id }}">
+                              <div class="accordion-body">
+                                {% for question in subcategory.question_set.all %}
+                                  <div class="question-container">
+                                    <div class="question-item">
+                                      <label class="checkbox-container">
+                                        <input type="checkbox" name="selected_questions" value="{{ question.id }}">
+                                        {{ question.title }}
+                                        <span class="checkmark"></span>
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <!-- Add more question items as needed -->
+                                {% endfor %}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
                   </div>
-              {% endif %}
-          {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
       </section>
       
-
       
       <script>
           // Initialize all accordions
