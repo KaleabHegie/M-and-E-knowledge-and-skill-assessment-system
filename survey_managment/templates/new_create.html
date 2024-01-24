@@ -133,19 +133,19 @@
                                             </div>
                                             <div class="row m-3" >
                                                     
-                                                <div class="row mb-3">
-                                                    <div class="col-lg-10">
-                                                        <select class="form-control category" name="category" id="categorySelect">
-                                                            <option value="" selected disabled>Select an Category</option>
-                                                            {%for category in categories%}
-                                                            <option value="{{category.id}}">{{category.name}}</option>
-                                                            {%endfor%}
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <i style="font-size:2rem" class="bi-clipboard-plus" name="add_category" id="addCategoryBtn"></i>
-                                                    </div>
-                                                  </div>
+                                                      <div class="row">
+                                                        <div class="col-lg-10">
+                                                            <select class="form-control category" name="category" id="categorySelect">
+                                                                <option value="" selected>Select an option</option>
+                                                                {%for category in categories%}
+                                                                <option value="{{category.id}}">{{category.name}}</option>
+                                                                {%endfor%}
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <i class="bi-clipboard-plus" name="add_category" id="addCategoryBtn"></i>
+                                                        </div>
+                                                      </div>
                                                    
                                                     
                                                 
@@ -223,19 +223,35 @@
               <div class="modal-content">
                 <!-- Modal header -->
                 <div class="modal-header">
-                  <h4 class="modal-title">Add Category</h4>
+                  <h3 class="modal-title">Add New Category</h3>
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body">
                   <!-- Form to add category using AJAX -->
                   <form id="categoryForm">
-                    {% csrf_token %}
                     <div class="form-group">
                       <label for="categoryName">Category Name:</label>
                       <input type="text" class="form-control" id="categoryName" name="categoryName">
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="form-group">
+                        <label for="categoryName">Parent Category:</label>
+                        <select class="form-control" id="parentId">
+                            <option value="" selected>Select an option</option>
+                            {% for category in categories %}
+                                            {% if category.subcategories.exists %}
+                                                <optgroup class="category-group" label="{{ category.name }}">
+                                                    {% for subcategory in category.subcategories.all %}
+                                                        <option value="{{ subcategory.id }}">- {{ subcategory.name }}</option>
+                                                    {% endfor %}
+                                                </optgroup>
+                                            {% else %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                        </select>
+                      </div>
+                    <button type="submit" class="btn btn-success" name="submit_cat">Submit</button>
                   </form>
                 </div>
               </div>
@@ -254,43 +270,45 @@
     $("#categoryModal").modal("show");
   });
 
-  // Handle form submission using AJAX
-  $("#categoryForm").submit(function(event){
-    event.preventDefault();
-    var categoryName = $("#categoryName").val();
-    $.ajax({
-      type: "POST",
-      url: '/save_category/', // Replace with the actual URL to process the category creation
-      data: { categoryName: categoryName },
-      beforeSend: function(xhr, settings) {
-    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-  },
-      success: function(response){
-        // Handle the response from the server
-        console.log(response);
+//   // Handle form submission using AJAX
+//   $("#categoryForm").submit(function(event){
+//     event.preventDefault();
+//     var categoryName = $("#categoryName").val();
+//     $.ajax({
+//       type: "POST",
+//       url: '/save_category/', // Replace with the actual URL to process the category creation
+//       data: { categoryName: categoryName },
+//       beforeSend: function(xhr, settings) {
+//     xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+//   },
+//       success: function(response){
+//         // Handle the response from the server
+//         console.log(response);
+       
+//         if (response.success) {
+//         // Clear existing options
+//         let x = document.querySelectorAll('mycard');
+//         console.log(x);
+//         $("#categorySelect").empty();
+        
+//         // Add new options based on the response
+//         for (let i = 0; i < response.categories.length; i++) {
+//           let category = response.categories[i];
+//           let option = $("<option>").attr("value", category.id).text(category.name);
+//             if (i == (response.categories.length)-1) {
+//   option.attr("selected", "selected");
+// }
+//           $("#categorySelect").append(option);
+//         }
 
-        if (response.success) {
-        // Clear existing options
-        $("#categorySelect").empty();
-
-        // Add new options based on the response
-        for (let i = 0; i < response.categories.length; i++) {
-          let category = response.categories[i];
-          let option = $("<option>").attr("value", category.id).text(category.name);
-          if (i == (response.categories.length) -1){
-            option.attr("selected" , "selected")
-          }
-          $("#categorySelect").append(option);
-        }
-
-        // Close the modal
-        $("#categoryModal").modal("hide");
-      } else {
-        console.log("Category saving failed.");
-      }
-    }
-    });
-  });
+//         // Close the modal
+//         $("#categoryModal").modal("hide");
+//       } else {
+//         console.log("Category saving failed.");
+//       }
+//     }
+//     });
+//   });
 });
 
 
@@ -305,27 +323,18 @@ let Doclable = document.getElementsByName('Doclable')[0];
 myCheckbox.addEventListener('change', function (event) {
     checkWeight(event, myCheckbox, weightInput);
     console.log("Clicked");
-
 });
-
 DocCheck.addEventListener('change', function (event) {
     checkDoc(event, DocCheck, Doclable);
     console.log("Clicked");
-
 });
-
 let add_option_btn = document.getElementsByName('add-option-btn')[0];
 const questionTypeDropdown = document.getElementsByName('question_type')[0];
 const questionCardBody = document.getElementsByName('questionCardBody')[0];
 let optionList = document.getElementsByName('optionList')[0];
 let optionsContainer = document.getElementsByName('options-container')[0];
+let cat_submit_btn= document.getElementsByName('submit_cat')[0];
 
-
-// cards.addEventListener('click', function (event) {
-//     getCardId(event);
-//     console.log(" getCardId Clicked form origin");
-
-// });
 // Get the optionList container
 let needOptions = ['Checkbox', 'Radio'];
 
@@ -357,9 +366,8 @@ function handleQuestionTypeChange(event, questionTypeDropdown, questionCardBody,
         inputElement.id = 'username';
         inputElement.name = 'username';
         inputElement.placeholder = 'Type text';
-        inputElement = disabled
-       
-
+        inputElement.required = true;
+        inputElement.disabled = true;
         const formGroup = document.createElement('div');
         formGroup.classList.add('form-group');
         formGroup.appendChild(inputElement);
@@ -375,8 +383,8 @@ function handleQuestionTypeChange(event, questionTypeDropdown, questionCardBody,
         inputElement.id = 'number';
         inputElement.name = 'number';
         inputElement.placeholder = 'Type number';
-        inputElement = disabled
-        
+        inputElement.required = true;
+        inputElement.disabled = true;
 
         const formGroup = document.createElement('div');
         formGroup.classList.add('form-group');
@@ -485,20 +493,95 @@ function handleQuestionTypeChange(event, questionTypeDropdown, questionCardBody,
   newOption.appendChild(inputContainer);
   optionsContainer.appendChild(newOption);}
     }
+
+    else if (selectedType === 'textarea')  {
+         clearOptions(optionsContainer);
+        optionList.style.display = 'none';
+        const textareaFormGroup = document.createElement('div');
+    textareaFormGroup.className = 'form-group';
+    
+    const textareaQuestion = document.createElement('label');
+    textareaQuestion.textContent = 'Please provide additional comments or information:';
+    
+    const textareaField = document.createElement('textarea');
+    textareaField.className = 'form-control';
+    textareaField.setAttribute('rows', '4');
+    textareaField.setAttribute('cols', '50');
+    textareaField.disabled = true ;
+    textareaFormGroup.appendChild(textareaQuestion);
+    textareaFormGroup.appendChild(textareaField);
+    questionCardBody.appendChild(textareaFormGroup);
+     }
+     else if (selectedType === 'url') {
+    const urlFormGroup = document.createElement('div');
+    urlFormGroup.className = 'form-group';
+    
+    const urlQuestion = document.createElement('label');
+    urlQuestion.textContent = 'Please enter the URL:';
+    
+    const urlField = document.createElement('input');
+    urlField.className = 'form-control';
+    urlField.setAttribute('type', 'url');
+    urlField.setAttribute('required', true);
+    urlField.disabled = true ;
+    urlFormGroup.appendChild(urlQuestion);
+    urlFormGroup.appendChild(urlField);
+    questionCardBody.appendChild(urlFormGroup);
+  }
+   else if (selectedType === 'email') {
+    const emailFormGroup = document.createElement('div');
+    emailFormGroup.className = 'form-group';
+    
+    const emailQuestion = document.createElement('label');
+    emailQuestion.textContent = 'Please enter your email address:';
+    
+    const emailField = document.createElement('input');
+    emailField.className = 'form-control';
+    emailField.setAttribute('type', 'email');
+    emailField.setAttribute('required', true);
+    emailField.disabled =true;
+    emailFormGroup.appendChild(emailQuestion);
+    emailFormGroup.appendChild(emailField);
+    questionCardBody.appendChild(emailFormGroup);
+  } else if (selectedType === 'date') {
+    const dateFormGroup = document.createElement('div');
+    dateFormGroup.className = 'form-group';
+    
+    const dateQuestion = document.createElement('label');
+    dateQuestion.textContent = 'Please select a date:';
+    
+    const dateField = document.createElement('input');
+    dateField.className = 'form-control';
+    dateField.setAttribute('type', 'date');
+    dateField.disabled =true;
+    dateFormGroup.appendChild(dateQuestion);
+    dateFormGroup.appendChild(dateField);
+    questionCardBody.appendChild(dateFormGroup);
+  } else if (selectedType === 'rating') {
+    const ratingFormGroup = document.createElement('div');
+    ratingFormGroup.className = 'form-group';
+    
+    const ratingQuestion = document.createElement('label');
+    ratingQuestion.textContent = 'Please rate your experience from 1 to 5:';
+    
+    const ratingField = document.createElement('input');
+    ratingField.className = 'form-control';
+    ratingField.setAttribute('type', 'number');
+    ratingField.setAttribute('min', '1');
+    ratingField.setAttribute('max', '5');
+    ratingField.setAttribute('step', '1');
+    ratingField.disabled =true;
+    ratingFormGroup.appendChild(ratingQuestion);
+    ratingFormGroup.appendChild(ratingField);
+    questionCardBody.appendChild(ratingFormGroup);
+  }  
 }
 
-// add_option_btn.addEventListener('click', function (event) {
-//     console.log("Add button clicked");
-//     addOptions(event, optionsContainer);
-// });
-
-
-// let cards = document.querySelector('[id*="card"]');
 let cards = document.querySelectorAll('.mycard');
 
-
 // Function to clear the options container
-
+let responseData;
+let card_id;
 let storeCards = ['card-0'];
 function addEventListenersToCard(card) {
     let questionTypeDropdown = card.querySelector('[name="question_type"]');
@@ -514,67 +597,26 @@ function addEventListenersToCard(card) {
     let dropbtn = card.querySelector('[name="dropdbtn"]');
     let dropubtn = card.querySelector('[name="dropubtn"]');
     let quesAttr = card.querySelector('[name="quesAttr"]');
-    let category_select = document.querySelectorAll('[name="category"]');
+    let category_select = card.querySelector('[name="category"]');
     let add_cat = card.querySelector('[name="add_category"]');
 
-   $(document).ready(function(){
-  // Show the modal when the button is clicked
-  $(add_cat).click(function(){
-    $("#categoryModal").modal("show");
-  });
-// Handle form submission using AJAX
-  $("#categoryForm").submit(function(event){
-    event.preventDefault();
-    var categoryName = $("#categoryName").val();
-    $.ajax({
-      type: "POST",
-      url: '/save_category/', // Replace with the actual URL to process the category creation
-      data: { categoryName: categoryName },
-      beforeSend: function(xhr, settings) {
-    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-  },
-      success: function(response){
-        // Handle the response from the server
-        console.log(response);
-
-        if (response.success) {
-        // Clear existing options
-            let op = [];
-        // Add new options based on the response
-        console.log("bye")
-        console.log(category_select)
-        
-        for (let j= 0; j<category_select.length;j++){
-            let x = category_select[j];
-                let y = category_select[category_select.length-1];
-        for (var i = 0; i < response.categories.length; i++) {
-          var category = response.categories[i];
-          var optionElement = document.createElement("option");
-
-         // Set the value and text content for the option
-         optionElement.value = category.id;
-         optionElement.textContent = category.name;
-         x.appendChild(optionElement);
-        }
-    }
-    
-        // Close the modal
-        $("#categoryModal").modal("hide");
-      } else {
-        console.log("Category saving failed.");
-      }
-    }
+    add_cat.addEventListener('click', function(event) {
+  console.log('I am working');
+  $(document).ready(function() {
+      // Show the modal when the button is clicked
+      $("#categoryModal").modal("show");
+      card_id = card.id
     });
-  });
-  
 });
-    
-    if (questionTypeDropdown) {
+
+// handleAjaxRequest();
+  if (questionTypeDropdown) {
         questionTypeDropdown.addEventListener('change', function (event) {
             handleQuestionTypeChange(event, questionTypeDropdown, questionCardBody, optionList, optionsContainer);
         });
         console.log("called");
         console.log(questionTypeDropdown);
+       
     }
     DocCheck.addEventListener('change', function (event) {
         checkDoc(event, DocCheck, Doclable);
@@ -587,24 +629,18 @@ function addEventListenersToCard(card) {
         console.log("myCheckbox Clicked");
 
     });
-    // add_option_btn.addEventListener('click', function (event) {
-    //     console.log("Add button clicked");
-    //     addOptions(event, optionsContainer);
-    // });
     dropbtn.addEventListener('click' , function(event){
         questionCardBody.style.display = 'none';
         quesAttr.style.display = 'none' ;
         dropubtn.style.display ='block';
         dropbtn.style.display = 'none';
     });
-
     dropubtn.addEventListener('click' , function(event){
         questionCardBody.style.display = 'block';
         quesAttr.style.display = 'block' ;
         dropubtn.style.display ='none';
         dropbtn.style.display = 'block';
     });
-
     remove_btn.addEventListener('click' , function(event){
     let cardToRemove = document.getElementById(card.id);
     if(cardToRemove){
@@ -656,16 +692,15 @@ function addCardAfter(event) {
                                             <div class="row m-3" name="quesAttr">
                                                 <div class="row  mb-3">
                                                         <div class="col-lg-10">
-                                                            <label> Category </label>
-                                                            <select class="category form-select" name="category">
-                                                                <option selected disabled value="">Select Category</option>
+                                                            <select class="form-control category" name="category">
+                                                                <option value="" selected>Select an option</option>
                                                                 {%for category in categories%}
                                                                 <option value="{{category.id}}">{{category.name}}</option>
                                                                 {%endfor%}
                                                             </select>
                                                         </div>
-                                                        <div class="col-lg-2" style="margin-top:33px">
-                                                            <i style="font-size: 2rem;" class="bi-clipboard-plus d-flex" name="add_category"></i>
+                                                        <div class="col-lg-2">
+                                                            <i class="bi-clipboard-plus" name="add_category" id="addCategoryBtn"></i>
                                                         </div>
                                                       </div>
                                                 <div class="form-group col-lg-2">
@@ -731,6 +766,26 @@ function addCardAfter(event) {
     console.log(storeCards);
     addEventListenersToCard(newCard);
     let cards = document.querySelectorAll('.mycard')
+    let cat_sec= document.getElementById(cardId);
+    let categor_div= cat_sec.querySelector('.category');
+    console.log("This is me");
+    console.log(categor_div);
+    if(responseData){
+        categor_div.innerHTML = "";
+        categor_div.innerHTML = '<option value="">Select category</option>';
+        
+        for (var i = 0; i < responseData.categories.length; i++) {
+              var category = responseData.categories[i];
+              var optionElement = document.createElement("option");
+              
+              // Set the value and text content for the option
+              optionElement.value = category.id;
+              optionElement.textContent = category.name;
+              categor_div.appendChild(optionElement);
+              console.log("added to nely created");
+              
+            }
+}
     storeCards.push(cardId);
     count++;
 }
@@ -748,7 +803,6 @@ function checkWeight(event, weightCheck, weightInput) {
         weightInput.style.display = 'none'
 
 }
-
 function checkDoc(event, DocCheck, Doclable) {
 
     if (DocCheck.checked) {
@@ -758,7 +812,6 @@ function checkDoc(event, DocCheck, Doclable) {
     else
         Doclable.style.display = 'none'
 }
-
 function addOptions(event, optionsContainer) 
 {
   let optionCount = optionsContainer.getElementsByClassName('form-group').length;
@@ -813,7 +866,6 @@ function getCardId(event) {
     const clickedCardId = event.currentTarget.id;
     console.log('Cl ID:', clickedCardId);
 }
-
 document.addEventListener('DOMContentLoaded', function () {
     const addButton = document.getElementsByName('add_objects')[0];
     addButton.addEventListener('click', handleCardSubmit);
@@ -827,12 +879,6 @@ function handleCardSubmit() {
         const card = cardList[i];
         const cardId = card.id;
         console.log(cardId);
-        // const optionInputs = card.querySelectorAll('input[name="option"]');
-        // optionInputs.forEach(function(optionInput) {
-        // options.push(optionInput.value);
-        // });
-// console.log("Helsdgh");
-// console.log(options);
 let optionValues = [];
 let optionsContainer = card.querySelector('[name="options-container"]');
 console.log(optionsContainer);
@@ -857,13 +903,8 @@ const questionData = {
             question_lable : card.querySelector('input[name="question_lable"]').value,
             Doclable: card.querySelector('input[name="doclable"]').value,
             options: optionValues
-        };
-        // console.log(card);
-        // console.log('Card:', card);
-        // console.log('Card ID:', cardId);       
+        };    
         question_objects.push(questionData);
-
-        
         console.log('Question Data:', question_objects);
         let jsonObjects = JSON.stringify(question_objects);
         document.getElementById('objects-input').value = jsonObjects;
@@ -871,13 +912,108 @@ const questionData = {
 
     }
 }
-// JavaScript code
-// const defaultCard= document.getElementById('card-0');
+function makeAjaxRequest() {
+  return new Promise(function(resolve, reject) {
+      let categoryName = $("#categoryName").val();
+      let parentId = $("#parentId").val();
+      $.ajax({
+        type: "POST",
+        url: '/save_category/', // Replace with the actual URL to process the category creation
+        data: { categoryName: categoryName,
+            parentId: parentId,
+        },
+        beforeSend: function(xhr, settings) {
+          xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(response) {
+          // Handle the response from the server
+          console.log(response);
+          responseData = response;
+          resolve(response);
+ // Resolve the promise with the response
+        },
+        error: function(error) {
+          reject(error); // Reject the promise with the error
+        }
+      });
+    });
+}
+async function handleAjaxRequest(categories) {
+  try {
+    var responseData = await makeAjaxRequest();
+    console.log("This is reposne data");
+    if (responseData.success) {
+        let categories= document.querySelectorAll('.category');
+        let modal_category = document.getElementById('parentId');
+        console.log(modal_category)
+        for ( let c= 0 ;c<categories.length;c++){
+        let category_section = categories[c];
+        category_section.innerHTML = "";
+        category_section.innerHTML = '<option value="">Select Category</option>';
 
-//     defaultCard.addEventListener('click', function(event) {
-//       console.log('Clicked ID:', defaultCard.id);
-//     });
 
+        for (let i = 0; i < responseData.categories.length; i++) {
+              let category = responseData.categories[i];
+              let optionElement = document.createElement("option");
+              // Set the value and text content for the option
+              optionElement.value = category.id;
+              optionElement.textContent = category.name;
+              category_section.appendChild(optionElement);              
+            }
+
+if(modal_category){
+    modal_category.innerHTML = "";
+        modal_category.innerHTML = '<option value="">Select Category</option>';
+        
+        for (let i = 0; i < responseData.categories.length; i++) {
+              let category = responseData.categories[i];
+              let optionElement = document.createElement("option");
+              // Set the value and text content for the option
+              optionElement.value = category.id;
+              optionElement.textContent = category.name;
+              modal_category.appendChild(optionElement);
+              
+            }
+}
+          
+        }
+console.log("submitted on "+card_id);
+console.log(modal_category)
+let category_div = document.getElementById(card_id);
+if (category_div) {
+    let categoryD = category_div.querySelector('.category');
+    console.log(categoryD);
+  let options = categoryD.getElementsByTagName('option');
+  if (options.length > 0) {
+    console.log(options);
+    options[options.length - 1].selected = true;
+  }
+}
+else{
+    let category_div = document.getElementById('card-0');
+    let categoryD = category_div.querySelector('.category');
+    console.log(categoryD);
+  let options = categoryD.getElementsByTagName('option');
+  if (options.length > 0) {
+    console.log(options);
+    options[options.length - 1].selected = true;
+  }  
+}
+$("#categoryModal").modal("hide");
+
+    console.log(" is reposne data");}
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+$("#categoryForm").submit(function(event) {
+  event.stopPropagation();
+  event.preventDefault();
+  let categories= document.querySelectorAll('.category')
+  handleAjaxRequest();
+
+});
 
     </script>
 

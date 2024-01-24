@@ -1112,12 +1112,26 @@ def createQuestion(request,survey_id ):
 def save_category(request):
     if request.method == 'POST':
         new_category_name = request.POST.get('categoryName')
-        category = Category(name=new_category_name)
+        parent_id= request.POST.get('parentId')
+        print(parent_id)
+        # Check if a category with the same name already exists
+        existing_category = Category.objects.filter(name=new_category_name).first()
+
+        if existing_category:
+            # Category with the same name already exists, return a failure response
+            return JsonResponse({'success': False, 'message': 'Category already exists.'})
+            
+
+        if parent_id:
+            parent_category = get_object_or_404(Category, id=parent_id)
+            category = Category(name=new_category_name,parent=parent_category)
+        else:
+            category = Category(name=new_category_name, parent=None)
         category.save()
 
         categories = Category.objects.all()
         categories_data = [{'id': cat.id, 'name': cat.name} for cat in categories]
-
+        print(categories_data)
         return JsonResponse({'success': True, 'categories': categories_data})
     else:
-        return JsonResponse({'success': False})
+        return JsonResponse({'success': False})    
