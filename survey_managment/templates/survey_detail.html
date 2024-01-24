@@ -31,6 +31,49 @@
     box-shadow: none !important;
     /* Add any additional styles as needed */
   }
+  input[type="range"] {
+    max-width: 90%;
+    height: 10px;
+    background: linear-gradient(to right, #f2f2f2, #f2f2f2);
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #04aa6d;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: rotate(-30deg) translate(-50%, -50%);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #04aa6d;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: rotate(-45deg) translate(-50%, -50%);
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #04aa6d, #f2f2f2);
+  }
+
+  input[type="range"]::-moz-range-track {
+    height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #04aa6d, #f2f2f2);
+  }
 
 </style>
 
@@ -72,77 +115,98 @@
                       Questions for survey {{ survey.name }}
                      </h4>
                  {% if cat_list %}
-                 <div id="questions-container">
-                  {% for i in cat_list %}
-                    <ul class="question-list " style="list-style: none">
-                      {% if i.questions %}
-                      <hr class="mt-5" style="border: black solid 1px;">
-                      <div class="tab">
-                         <h5 class="mb-3"> {{ i.category }} <h5>
-                      {% for question in i.questions %}
-                      <li  style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 30px;">
-                        <div class="row" style="margin-left:30px">
-                          <div class="col-11" >
-                            <p style="padding-top:40px">{{ question.title }}</p>
-                          </div>
-                        </div>
-          
-                        {% if question.label %}
-                        <div class="row" style="margin-left:30px">
-                          <div class="col-2">
-                            <span style="color: #04aa6d; font-weight: bold">
-                              Discription:
-                            </span>
-                          </div>
-                          <div class="col-10">
-                            <p class="ml-3">{{ question.label }}</p>
-                          </div>
-                        </div>
-                        {% endif %}
-                        <p style="margin-left:30px">
-                          <input
-                            class="m-3 ml-4 form-control"
-                            type="text"
-                            name="answer_{{ question.id }}"
-                            placeholder="Answer..."
-                            required
-                            disabled
-                          />
-                        </p>
-                        {% if question.allow_doc %}
-                        <input
-                          style = "margin-left:30px"
-                          class="form-control m-3 ml-4"
-                          type="file"
-                          name="file_{{ question.id }}"
-                          placeholder="File..."
-                          required
-                          disabled
-                        />
-                        {% endif %}
-                        {% if question.doc_label %}
-                        <label style="margin-left:30px;font-weight:bold" class="ml-4" for="file{{ question.id }}"
-                          >Document label</label>
-                          {{ question.doc_label }} 
-                         {% endif %}
-                        <br />
-                        <hr style="background-color: black" />
-                      </li>
-                      {% endfor %} 
-                    </div> 
-                      {% endif %}
-                    </ul>
-          
-                  
-                    
-                  
-                  {% endfor %}
-                </div>
-      
-                 {% else %}   
+                 
+                 {% for i in cat_list %}
+
+                 <ul class="question-list " style="list-style: none">
+                     {% if i.questions %}
+                     <div class="tab">
+                         <h5 class="text-gray mb-5">
+                             <span class="ml-2" style="color: #04aa6d; font-weight: bold ; font-size: 20px">
+                                 Category
+                             </span>{{ i.category }}</h5>
+                         {% for question in i.questions %}
+               
+                         <li style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 30px;">
+                             <div class="row" style="margin-left:10px">
+                                 <div class="col-11">
+                                     <p style="padding-top:40px;font-size:25px;">{{ question.title }}</p>
+                                 </div>
+                             </div>
+               
+                             {% if question.label %}
+                             <div class="row" style="margin-left:30px">
+                                 <div class="col-1">
+                                     <span  style="color: #04aa6d; font-weight: bold;font-size:16px">
+                                         Description:
+                                     </span>
+                                 </div>
+                                 <div class="col-11">
+                                     <p style="font-size:16px" class="ml-5">{{ question.label }}</p>
+                                 </div>
+                             </div>
+                             {% endif %}
+               
+                             {% if question.question_type == "rating" %}
+                             <div>
+                               <label style="margin:20px;margin-left:30px;font-weight:bold"> Choose 0 - 10 </label>
+                               <input disabled type="range" id="progressInput{{question.id}}" min="0" max="10" value="0" oninput="updateProgressBar(this.value, {{question.id}})" style="margin:20px;margin-left:30px;" name="answer_{{ question.id }}">
+                               <span style="font-size:20px;font-weight:bold;color:#04AA6D;" id="progressLabel{{question.id}}">0</span>
+                             </div>
+                           {% elif question.question_type == "radio" or question.question_type == "checkbox" %}
+                           <div>
+                            
+                             {% for choice in question.choice.all %}
+                            
+                             <div style="margin-left:70px">
+                               <input disabled type="{{question.question_type}}" name="{{choice.id}}" id="{{choice.id}}" value="{{choice.id}}" />
+                               <label for="{{choice.id}}">{{ choice.name }}</label>
+                             </div>
+                             {% endfor %}
+                           </div>
+                           {% elif question.question_type == "number" %}
+                             <input disabled style="margin-left:50px" class="form-control" type="number" name="answer_{{ question.id }}" placeholder="Answer..." required />
+                           {% elif question.question_type == "email" %}
+                             <input disabled style="margin-left:50px" class="form-control" type="email" name="answer_{{ question.id }}" placeholder="Email..." required />
+                           {% elif question.question_type == "url" %}
+                             <input disabled style="margin-left:50px" class="form-control" type="url" name="answer_{{ question.id }}" placeholder="URL..." required />
+                           {% elif question.question_type == "date" %}
+                             <input disabled style="margin-left:50px" class="form-control" type="date" name="answer_{{ question.id }}" placeholder="Date..." required />
+                           {% elif question.question_type == "text" %}
+                           <input disabled style="margin-left:50px" class="form-control" type="text" name="answer_{{ question.id }}" placeholder="Answer..." required />
+                             {% else %}
+                           <textarea disabled  style="margin-left:50px" class="form-control" name="answer_{{ question.id }}" placeholder="Enter your text here..." required></textarea>
+                           {% endif %}
+               
+                             {% if question.allow_doc %}
+                             <input disabled style="margin-left:30px" class="form-control m-3 ml-4" type="file" name="file_{{ question.id }}"
+                                 placeholder="File..." required />
+                             {% endif %}
+                             {% if question.doc_label %}
+                             <p style="margin:20px">
+                                 <label style="margin-left:30px;font-weight:bold" class="ml-4 mt-3" for="file{{ question.id }}">Document
+                                     label</label>
+                                 {{ question.doc_label }}
+                             </p>
+                             {% endif %}
+               
+                             <br />
+                         </li>
+                         <br />
+                         {% endfor %}
+                     </div>
+                     {% endif %}
+                 </ul>
+               
+                 {% endfor %}
+
+                 {% else %}  
+
                  <p style="font-size: 1.2rem;">No Questions found For this survey.</p>
                  
                  {% endif %}
+
+
                 {% if user_responses  %}
                    
                 {% else %}  

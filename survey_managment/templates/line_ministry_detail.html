@@ -65,21 +65,21 @@
 
                   <div class="active tab-pane" id="QuestionList">
                     <h4 class="text-center text-info mt-3">
-                      Surveys Assigned  {{ line_ministry.name }}
+                      Surveys Assigned to  {{ line_ministry.name }}
                      </h4>
                  {% if survey %}
-                 <div id="questions-container">
+                 <div class="row mt-3" id="questions-container">
                   {% for i in survey %}
                       
-                  <div class="col-md-3 col-sm-6 col-12 p-1 hidden-transition">
-                    {% comment %} <a href="{% url 'survey_managment:survey_detail' id=survey.id %}" style="color: black; text-decoration: none;"> {% endcomment %}
+                  <div class="col-md-3 col-sm-6 col-lg-4 hidden-transition">
+                   <a href="{% url 'survey_managment:survey_detail' id=i.id %}" style="color: black; text-decoration: none;">
                       <div class="info-box shadow">
                         <span class="info-box-icon" style="color: #0096c7;">
                           <i class="far fa-copy"></i>
                         </span>                   
                         <div class="info-box-content">
                               <span class="info-box-text">{{ i.name }}</span>
-                          </div>
+                        </div>
                       </div>
                   </a>
                   </div>
@@ -88,11 +88,13 @@
                 </div>
       
                  {% else %}   
+
                  <p style="font-size: 1.2rem;">No Questions found For this survey.</p>
                  
                  {% endif %}
 
-                  </div>
+                  
+                </div>
 
                   <div class="tab-pane" id="timeline">
                     <div class="container card shadow mt-2">

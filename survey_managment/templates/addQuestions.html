@@ -74,6 +74,49 @@
         border: 1px solid #ccc;
         border-radius: 5px;
       }
+      input[type="range"] {
+        max-width: 90%;
+        height: 10px;
+        background: linear-gradient(to right, #f2f2f2, #f2f2f2);
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        -webkit-appearance: none;
+      }
+    
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: #04aa6d;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transform: rotate(-30deg) translate(-50%, -50%);
+      }
+    
+      input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #04aa6d;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transform: rotate(-45deg) translate(-50%, -50%);
+      }
+    
+      input[type="range"]::-webkit-slider-runnable-track {
+        height: 10px;
+        border-radius: 5px;
+        background: linear-gradient(to right, #04aa6d, #f2f2f2);
+      }
+    
+      input[type="range"]::-moz-range-track {
+        height: 10px;
+        border-radius: 5px;
+        background: linear-gradient(to right, #04aa6d, #f2f2f2);
+      }
     </style>
     <div class="wrapper">
       {%include 'includes/loader.html'%} {% include 'includes/topNavbar.html' %}
@@ -169,7 +212,7 @@
             {% elif question.question_type == "text" %}
             <input disabled style="margin-left:50px" class="form-control" type="text" name="answer_{{ question.id }}" placeholder="Answer..." required />
               {% else %}
-            <textarea  style="margin-left:50px" class="form-control" name="answer_{{ question.id }}" placeholder="Enter your text here..." required></textarea>
+            <textarea disabled style="margin-left:50px" class="form-control" name="answer_{{ question.id }}" placeholder="Enter your text here..." required></textarea>
             {% endif %}
 
               {% if question.allow_doc %}

@@ -69,7 +69,7 @@
                   <tr {% if answer.recommendation %}class="table-success" {% endif %}>
                     <td>{{ answer.forquestion }}</td>
                     <td class="centerdtxt">{{ answer.forquestion.weight }}</td>
-                    <td class="centerdtxt">{{ answer.answertext }}</td>
+                    <td >{{ answer.answertext }}</td>
                     <td class="centerdtxt">
                       <script>
                         document.write(Number({{ answer.answertext }} * {{ answer.forquestion.weight }}))
@@ -81,32 +81,32 @@
                       </script> %
                     </td>
 
-                    <script>
+                   
 
-
-                      try {
-                        let result = (Number({{ answer.answertext }} * {{ answer.forquestion.weight }}) * 100) / (Number({{ answer.forquestion.weight }} * 10));
-                      if (result >= 90) {
-                        document.write(`<td style="background-color: #ccffcc;"> Excellent </td>`);
-                      } else if (result >= 80) {
-                        document.write(`<td style="background-color: #e5ffb8;"> Very Good </td>`);
-                      } else if (result >= 70) {
-                        document.write(`<td style="background-color: #ffffcc;"> Good </td>`);
-                      } else if (result >= 60) {
-                        document.write(`<td style="background-color: #fff5b3;"> Satisfactory </td>`);
-                      } else {
-                        document.write(`<td style="background-color: #ffd9b3;"> Needs Improvement </td>`);
-                      }
-                                
-                                
-
-                               }  
-
-                               catch {
-                        document.write(`<td style="background-color: gray;"> No Grading  </td>`);
-                      }
-
+                      {% if answer.forquestion.question_type == "number" or answer.forquestion.question_type == "rating"  %}
+                      
+                      <script>
+                        try {
+                          let result = (Number({{ answer.answertext }} * {{ answer.forquestion.weight }}) * 100) / (Number({{ answer.forquestion.weight }} * 10));
+                          if (result >= 90) {
+                            document.write(`<td style="background-color: #ccffcc;"> Excellent </td>`);
+                          } else if (result >= 80) {
+                            document.write(`<td style="background-color: #e5ffb8;"> Very Good </td>`);
+                          } else if (result >= 70) {
+                            document.write(`<td style="background-color: #ffffcc;"> Good </td>`);
+                          } else if (result >= 60) {
+                            document.write(`<td style="background-color: #fff5b3;"> Satisfactory </td>`);
+                          } else {
+                            document.write(`<td style="background-color: #ffd9b3;"> Needs Improvement </td>`);
+                          }
+                                     }  
+                          catch {
+                            document.write(`<td style="background-color: gray;"> No Grading  </td>`);
+                          }
                     </script>
+                    {% else %}
+                       <td style="background-color: gray;"> No Grading  </td>
+                    {% endif %}
                     <td>
                       {% for answer_id, documents in documents_by_answer.items %}
                         {% if answer_id == answer.id %}
