@@ -672,6 +672,21 @@ def chooseTarget(request, survey_id, question_id):
 
 
 def questionCreationByType(request, survey_id):
+    survey = get_object_or_404(Survey, id=survey_id)
+    questions = survey.question.all()
+    cat_list = []
+    for cat in Category.objects.all():
+        question_filtered = survey.question.filter(category=cat)
+        questions_list = []
+        for question in question_filtered:
+            questions_list.append(question.title)
+        cat_list.append({"category":cat.name,"questions":questions_list})
+    
+    question_cat_none = survey.question.filter(category=None)
+    questions_list = []
+    for question in question_cat_none:
+        questions_list.append(question)
+    cat_list.append({"category":'No category',"questions":questions_list})
     zsurvey = Survey.objects.get(id=survey_id)
     questions = zsurvey.question.all()
     pattern = r'/newQuestion/[^/]+/\d+/'
@@ -680,7 +695,7 @@ def questionCreationByType(request, survey_id):
     if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
         messages.success(request, 'Survey created successfully. Add questions to it.')    
     
-    return render(request, 'addQuestions.html', {'zsurvey': zsurvey, 'questions': questions})
+    return render(request, 'addQuestions.html', {'zsurvey': zsurvey, 'cat_list': cat_list})
 
 
 

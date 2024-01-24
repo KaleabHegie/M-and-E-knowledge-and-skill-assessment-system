@@ -194,7 +194,9 @@ input[type="range"]::-moz-range-track {
                     <input style="margin-left:50px" class="form-control" type="url" name="answer_{{ question.id }}" placeholder="URL..." required />
                   {% elif question.question_type == "date" %}
                     <input style="margin-left:50px" class="form-control" type="date" name="answer_{{ question.id }}" placeholder="Date..." required />
-                  {% else %}
+                  {% elif question.question_type == "text" %}
+                  <input style="margin-left:50px" class="form-control" type="text" name="answer_{{ question.id }}" placeholder="Answer..." required />
+                    {% else %}
                   <textarea  style="margin-left:50px" class="form-control" name="answer_{{ question.id }}" placeholder="Enter your text here..." required></textarea>
                   {% endif %}
 
@@ -221,6 +223,8 @@ input[type="range"]::-moz-range-track {
         {% endfor %}
         
     </div>
+
+    
 
 
     <div style="overflow:auto;">
