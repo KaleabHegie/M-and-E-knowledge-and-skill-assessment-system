@@ -93,6 +93,7 @@ button:hover {
     <!-- One "tab" for each step in the form: -->
 
    
+    {% if question %}
     {% for question in questions %}
         <div class="tab" id="questionsTab{{ question.id }}">
           <div class="question">
@@ -106,8 +107,8 @@ button:hover {
                 <p><input type="text" name="answer_{{ question.id }}" placeholder="Answer..." required></p>
             </div>
         </div>
-    {% endfor %}
 
+    
     <!-- Add a tab for static user info -->
    
 
@@ -119,17 +120,13 @@ button:hover {
             <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
             <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
         </div>
-    </div>
+    </div>    
+    {% endfor %}
+    {% else %}
+    <h3 class="text-center text-danger"> This Survey Has No questions <h3>
+    {% endif %}
+
     
-    <!-- Circles which indicate the steps of the form: -->
-    <div style="text-align:center;margin-top:40px;">
-       {% for question in questions %}
-          <span class="step"></span>
-       {% endfor %}
-      
-       <!-- Add a step for the static user info tab -->
-       <span class="step"></span>
-    </div>
 </form>
 
 

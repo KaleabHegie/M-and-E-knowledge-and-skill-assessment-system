@@ -114,7 +114,8 @@
           <!-- Question Displayer HTML -->
           <div class="question-container drop">
             <div class="drop_container" id="drop-items">
-                {% if questions %} {% for question in questions %}
+                {% if questions %} 
+                  {% for question in questions %}
                 <li style="border-left: 6px solid #04aa6d; border-radius: 8px;list-style:none">
                 <div class="row">
                   <div class="col-1">
@@ -125,46 +126,42 @@
                   <div class="col-11">
                     <p>{{ question.title }}</p>
 
-                  </div>
+</div>
                 </div>
   
                 {% if question.label %}
                 <div class="row">
                   <div class="col-1">
                     <span class="ml-2" style="color: #04aa6d; font-weight: bold">
-                      Description:
+                      Label:
                     </span>
                   </div>
                   <div class="col-11">
                     <p class="ml-3">{{ question.label }}</p>
                   </div>
                 </div>
-                {% endif %} {% if question.choice.all %}
+                {% endif %} 
+                <!-- {% if question.choice.all %} -->
 
                {% if question.choice.all %}
         <ul class="question-options pl-5">
           {% for choice in question.choice.all %}
-          <li class="question-option">
+          <li class="question-option p-2 ml-5 ">
             <input
-              class="form-check-input mt-0"
+              class="form-check-input"
               type="{{question.question_type}}"
               name="choose"
               id=""
               value="{{choice.id}}"
             />
-            {{ choice.name }}
+           <span style="font-size:15px"> {{ choice.name }} </span> 
           </li>
           {% endfor %}
         </ul>
         {% else %}
-        <input
-          type="{{ question.question_type }}"
-          name="dynamic_field"
-          value=""
-          class="ml-3 form-control"
-        />
+        <input type="{{ question.question_type }}" name="dynamic_field" value="" class="ml-3 form-control"/>
         {% endif %}
-        {% endif %}
+        <!-- {% endif %} -->
                 {% if question.allow_doc %}
                 <input
                   class="form-control m-3 ml-4"
@@ -178,12 +175,14 @@
                 <label class="ml-4" for="file{{ question.id }}"
                   >Document label: {{ question.doc_label }}</label
                 >
-                {% endif %} {% endif %}
+                {% endif %} 
+                {% endif %}
                 <br />
                 <hr style="background-color: black" />
               </li>
          
-              {% endfor %} {% else %}
+              {% endfor %} 
+              {% else %}
               <div class="container" style="display: flex; align-items: center">
                 <p style="margin: auto; color: darkgray">
                   Sorry, No Questions Created!

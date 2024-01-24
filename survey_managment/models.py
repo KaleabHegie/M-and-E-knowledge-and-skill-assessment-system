@@ -4,12 +4,12 @@ from Account.models import CustomUser , Line_ministry
 # Create your models here.
 class Survey(models.Model):
     name = models.CharField(max_length=200)
-    instruction = models.TextField(null=True)
+    instruction = models.TextField(null=True,blank=True)
     start_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     end_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     survey_type = models.ForeignKey("SurveyType" , on_delete=models.CASCADE , null=True)
     created_at = models.DateField(auto_now=True, auto_now_add=False , null=True)
-    question = models.ManyToManyField('Question' , null=True)
+    question = models.ManyToManyField('Question' , null=True , blank=True)
     for_line_ministry = models.ManyToManyField( Line_ministry , null=True)
     def __str__(self):
         return self.name

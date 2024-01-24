@@ -51,14 +51,11 @@
         transition: 0.1s ease-in;
         
     }
-
-
     .form-controls input:focus,
     .form-controls input:valid {
         border-bottom: 2px solid #46b583;
         outline: none;
     }
-
     .form-controls input:focus+label span,
     .form-controls input:valid+label span {
         color: #1987fc;
@@ -76,6 +73,8 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
+     {% include 'includes/topNavbar.html' %}
+      {% include 'includes/sideNavbar.html' %}
 
         <div class="content-wrapper mt-1 p-4" style="background-color: white">
             <section class="content ">
@@ -105,12 +104,15 @@
                                         <div class="card card-outline" style="border-left: 4px solid #46b583;">
 
                                             <div class="card-header mt-0">
-                                                <i class="fa fa-angle-up" aria-hidden="true" style="float: right;" data-toggle="collapse" name=" dropicon"
+                                                <i class="fa fa-angle-up" aria-hidden="true" style="float: right;" data-toggle="collapse" name="dropicon"
                                                 href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"></i>
                                                 <h3 class="card-title form-group" style="width: 75%;">
                                                     
-                                                    <div class="form-controls" style="width: 100%;"> <input type="text" id="" class="wide-input" name="question_title"
+                                                    <div class="form-controls" style="width: 100%;"> 
+                                                        <input type="text" id="" class="wide-input" name="question_title"
                                                             class="question_title" placeholder="Untitled question" />
+                                                        <input type="text" id="" class="wide-input" name="question_lable"
+                                                            class="question_lable" placeholder="Untitled lable" />
                                             
                                                     </div>
                                                  </h3>
@@ -130,7 +132,6 @@
 
                                             </div>
                                             <div class="row m-3" >
-                                                <div class="form-group col-lg-3">
                                                     
                                                       <div class="row">
                                                         <div class="col-lg-10">
@@ -147,7 +148,7 @@
                                                       </div>
                                                    
                                                     
-                                                </div>
+                                                
 
                                                 <div class="form-group col-lg-2">
                                                     <label for="myCheckbox">
@@ -668,11 +669,10 @@ function addCardAfter(event) {
                                                     <div class="form-controls" style="width: 100%;">
                                                         <input type="text" class="wide-input" name="question_title"
                                                             class="question_title" placeholder="Untitled question" />
+                                                        <input type="text" id="" class="wide-input" name="question_lable"
+                                                            class="question_lable" placeholder="Untitled lable" />
                                                     </div>
-                                                    <div class="form-controls" style="width: 100%;display: none;">
-                                                        <input type="text" class="wide-input"
-                                                            placeholder="Description" />
-                                                    </div>
+
                                                 </h3>
 
                                                 <div class="card-tools mt-3">
@@ -690,7 +690,7 @@ function addCardAfter(event) {
                                             </div>
                                             <div  name="quesAttr">
                                             <div class="row m-3" name="quesAttr">
-                                                <div class="row">
+                                                <div class="row  mb-3">
                                                         <div class="col-lg-10">
                                                             <select class="form-control category" name="category">
                                                                 <option value="" selected>Select an option</option>
@@ -900,6 +900,7 @@ const questionData = {
             hasWeight: card.querySelector('input[name="weightCHK"]').value,
             weight: card.querySelector('input[name="weight_input"]').value,
             hasDoc: card.querySelector('input[name="docCHk"]').value,
+            question_lable : card.querySelector('input[name="question_lable"]').value,
             Doclable: card.querySelector('input[name="doclable"]').value,
             options: optionValues
         };    
