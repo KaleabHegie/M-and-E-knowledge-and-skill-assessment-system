@@ -22,7 +22,7 @@ class SurveyType(models.Model):
 
 
 TYPE_FIELD = [
-        ("Text" ,"text"),
+        ("text" ,"text"),
         ("number", "number"),
         ("checkbox", "checkbox"),
         ("radio", "radio"),
