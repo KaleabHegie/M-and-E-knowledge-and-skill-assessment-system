@@ -50,6 +50,9 @@
                             <th>Question</th>
                             <th>Weight</th>
                             <th>Answer</th>
+                            <th>Rank</th>
+                            <th>Percent</th>
+                            <th>Grading</th>
                             <th>
                                 Document    
                             </th>
@@ -64,11 +67,20 @@
                               <td>{{ answer.forquestion }}</td>
                               <td class="centerdtxt">{{ answer.forquestion.weight }}</td>
                               <td class="centerdtxt">{{ answer.answertext }}</td>
-                              <td>
-                                  {% if documents %}
-                                    <a href="{{ document.document.url }}" style="text-decoration: none; color: #137b53; font-weight: bold;">{{ document }}</a>
+                              <td class="centerdtxt">{{ answer.answertext }} {{ answer.forquestion.weight }}</td>
+                              <td class="centerdtxt">{{ answer.answertext }} {{ answer.forquestion.weight }}</td>
+                              <td class="centerdtxt">{{ answer.answertext }} {{ answer.forquestion.weight }}</td>
+                                 
+                              {% for document in documents  %}
+                                  {% if document.foranswer == answer %}
+                                  <td>
+                                    <a href="{{ answer.document.url }}" style="text-decoration: none; color: #137b53; font-weight: bold;">
+                                      {{ document.document }}
+                                    </a>
+                                  </td>
+                                 
                                   {% endif %}
-                              </td>
+                                  {% endfor %}
                               {% if response.status == 'pending' or 'recomended' %}
                                 <td class="centerdtxt">
                                   <div class="opensModal" name="input_{{ answer.id }}" value="{{answer.id}}" onclick="highlightRow(this)">
@@ -76,6 +88,7 @@
                                   </div> 
                                 </td> 
                                 {% endif %}
+                              
                             </tr>
                           {% endfor %}
                         </tbody>

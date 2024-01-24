@@ -159,7 +159,7 @@
                                                 <div class="form-group col-lg-2" name="weightInput"
                                                     style="display: none;">
                                                     <input class="form-control" type="number" name="weight_input"
-                                                        id="" />
+                                                        id="" placeholder="Put 1 - 5"/>
                                                 </div>
                                                 <div class="form-group col-lg-2">
                                                     <label for="">
@@ -640,29 +640,14 @@ function addCardAfter(event) {
                                                 </h3>
 
                                                 <div class="card-tools mt-3">
-                                                    <select class="form-select questionTypeDropdown"
-                                                        name="question_type">
+                                                    <select class="form-select questionTypeDropdown" name="question_type">
                                                         <option value="" selected disabled>Select an option</option>
-                                                        <option value="text">
-                                                            <span class="icon"><i class="bi bi-textarea-t"></i></span>
-                                                            Text
-                                                        </option>
-                                                        <option value="number">
-                                                            <span class="icon"><i class="bi bi-123"></i></span> Numbers
-                                                        </option>
-                                                        <option value="checkbox">
-                                                            <span class="icon"><i class="bi bi-check-all"></i></span>
-                                                            Multi-select
-                                                        </option>
-                                                        <option value="radio">
-                                                            <span class="icon"><i
-                                                                    class="bi bi-check2-circle"></i></span>
-                                                            Uni-select
-                                                        </option>
-                                                        <option value="textarea">
-                                                            <span class="icon"><i class="bi bi-card-text"></i></span>
-                                                            Description
-                                                        </option>
+                                                        {% for choice in type_field_choices %}
+                                                            <option value="{{ choice.0 }}">
+                                                                <span class="icon"><i class="bi {% if choice.0 == 'text' %}bi-textarea-t{% elif choice.0 == 'number' %}bi-123{% elif choice.0 == 'checkbox' %}bi-check-all{% elif choice.0 == 'radio' %}bi-check2-circle{% elif choice.0 == 'textarea' %}bi-card-text{% elif choice.0 == 'url' %}bi-link-45deg{% elif choice.0 == 'email' %}bi-envelope{% elif choice.0 == 'date' %}bi-calendar3{% elif choice.0 == 'rating' %}bi-star{% endif %}"></i></span>
+                                                                {{ choice.1 }}
+                                                            </option>
+                                                        {% endfor %}
                                                     </select>
                                                 </div>
 
@@ -691,7 +676,7 @@ function addCardAfter(event) {
                                                 </div>
                                                 <div class="form-group col-lg-2" name="weightInput"
                                                     style="display: none;">
-                                                    <input class="form-control" type="number" name="weight_input"
+                                                    <input class="form-control" type="number" name="weight_input" placeholder="Put 1 - 5"
                                                         id="" />
                                                 </div>
                                                 <div class="form-group col-lg-2">

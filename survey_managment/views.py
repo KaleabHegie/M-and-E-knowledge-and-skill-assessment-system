@@ -458,6 +458,23 @@ def survey(request):
         }
     return render(request, 'survey.html', data)
 
+def line_ministrys(request):
+    data = {
+        "line_ministrys" : Line_ministry.objects.all()
+    }
+    return render(request , 'line_ministrys.html' , data)
+
+
+def line_ministry_detail(request , id):
+    line_ministry = Line_ministry.objects.get(id = id)
+    minister = CustomUser.objects.get(Line_ministry=line_ministry) 
+    data = {
+        "survey" : Survey.objects.filter(for_line_ministry = line_ministry),
+        "user_responses" : UserResponse.objects.filter(submitted_by = minister ),
+        "line_ministry":line_ministry
+    }
+    return render(request , 'line_ministry_detail.html' , data)
+
 
 def user_response_list(request, id):
     survey = get_object_or_404(Survey, id=id)
@@ -474,7 +491,7 @@ def user_response(request, id, response_id):
     survey = get_object_or_404(Survey, id=id)
     user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
-    documents = Document.objects.all()     
+    documents = Document.objects.all()  
     if request.method == 'POST':
      if 'approve' in request.POST:  
         survey = get_object_or_404(Survey, id=id)
@@ -525,9 +542,25 @@ def user_response(request, id, response_id):
 
 
 def survey_detail(request, id):
+    survey = get_object_or_404(Survey, id=id)
+    questions = survey.question.all()
+    cat_list = []
+    for cat in Category.objects.all():
+        question_filtered = survey.question.filter(category=cat)
+        questions_list = []
+        for question in question_filtered:
+            questions_list.append(question.title)
+        cat_list.append({"category":cat.name,"questions":questions_list})
+    
+    question_cat_none = survey.question.filter(category=None)
+    questions_list = []
+    for question in question_cat_none:
+        questions_list.append(question)
+    cat_list.append({"category":'No category',"questions":questions_list})
     data = {
         'survey_id': id,
         'survey': Survey.objects.get(id=id),
+        'cat_list':cat_list,
         'user_responses': UserResponse.objects.filter(forsurvey_id=id),
         'questions': Survey.objects.get(id=id).question.all(),
         'line_ministries' : Survey.objects.get(id=id).for_line_ministry.all()
@@ -637,32 +670,19 @@ def chooseTarget(request, survey_id, question_id):
     return render(request, 'chooseTarget.html', data)
 
 
+
 def questionCreationByType(request, survey_id):
-   
     zsurvey = Survey.objects.get(id=survey_id)
     questions = zsurvey.question.all()
-    cat_list = []
-    for cat in Category.objects.all():
-        question_filtered = zsurvey.question.filter(category=cat)
-        questions_list = []
-        for question in question_filtered:
-            questions_list.append(question.title)
-        cat_list.append({"category":cat.name,"questions":questions_list})
-    
-    question_cat_none = zsurvey.question.filter(category=None)
-    questions_list = []
-    for question in question_cat_none:
-        questions_list.append(question)
-    cat_list.append({"category":'No category',"questions":questions_list})
-   
     pattern = r'/newQuestion/[^/]+/\d+/'
     if request.META.get('HTTP_REFERER') and '/surveyCreation' in request.META['HTTP_REFERER']:
         messages.success(request, 'Survey created successfully. Add questions to it.')  # regular expression pattern to match the URL
     if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
         messages.success(request, 'Survey created successfully. Add questions to it.')    
     
-    return render(request, 'addQuestions.html', {'zsurvey': zsurvey, 'cat_list': cat_list})
-   
+    return render(request, 'addQuestions.html', {'zsurvey': zsurvey, 'questions': questions})
+
+
 
 def newQuestion(request,questionType, s_id ):
     categories = Category.objects.prefetch_related('subcategories')
@@ -854,12 +874,12 @@ def questionForSurvey(request, id):
         userresponse = UserResponse.objects.create(forsurvey = survey , submitted_by = request.user)
         for category in cat_list:
             for question_title in category['questions']:
-                question = Question.objects.get(title=question_title)
+                question = Question.objects.get(id=question_title.id)
                 print(question)
                 answer_text = request.POST.get(f'answer_{question.id}')
                 answer = Answer.objects.create(response=userresponse, forquestion=question, answertext=answer_text)
                 answer.save()
-                file = request.FILES.get(f'file_{question.id}')   
+                file = request.POST.get(f'file_{question.id}')   
                 document = Document(foranswer=answer, document=file)   
                 document.save()
               
@@ -952,7 +972,6 @@ def previous_analysis(request ):
     }
     return (request , 'previous_analysis.html' , context )
 
-
 def user_info(request):
     if request.method == 'POST':
         form = UserResponseFormA(request.POST)
@@ -968,7 +987,6 @@ def user_info(request):
     }
     return render(request, 'Final_Preview_Pages/userinfopage.html', data)
 
-
 def anonymous_survey_listss_views(request , user_response_id):
     today = date.today()
     survey_type = SurveyType.objects.get(name='For Employee')
@@ -980,7 +998,6 @@ def anonymous_survey_listss_views(request , user_response_id):
         'user_response_id' : user_response_id
     }
     return render(request, 'Final_Preview_Pages/SL_Anonymous.html', data)
-
 
 def questionForSurveyAnonymous(request, id , user_response_id):
     survey = get_object_or_404(Survey, id=id)
@@ -1031,7 +1048,6 @@ def questionForSurveyAnonymous(request, id , user_response_id):
 
     return render(request, 'Final_Preview_Pages/surveyForAnonymous.html', context)
 
-
 def createQuestion(request,survey_id ):
     zsurvey = Survey.objects.get(id=survey_id)
     categories = Category.objects.all()
@@ -1041,7 +1057,7 @@ def createQuestion(request,survey_id ):
             objects = json.loads(objects_json)
             for obj in objects:
                 category_id = obj['category']
-                category = get_object_or_404(Category ,id=category_id)
+                category = None if category_id == '' else get_object_or_404(Category ,id=category_id)
                 has_weight= obj['hasWeight']
                 has_doc = obj['hasDoc']
                 if has_weight=="on":
@@ -1056,11 +1072,7 @@ def createQuestion(request,survey_id ):
                 question = Question(title=obj['question'],
                 question_type=obj['questionType'],
                 has_weight= has_weight,
-                weight=obj['weight'],
                 allow_doc=has_doc,
-                doc_label=obj['Doclable'],
-                category=category,
-                label = obj['question_lable'],
                 )
                 weight = obj['weight']
                 doc_label=obj['Doclable']
@@ -1096,7 +1108,6 @@ def createQuestion(request,survey_id ):
 
     context = {'categories': categories,'zsurvey':zsurvey ,'type_field_choices': TYPE_FIELD}
     return render(request, 'new_create.html', context)
-
 
 def save_category(request):
     if request.method == 'POST':

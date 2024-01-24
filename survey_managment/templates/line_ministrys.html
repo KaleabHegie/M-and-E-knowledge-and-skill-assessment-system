@@ -1,0 +1,74 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:08 GMT -->
+
+{% include "includes/head.html" %}  
+
+
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      {% include "includes/loader.html" %}
+
+      {% include 'includes/topNavbar.html' %}
+      {% include 'includes/sideNavbar.html' %}
+
+      <div class="content-wrapper" style="background-color:rgb(240, 249, 249);">
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active">Line Ministrys.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <section class="container-fluid " >
+          <div class="row " style="padding: 15px;">
+
+            <h5 class="text-info"> Line Ministrys. </h5>
+
+            {% if line_ministrys  %}
+            
+            {% for line_ministry in line_ministrys  %}
+            <div class="col-md-3 col-sm-6 col-12 p-1 hidden-transition">
+              <a href="{% url 'survey_managment:line_ministry_detail' id=line_ministry.id %}" style="color: black; text-decoration: none;">
+                <div class="info-box shadow">
+                  <span class="info-box-icon" style="color: #0096c7;">
+                    <i class="far fa-copy"></i>
+                  </span>                   
+                  <div class="info-box-content">
+                        <span class="info-box-text">{{ line_ministry.name }}</span>
+                    </div>
+                </div>
+            </a>
+            </div>
+            {% endfor %}
+            
+
+            {% else %}
+            <div class="container-fluid" style="display: flex; align-items: center;">
+              <p style="margin: auto; color: darkgray;">No Line Ministrys.</p>
+            </div>
+
+            {% endif %}
+          </div>
+          
+        </section>
+      </div>
+
+    </div>
+
+   
+    {% include "includes/scripts.html" %}
+
+  </body>
+
+  </html>

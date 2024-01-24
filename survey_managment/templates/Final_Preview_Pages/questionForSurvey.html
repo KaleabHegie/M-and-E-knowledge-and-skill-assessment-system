@@ -80,101 +80,172 @@ button:hover {
 .step.finish {
   background-color: #04AA6D;
 }
+input[type="range"] {
+  max-width: 90%;
+  height: 10px;
+  background: linear-gradient(to right, #f2f2f2, #f2f2f2);
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #04AA6D;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: rotate(-30deg) translate(-50%, -50%);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #04AA6D;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: rotate(-45deg) translate(-50%, -50%);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #04AA6D, #f2f2f2);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #04AA6D, #f2f2f2);
+}
 </style>
 <body>
 
-<form id="regForm" method="POST">
-  {% csrf_token %}
- 
-  <!-- One "tab" for each step in the form: -->
- 
+  <form id="regForm" method="POST">
+    {% csrf_token %}
+
+    <!-- One "tab" for each step in the form: -->
+
     <h1 style="color: #04aa6d" class="bold p-4">{{ survey }}</h1>
 
-      <br> <br>
-      {% if cat_list  %}
+    <br> <br>
+    {% if cat_list  %}
 
-      <div id="questions-container">
+    <div id="questions-container">
         <hr class="mt-5" style="border: black solid 1px;">
         {% for i in cat_list %}
-          <ul class="question-list " style="list-style: none">
+        <ul class="question-list " style="list-style: none">
             {% if i.questions %}
             <div class="tab">
-              <h5 class="text-gray mb-5">
-                <span class="ml-2" style="color: #04aa6d; font-weight: bold ; font-size: 20px">
-                  Category
-                </span>{{ i.category }}</h5>
-            {% for question in i.questions %}
-            <li  style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 30px;">
-              <div class="row" style="margin-left:30px">
-                <div class="col-11" >
-                  <p style="padding-top:40px">{{ question.title }}</p>
-                </div>
-              </div>
+                <h5 class="text-gray mb-5">
+                    <span class="ml-2" style="color: #04aa6d; font-weight: bold ; font-size: 20px">
+                        Category
+                    </span>{{ i.category }}</h5>
+                {% for question in i.questions %}
 
-              {% if question.label %}
-              <div class="row" style="margin-left:30px">
-                <div class="col-1">
-                  <span class="ml-2" style="color: #04aa6d; font-weight: bold">
-                    Discription:
-                  </span>
-                </div>
-                <div class="col-11">
-                  <p class="ml-3">{{ question.label }}</p>
-                </div>
-              </div>
-              {% endif %}
-              <p style="margin-left:30px">
-                <input
-                  class="m-3 ml-4 form-control"
-                  type="text"
-                  name="answer_{{ question.id }}"
-                  placeholder="Answer..."
-                  required
-                />
-              </p>
-              {% if question.allow_doc %}
-              <input
-                style = "margin-left:30px"
-                class="form-control m-3 ml-4"
-                type="file"
-                name="file_{{ question.id }}"
-                placeholder="File..."
-                required
-              />
-              {% endif %}
-              {% if question.doc_label %}
-              <label style="margin-left:30px;font-weight:bold" class="ml-4 mt-3" for="file{{ question.id }}"
-                >Document label</label>
-                {{ question.doc_label }} 
-               {% endif %}
-              <br />
-            </li>
-            {% endfor %} 
-          </div> 
+                <li style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 30px;">
+                    <div class="row" style="margin-left:30px">
+                        <div class="col-11">
+                            <p style="padding-top:40px">{{ question.title }}</p>
+                        </div>
+                    </div>
+
+                    {% if question.label %}
+                    <div class="row" style="margin-left:30px">
+                        <div class="col-1">
+                            <span class="ml-2" style="color: #04aa6d; font-weight: bold">
+                                Description:
+                            </span>
+                        </div>
+                        <div class="col-11">
+                            <p class="ml-3">{{ question.label }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if question.question_type == "rating" %}
+                    <div class="text-center">
+                      <label style="margin:20px;margin-left:30px;font-weight:bold"> Choose 0 - 10 </label>
+                        <input type="range" id="progressInput{{question.id}}" min="0" max="10" value="0"
+                            oninput="updateProgressBar(this.value, {{question.id}})" style="margin:20px;margin-left:30px;" name="answer_{{ question.id }}">
+                        <span style="font-size:20px;font-weight:bold;color:#04AA6D;" id="progressLabel{{question.id}}">0</span>
+                    </div>
+                    {% elif question.question_type == "choice" %}
+                    {% for choice in question.choice.all %}
+                    <li class="question-option p-2 ml-5 ">
+                        <input class="form-check-input" type="{{question.question_type}}" name="choose" id=""
+                            value="{{choice.id}}" />
+                        <span style="font-size:15px"> {{ choice.name }} </span>
+                    </li>
+                    {% endfor %}
+
+                    {% else %}
+                    <p style="margin-left:30px">
+                        <input class="m-3 ml-4 form-control" type="text" name="answer_{{ question.id }}"
+                            placeholder="Answer..." required />
+                    </p>
+                    {% endif %}
+
+                    {% if question.allow_doc %}
+                    <input style="margin-left:30px" class="form-control m-3 ml-4" type="file" name="file_{{ question.id }}"
+                        placeholder="File..." required />
+                    {% endif %}
+                    {% if question.doc_label %}
+                    <p style="margin:20px">
+                        <label style="margin-left:30px;font-weight:bold" class="ml-4 mt-3" for="file{{ question.id }}">Document
+                            label</label>
+                        {{ question.doc_label }}
+                    </p>
+                    {% endif %}
+
+                    <br />
+                </li>
+                {% endfor %}
+            </div>
             {% endif %}
-          </ul>
+        </ul>
 
-        
-          
-        
         {% endfor %}
-      </div>
-  
-  
-  <div style="overflow:auto;">
-    <div style="float:right;">
-      <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-      <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
     </div>
-  </div>
-  <!-- Circles which indicates the steps of the form: -->
 
-  {% else %}
-<h3 class="text-center text-danger"> This Survey Has No questions <h3>
-{% endif %}
+
+    <div style="overflow:auto;">
+        <div style="float:right;">
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+        </div>
+    </div>
+    <!-- Circles which indicate the steps of the form: -->
+
+    <div style="text-align:center;margin-top:40px;">
+      {% for i in cat_list %}
+      <span class="step"></span>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <h3 class="text-center text-danger">This Survey Has No Questions</h3>
+    {% endif %}
 </form>
 
 <script>
+  function updateProgressBar(value, questionId) {
+    var progressInputId = 'progressInput' + questionId;
+    var progressLabelId = 'progressLabel' + questionId;
+    
+    var progressBar = document.getElementById(progressInputId);
+    var progressLabel = document.getElementById(progressLabelId);
+    
+    var progress = (progressBar.value / progressBar.max) * 100;
+    progressBar.style.background = `linear-gradient(to right, #04AA6D ${progress}%, #f2f2f2 ${progress}%)`;
+    
+    progressLabel.textContent = progressBar.value ;
+  }
   var currentTab = 0; // Current tab is set to be the first tab (0)
   showTab(currentTab); // Display the current tab
   
