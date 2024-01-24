@@ -492,6 +492,14 @@ def user_response(request, id, response_id):
     user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
     documents = Document.objects.all()  
+
+    documents_by_answer = {}  # Dictionary to store documents for each answer
+    for answer in answers:
+        documents = Document.objects.filter(foranswer=answer)
+        documents_by_answer[answer.id] = documents
+
+    print(documents_by_answer)
+
     if request.method == 'POST':
      if 'approve' in request.POST:  
         survey = get_object_or_404(Survey, id=id)
@@ -533,6 +541,7 @@ def user_response(request, id, response_id):
     data = {
         'survey_id': id,
         'survey': survey,
+        'documents_by_answer': documents_by_answer,
         'user_responses': user_responses,
         'answers': answers,
         'documents': documents,
@@ -889,14 +898,21 @@ def questionForSurvey(request, id):
         userresponse = UserResponse.objects.create(forsurvey = survey , submitted_by = request.user)
         for category in cat_list:
             for question_title in category['questions']:
+              if question_title.question_type ==  'checkbox' or question_title.question_type ==  'radio':
                 question = Question.objects.get(id=question_title.id)
-                print(question)
+                answer_text = request.POST.getlist(f'choice_{question.id}')
+                print(answer_text)
+                if (len(answer_text)>0):
+                  answer_string = ','.join(answer_text)
+                  answer = Answer.objects.create(response=userresponse, forquestion=question, answertext=answer_string)
+              else: 
+                question = Question.objects.get(id=question_title.id)
                 answer_text = request.POST.get(f'answer_{question.id}')
                 answer = Answer.objects.create(response=userresponse, forquestion=question, answertext=answer_text)
-                answer.save()
                 file = request.POST.get(f'file_{question.id}')   
-                document = Document(foranswer=answer, document=file)   
-                document.save()
+                if file:
+                   document = Document(foranswer=answer, document=file)       
+                   document.save()
               
         return redirect('survey_managment:surveylists')
     else:
