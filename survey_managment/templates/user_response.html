@@ -67,9 +67,30 @@
                               <td>{{ answer.forquestion }}</td>
                               <td class="centerdtxt">{{ answer.forquestion.weight }}</td>
                               <td class="centerdtxt">{{ answer.answertext }}</td>
-                              <td class="centerdtxt">{{ answer.answertext }} {{ answer.forquestion.weight }}</td>
-                              <td class="centerdtxt">{{ answer.answertext }} {{ answer.forquestion.weight }}</td>
-                              <td class="centerdtxt">{{ answer.answertext }} {{ answer.forquestion.weight }}</td>
+                              <td class="centerdtxt"><script>
+                                  document.write( Number( {{ answer.answertext }} * {{ answer.forquestion.weight }}  ) )
+                              </script></td>
+                                <td class="centerdtxt"> <script>
+                                  document.write( (Number( {{ answer.answertext }} * {{ answer.forquestion.weight }}) * 100 ) / Number({{ answer.forquestion.weight}} * 10 )  )
+                              </script> % </td>
+                              
+                              
+                               <script>
+                                var result = (Number({{ answer.answertext }} * {{ answer.forquestion.weight }}) * 100) / (Number({{ answer.forquestion.weight }} * 10));
+console.log(result)
+if (result >= 90) {
+  document.write(`<td style="background-color: #ccffcc;"> Excellent </td>`);
+} else if (result >= 80) {
+  document.write(`<td style="background-color: #e5ffb8;"> Very Good </td>`);
+} else if (result >= 70) {
+  document.write(`<td style="background-color: #ffffcc;"> Good </td>`);
+} else if (result >= 60) {
+  document.write(`<td style="background-color: #fff5b3;"> Satisfactory </td>`);
+} else {
+  document.write(`<td style="background-color: #ffd9b3;"> Needs Improvement </td>`);
+}
+                            </script> 
+                            
                                  
                               {% for document in documents  %}
                                   {% if document.foranswer == answer %}
@@ -88,7 +109,6 @@
                                   </div> 
                                 </td> 
                                 {% endif %}
-                              
                             </tr>
                           {% endfor %}
                         </tbody>
