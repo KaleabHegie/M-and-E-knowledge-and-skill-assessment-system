@@ -110,7 +110,7 @@
                                                     
                                                     <div class="form-controls" style="width: 100%;"> 
                                                         <input type="text" id="" class="wide-input" name="question_title"
-                                                            class="question_title" placeholder="Untitled question" />
+                                                            class="question_title" placeholder="Untitled question" required/>
                                                         <input type="text" id="" class="wide-input" name="question_lable"
                                                             class="question_lable" placeholder="Untitled lable" />
                                             
@@ -119,7 +119,7 @@
                                                  
 
                                                 <div class="card-tools mt-3">
-                                                    <select class="form-select questionTypeDropdown" name="question_type">
+                                                    <select class="form-select questionTypeDropdown" name="question_type" required>
                                                         <option value="" selected disabled>Select an option</option>
                                                         {% for choice in type_field_choices %}
                                                             <option value="{{ choice.0 }}">

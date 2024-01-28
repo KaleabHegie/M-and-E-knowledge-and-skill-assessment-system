@@ -21,10 +21,11 @@ import json
 
 
 
-
+@login_required
 def new_page(request):
     return render(request,'new_create.html')
 
+@login_required
 def indexView(request):
     survey_id = request.GET.get('survey_id')
     if survey_id:
@@ -55,10 +56,12 @@ def indexView(request):
       
         return render(request, 'index.html', context)
 
+@login_required
 def ministries(request):
     
     return render(request , 'ministries.html')
 
+@login_required
 def filter(request):
     survey_id = request.GET.get('survey_id')
     if survey_id:
@@ -88,10 +91,12 @@ def filter(request):
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
       
         return render(request, 'filter.html', context)
-
+    
+@login_required
 def average(request):
     return render(request , 'averages.html' )
 
+@login_required
 def inbox(request):
     if request.method == 'POST':
         if 'trash' in request.POST:
@@ -111,7 +116,7 @@ def inbox(request):
         }
         return render(request, "inbox.html", context)
     
-
+@login_required  
 def sent(request):  
     if request.method == 'POST':
         if 'trash' in request.POST:
@@ -131,7 +136,7 @@ def sent(request):
        }
        return render(request ,"sent.html" , context)
 
-
+@login_required
 def draft(request):  
     if request.method == 'POST':
         if 'trash' in request.POST:
@@ -151,7 +156,7 @@ def draft(request):
       }
       return render(request ,"draft.html" , context)
 
-
+@login_required
 def trash(request):    
     if request.method == 'POST':
         if 'trash' in request.POST:
@@ -169,7 +174,7 @@ def trash(request):
       }
       return render(request ,"trash.html" , context)
 
-
+@login_required
 def compose(request):
     if request.method == 'POST':
       if 'send' in request.POST:  
@@ -211,7 +216,7 @@ def compose(request):
         # Render the initial form
         return render(request, 'compose.html')
 
-
+@login_required
 def reply_to_message(request, message_id):
     message = get_object_or_404(ContactUs, id=message_id)
 
@@ -250,7 +255,7 @@ def reply_to_message(request, message_id):
 
     return render(request, 'reply_form.html', context)
 
-
+@login_required
 def read(request , id):
     message = get_object_or_404(ContactUs, id=id)  
     message.read = True  # Update the read field to True
@@ -272,23 +277,23 @@ def read(request , id):
         }
         return render(request ,"read.html" , context)
 
-
+@login_required
 def user_profile(request):
     return render(request , 'profile.html' )
 
-
+@login_required
 def edit_profile(request):
     return render(request , 'edit_profile.html' )
 
-
+@login_required
 def users(request):
     return render(request , 'user.html' )
 
-
+@login_required
 def forgotPasswordView(request):
     return render(request, 'forgot-password.html')
 
-
+@login_required
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -301,11 +306,9 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'survey_managment/change_password.html', {'form': form})
 
-
 def Mychartanalysis(request):
     data={}
     return render(request,'chart_analysis.html',data)
-
 
 def jsonSender(request):
     data = {
@@ -315,7 +318,7 @@ def jsonSender(request):
     }
     return JsonResponse(data)
 
-
+@login_required
 def compareDataView(request):
     line_ministry = Line_ministry.objects.all()
     survey_type = SurveyType.objects.all()
@@ -331,7 +334,7 @@ def compareDataView(request):
     }
     return render(request, 'compare.html',context)
 
-
+@login_required
 def get_data(request):
     surveys = Survey.objects.all()
     data1 = []
@@ -450,7 +453,7 @@ def get_data(request):
     
     return JsonResponse(serialized_data, safe=False)
 
-
+@login_required
 def survey(request):
     data = {
         'surveys_employee': Survey.objects.filter(survey_type__name = "For Employee"),
@@ -458,13 +461,14 @@ def survey(request):
         }
     return render(request, 'survey.html', data)
 
+@login_required
 def line_ministrys(request):
     data = {
         "line_ministrys" : Line_ministry.objects.all()
     }
     return render(request , 'line_ministrys.html' , data)
 
-
+@login_required
 def line_ministry_detail(request , id):
     line_ministry = Line_ministry.objects.get(id = id)
     minister = CustomUser.objects.get(Line_ministry=line_ministry) 
@@ -475,7 +479,7 @@ def line_ministry_detail(request , id):
     }
     return render(request , 'line_ministry_detail.html' , data)
 
-
+@login_required
 def user_response_list(request, id):
     survey = get_object_or_404(Survey, id=id)
     user_responses = UserResponse.objects.filter(forsurvey=survey)
@@ -486,7 +490,7 @@ def user_response_list(request, id):
     }
     return render(request, 'user_response_list.html', data)
 
-
+@login_required
 def user_response(request, id, response_id):
     survey = get_object_or_404(Survey, id=id)
     user_responses = UserResponse.objects.filter(id=response_id)
@@ -549,7 +553,7 @@ def user_response(request, id, response_id):
     }
     return render(request, 'user_response.html', data)
 
-
+@login_required
 def survey_detail(request, id):
     survey = get_object_or_404(Survey, id=id)
     questions = survey.question.all()
@@ -576,7 +580,7 @@ def survey_detail(request, id):
     }
     return render(request, 'survey_detail.html', data)
 
-
+@login_required
 def create_question(request , survey_id , questionnaire_id):
     if request.method == 'POST':
         selected_questions = request.POST.getlist('selected_questions')
@@ -601,7 +605,7 @@ def create_question(request , survey_id , questionnaire_id):
     else:
         return redirect("survey_managment:displayQuestion" , survey_id , questionnaire_id)  # Redirect to an error page if the request method is not POST
 
-
+@login_required
 def chooseSurvey(request , id , choose_id ):
     data = {
         'choose_id':choose_id,
@@ -610,7 +614,7 @@ def chooseSurvey(request , id , choose_id ):
         }
     return render(request, 'chooseSurvey.html' , data)
 
-
+@login_required
 def displayQuestion(request, id):
     if request.method == 'POST':
         selected_questions = request.POST.getlist('selected_questions')
@@ -634,7 +638,7 @@ def displayQuestion(request, id):
 
     return render(request, 'displayQuesion.html', data)
 
-
+@login_required
 def catagorizedQuestion(request, id):
     if request.method == 'POST':
         selected_questions = request.POST.getlist('selected_questions')
@@ -656,7 +660,7 @@ def catagorizedQuestion(request, id):
 
     return render(request, 'catagorizedQuestion.html', data)
 
-
+@login_required
 def chooseTarget(request, survey_id, question_id):
     question = get_object_or_404(Question, id=question_id)
     survey = get_object_or_404(Survey, id=survey_id)
@@ -678,8 +682,7 @@ def chooseTarget(request, survey_id, question_id):
     
     return render(request, 'chooseTarget.html', data)
 
-
-
+@login_required
 def questionCreationByType(request, survey_id):
     survey = get_object_or_404(Survey, id=survey_id)
     questions = survey.question.all()
@@ -706,8 +709,7 @@ def questionCreationByType(request, survey_id):
     
     return render(request, 'addQuestions.html', {'zsurvey': zsurvey, 'cat_list': cat_list})
 
-
-
+@login_required
 def newQuestion(request,questionType, s_id ):
     categories = Category.objects.prefetch_related('subcategories')
     survey = get_object_or_404(Survey, id=s_id)
@@ -761,7 +763,7 @@ def newQuestion(request,questionType, s_id ):
     context = {'questionType': questionType, 'categories': categories}
     return render(request, 'modal.html', context)
 
-
+@login_required
 def QuestionCategories(request):
     categories = Category.objects.all()
     context = {'categories' : categories}
@@ -778,14 +780,14 @@ def QuestionCategories(request):
 
     return render(request, 'category.html', context)
 
-
+@login_required
 def load_survey(request):
     survey_type_id = request.GET.get("survey_type")
     survey = Survey.objects.filter(survey_type_id=survey_type_id)
    
     return render(request ,"load_survey.html",{"survey":survey  })
 
-
+@login_required
 def pending_response(request):
     user_responses = UserResponse.objects.filter(status='pending')
     responses = UserResponse.objects.filter(status='pending').count()
@@ -795,14 +797,14 @@ def pending_response(request):
     }
     return render(request , 'pendingResponse.html' , data )
 
-
+@login_required
 def load_ministry(request):
     survey_id = request.GET.get("survey")
     survey = Survey.objects.filter(id=survey_id).first()
     line_ministries = survey.for_line_ministry.all() if survey else []
     return render(request, "load_ministry.html", {"line_ministries": line_ministries})
 
-
+@login_required
 def surveyCreationView(request):
     if request.method == 'POST':
         form = SurveyForm(request.POST)
@@ -871,8 +873,6 @@ def survey_listss_views(request):
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
 
-
-
 @login_required
 def questionForSurvey(request, id):
     survey = get_object_or_404(Survey, id=id)
@@ -930,7 +930,6 @@ def questionForSurvey(request, id):
 
     return render(request, 'Final_Preview_Pages/questionForSurvey.html', context)
 
-
 @login_required
 def recomended_survey_list(request):
     today = date.today()
@@ -943,7 +942,6 @@ def recomended_survey_list(request):
         "surveys" : Survey.objects.filter(userresponse__status='recomended', for_line_ministry = line_ministry , userresponse__submitted_by = user)
         }
     return render(request, 'recomended_survey_list.html', data)
-
 
 @login_required
 def recomended_survey(request, id):
@@ -993,7 +991,6 @@ def recomended_survey(request, id):
     }
     return render(request, 'recomended_survey.html', context)
 
-
 @login_required
 def previous_analysis(request ):
     previous_responses = UserResponse.objects.filter(submitted_by=request.user)
@@ -1018,25 +1015,40 @@ def user_info(request):
     }
     return render(request, 'Final_Preview_Pages/userinfopage.html', data)
 
-def anonymous_survey_listss_views(request , user_response_id):
+def anonymous_survey_listss_views(request, user_response_id):
     today = date.today()
     survey_type = SurveyType.objects.get(name='For Employee')
-    user_response = UserResponse.objects.get(id=user_response_id )
+    user_response = UserResponse.objects.get(id=user_response_id)
     line_ministry = user_response.line_ministry
-    surveys = Survey.objects.filter(survey_type =  survey_type , for_line_ministry = line_ministry)
+
+    # Exclude surveys with any user responses
+    surveys = Survey.objects.filter(survey_type=survey_type, for_line_ministry=line_ministry) \
+        .exclude(userresponse__isnull=False)
+
     data = {
         'surveys': surveys,
-        'user_response_id' : user_response_id
+        'user_response_id': user_response_id
     }
     return render(request, 'Final_Preview_Pages/SL_Anonymous.html', data)
 
 def questionForSurveyAnonymous(request, id , user_response_id):
     survey = get_object_or_404(Survey, id=id)
     questions = survey.question.all()
+    cat_list = []
+    for cat in Category.objects.all():
+        question_filtered = survey.question.filter(category=cat)
+        questions_list = []
+        for question in question_filtered:
+            questions_list.append(question.title)
+        cat_list.append({"category":cat.name,"questions":questions_list})
+    
+    question_cat_none = survey.question.filter(category=None)
+    questions_list = []
+    for question in question_cat_none:
+        questions_list.append(question)
+    cat_list.append({"category":'No category',"questions":questions_list})
     user_response = UserResponse.objects.get(id=user_response_id)
     if request.method == 'POST':
-        anonymous_user_response_form = AnonymousUserResponseForm(request.POST)
-        answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
         # value = request.POST.get('answer_16')
         # print(value)
 
@@ -1045,25 +1057,53 @@ def questionForSurveyAnonymous(request, id , user_response_id):
            forsurvey=survey,
            department=user_response.department,
            age=user_response.age,
+           line_ministry =  user_response.line_ministry ,
            year_of_experiance = user_response.year_of_experiance,
            status='approved',
     )
 
            user_response.save() 
-           for i in questions:
-               value = request.POST.get(f'answer_{i.id}')
-               Answer.objects.create(forquestion = i , answertext = value , response = user_response)              
-               value = ''
+           for category in cat_list:
+             for i in category['questions']:
+               if i.question_type ==  'checkbox' or i.question_type ==  'radio':
+                question = Question.objects.get(id=i.id)
+                answer_text = request.POST.getlist(f'choice_{question.id}')
+                print(answer_text)
+                if (len(answer_text)>0):
+                  answer_string = ','.join(answer_text)
+                  answer = Answer.objects.create(response=user_response, forquestion=question, answertext=answer_string)
+               else: 
+                question = Question.objects.get(id=i.id)
+                answer_text = request.POST.get(f'answer_{question.id}')
+                answer = Answer.objects.create(response=user_response, forquestion=question, answertext=answer_text)
+                file = request.POST.get(f'file_{question.id}')   
+                if file:
+                   document = Document(foranswer=answer, document=file)       
+                   document.save() 
+               
            
            return redirect('survey_managment:anonymous_survey_listss_views' , user_response_id=user_response_id)
         else :
            user_response.status = 'approved'
            user_response.forsurvey = survey
            user_response.save() 
-           for i in questions:
-               value = request.POST.get(f'answer_{i.id}')
-               Answer.objects.create(forquestion = i , answertext = value , response = user_response)              
-               value = ''
+           for category in cat_list:
+            for i in category['questions']:
+               if i.question_type ==  'checkbox' or i.question_type ==  'radio':
+                question = Question.objects.get(id=i.id)
+                answer_text = request.POST.getlist(f'choice_{question.id}')
+                print(answer_text)
+                if (len(answer_text)>0):
+                  answer_string = ','.join(answer_text)
+                  answer = Answer.objects.create(response=user_response, forquestion=question, answertext=answer_string)
+               else: 
+                question = Question.objects.get(id=i.id)
+                answer_text = request.POST.get(f'answer_{question.id}')
+                answer = Answer.objects.create(response=user_response, forquestion=question, answertext=answer_text)
+                file = request.POST.get(f'file_{question.id}')   
+                if file:
+                   document = Document(foranswer=answer, document=file)       
+                   document.save() 
           
            return redirect('survey_managment:anonymous_survey_listss_views' , user_response_id=user_response_id)
     else:
@@ -1072,6 +1112,7 @@ def questionForSurveyAnonymous(request, id , user_response_id):
 
     context = {
         'survey': survey,
+        'cat_list': cat_list,
         'questions': questions,
         'anonymous_user_response_form': anonymous_user_response_form,
         'answer_forms': answer_forms,
@@ -1086,6 +1127,7 @@ def createQuestion(request,survey_id ):
     if request.method == 'POST':
             objects_json = request.POST.get('objects')
             objects = json.loads(objects_json)
+            print(objects)
             for obj in objects:
                 category_id = obj['category']
                 category = None if category_id == '' else get_object_or_404(Category ,id=category_id)
@@ -1122,7 +1164,7 @@ def createQuestion(request,survey_id ):
                 question.save()
 
                 question_type =obj['questionType']
-                print(question_type)
+               
                 hasOption = ["checkbox", "radio"]
                 if question_type in hasOption:
                     options = obj['options']
