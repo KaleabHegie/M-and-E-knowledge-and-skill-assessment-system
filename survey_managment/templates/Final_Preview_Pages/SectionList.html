@@ -5,21 +5,6 @@
       
 {% include "includes/greetingHead.html" %}
     <style>
-      .progress-bar-container {
-  width: 100%;
-  background-color: #f2f2f2;
-  border-radius: 5px;
-  margin: 10px 0;
-  overflow: hidden;
-}
-
-.progress-bar {
-  background-color:  rgb(9, 109, 9); /* Change the color as per your design */
-  height: 15px;
-  line-height: 15px;
-  text-align: center;
-  color: #fff; /* Change the text color for better visibility */
-}
       .ft p {
         font-size: x-small;
         font-weight: 400;
@@ -78,13 +63,11 @@
 
   <body>
     <!-- ======= Header ======= -->
-    
-    <section id="hero" class="hero align-items-center">
     <header id="header" class="header">
       <div
-        class="container-fluid container-xl d-flex align-items-center justify-content-between " style="margin-top:-50px"
+        class="container-fluid container-xl d-flex align-items-center justify-content-between"
       >
-        <a href="#" class="logo d-flex align-items-center">
+        <a href="" class="logo d-flex align-items-center">
           <img src="{% static 'assets/img/logo.png' %}" alt="" />
           <span style="color: rgb(9, 109, 9)">MOPD</span>
         </a>
@@ -96,64 +79,82 @@
     </header>
     <!-- End Header -->
 
-    <!-- ======= Hero Section ======= -->
-     
-    <div class="container">
+  
+
+    <main id="main">
+      <section id="about" class="about" style='margin-top:-80px;'>
+
+        <div class="container" >
 
      
-      <div class="text-center">
-        <h3 class="mb-5"  style="font-size: 40px;color:rgb(9, 109, 9);font-weight: bold;">Survey Lists</h3>
-        <hr>
-      </div>
-
-
-      <div class="row">
-
-       {% if surveys %}
-      
-            {% for survey in surveys  %}
-            <div class="col-md-3 col-sm-6 col-lg-5 p-1">
-             
-              <div class="info-box shadow">
-                
-                
-                  <span class="info-box-icon" style="color: rgb(9, 109, 9);">
-                      <i class="far fa-copy"></i>
-                  </span>                   
-                  <div class="info-box-content">
-                      <a href="{% url 'survey_managment:section_list' survey_id=survey.id %}" style="color: black;text-decoration:none;">
-                          <span class="info-box-text">{{ survey.name }}</span>
-                          <span class="info-box-number">{{  survey.created_at }}</span>
-                          <span class="info-box-number">{{ survey.section.count }} Sections </span>
-                          <div class="progress-bar-container">
-                            <div class="progress-bar" style="width: {{ survey.section.count }}%;">
-                            </div>
-                        </div>
-                        <span style="color:rgb(9, 109, 9);"> 
-                          <script>
-                              
-                              document.write({{ survey.section.count }}) 
-                          </script>
-                          % Complited
-                           </span>
-                      </a>
+          <div class="text-center">
+            {% include "includes/greetingSurveyNav.html"%}
+            <h3  style="font-size: 40px;color:rgb(9, 109, 9);font-weight: bold;">Section Lists</h3>
+          </div>
+    
+    
+          <div class="row">
+    
+           {% if sections %}
+          
+            {% for section in sections  %}
+            {% if section in surveys_with_responses %}
+    
+    
+            <div class="col-md-3 col-sm-6 col-lg-4 p-1" style="pointer-events: none; opacity: 0.5;">
+              <a href="{% url 'survey_managment:questionForSurvey' id=section.id %}" style="color: blue;text-decoration:none;">
+                  <div class="info-box shadow">
+                      <span class="info-box-icon" style="color: rgb(9, 109, 9);">
+                          <i class="far fa-copy"></i>
+                      </span> 
+                                    
+                      <div class="info-box-content p-3">
+                          <span class="info-box-text">{{ section.name }}</span>
+                          <span class="info-box-text">{{ section.instruction }}</span>
+                          <span class="info-box-text">{{ section.question.count }} Questions </span>
+                          
+                      </div>
+                      <span class="info-box-text text-danger">Done</span>    
                   </div>
+              </a>
+          </div>
+          
+    
+             
+               
+               {% else %}
+    
+               <div class="col-md-3 col-sm-6 col-lg-4 p-1">
+                <a href="{% url 'survey_managment:questionForSurvey' id=section.id %}" style="color: black;text-decoration:none;">
+                  <div class="info-box shadow">
+                    <span class="info-box-icon" style="color: rgb(9, 109, 9);">
+                      <i class="far fa-copy"></i>
+                    </span>                   
+                    <div class="info-box-content p-3">
+                          <span class="info-box-text">{{ section.name }}</span>
+                          <span class="info-box-text">{{ section.instruction }}</span>
+                          <span class="info-box-text">{{ section.question.count }} Questions </span>
+                      </div>
+                  </div>
+              </a>
               </div>
-          </div>
-         
-            {% endfor %}
-
-            {% else %}
-            <div class="container-fluid" style="display: flex; align-items: center;">
-              <p style="margin: auto; color: darkgray;">No surveys found. Your Survey  will occure here.</p>
-            </div>
-
-            {% endif %}
-
-          </div>
-
-    </div>
-    </section>
+    
+               {% endif %}
+                {% endfor %}
+    
+                {% else %}
+                <div class="container-fluid" style="display: flex; align-items: center;">
+                  <p style="margin: auto; color: darkgray;">No section found. Your  news sections will occure here.</p>
+                </div>
+    
+                {% endif %}
+    
+              </div>
+    
+        </div> 
+        
+      </section>
+    </main>
     <!-- End Hero -->
     <!-- ======= Services Section ======= -->
 

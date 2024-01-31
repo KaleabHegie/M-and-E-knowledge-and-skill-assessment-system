@@ -175,7 +175,6 @@ def delete_user(request, id):
     user = get_object_or_404(CustomUser, id=id)
     if request.method == 'POST':
         user.delete()
-        return redirect('Account:users')
     return render(request, 'delete_user.html', {'user': user})
 
 

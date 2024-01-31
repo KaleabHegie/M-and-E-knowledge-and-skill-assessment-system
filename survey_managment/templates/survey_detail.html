@@ -79,6 +79,7 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
+
     {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
 
     <div class="content-wrapper" style="background-color: white;">
@@ -99,10 +100,6 @@
                     <!-- <a class="nav-link" href="{% url "survey_managment:user_response_list" id=survey_id %}">User Response</a> -->
                     <a class="nav-link" href="#timeline" data-toggle="tab">User Response</a>
                   </li>
-                  <li class="nav-item">
-                    <!-- <a class="nav-link" href="{% url "survey_managment:user_response_list" id=survey_id %}">User Response</a> -->
-                    <a class="nav-link" href="#for_line_ministries" data-toggle="tab">For Line Ministries</a>
-                  </li>
                 </ul>
               </div>
 
@@ -122,9 +119,12 @@
                      {% if i.questions %}
                      <div class="tab">
                          <h5 class="text-gray mb-5">
+                             {% if i.catagory.parent %}
+                            {{ i.category.parent}}
+                             {% endif %}
                              <span class="ml-2" style="color: #04aa6d; font-weight: bold ; font-size: 20px">
-                                 Category
-                             </span>{{ i.category }}</h5>
+                              Category
+                          </span>{{ i.category }}</h5>
                          {% for question in i.questions %}
                
                          <li style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 30px;">
@@ -233,9 +233,9 @@
                               <tr>
                                 <td><a style="text-decoration: none; color: black;" href="{% url 'survey_managment:user_response' id=survey_id response_id=response.id %}">{{ response.submitted_by }}</a></td>
                                 <td>{{ response.submitted_at }}</td>
-                                {% if response.status == pending %}
+                                {% if response.status == "pending" %}
                                 <td> <span class="info-box-text text-info">   <i class="nav-icon fas fa-spinner"></i> Pending </span> </td>
-                                {% elif response.status == approved %}
+                                {% elif response.status == "approved" %}
                                 <td> <span class="info-box-text text-info">    <i class="nav-icon fas fa-check"></i> Approved </span> </td>
                                 {% else %}
                                 <td> <span class="info-box-text text-info">    <i class="nav-icon fas fa-spinner"></i> Recomended </span> </td>
@@ -252,25 +252,7 @@
                     </div>
                   </div>
 
-                  <div class="tab-pane" id="for_line_ministries">
-                    <div class="container card shadow mt-2">
-                      <h4 class="text-center text-info mb-3">
-                        For Line Ministries
-                    </h4>
-                        {% for line_ministrie  in line_ministries  %}
-                          
-                          <div class="card shadow p-2 m-3">
-                            <ul style="list-style:none"> 
-                              <li>
-                                <h6> {{line_ministrie}} </h6>
-                            </li> 
-                            <ul>
-                            
-                          </div>
-                         
-                        {% endfor %}
-                    </div>
-                  </div>
+                 
 
                  
 

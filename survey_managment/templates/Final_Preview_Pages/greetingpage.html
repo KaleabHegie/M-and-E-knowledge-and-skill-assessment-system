@@ -1,630 +1,642 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-{% include "includes/greetingHead.html" %}
-
+  {% include "includes/greetingHead.html" %}
 
   <style>
-    .ft p{
+    .ft p {
       font-size: x-small;
       font-weight: 400;
     }
     /* Profile Picture */
-.profile-pic{
-   display: inline-block;
-   vertical-align: middle;
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-   border-radius: 50%;
-}
+    .profile-pic {
+      display: inline-block;
+      vertical-align: middle;
+      width: 50px;
+      height: 50px;
+      overflow: hidden;
+      border-radius: 50%;
+    }
 
-.profile-pic img{
-   width: 100%;
-   height: auto;
-   object-fit: cover;
-}
-.profile-menu .dropdown-menu {
-  right: 0;
-  left: unset;
-}
-.profile-menu .fa-fw {
-  margin-right: 10px;
-}
+    .profile-pic img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    .profile-menu .dropdown-menu {
+      right: 0;
+      left: unset;
+    }
+    .profile-menu .fa-fw {
+      margin-right: 10px;
+    }
 
-.toggle-change::after {
-  border-top: 0;
-  border-bottom: 0.3em solid;
-}
+    .toggle-change::after {
+      border-top: 0;
+      border-bottom: 0.3em solid;
+    }
   </style>
 
-
-<body>
-
-  <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top">
-    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-
-      <a href="#" class="logo d-flex align-items-center" >
-        <img src="{% static 'assets/img/logo.png' %}" alt="">
-        <span style="color: rgb(9, 109, 9);">MOPD</span>
-      </a>
-{% include "includes/navBar.html" %}
-      <!-- .navbar -->
-      
-    </div>
-  </header><!-- End Header -->
-
-  <!-- ======= Hero Section ======= -->
-  <section id="hero" class="hero d-flex align-items-center">
-
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 d-flex flex-column justify-content-center">
-          <h1 data-aos="fade-up" style="color: rgb(9, 109, 9);">Ministry Of Plan And Devlopment.</h1><br>
-          <h3 data-aos="fade-up" data-aos-delay="400" style="color: rgb(9, 109, 9);">የፌደራል ዘርፍ አፈፃፀም ተቋማት  ክትትልና ግምገማ አሰራር ስርዓት ላይ የሚካሄድ የዳሰሳ ጥናት.									
-          </h3>
-          <div data-aos="fade-up" data-aos-delay="600">
-            <div class="text-center text-lg-start">
-              <a href="#about" class=" d-inline-flex align-items-center justify-content-center align-self-center">
-                <img src="{% static 'assets/logo/EPDM-Logo-Final-Hi-res.png' %}" height="150rem" width="160rem"  style="margin-left: 8rem;">
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
-          <img src="{% static 'assets/img/hero-img.png' %}" class="img-fluid" alt="">
-        </div>
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top">
+      <div
+        class="container-fluid container-xl d-flex align-items-center justify-content-between"
+      >
+        <a href="#" class="logo d-flex align-items-center">
+          <img src="{% static 'assets/img/logo.png' %}" alt="" />
+          <span style="color: rgb(9, 109, 9)">MOPD</span>
+        </a>
+        {% include "includes/navBar.html" %}
+        <!-- .navbar -->
       </div>
-    </div>
+    </header>
+    <!-- End Header -->
 
-  </section><!-- End Hero -->
-
-  <main id="main">
-    <!-- ======= About Section ======= -->
-    <section id="about" class="about">
-
-      <div class="container" data-aos="fade-up">
-        <div class="row gx-0">
-
-          <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
-            <div class="content">
-              <h3>Who We Are</h3>
-              <h2 style="font-size: medium;">As plan and devlopment commisson we responsible for formulating, coordinating, and monitoring the implementation of national development policies, plans, and strategies.</h2>
-              <h3>Current Works.</h3>
-              <p>
-                <b>Employee Skill Assessment Survey:</b> which
-
-Identify strengths and weaknesses: Assessments can help identify the skills and competencies that employees possess, as well as areas where they may need improvement.
-Performance evaluation: Assessments can be used as a basis for evaluating employee performance, determining promotions, or identifying training needs.
-Succession planning: Assessing employees' skills can help identify potential candidates for future leadership roles within the organization.
-              </p>
-              <p><b>Also System Monitoring for Ministries Survey:</b> which
-
-                Identify gaps and inefficiencies: Assessments can help identify areas where the ministry system may be lacking or where processes are inefficient.
-                Improve effectiveness: By identifying areas for improvement, assessments can help enhance the overall effectiveness of the ministry system.
-                Enhance user experience: Assessments can provide insights into the user experience of the ministry system, helping to identify areas where usability can be enhanced.</p>
-            </div>
-          </div>
-
-          <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-            <img src="https://www.idsurvey.com/is-content/uploads/2022/03/survey-report-and-dashboard.png" class="img-fluid" alt="">
-          </div>
-
-        </div>
-      </div>
-
-    </section><!-- End About Section -->
-
-    <!-- ======= Values Section ======= -->
-    <section id="values" class="values">
-
-      <div class="container" data-aos="fade-up">
-
-        <header class="section-header">
-          <hr>
-          <h1 style="color: rgb(9, 100, 9);">የጥናቱ አላማ
-          </h1>
-          <p style="font-size: small;"><small>የዳሰሳ ጥናቱ ዋና አላማ በፌደራል የዘርፍ አስፈፃሚ መስሪያ ቤቶች ደረጃ ያለው የልማት ፕላን አፈፃፀም ክትትልና ግምገማ ስርዓት ያለበት ደረጃ በመፈተሽና ጉድለቶቹን በመለየት 
-            በቀጣይ ስርዓቱን በማጠናከር ረገድ ለሚከናወኑ ሁለንተናዊ ተግባራት መነሻ የሚሆን ምቹ ሁኔታ ለመፍጠር ሲሆን የሚከተሉት ዝርዝር አላማዎችን ያካትታል፤</small>
-
-          </p>
-          
-        </header>
-
-        <div class="row" style=" font-weight: 600;">
-
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="box">
-              <h3 style=" border-radius: 50%;
-              width: 50px;
-              height: 50px;
-              padding: 5px;
-              background: #fff;
-              border: 3px solid #0b7910;
-              background-color: rgb(9, 100, 9);
-              color: #ffffff;
-              text-align: center;
-              font: 32px Arial, sans-serif;
-              margin-left: 8rem;">1</h3>
-              <p>በፌደራል የዘርፍ አስፈጻሚ ተቋማት ደረጃ ያለውን የክትትልና ግምገማ ስርዓት አደረጃጀት፣ አሰራርና የማስፈፀም አቅም ያለበትን ደረጃ በመፈተሽ በአጠቃላይ በስርዓቱ ላይ ያሉ ጉድለቶችና መንስኤዎቻቸውን በመለየት በቀጣይ የክትትልና ግምገማ ስርዓቱን በማጠናከር ረገድ ለሚከናወኑ ተግባራት ግብዓት የሚሆኑ መረጃዎችን ለማሰባሰብ፤
-              </p>
-            </div>
-          </div>
-
-          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="400">
-            <div class="box">
-              <h3  style=" border-radius: 50%;
-              width: 50px;
-              height: 50px;
-              padding: 5px;
-              background: #fff;
-              border: 3px solid #0b7910;
-              background-color: rgb(9, 100, 9);
-              color: #ffffff;
-              text-align: center;
-              font: 32px Arial, sans-serif;
-              margin-left: 8rem;">2</h3>
-              <p>በስድስቱ የክትትልና ግምገማ ምሶሶዎች (component) የተለዩ ውስንነቶች (limitations) እና ክፍተቶችን (gaps) እንደመነሻ (Baseline) በመውሰድ ስርዓቱን ከማጠናከር አንጻር በቀጣይ ሊሰሩ የሚገባቸው ተግባራት በተመለከተ ምክረሀሳብ ለማመንጨት፤
-              </p>
-            </div>
-          </div>
-
-          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="600">
-            <div class="box">
-              <h3  style=" border-radius: 50%;
-              width: 50px;
-              height: 50px;
-              padding: 5px;
-              background: #fff;
-              border: 3px solid #0b7910;
-              background-color: rgb(9, 100, 9);
-              color: #ffffff;
-              text-align: center;
-              font: 32px Arial, sans-serif;
-              margin-left: 8rem;">3</h3>
-              <p>የክትትልና ግምገማ የማስፈፀምና የመፈጸም አቅም ያለበት ደረጃ በመገምገም/በመፈተሽ ሀገራዊ የክትትልና ግምገማ የአቅም ግንባታ ማኑዋል ለማዘጋጀት የሚያስችል ግብዓት ለማሰባሰብ፤
-              </p>
-            </div>
-          </div>
-
-          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="600">
-            <div class="box">
-              <h3  style=" border-radius: 50%;
-              width: 50px;
-              height: 50px;
-              padding: 5px;
-              background: #fff;
-              border: 3px solid #0b7910;
-              background-color: rgb(9, 100, 9);
-              color: #ffffff;
-              text-align: center;
-              font: 32px Arial, sans-serif;
-              margin-left: 8rem;">4</h3>
-              <p>ሀገራዊ የክትትልና ግምገማ ጥቅል መመሪያ (guideline) ለማሻሻል እና ዝርዝር የማስፈፀሚያ ማኑዋል (Operational Manual) ለማዘጋጀት የሚረዱ ግብዓቶችን ለማሰባሰብ እና
-              </p>
-            </div>
-          </div>
-
-          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="600">
-            <div class="box">
-              <h3  style=" border-radius: 50%;
-              width: 50px;
-              height: 50px;
-              padding: 5px;
-              background: #fff;
-              border: 3px solid #0b7910;
-              background-color: rgb(9, 100, 9);
-              color: #ffffff;
-              text-align: center;
-              font: 32px Arial, sans-serif;
-              margin-left: 8rem;">5</h3>
-              <p>የክትትልና ግምገማ ስርዓቱን በቀጣይነት እየፈተሹ ለማጠናከር የሚያስችል የክትትልና ግምገማ ስርዓት ግንባታ መገምገሚያና ማጠናከሪያ መሳሪያ (standard tools) ለማዘጋጀት ነው።
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- End Values Section -->
-
-  
-
-    <!-- ======= Features Section ======= -->
-    <section id="features" class="features">
-
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="hero d-flex align-items-center">
       <div class="container">
-
-        <header class="section-header">
-          <h2 >Glossary of terms</h2>
-          <p>በጥናቱ መጠይቅ ውስጥ ጥቅም ላይ የዋሉ ቃላቶች መፍቻ.</p>
-        </header>
-
         <div class="row">
-
-          <div class="col-lg-6 ft">
-            <img src="{% static 'assets/img/features.png' %}" class="img-fluid" alt="">
-<br>
-            <hr>
-            <!-- <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
-              <div class="feature-box d-flex align-items-center">
-                <i class="bi bi-check"></i>
-                <p> የመነሻ ጥናት  (Baseline data) ፡ ሐገራዊ ፕላን፥ፕሮጀክት እና ፕሮግራም ቁልፍ የውጤት አመልካቾች  በቀጣይ የሚደረስበትን ግብ ከማስቀመጡ በፊት አሁን ላይ ያለውን ነባራዊ ሁኔታን የሚያሳይ የመነሻ መረጃ ነው። ወይንም አንድ ፕሮጀክት ወይም ፕሮግራም  ወደ ትግበራ ከመግባቱ በፊት በፕሮጀክት ወይም ፕሮግራም  ቁልፍ የአፈጻጸም አመልካቾች ላይ መረጃ ለመሰብሰብ የሚድረግ ጥናት።
-                </p>
-              </div>
-            </div>
-            <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
-              <div class="feature-box d-flex align-items-center">
-                <i class="bi bi-check"></i>
-               <p>በሶስተኛ አካላት የሚደረግ ክትትል (Third Party Monitoring)፡ ከፕሮጀችቱ / ከፕሮግራሙ አስፈጻሚ ከሆኑ አካላት ዉጪ የሚደረጉ ክትትል እና ግምግማ።
-              </p>
-              </div>
-            </div>
-            <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
-              <div class="feature-box d-flex align-items-center">
-                <i class="bi bi-check"></i>
-                <p>ቁልፍ የአፈጻጸም አመልካቾች (Key performance indicators (KPIs))፡  ሀገራዊ ፕላን ፥ፕሮግራምና ፕሮጀክቶች ሊያመጡ ያሰቧቸውን  ውጡቶች ለመለካት የሚያስችሉ አመልካቾች ናቸው። ይህም የሚተገበሩ ፕላኖች ፥ፕሮግራሞችና ፕሮጀክቶች ከሂደት ይልቅ ውጤት ላይ በማተኮር ለውጤት እንዲበቁ የሚያደርግ ነው። አንድ ፕሮጀክት ወይም ፕሮግራም  ወደ ትግበራ ከመግባቱ በፊት የሚያmeጣቸዉ ዉጤቶች የሚልኩበት መለኪያ። 
-                </p>
-              </div>
-            </div> -->
-
-         
-
-          </div>
-
-          <div class="col-lg-6 mt-5 mt-lg-0 d-flex">
-            <div class="row align-self-center gy-4 ft">
-
-              
-
-              <div class="col-md-6" data-aos="zoom-out" data-aos-delay="300">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>ፕሮግራም (Program)፡ በጊዜ የተገደበ  እና ከፕሮጀክት ጋር ተመሳሳይነት ያለው ሆኖ ነገር ግን የተለያዩ ጉዳዮችን አጠቃሎ የሚይዝና ከአንድ በላይ የሆኑ ፕሮጀክቶች  በአንድ ወይም በተለያዩ አስፍጻሚ አካላት የሚተገበርበት ስርዐት፡፡
-                  </p>
-                </div>
-              </div>
-
-              <div class="col-md-6" data-aos="zoom-out" data-aos-delay="400">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                 <p>የልማት ፕሮጀክት (Development project)፡ ማለት በፌደራል መንግስት ቋሚ ሀብትን ለማፍራት ወይም ለማሻሻል፣ የሀገሪቱን ኢኮኖሚ ለማሳደግ፣ የገበያ ክፍተቶችን ለመሙላት እና የቀጣዩን ትውልድ ፍትሀዊ ተጠቃሚነትን ለማረጋገጥ በተወሰነ ሀብት፤ ጊዜና ቦታ ምርትና አገልግሎቶችን ለመስጠት በፕሮጀክቶች አስፈፃሚ አካላት በፌደራል መንግስት በመደበኛ በጀት፣ በሀገር ውስጥና በውጭ ብድርና እርዳታ የሚከናወኑ የመንግስትን ዋስትና የሚጠይቁ ፣በመንግስት እና በግል አጋርነት ማዕቀፍ ወጪያቸው የሚሸፈን ፕሮጀክቶች ናቸው፤
-                </p>
-                </div>
-              </div>
-
-              <div class="col-md-6" data-aos="zoom-out" data-aos-delay="500">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-               <p>ፖሊሲ (Policy)፡  በሀገር ደረጃ የሚታዩ ኢኮኖሚያዊ ፥ማህበራዊና ፖሊቲካዊ ችግሮችን ለመቅረፍ የሚያችሉ ሁነቶችን የሚያመላክት አቅጣጫ ጠቋሚ ሰነድ ማለት ነው።   ወይንም መንግስት አኮኖሚያዊ፣ ማህበራዊና ፖለቲካዊ ልማቶችናንና አገልግሎቶችን ተግባራዊ ለማድረግ የሚያስችል የረጅም ዘመን የመንግስት አቅጣጫ ጠቋሚ ሀሳብ ሲሆን  በስነድ መልክ ተዘጋጅቶ የሚሰራጭ ነው ።
-              </p>
-                </div>
-              </div>
-
-              <div class="col-md-6" data-aos="zoom-out" data-aos-delay="600">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>ስትራቴጂክ  እቅድ (Strategic plan)፡  በሀገር ደረጃ የሚታዩ ኢኮኖሚያዊ ፥ማህበራዊና ፖሊቲካዊ ችግሮችን ለመቅረፍ የሚያችሉ የተዘጋጁ ፖሊሲዎችን፥ፕሮግረሞችን እና እቅዶችን ለማስፈፀም የሚያስችል ስልት ነው። (የረጂም ፡ የመካከለኛ ፡ አጭር አመት ሊሆን ይችላል)።
-                  </p>
-                </div>
-              </div>
-
-              <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                <p>ዝርዝር የአፈጻጸም መመሪያ (Manual)፡ ስለ አንድ ጉዳይ በቂ የሆነ ማብራሪያ የሚሰጥ መጽሀፍ።
-                </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>ባለድርሻ አካላት (Stakeholders) ፡  በሀገር ደረጃ የሚከናወሉ የልማት ስራዎች  ቀረጻ ወይም አፈጻጸም የራስ ፍላጎትም ሆነ የተወካዮቻቸውን ፍላጎት የሚያንጸባርቁ እና ተፅዕኖ የሚፈጥሩ ወይንም ተጻእኖ ሊያድርባቸዉ የሚችል መንግስታዊና መንግስታዊ ያልሆኑ ፍላጎትያላቸው ስብስብ ማለት ነው ( ሰዎች ፡ ቡድኖች ፡ ተቋሞች ሊሆኑ ይችላሉ )።
-                  </p>
-                </div>
-              </div>
-              <!-- <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                 <p>የክትትልና ግምገማ ማእቀፍ (Performance monitoring framework (plan), M&E Plan (framework)) ፡ በውስጡ የአንድ ፕሮጀክት ወይም ፕሮግራም የሚጠብቁ ውጤቶች፣ ቁልፍ የአፈጸጻፈም አመላካቾች እና ትርጉማቸው፣ ከቁልፍ የአፈጻጸም አመልካቾች አንጻር ያሉ ዒላማዎችን በማን እንደሚሰባሰቡ፣ የመረጃ ምንጫችው፣ ሪፖርት የሚቀርብባቸ ጊዚያቶች የሚያሳይ ስንጠረዥ ነው።
-                </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                 <p>የአፈፃፀም ክትትል (Monitoring)፡ የአንድ እቅድ፥ ፕሮግራም ወይም ፕሮጀክትየትግበራ  አፈጻጸም በታቀደለት ጊዜና በጀት መተግበሩን ፡ በሚጠበቀዉ ስታንዳርድ መፈጸሙን ወቅታዊነት እና ቀጣይነት ያለው ምልከታ በማደረግ የመረጋገጥ ሁደት ነው።
-                </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>ጥናታዊ ግምገማ (Evaluation/study) ፡ የአንድ ፕሮጀክት ወይም ፕሮግራም  አፈጻጸም በተወሰነ ጊዜ ፡ ሳይንሳዊ በሆነ መንገድ የታቅደለትን አላማ፡ ተጸእኖ፡ ፋይዳ ማምጣቱን  የማረጋገጥ ሂደት ነዉ፡፡ይህም በሁለት መልኩ የሚካሄድ ሲሆን አንደኛው በአስፈፃሚው አካል የሚደረግ ግምገማ ሲሆን ሁለተኛው በገለልተኛ አካል የሚደረግ  የግምገማ አይነት ነው።
-                  </p>
-                </div>
-                
-              </div>
-              <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                 <p>የመረጃ ፍሰት ስዕላዊ መግለጫ (Data flow chart) ፡ ፕሮጀክት ፡ ፕሮግራም ወይም ተቋም ዉስጥ መረጃ ካነስተኛ የመረጃ የማሰባሰብ እርከን  እስክ ከፍተኛ መረጃን የማጽድቅ ድረስ ያሉትን እርከኖች እና ሃላፊነቶችን የሚያሳይ  ስዕላዊ መግለጫ፡፡
-                </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>ለውጥ (Outcome)፡ ከአንድ ፕሮጀክት/ፕሮግራም አፈጻጽም የሚጠብቅ ዉጤት( የባህሪ ለዉጥ ፤ እዉቀት መጨመር) ከነበረበት አካሄድ በተጨባጭ ለውጥ ማምጣቱን ወይም እያመጣ መሆኑን የማረጋገጥ ሂደት ነው።. These typically involve improvements for a product or service.
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>የመረጃ ጥራት ማረጋገጥ (Data quality assurance)፡- የአንድ ፕሮጀክት ወይም ፕሮግራም ወይም ተቋም ውስጥ የሚሰበሰቡ መረጃዎች ትክክለኛ መሆናቸውን ለማረጋገጥ የሚድረግ ሂደት ነው ።
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                 <p>የመረጃ ጥራት ቁጥጥር (Data quality control)፡- የአንድ ፕሮጀክት ወይም ፕሮግራም ወይም ተቋም ዉስጥ የሚሰበሰቡ መረጃዎች ትክክለኛ መሆናቸውን ለማረጋገጥ የሚድረግ ቁጥጥር ነው። 
-                </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>የአዝማሚያ ትንተና (Trend analysis)፡ መረጃን የመተንተኛ ዘዴ ሆኖ ፡ መረጃዎችን  ክዚህ ቀደም ክነበሩ መርጃዎች ጋር በማመሳክር መጨመራቸዉንና መቀንሳቸዉን በማየት ወደፊት ምን ሊሆን እንደሚችል ትንብያ መስራት።
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>ማህበራዊ አካታችነት(Social inclusion) ፡ በሀገር ደረጃ የሚተገበሩ ፕሮጅከቶች፥ፕሮግራሞች እና ፖሊሲዎች ሁሉንም የማሃበረሰብ ክፍል በፍትሀዊነት ተጠቃሚ መሆናቸውን የሚረጋገጥበት ሂደት ነው። በተለይ ከልማት ተጠቃሚ ያልሆኑ ግለሰቦች ፡ ቡድኖች ከልማት ተጠቃሚ እንዲሆኑ የማድረግ ሂደት ።
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>የክትትልና ግምገማ እውቀት አስተዳደር ስርዓት (M&E Knowledge Management System)፡ ሐገራዊ የክትትልና ግምገማ ውጤታማነትን ለማጎልበት የሚያስችል አሰራርን መዘርጋት ሲሆን ማንኛውም ከክትትልና ግምገማ ስርዓት ጋር የተያያዙ ፖሊሲዎች፥ጥናቶች፥የስልጠና ማንዋሎች፥መመሪያዎች ፥ ቴምፕሌቶች፥ሪፖርቶች ተሰንደው የሚቀመጡበትና ዘለቄታዊ ባለው አግባብ የዕውቀት ሽግግር የሚደረግበት ስርዓት ነው። Knowledge Management Platform የአንድ ፕሮጀክት ፡ ፕሮግራም ወይም ተቋም ዉስጥ መረጃ የሚቀመጥበት ፡ የሚሰራጭብት፡ የተቋሙ ሰራተኞች ወይም ለሌሎች ተቋማት መረጃ የሚካፈልበት መንገድ ( የመረጃ መረብ እና የመሳሰሉት ሊሆን ይችላል)።
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>ጥናታዊ የግምገማ ስፋትና ጥልቀት (Evaluation scope)፡- አንድ ግምገማ በሚካሄድበት ሳአት የሚዳስሣቸዉ አንኳር ጉዳዮች ፡ትኩረት የሚሰጣችዉ ጉዳዮች ... ለክቶ የሚያስቅምጥ ዶኩመንት።
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-out">
-                <div class="feature-box d-flex align-items-center">
-                  <i class="bi bi-check"></i>
-                  <p>የማረጋገጫ ዘዴ/ ተጨማሪ ደጋፊ መረጃ (Means of verification)፡- የKPIs አፈጻጸም የሚለካበትና የሚረጋገጥበትእና ተጨማሪ መረጃዎች የሚስባሰቡብት።
-                  </p>
-                </div>
-              </div> -->
-
-
-            </div>
-          </div>
-
-        </div> <!-- / row -->
-
-        <!-- Feature Tabs -->
-        <div class="row feture-tabs" data-aos="fade-up">
-          <div class="col-lg-6">
-            <h3>ደረጃ እና ክብደት አስጣጥ (Weighting and Rating)							
+          <div class="col-lg-6 d-flex flex-column justify-content-center">
+            <h1 data-aos="fade-up" style="color: rgb(9, 109, 9)">
+              Ministry Of Plan And Devlopment.
+            </h1>
+            <br />
+            <h3
+              data-aos="fade-up"
+              data-aos-delay="400"
+              style="color: rgb(9, 109, 9)"
+            >
+              የፌደራል ዘርፍ አፈፃፀም ተቋማት ክትትልና ግምገማ አሰራር ስርዓት ላይ የሚካሄድ የዳሰሳ ጥናት.
             </h3>
-
-           
-            <table class="table caption-top">
-              <thead>
-                <tr>
-                  <th scope="col">ክብደት(1-5)</th>
-                  <th scope="col">Meaning of the weighting
-                  </th>
-                  <th scope="col">ደረጃ 
-                    (ከ 0_ 10 )
-                    </th>
-                  <th scope="col">Meaning of the rating				
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>not that much critical
-                  </td>
-                  <td>0</td>
-                  <td>Ministry doesn't have any document, culture,implementaion…etc				
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>it has  some effect
-                  </td>
-                  <td>1</td>
-                  <td>Extremely poor  (meets 10% of the requirement of the question)				
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>important
-                  </td>
-                  <td>2</td>
-                  <td>Very poor  (meets 20% of the requirement of the question)				
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>critical
-                  </td>
-                  <td>3</td>
-                  <td>Poor  (meets 30% of the requirement of the question)				
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">5</th>
-                  <td>very critical
-                  </td>
-                  <td>4</td>
-                  <td>Not bad   (meets 40% of the requirement of the question)				
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div data-aos="fade-up" data-aos-delay="600">
+              <div class="text-center text-lg-start">
+                <a
+                  href="#about"
+                  class="d-inline-flex align-items-center justify-content-center align-self-center"
+                >
+                  <img
+                    src="{% static 'assets/logo/EPDM-Logo-Final-Hi-res.png' %}"
+                    height="150rem"
+                    width="160rem"
+                    style="margin-left: 8rem"
+                  />
+                </a>
+              </div>
+            </div>
           </div>
-
-          <div class="col-lg-6">
-            <img src="{% static 'assets/img/picc.jpg' %}" class="img-fluid" alt="">
+          <div
+            class="col-lg-6 hero-img"
+            data-aos="zoom-out"
+            data-aos-delay="200"
+          >
+            <img
+              src="{% static 'assets/img/hero-img.png' %}"
+              class="img-fluid"
+              alt=""
+            />
           </div>
-
-        </div><!-- End Feature Tabs -->
-
-     
-
+        </div>
       </div>
+    </section>
+    <!-- End Hero -->
 
-    </section><!-- End Features Section -->
- 
- 
+    <main id="main">
+      <!-- ======= About Section ======= -->
+      <section id="about" class="about">
+        <div class="container" data-aos="fade-up">
+          <div class="row gx-0">
+            <div
+              class="col-lg-6 d-flex flex-column justify-content-center"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="content">
+                <h3>Who We Are</h3>
+                <h2 style="font-size: medium">
+                  As plan and devlopment commisson we responsible for
+                  formulating, coordinating, and monitoring the implementation
+                  of national development policies, plans, and strategies.
+                </h2>
+                <h3>Current Works.</h3>
+                <p>
+                  <b>Employee Skill Assessment Survey:</b> which Identify
+                  strengths and weaknesses: Assessments can help identify the
+                  skills and competencies that employees possess, as well as
+                  areas where they may need improvement. Performance evaluation:
+                  Assessments can be used as a basis for evaluating employee
+                  performance, determining promotions, or identifying training
+                  needs. Succession planning: Assessing employees' skills can
+                  help identify potential candidates for future leadership roles
+                  within the organization.
+                </p>
+                <p>
+                  <b>Also System Monitoring for Ministries Survey:</b> which
+                  Identify gaps and inefficiencies: Assessments can help
+                  identify areas where the ministry system may be lacking or
+                  where processes are inefficient. Improve effectiveness: By
+                  identifying areas for improvement, assessments can help
+                  enhance the overall effectiveness of the ministry system.
+                  Enhance user experience: Assessments can provide insights into
+                  the user experience of the ministry system, helping to
+                  identify areas where usability can be enhanced.
+                </p>
+              </div>
+            </div>
 
-   
+            <div
+              class="col-lg-6 d-flex align-items-center"
+              data-aos="zoom-out"
+              data-aos-delay="200"
+            >
+              <img
+                src="https://www.idsurvey.com/is-content/uploads/2022/03/survey-report-and-dashboard.png"
+                class="img-fluid"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- End About Section -->
 
+      <!-- ======= Values Section ======= -->
+      <section id="values" class="values">
+        <div class="container" data-aos="fade-up">
+          <header class="section-header">
+            <hr />
+            <h1 style="color: rgb(9, 100, 9)">የጥናቱ አላማ</h1>
+            <p style="font-size: small">
+              <small
+                >የዳሰሳ ጥናቱ ዋና አላማ በፌደራል የዘርፍ አስፈፃሚ መስሪያ ቤቶች ደረጃ ያለው የልማት ፕላን
+                አፈፃፀም ክትትልና ግምገማ ስርዓት ያለበት ደረጃ በመፈተሽና ጉድለቶቹን በመለየት በቀጣይ ስርዓቱን
+                በማጠናከር ረገድ ለሚከናወኑ ሁለንተናዊ ተግባራት መነሻ የሚሆን ምቹ ሁኔታ ለመፍጠር ሲሆን የሚከተሉት
+                ዝርዝር አላማዎችን ያካትታል፤</small
+              >
+            </p>
+          </header>
 
+          <div class="row" style="font-weight: 600">
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+              <div class="box">
+                <h3
+                  style="
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    padding: 5px;
+                    background: #fff;
+                    border: 3px solid #0b7910;
+                    background-color: rgb(9, 100, 9);
+                    color: #ffffff;
+                    text-align: center;
+                    font: 32px Arial, sans-serif;
+                    margin-left: 8rem;
+                  "
+                >
+                  1
+                </h3>
+                <p>
+                  በፌደራል የዘርፍ አስፈጻሚ ተቋማት ደረጃ ያለውን የክትትልና ግምገማ ስርዓት አደረጃጀት፣ አሰራርና
+                  የማስፈፀም አቅም ያለበትን ደረጃ በመፈተሽ በአጠቃላይ በስርዓቱ ላይ ያሉ ጉድለቶችና መንስኤዎቻቸውን
+                  በመለየት በቀጣይ የክትትልና ግምገማ ስርዓቱን በማጠናከር ረገድ ለሚከናወኑ ተግባራት ግብዓት የሚሆኑ
+                  መረጃዎችን ለማሰባሰብ፤
+                </p>
+              </div>
+            </div>
 
+            <div
+              class="col-lg-4 mt-4 mt-lg-0"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
+              <div class="box">
+                <h3
+                  style="
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    padding: 5px;
+                    background: #fff;
+                    border: 3px solid #0b7910;
+                    background-color: rgb(9, 100, 9);
+                    color: #ffffff;
+                    text-align: center;
+                    font: 32px Arial, sans-serif;
+                    margin-left: 8rem;
+                  "
+                >
+                  2
+                </h3>
+                <p>
+                  በስድስቱ የክትትልና ግምገማ ምሶሶዎች (component) የተለዩ ውስንነቶች (limitations)
+                  እና ክፍተቶችን (gaps) እንደመነሻ (Baseline) በመውሰድ ስርዓቱን ከማጠናከር አንጻር
+                  በቀጣይ ሊሰሩ የሚገባቸው ተግባራት በተመለከተ ምክረሀሳብ ለማመንጨት፤
+                </p>
+              </div>
+            </div>
 
+            <div
+              class="col-lg-4 mt-4 mt-lg-0"
+              data-aos="fade-up"
+              data-aos-delay="600"
+            >
+              <div class="box">
+                <h3
+                  style="
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    padding: 5px;
+                    background: #fff;
+                    border: 3px solid #0b7910;
+                    background-color: rgb(9, 100, 9);
+                    color: #ffffff;
+                    text-align: center;
+                    font: 32px Arial, sans-serif;
+                    margin-left: 8rem;
+                  "
+                >
+                  3
+                </h3>
+                <p>
+                  የክትትልና ግምገማ የማስፈፀምና የመፈጸም አቅም ያለበት ደረጃ በመገምገም/በመፈተሽ ሀገራዊ
+                  የክትትልና ግምገማ የአቅም ግንባታ ማኑዋል ለማዘጋጀት የሚያስችል ግብዓት ለማሰባሰብ፤
+                </p>
+              </div>
+            </div>
 
-   
+            <div
+              class="col-lg-4 mt-4 mt-lg-0"
+              data-aos="fade-up"
+              data-aos-delay="600"
+            >
+              <div class="box">
+                <h3
+                  style="
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    padding: 5px;
+                    background: #fff;
+                    border: 3px solid #0b7910;
+                    background-color: rgb(9, 100, 9);
+                    color: #ffffff;
+                    text-align: center;
+                    font: 32px Arial, sans-serif;
+                    margin-left: 8rem;
+                  "
+                >
+                  4
+                </h3>
+                <p>
+                  ሀገራዊ የክትትልና ግምገማ ጥቅል መመሪያ (guideline) ለማሻሻል እና ዝርዝር የማስፈፀሚያ
+                  ማኑዋል (Operational Manual) ለማዘጋጀት የሚረዱ ግብዓቶችን ለማሰባሰብ እና
+                </p>
+              </div>
+            </div>
 
+            <div
+              class="col-lg-4 mt-4 mt-lg-0"
+              data-aos="fade-up"
+              data-aos-delay="600"
+            >
+              <div class="box">
+                <h3
+                  style="
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    padding: 5px;
+                    background: #fff;
+                    border: 3px solid #0b7910;
+                    background-color: rgb(9, 100, 9);
+                    color: #ffffff;
+                    text-align: center;
+                    font: 32px Arial, sans-serif;
+                    margin-left: 8rem;
+                  "
+                >
+                  5
+                </h3>
+                <p>
+                  የክትትልና ግምገማ ስርዓቱን በቀጣይነት እየፈተሹ ለማጠናከር የሚያስችል የክትትልና ግምገማ ስርዓት
+                  ግንባታ መገምገሚያና ማጠናከሪያ መሳሪያ (standard tools) ለማዘጋጀት ነው።
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- End Values Section -->
 
-  
+      <!-- ======= Features Section ======= -->
+      <section id="features" class="features">
+        <div class="container">
+          <header class="section-header">
+            <h2>Glossary of terms</h2>
+            <p>በጥናቱ መጠይቅ ውስጥ ጥቅም ላይ የዋሉ ቃላቶች መፍቻ.</p>
+          </header>
 
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
+          <div class="row">
+            <div class="col-lg-6 ft">
+              <img
+                src="{% static 'assets/img/features.png' %}"
+                class="img-fluid"
+                alt=""
+              />
+              <br />
+              <hr />
+            </div>
 
-      <div class="container" data-aos="fade-up">
+            <div class="col-lg-6 mt-5 mt-lg-0 d-flex">
+              <div class="row align-self-center gy-4 ft">
+                <div class="col-md-6" data-aos="zoom-out" data-aos-delay="300">
+                  <div class="feature-box d-flex align-items-center">
+                    <i class="bi bi-check"></i>
+                    <p>
+                      ፕሮግራም (Program)፡ በጊዜ የተገደበ እና ከፕሮጀክት ጋር ተመሳሳይነት ያለው ሆኖ ነገር
+                      ግን የተለያዩ ጉዳዮችን አጠቃሎ የሚይዝና ከአንድ በላይ የሆኑ ፕሮጀክቶች በአንድ ወይም
+                      በተለያዩ አስፍጻሚ አካላት የሚተገበርበት ስርዐት፡፡
+                    </p>
+                  </div>
+                </div>
 
-        <header class="section-header">
-          <h2>Contact</h2>
-          <p>Contact Us</p>
-        </header>
+                <div class="col-md-6" data-aos="zoom-out" data-aos-delay="400">
+                  <div class="feature-box d-flex align-items-center">
+                    <i class="bi bi-check"></i>
+                    <p>
+                      የልማት ፕሮጀክት (Development project)፡ ማለት በፌደራል መንግስት ቋሚ ሀብትን
+                      ለማፍራት ወይም ለማሻሻል፣ የሀገሪቱን ኢኮኖሚ ለማሳደግ፣ የገበያ ክፍተቶችን ለመሙላት እና
+                      የቀጣዩን ትውልድ ፍትሀዊ ተጠቃሚነትን ለማረጋገጥ በተወሰነ ሀብት፤ ጊዜና ቦታ ምርትና
+                      አገልግሎቶችን ለመስጠት በፕሮጀክቶች አስፈፃሚ አካላት በፌደራል መንግስት በመደበኛ በጀት፣
+                      በሀገር ውስጥና በውጭ ብድርና እርዳታ የሚከናወኑ የመንግስትን ዋስትና የሚጠይቁ ፣በመንግስት
+                      እና በግል አጋርነት ማዕቀፍ ወጪያቸው የሚሸፈን ፕሮጀክቶች ናቸው፤
+                    </p>
+                  </div>
+                </div>
 
-        <div class="row gy-4">
+                <div class="col-md-6" data-aos="zoom-out" data-aos-delay="500">
+                  <div class="feature-box d-flex align-items-center">
+                    <i class="bi bi-check"></i>
+                    <p>
+                      ፖሊሲ (Policy)፡ በሀገር ደረጃ የሚታዩ ኢኮኖሚያዊ ፥ማህበራዊና ፖሊቲካዊ ችግሮችን
+                      ለመቅረፍ የሚያችሉ ሁነቶችን የሚያመላክት አቅጣጫ ጠቋሚ ሰነድ ማለት ነው። ወይንም መንግስት
+                      አኮኖሚያዊ፣ ማህበራዊና ፖለቲካዊ ልማቶችናንና አገልግሎቶችን ተግባራዊ ለማድረግ የሚያስችል
+                      የረጅም ዘመን የመንግስት አቅጣጫ ጠቋሚ ሀሳብ ሲሆን በስነድ መልክ ተዘጋጅቶ የሚሰራጭ ነው ።
+                    </p>
+                  </div>
+                </div>
 
-          <div class="col-lg-6">
+                <div class="col-md-6" data-aos="zoom-out" data-aos-delay="600">
+                  <div class="feature-box d-flex align-items-center">
+                    <i class="bi bi-check"></i>
+                    <p>
+                      ስትራቴጂክ እቅድ (Strategic plan)፡ በሀገር ደረጃ የሚታዩ ኢኮኖሚያዊ ፥ማህበራዊና
+                      ፖሊቲካዊ ችግሮችን ለመቅረፍ የሚያችሉ የተዘጋጁ ፖሊሲዎችን፥ፕሮግረሞችን እና እቅዶችን
+                      ለማስፈፀም የሚያስችል ስልት ነው። (የረጂም ፡ የመካከለኛ ፡ አጭር አመት ሊሆን ይችላል)።
+                    </p>
+                  </div>
+                </div>
 
-            <div class="row gy-4">
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-geo-alt"></i>
-                  <h3>Address</h3>
-                  <p>Addis Ababa, Ethiopia 6killo.</p>
+                <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
+                  <div class="feature-box d-flex align-items-center">
+                    <i class="bi bi-check"></i>
+                    <p>
+                      ዝርዝር የአፈጻጸም መመሪያ (Manual)፡ ስለ አንድ ጉዳይ በቂ የሆነ ማብራሪያ የሚሰጥ
+                      መጽሀፍ።
+                    </p>
+                  </div>
+                </div>
+                <div class="col-md-6" data-aos="zoom-out" data-aos-delay="10">
+                  <div class="feature-box d-flex align-items-center">
+                    <i class="bi bi-check"></i>
+                    <p>
+                      ባለድርሻ አካላት (Stakeholders) ፡ በሀገር ደረጃ የሚከናወሉ የልማት ስራዎች ቀረጻ
+                      ወይም አፈጻጸም የራስ ፍላጎትም ሆነ የተወካዮቻቸውን ፍላጎት የሚያንጸባርቁ እና ተፅዕኖ
+                      የሚፈጥሩ ወይንም ተጻእኖ ሊያድርባቸዉ የሚችል መንግስታዊና መንግስታዊ ያልሆኑ ፍላጎትያላቸው
+                      ስብስብ ማለት ነው ( ሰዎች ፡ ቡድኖች ፡ ተቋሞች ሊሆኑ ይችላሉ )።
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-telephone"></i>
-                  <h3>Call Us</h3>
-                  <p>+1 5589 55488 55<br>+1 6678 254445 41</p>
+            </div>
+          </div>
+          <!-- / row -->
+
+          <!-- Feature Tabs -->
+          <div class="row feture-tabs" data-aos="fade-up">
+            <div class="col-lg-6">
+              <h3>ደረጃ እና ክብደት አስጣጥ (Weighting and Rating)</h3>
+              <table class="table caption-top">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      ክብደት <br />
+                      (1-5)
+                    </th>
+                    <th scope="col">Meaning of the weighting</th>
+                    <th scope="col">ደረጃ (0_ 10)</th>
+                    <th scope="col">Meaning of the rating</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>not that much critical</td>
+                    <td>0</td>
+                    <td>
+                      Ministry doesn't have any document,
+                      culture,implementaion…etc
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>it has some effect</td>
+                    <td>1</td>
+                    <td>
+                      Extremely poor (meets 10% of the requirement of the
+                      question)
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>important</td>
+                    <td>2</td>
+                    <td>
+                      Very poor (meets 20% of the requirement of the question)
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>critical</td>
+                    <td>3</td>
+                    <td>Poor (meets 30% of the requirement of the question)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>very critical</td>
+                    <td>4</td>
+                    <td>
+                      Not bad (meets 40% of the requirement of the question)
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-lg-6">
+              <img
+                src="{% static 'assets/img/picc.jpg' %}"
+                class="img-fluid"
+                alt=""
+              />
+            </div>
+          </div>
+          <!-- End Feature Tabs -->
+        </div>
+      </section>
+      <!-- End Features Section -->
+
+      <!-- ======= Contact Section ======= -->
+      <section id="contact" class="contact">
+        <div class="container" data-aos="fade-up">
+          <header class="section-header">
+            <h2>Contact</h2>
+            <p>Contact Us</p>
+          </header>
+
+          <div class="row gy-4">
+            <div class="col-lg-6">
+              <div class="row gy-4">
+                <div class="col-md-6">
+                  <div class="info-box">
+                    <i class="bi bi-geo-alt"></i>
+                    <h3>Address</h3>
+                    <p>Addis Ababa, Ethiopia 6killo.</p>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-envelope"></i>
-                  <h3>Email Us</h3>
-                  <p>MOPD@gmail.com</p>
+                <div class="col-md-6">
+                  <div class="info-box">
+                    <i class="bi bi-telephone"></i>
+                    <h3>Call Us</h3>
+                    <p>+1 5589 55488 55<br />+1 6678 254445 41</p>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-clock"></i>
-                  <h3>Open Hours</h3>
-                  <p>Monday - Friday<br>9:00AM - 05:00PM</p>
+                <div class="col-md-6">
+                  <div class="info-box">
+                    <i class="bi bi-envelope"></i>
+                    <h3>Email Us</h3>
+                    <p>MOPD@gmail.com</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info-box">
+                    <i class="bi bi-clock"></i>
+                    <h3>Open Hours</h3>
+                    <p>Monday - Friday<br />9:00AM - 05:00PM</p>
+                  </div>
                 </div>
               </div>
             </div>
 
+            <div class="col-lg-6">
+              <form name="send-message-form" method="post" class="form">
+                {% csrf_token %}
+                <div class="row gy-4">
+                  <div class="col-md-6">
+                    <input
+                      type="text"
+                      name="name"
+                      class="form-control"
+                      placeholder="Your Name"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-6">
+                    <input
+                      type="email"
+                      class="form-control"
+                      name="email"
+                      placeholder="Your Email"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-12">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="subject"
+                      placeholder="Subject"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-12">
+                    <textarea
+                      class="form-control"
+                      name="message"
+                      rows="6"
+                      placeholder="Message"
+                      required
+                    ></textarea>
+                  </div>
+
+                  <div class="col-md-12 text-center">
+                    <button
+                      class="btn"
+                      style="background-color: rgb(9, 109, 9); color: white"
+                      type="submit"
+                    >
+                      Send Message
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
-
-          <div class="col-lg-6">
-            <form name="send-message-form"  method="post" class="form">
-              {% csrf_token %}
-              <div class="row gy-4">
-
-                <div class="col-md-6">
-                  <input type="text" name="name" class="form-control" placeholder="Your Name" required>
-                </div>
-
-                <div class="col-md-6 ">
-                  <input type="email" class="form-control" name="email" placeholder="Your Email" required>
-                </div>
-
-                <div class="col-md-12">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required>
-                </div>
-
-                <div class="col-md-12">
-                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
-                </div>
-
-                <div class="col-md-12 text-center">
-                  <button class="btn" style="background-color: rgb(9, 109, 9);color: white" type="submit">Send Message</button>
-                </div>
-
-              </div>
-            </form>
-
-          </div>
-
         </div>
+      </section>
+      <!-- End Contact Section -->
+    </main>
+    <!-- End #main -->
 
-      </div>
+    <!-- ======= Footer ======= -->
 
-    </section><!-- End Contact Section -->
+    {% include "includes/previewFooter.html" %}
+    <!-- End Footer -->
 
-  </main><!-- End #main -->
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
 
-  <!-- ======= Footer ======= -->
- 
-   {% include "includes/previewFooter.html" %}
-  <!-- End Footer -->
+    <!-- Vendor JS Files -->
+    <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+    <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Vendor JS Files -->
-  <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
-  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
-  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
-
-  <!-- Template Main JS File -->
-  <script src="{% static 'assets/js/main.js' %}"></script>
-  <script>
-    document.querySelectorAll('.dropdown-toggle').forEach(item => {
-  item.addEventListener('click', event => {
- 
-    if(event.target.classList.contains('dropdown-toggle') ){
-      event.target.classList.toggle('toggle-change');
-    }
-    else if(event.target.parentElement.classList.contains('dropdown-toggle')){
-      event.target.parentElement.classList.toggle('toggle-change');
-    }
-  })
-});
-  </script>
-
-</body>
-
+    <!-- Template Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script>
+      document.querySelectorAll(".dropdown-toggle").forEach((item) => {
+        item.addEventListener("click", (event) => {
+          if (event.target.classList.contains("dropdown-toggle")) {
+            event.target.classList.toggle("toggle-change");
+          } else if (
+            event.target.parentElement.classList.contains("dropdown-toggle")
+          ) {
+            event.target.parentElement.classList.toggle("toggle-change");
+          }
+        });
+      });
+    </script>
+  </body>
 </html>
