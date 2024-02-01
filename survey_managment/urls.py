@@ -57,6 +57,7 @@ urlpatterns = [
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
     path('surveylists/',views.survey_listss_views, name='surveylists'),
     path('section_list/<int:survey_id>',views.section_list, name='section_list'),
+    path('section_list_anonymous/<int:survey_id>/<int:user_response_id>',views.section_list_anonymous, name='section_list_anonymous'),
     path('user_info/',views.user_info, name='user_info'),
     path('surveylistsAnonymous/<int:user_response_id>',views.anonymous_survey_listss_views, name='anonymous_survey_listss_views'),
     path('questionForSurvey/<int:id>' , views.questionForSurvey , name = 'questionForSurvey'),

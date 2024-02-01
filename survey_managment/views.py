@@ -818,7 +818,6 @@ def surveyCreationView(request):
         form = AssesmentForm()
     return render(request, 'surveyCreation.html', {'form': form})
 
-
 @login_required
 def sections(request , survey_id):
     assesment = Assesment.objects.get(id  = survey_id),
@@ -843,7 +842,6 @@ def sectionCreation(request , survey_id):
     else:
         form = SectionForm()
     return render(request, 'SectionCreation.html', {'form': form})
-
 
 @login_required
 def greetingpage_view(request):
@@ -912,7 +910,6 @@ def survey_listss_views(request):
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
 
-
 @login_required
 def section_list(request , survey_id):
     user = request.user
@@ -923,25 +920,13 @@ def section_list(request , survey_id):
     user = CustomUser.objects.get(username=user)
     sections = Section.objects.filter(assesment = survey_id)
     surveys_without_responses = sections.exclude(id__in=[survey.id for survey in surveys_with_responses])
-    pattern = r'/questionForSurvey/\d+/'
-    pattern1 = r'/questionForSurveyAnonymous/\d+/\d+/'
-    if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
-        messages.success(request, 'Your Survey  is submitted succussesfuly.') 
-        print("hello") # regular expression pattern to match the URL
-    if request.META.get('HTTP_REFERER') and re.search(pattern1, request.META['HTTP_REFERER']):
-        messages.success(request, 'Your Survey is submitted succussesfuly.')    
-    
 
     data = {
-        
         "survey_id" : survey_id,
         'sections': sections,
         "surveys_with_responses" : surveys_with_responses
-        
     }
     return render(request, 'Final_Preview_Pages/SectionList.html', data)
-
-
 
 @login_required
 def questionForSurvey(request, id):
@@ -1015,10 +1000,11 @@ def recomended_survey_list(request , survey_id):
 @login_required
 def recomended_survey(request, id):
     survey = get_object_or_404(Section, id=id)
+    survey_id = Assesment.objects.get(section = id).id
     user = request.user
     response = get_object_or_404(UserResponse, forsection=survey, submitted_by=user)
 
-    questions = Question.objects.filter(survey=survey)
+    questions = Question.objects.filter(section=survey)
     answers = []
     documents = []
     for question in questions:
@@ -1050,7 +1036,7 @@ def recomended_survey(request, id):
               objDoc.save()
            except :
               pass
-        return redirect ("survey_managment:recomended_survey_list")   
+        return redirect ("survey_managment:recomended_survey_list" , survey_id=survey_id)   
 
     context = {
         "questions" : questions , 
@@ -1091,8 +1077,7 @@ def anonymous_survey_listss_views(request, user_response_id):
     line_ministry = user_response.line_ministry
 
     # Exclude surveys with any user responses
-    surveys = Section.objects.filter(survey_type=survey_type, for_line_ministry=line_ministry ) \
-        .exclude(userresponse__isnull=False)
+    surveys = Assesment.objects.filter(survey_type=survey_type, for_line_ministry=line_ministry ) \
 
     data = {
         'surveys': surveys,
@@ -1100,8 +1085,22 @@ def anonymous_survey_listss_views(request, user_response_id):
     }
     return render(request, 'Final_Preview_Pages/SL_Anonymous.html', data)
 
+def section_list_anonymous(request , survey_id , user_response_id):
+
+    sections = Section.objects.filter(assesment = survey_id)
+   
+    data = {
+        
+        "survey_id" : survey_id,
+        'sections': sections,
+        "user_response_id" : user_response_id
+        
+    }
+    return render(request, 'Final_Preview_Pages/section_list_anunymous.html', data)
+
 def questionForSurveyAnonymous(request, id , user_response_id):
     survey = get_object_or_404(Section, id=id)
+    assesment = Assesment.objects.get(section = survey).id
     questions = survey.question.all()
     cat_list = []
     for cat in Category.objects.all():
@@ -1151,7 +1150,7 @@ def questionForSurveyAnonymous(request, id , user_response_id):
                    document.save() 
                
            
-           return redirect('survey_managment:anonymous_survey_listss_views' , user_response_id=user_response_id)
+           return redirect('survey_managment:section_list_anonymous' , survey_id=assesment , user_response_id=user_response_id)
         else :
            user_response.status = 'approved'
            user_response.forsection = survey
@@ -1174,7 +1173,7 @@ def questionForSurveyAnonymous(request, id , user_response_id):
                    document = Document(foranswer=answer, document=file)       
                    document.save() 
           
-           return redirect('survey_managment:anonymous_survey_listss_views' , user_response_id=user_response_id)
+           return redirect('survey_managment:section_list_anonymous' , survey_id=assesment , user_response_id=user_response_id)
     else:
         anonymous_user_response_form = AnonymousUserResponseForm()
         answer_forms = [AnswerForm(prefix=str(question.id)) for question in survey.question.all()]

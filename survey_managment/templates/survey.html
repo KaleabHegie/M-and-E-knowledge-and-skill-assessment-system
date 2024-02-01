@@ -78,20 +78,25 @@
             {% if  surveys_employee %}
             
             {% for survey in surveys_employee  %}
-            <div class="col-md-3 col-sm-6 col-12 p-1 hidden-transition">
+           
+            <div class="col-md-3 col-sm-6 col-lg-6 p-1 hidden-transition">
               <a href="{% url 'survey_managment:sections' survey_id=survey.id %}" style="color: black; text-decoration: none;">
-                <div class="info-box shadow">
+                <div class="info-box shadow p-3">
                   <span class="info-box-icon" style="color: #0096c7;">
                     <i class="far fa-copy"></i>
                   </span>                   
                   <div class="info-box-content">
                         <span class="info-box-text">{{ survey.name }}</span>
+                        <span class="info-box-number">{{ survey.instruction }}</span>
                         <span class="info-box-number">{{ survey.created_at }}</span>
+                        <span class="info-box-number">{{ survey.section.count }} Sections </span>
+
                        
                     </div>
                 </div>
             </a>
             </div>
+            
             {% endfor %}
             
 

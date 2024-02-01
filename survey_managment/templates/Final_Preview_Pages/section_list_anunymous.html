@@ -85,44 +85,43 @@
      
     <div class="container">
       <div class="text-center mb-5">
-        <h3  style="font-size: 40px;color:rgb(9, 109, 9);font-weight: bold;">Survey Lists</h3>
+        <h3  style="font-size: 40px;color:rgb(9, 109, 9);font-weight: bold;">Section Lists</h3>
       </div>
 
 
+    
       <div class="row">
-
-       {% if surveys %}
-      
-            {% for survey in surveys  %}
-               <div class="col-md-3 col-sm-6 col-12 p-1">
-                <a href="{% url 'survey_managment:section_list_anonymous' survey_id=survey.id user_response_id=user_response_id %}" style="color: black;">
-                  <div class="info-box shadow">
-                    <span class="info-box-icon" style="color: rgb(9, 109, 9);">
-                      <i class="far fa-copy"></i>
-                    </span>                   
-                    <div class="info-box-content">
-                          <span class="info-box-text">{{ survey.name }}</span>
-                          <span class="info-box-number">{{  survey.start_at | date:'b, d' | capfirst }} - {{  survey.end_at | date:'b, d' | capfirst }}</span>
-                          <span class="info-box-number">{{  survey.instruction }}</span>
-                          <span class="info-box-number">{{  survey.start_at.year }}</span>
-                      </div>
-                  </div>
-              </a>
-              </div>
-            {% endfor %}
-
-            
-
-            {% else %}
-            <div class="container-fluid" style="display: flex; align-items: center;">
-              <p style="margin: auto; color: darkgray;">No surveys found. Created surveys will appear here.</p>
-            </div>
-
-            {% endif %}
-
-          </div>
-
-    </div>
+    
+        {% if sections %}
+       
+         {% for section in sections  %}
+        
+ 
+            <div class="col-md-3 col-sm-6 col-lg-4 p-1">
+             <a href="{% url 'survey_managment:questionForSurveyAnonymous' id=section.id user_response_id=user_response_id %}" style="color: black;text-decoration:none;">
+               <div class="info-box shadow">
+                 <span class="info-box-icon" style="color: rgb(9, 109, 9);">
+                   <i class="far fa-copy"></i>
+                 </span>                   
+                 <div class="info-box-content p-3">
+                       <span class="info-box-text">{{ section.name }}</span>
+                       <span class="info-box-text">{{ section.instruction }}</span>
+                       <span class="info-box-text">{{ section.question.count }} Questions </span>
+                   </div>
+               </div>
+           </a>
+           </div>
+ 
+             {% endfor %}
+ 
+             {% else %}
+             <div class="container-fluid" style="display: flex; align-items: center;">
+               <p style="margin: auto; color: darkgray;">No section found. Your  news sections will occure here.</p>
+             </div>
+ 
+             {% endif %}
+ 
+           </div>
     </section>
     <!-- End Hero -->
     <!-- ======= Services Section ======= -->
