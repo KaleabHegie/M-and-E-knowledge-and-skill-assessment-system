@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'survey_managment',
     'Account',
-    'froala_editor',   
 ]
 
 MIDDLEWARE = [
