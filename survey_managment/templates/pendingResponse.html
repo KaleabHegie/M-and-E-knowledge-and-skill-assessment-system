@@ -40,16 +40,16 @@
                   <th>Response by</th>
                   <th>Submitted at</th>
                   <th>Line ministry </th>
-                  <th>For survey </th>
+                  <th>For section </th>
                 </tr>
               </thead>
               <tbody>
                 {% for response in user_responses %}
                   <tr>
-                    <td><a style="text-decoration: none; color: black;" href="{% url 'survey_managment:user_response' id=response.forsurvey.id response_id=response.id %}">{{ response.submitted_by }}</a></td>
+                    <td><a style="text-decoration: none; color: black;" href="{% url 'survey_managment:user_response' id=response.forsection.id response_id=response.id %}">{{ response.submitted_by }}</a></td>
                     <td>{{ response.submitted_at }}</td>
                     <td>{{ response.submitted_by.Line_ministry }}</td>
-                    <td>{{ response.forsurvey }}</td>
+                    <td>{{ response.forsection }}</td>
                   </tr>
                 {% endfor %}
               </tbody>

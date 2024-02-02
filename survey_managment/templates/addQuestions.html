@@ -124,7 +124,7 @@
     }
   </style>
   <div class="wrapper">
-  {% include 'includes/topNavbar.html' %}
+    {% include 'includes/topNavbar.html' %}
     {% include 'includes/sideNavbar.html' %}
 
     <div class="content-wrapper" style="background-color: white">
@@ -145,8 +145,7 @@
             <i class="bi bi-plus-circle" style="color: white"></i> Question
           </a>
 
-          <a class="btn"
-           href="{% url 'survey_managment:displayQuestion' zsurvey.id %}"
+          <a class="btn" href="{% url 'survey_managment:displayQuestion' zsurvey.id %}"
             style="color: white; background-color: #208c5c">
             <i class="bi bi-box-arrow-in-left" style="color: white"></i>
             Import
@@ -157,7 +156,7 @@
         <div id="questions-container">
           <hr class="mt-5" style="border: black solid 1px" />
           {% for i in cat_list %}
-          
+
           <ul class="question-list" style="list-style: none">
             {% if i.questions %}
             <div class="tab">
@@ -209,8 +208,7 @@
                   <span style="font-size: 20px; font-weight: bold; color: #04aa6d"
                     id="progressLabel{{question.id}}">0</span>
                 </div>
-                {% elif question.question_type == "radio" or
-                question.question_type == "checkbox" %}
+                {% elif question.question_type == "radio" or question.question_type == "checkbox" %}
                 <div>
                   {% for choice in question.choice.all %}
                   <div style="margin-left: -700px">

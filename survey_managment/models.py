@@ -2,17 +2,32 @@ from django.db import models
 from Account.models import CustomUser , Line_ministry
 
 # Create your models here.
-class Survey(models.Model):
-    name = models.CharField(max_length=200)
-    instruction = models.TextField(null=True,blank=True)
+
+
+class Assesment(models.Model):
+    for_line_ministry = models.ManyToManyField( Line_ministry )
     start_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     end_at = models.DateField(null=True , auto_now=False, auto_now_add=False)
     survey_type = models.ForeignKey("SurveyType" , on_delete=models.CASCADE , null=True)
+    name = models.CharField(max_length=200)
     created_at = models.DateField(auto_now=True, auto_now_add=False , null=True)
-    question = models.ManyToManyField('Question' , blank=True)
-    for_line_ministry = models.ManyToManyField( Line_ministry , blank=True)
+    section = models.ManyToManyField("Section")
+
     def __str__(self):
         return self.name
+
+
+class Section(models.Model):
+    name = models.CharField(max_length=200)
+    instruction = models.TextField(null=True,blank=True)
+    created_at = models.DateField(auto_now=True, auto_now_add=False , null=True)
+    question = models.ManyToManyField("Question")
+    
+    
+    def __str__(self):
+        return self.name
+    
+
     
 class SurveyType(models.Model):
     name = models.CharField( max_length=50)  
@@ -39,11 +54,10 @@ class Question(models.Model):
     question_type = models.CharField(max_length=100, choices=TYPE_FIELD)
     choice = models.ManyToManyField("Choice"  , blank=True)
     category = models.ForeignKey("Category", on_delete=models.CASCADE , null=True , blank=True)
-    has_weight = models.BooleanField(blank=True)
+    has_weight = models.BooleanField(default=False)
     weight = models.IntegerField(blank=True,null=True)
-    allow_doc = models.BooleanField(blank=True)
-    doc_label = models.TextField(null=True,blank=True)
-    order = models.IntegerField(default=0)
+    allow_doc = models.BooleanField(default = False)
+    doc_label = models.TextField()
 
 
     def __str__(self):
@@ -79,7 +93,7 @@ class UserResponse(models.Model):
         ('recomended', 'Recomended'),
     ]
 
-    forsurvey = models.ForeignKey("Survey", on_delete=models.CASCADE, null=True, blank=True)
+    forsection = models.ForeignKey("Section", on_delete=models.CASCADE, null=True, blank=True)
     submitted_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     submitted_at = models.DateTimeField(auto_now=True)
     year_of_experiance = models.IntegerField(null=True , blank=True)

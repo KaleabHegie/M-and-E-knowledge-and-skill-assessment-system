@@ -3,7 +3,8 @@ from .models import *
 
 # Register your models here.
 admin.site.register(Question)
-admin.site.register(Survey)
+admin.site.register(Assesment)
+admin.site.register(Section)
 admin.site.register(Category)
 admin.site.register(Choice)
 admin.site.register(Answer)

@@ -18,7 +18,7 @@
           <div class="row justify-content-center">
             <div class="col-lg-7 m-2 card shadow-lg border hidden-transition">
      
-                  <h2 class="mt-3 mb-3" style="text-align: center;">Create Survey</h2>
+                  <h2 class="mt-3 mb-3" style="text-align: center;">Create Section</h2>
                   <form method="post">
                     {% csrf_token %}
                     <div class="form-group">
@@ -30,42 +30,12 @@
                         </div>
                       {% endif %}
                     </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="{{ form.start_at.id_for_label }}">Start Date:</label>
-                        {{ form.start_at }}
-                        {% if form.start_at.errors %}
-                          <div class="invalid-feedback" style="display: block;">
-                            {{ form.start_at.errors}}
-                          </div>
-                        {% endif %}
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="{{ form.end_at.id_for_label }}">End Date:</label>
-                        {{ form.end_at }}
-                        {% if form.end_at.errors %}
-                          <div class="invalid-feedback" style="display: block;">
-                            {{ form.end_at.errors}}
-                          </div>
-                        {% endif %}
-                      </div>
-                    </div>
                     <div class="form-group">
-                      <label for="{{ form.survey_type.id_for_label }}">Survey Type:</label>
-                      {{ form.survey_type }}
-                      {% if form.survey_type.errors %}
+                      <label for="{{ form.instruction.id_for_label }}">Instruction:</label>
+                      {{ form.instruction }}
+                      {% if form.instruction.errors %}
                         <div class="invalid-feedback" style="display: block;">
-                          {{ form.survey_type.errors}}
-                        </div>
-                      {% endif %}
-                    </div>
-                    <div class="form-group">
-                      <label for="{{ form.for_line_ministry.id_for_label }}">For Ministry:</label>
-                      <button class="btn btn-sm mr-2 btn-success" style="float:right" type="button" onclick="selectAllOptions('{{ form.for_line_ministry.id_for_label }}')">Select All</button>
-                      {{ form.for_line_ministry }}
-                      {% if form.for_line_ministry.errors %}
-                        <div class="invalid-feedback">
-                          {{ form.for_line_ministry.errors }}
+                          {{ form.instruction.errors}}
                         </div>
                       {% endif %}
                     </div>

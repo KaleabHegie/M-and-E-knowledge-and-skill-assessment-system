@@ -2,9 +2,8 @@
 {% include "includes/head.html" %}
 <!DOCTYPE html>
 <html lang="en">
-
+      
 {% include "includes/greetingHead.html" %}
- 
     <style>
       .ft p {
         font-size: x-small;
@@ -64,70 +63,105 @@
 
   <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top">
+    <header id="header" class="header">
       <div
         class="container-fluid container-xl d-flex align-items-center justify-content-between"
       >
-        <a href="#" class="logo d-flex align-items-center">
+        <a href="" class="logo d-flex align-items-center">
           <img src="{% static 'assets/img/logo.png' %}" alt="" />
           <span style="color: rgb(9, 109, 9)">MOPD</span>
         </a>
 
-        {%load static %}
-
-      
+        {% include "includes/navBar.html" %}
+       
+        <!-- .navbar -->
       </div>
     </header>
     <!-- End Header -->
 
-    <!-- ======= Hero Section ======= -->
-    <section id="hero" class="hero mt-3 align-items-center">
+  
+
+    <main id="main">
+      <section id="about" class="about" style='margin-top:-80px;'>
+
+        <div class="container" >
+
      
-    <div class="container">
-      <div class="text-center mb-5">
-        <h3  style="font-size: 40px;color:rgb(9, 109, 9);font-weight: bold;">Survey Lists</h3>
-      </div>
-
-
-      <div class="row">
-
-       {% if surveys %}
-      
-            {% for survey in surveys  %}
-               <div class="col-md-3 col-sm-6 col-12 p-1">
-                <a href="{% url 'survey_managment:section_list_anonymous' survey_id=survey.id user_response_id=user_response_id %}" style="color: black;">
+          <div class="text-center">
+            {% include "includes/greetingSurveyNav.html"%}
+            <h3  style="font-size: 40px;color:rgb(9, 109, 9);font-weight: bold;">Section Lists</h3>
+          </div>
+    
+    
+          <div class="row">
+    
+           {% if sections %}
+          
+            {% for section in sections  %}
+            {% if section in surveys_with_responses %}
+    
+    
+            <div class="col-md-3 col-sm-6 col-lg-4 p-1" style="pointer-events: none; opacity: 0.5;">
+              <a href="{% url 'survey_managment:questionForSurvey' id=section.id %}" style="color: blue;text-decoration:none;">
+                  <div class="info-box shadow">
+                      <span class="info-box-icon" style="color: rgb(9, 109, 9);">
+                          <i class="far fa-copy"></i>
+                      </span> 
+                                    
+                      <div class="info-box-content p-3">
+                          <span class="info-box-text">{{ section.name }}</span>
+                          <span class="info-box-text">{{ section.instruction }}</span>
+                          <span class="info-box-text">{{ section.question.count }} Questions </span>
+                          
+                      </div>
+                      <span class="info-box-text text-danger">Done</span>    
+                  </div>
+              </a>
+          </div>
+          
+    
+             
+               
+               {% else %}
+    
+               <div class="col-md-3 col-sm-6 col-lg-4 p-1">
+                <a href="{% url 'survey_managment:questionForSurvey' id=section.id %}" style="color: black;text-decoration:none;">
                   <div class="info-box shadow">
                     <span class="info-box-icon" style="color: rgb(9, 109, 9);">
                       <i class="far fa-copy"></i>
                     </span>                   
-                    <div class="info-box-content">
-                          <span class="info-box-text">{{ survey.name }}</span>
-                          <span class="info-box-number">{{  survey.start_at | date:'b, d' | capfirst }} - {{  survey.end_at | date:'b, d' | capfirst }}</span>
-                          <span class="info-box-number">{{  survey.instruction }}</span>
-                          <span class="info-box-number">{{  survey.start_at.year }}</span>
+                    <div class="info-box-content p-3">
+                          <span class="info-box-text">{{ section.name }}</span>
+                          <span class="info-box-text">{{ section.instruction }}</span>
+                          <span class="info-box-text">{{ section.question.count }} Questions </span>
                       </div>
                   </div>
               </a>
               </div>
-            {% endfor %}
-
-            
-
-            {% else %}
-            <div class="container-fluid" style="display: flex; align-items: center;">
-              <p style="margin: auto; color: darkgray;">No surveys found. Created surveys will appear here.</p>
-            </div>
-
-            {% endif %}
-
-          </div>
-
-    </div>
-    </section>
+    
+               {% endif %}
+                {% endfor %}
+    
+                {% else %}
+                <div class="container-fluid" style="display: flex; align-items: center;">
+                  <p style="margin: auto; color: darkgray;">No section found. Your  news sections will occure here.</p>
+                </div>
+    
+                {% endif %}
+    
+              </div>
+    
+        </div> 
+        
+      </section>
+    </main>
     <!-- End Hero -->
     <!-- ======= Services Section ======= -->
 
   
+    {% include "includes/previewFooter.html" %}
+    <!-- End Footer -->
+
     <a
       href="#"
       class="back-to-top d-flex align-items-center justify-content-center"
