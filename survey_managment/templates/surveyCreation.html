@@ -8,7 +8,7 @@
 
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-      {% include "includes/loader.html" %} {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
+    {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
 
       <div class="content-wrapper" style="background-color:rgb(240, 249, 249);">
 
@@ -27,15 +27,6 @@
                       {% if form.name.errors %}
                         <div class="invalid-feedback" style="display: block;" style="display: block;">
                           {{ form.name.errors.0}}
-                        </div>
-                      {% endif %}
-                    </div>
-                    <div class="form-group">
-                      <label for="{{ form.instruction.id_for_label }}">Instruction:</label>
-                      {{ form.instruction }}
-                      {% if form.instruction.errors %}
-                        <div class="invalid-feedback" style="display: block;">
-                          {{ form.instruction.errors}}
                         </div>
                       {% endif %}
                     </div>
@@ -70,10 +61,11 @@
                     </div>
                     <div class="form-group">
                       <label for="{{ form.for_line_ministry.id_for_label }}">For Ministry:</label>
+                      <button class="btn btn-sm mr-2 btn-success" style="float:right" type="button" onclick="selectAllOptions('{{ form.for_line_ministry.id_for_label }}')">Select All</button>
                       {{ form.for_line_ministry }}
                       {% if form.for_line_ministry.errors %}
-                        <div class="invalid-feedback ">
-                          {{ form.for_line_ministry.errors}}
+                        <div class="invalid-feedback">
+                          {{ form.for_line_ministry.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -122,6 +114,12 @@
         theme: 'bootstrap4'
       })
     })
+      function selectAllOptions(selectId) {
+        var selectElement = document.getElementById(selectId);
+        for (var i = 0; i < selectElement.options.length; i++) {
+          selectElement.options[i].selected = true;
+        }
+      }
     </script>
   <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:12 GMT -->
 </html>

@@ -11,6 +11,7 @@
 </style>
 
 {% include "includes/head.html" %}
+
 <aside class="main-sidebar  elevation-4" style="background-color: white;">
   <a href="{% url 'survey_managment:Index' %}" style="background-color: #208c5c  ;" class="brand-link">
     <img
@@ -97,13 +98,13 @@
             </a>
           </li>
           <li class="nav-item ml-4">
-            <a href="{% url 'Account:users' %}" class="nav-link">
+            <a href="{%url 'Account:users' %}" class="nav-link">
               <i class="fa-regular fa-eye"></i>
               <p class="ml-1">View Users</p>
             </a>
           </li>
           <li class="nav-item ml-4">
-            <a href="{% url 'Account:add_line_ministry' %}" class="nav-link">
+            <a href="{%url 'Account:add_line_ministry' %}" class="nav-link">
               <i class="fa-solid fa-plus"></i>
               <p class="ml-2">Add Line Ministry</p>
             </a>
@@ -171,6 +172,14 @@
               <span class="badge bg-primary ml-2 "> {{ pending_responses }}</span>
             </a>
           </li>
+          <li class="nav-item ml-2">
+            <a href="{%url 'survey_managment:line_ministrys'%}" class="nav-link">
+              <i class="nav-icon fa-solid fa-building-columns"></i>
+              <p>Organization</p>
+            </a>
+          </li>
+
+         
         
         </ul>
       </li>

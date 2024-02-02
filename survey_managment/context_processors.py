@@ -1,4 +1,4 @@
-from survey_managment.models import ContactUs , UserResponse , Survey , CustomUser
+from survey_managment.models import ContactUs , UserResponse 
 
 def unread_messages(request):
     unread_count = ContactUs.objects.filter(status='inbox', read=False).count()

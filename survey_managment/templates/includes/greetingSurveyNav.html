@@ -3,8 +3,8 @@
 <div class="card-header p-2">
   <hr>
     <ul class="nav nav-pills topLinks">
-        <li><a class="nav-link scrollto" href="{% url 'survey_managment:surveylists' %}" style="color: rgb(9, 109, 9);">New Surveys</a></li>
-        <li><a class="nav-link scrollto" href="{% url 'survey_managment:recomended_survey_list' %}" style="color: rgb(9, 109, 9);">Recomended surveys</a></li>
+        <li><a class="nav-link scrollto" href="{% url 'survey_managment:section_list' survey_id=survey_id %}" style="color: rgb(9, 109, 9);">New Sections</a></li>
+        <li><a class="nav-link scrollto" href="{% url 'survey_managment:recomended_survey_list' survey_id=survey_id %}" style="color: rgb(9, 109, 9);">Recomended Sections</a></li>
       <li class="nav-item">
         <a class="nav-link scrollto" href="{% url 'survey_managment:previous_analysis' %}" >Previous Analysis</a>
       </li>

@@ -140,221 +140,204 @@
                     href="{% url 'survey_managment:filter' %}"
                     style="background-color: transparent;" >Filter</a>
                 </li>
-                <li class="nav-item">
+                {% comment %} <li class="nav-item">
                     <a class="nav-link" aria-current="page"  href="{% url 'survey_managment:average' %}"
                     style="background-color: transparent;">Average</a>
-                </li>
+                </li> {% endcomment %}
             </ul>
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class=" hidden-transition">
-                                <!-- <div class="card-body">
-                                    <figure class="highcharts-figure">
-                                        <div id="splineChart"></div>
-                                        <p class="highcharts-description">
-                                        </p>
-                                    </figure>
-                                </div> -->
-                                    <table class="table table-borderless">
-                                        <caption>List of Line Ministries</caption>
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th colspan="3">System Assessment</th>
-                                                <th colspan="3">Skill Assessment</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                    
-                                        {% for i in line_ministry %}
-                                        <tr>
-                                            <td data-bs-toggle="tooltip" class="truncate-text"
-                                                data-bs-placement="top" title="{{ i.name }}">{{ i.name }}</td>
-                                            <td>1</td>
-                                            <td>20%</td>
-                                            <td>
-                                                <canvas class="sparkline-chart" 
-                                                data-sparkline="56, 12, 8, 25" width="100" height="30"></canvas>
-                                            </td>
-                                            <td>1</td>
-                                            <td>25%</td>
-                                            <td>
-                                                <canvas class="sparkline-chart" 
-                                                data-sparkline="56, 12, 8, 25" width="100" height="30"></canvas>
-                                            </td>                                        
-                                        </tr>
-                                        {% endfor %}
-                                        
-                                        </tbody>
-                                    </table>
+                    <div class="row" style="margin: auto;">
+                        <div class="card hidden-transition col-lg-5 m-2">
+                            <div class="card-body">
+                                <div class="d-flex align-items-top ">
+                                    <div class="flex-fill">
+                                        <h5 class="d-block fw-semibold  mb-1">Total - Survey</h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-block ">
+                                                <div class="fw-semibold counter"
+                                                    style="font-size: x-large; text-align: center;">
+                                                    {{surveys_count}} </div>
+                                                <a href="{% url 'survey_managment:survey' %}"
+                                                    class="nav-link text-primary">
+                                                    View All
+                                                    <i class="bi bi-arrow-right-circle"></i>
+                                                </a>
+                                            </div>
+                                            <a class="btn btn-app"
+                                                style="background-color: #68c4fc; border-radius: 10px;">
+                                                <i class=" bi bi-file-earmark-text bi-main"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- dynamic count cards -->
-                        <div class="col-lg-4" style="margin: auto;">
-                            <div class="card hidden-transition">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-top ">
-                                        <div class="flex-fill">
-                                            <h5 class="d-block fw-semibold  mb-1">Total - Survey</h5>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="d-block ">
-                                                    <div class="fw-semibold counter"
-                                                        style="font-size: x-large; text-align: center;">
-                                                        {{surveys_count}} </div>
-                                                    <a href="{% url 'survey_managment:survey' %}"
-                                                        class="nav-link text-primary">
-                                                        View All
-                                                        <i class="bi bi-arrow-right-circle"></i>
-                                                    </a>
+
+                        <div class="card hidden-transition col-lg-5 m-2">
+                            <div class="card-body">
+                                <div class="d-flex align-items-top ">
+                                    <div class="flex-fill">
+                                        <h5 class="d-block fw-semibold  mb-1"> Questions </h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-block ">
+                                                <div class=" counter"
+                                                    style="font-size: x-large; text-align: center;"> {{questions}}
                                                 </div>
-                                                <a class="btn btn-app"
-                                                    style="background-color: #68c4fc; border-radius: 10px;">
-                                                    <i class=" bi bi-file-earmark-text bi-main"></i>
+                                                <a href="" class="nav-link" style="color: #208c5c;">
+                                                    View All
+                                                    <i class="bi bi-arrow-right-circle"></i>
                                                 </a>
                                             </div>
+                                            <a class="btn btn-app"
+                                                style="background-color: #996888; border-radius: 10px;">
+                                                <i class="bi bi-journals bi-main"></i>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-
-                            <div class="card hidden-transition">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-top ">
-                                        <div class="flex-fill">
-                                            <h5 class="d-block fw-semibold  mb-1"> Questions </h5>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="d-block ">
-                                                    <div class=" counter"
-                                                        style="font-size: x-large; text-align: center;"> {{questions}}
-                                                    </div>
-                                                    <a href="" class="nav-link" style="color: #208c5c;">
-                                                        View All
-                                                        <i class="bi bi-arrow-right-circle"></i>
-                                                    </a>
+                        <div class="card hidden-transition col-lg-5 m-2">
+                            <div class="card-body">
+                                <div class="d-flex align-items-top ">
+                                    <div class="flex-fill">
+                                        <h5 class="d-block fw-semibold  mb-1"> Approved Responses </h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-block ">
+                                                <div class=" counter"
+                                                    style="font-size: x-large; text-align: center;"> {{Response}}
                                                 </div>
-                                                <a class="btn btn-app"
-                                                    style="background-color: #996888; border-radius: 10px;">
-                                                    <i class="bi bi-journals bi-main"></i>
+                                                <a href="" class="nav-link " style="color: #7ae582;">
+                                                    View All
+                                                    <i class="bi bi-arrow-right-circle"></i>
                                                 </a>
                                             </div>
+                                            <a class="btn btn-app"
+                                                style="background-color: #7ae582; border-radius: 10px;">
+                                                <i class="bi bi-card-checklist bi-main"></i>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="card hidden-transition">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-top ">
-                                        <div class="flex-fill">
-                                            <h5 class="d-block fw-semibold  mb-1"> Approved Responses </h5>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="d-block ">
-                                                    <div class=" counter"
-                                                        style="font-size: x-large; text-align: center;"> {{Response}}
-                                                    </div>
-                                                    <a href="" class="nav-link " style="color: #7ae582;">
-                                                        View All
-                                                        <i class="bi bi-arrow-right-circle"></i>
-                                                    </a>
+                        <div class="card hidden-transition col-lg-5 m-2">
+                            <div class="card-body">
+                                <div class="d-flex align-items-top ">
+                                    <div class="flex-fill">
+                                        <h5 class="d-block fw-semibold  mb-1">Pending Responses </h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-block ">
+                                                <div class=" counter"
+                                                    style="font-size: x-large; text-align: center;"> {{Response}}
                                                 </div>
-                                                <a class="btn btn-app"
-                                                    style="background-color: #7ae582; border-radius: 10px;">
-                                                    <i class="bi bi-card-checklist bi-main"></i>
+                                                <a href="" class="nav-link " style="color: #d18d4f;">
+                                                    View All
+                                                    <i class="bi bi-arrow-right-circle"></i>
                                                 </a>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card hidden-transition">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-top ">
-                                        <div class="flex-fill">
-                                            <h5 class="d-block fw-semibold  mb-1">Pending Responses </h5>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="d-block ">
-                                                    <div class=" counter"
-                                                        style="font-size: x-large; text-align: center;"> {{Response}}
-                                                    </div>
-                                                    <a href="" class="nav-link " style="color: #d18d4f;">
-                                                        View All
-                                                        <i class="bi bi-arrow-right-circle"></i>
-                                                    </a>
-                                                </div>
-                                                <a class="btn btn-app"
-                                                    style="background-color: #d18d4f; border-radius: 10px;">
-                                                    <i class="bi bi-card-checklist bi-main"></i>
-                                                </a>
-                                            </div>
+                                            <a class="btn btn-app"
+                                                style="background-color: #d18d4f; border-radius: 10px;">
+                                                <i class="bi bi-card-checklist bi-main"></i>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class=" hidden-transition">
+                            <!-- <div class="card-body">
+                                <figure class="highcharts-figure">
+                                    <div id="splineChart"></div>
+                                    <p class="highcharts-description">
+                                    </p>
+                                </figure>
+                            </div> -->
+                                <table class="table table-borderless">
+                                    <caption>List of Line Ministries</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th colspan="3">System Assessment</th>
+                                            <th colspan="3">Skill Assessment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                
+                                    {% for i in line_ministry %}
+                                    <tr>
+                                        <td data-bs-toggle="tooltip" class="truncate-text"
+                                            data-bs-placement="top" title="{{ i.name }}">{{ i.name }}</td>
+                                        <td>1</td>
+                                        <td>20%</td>
+                                        <td>
+                                            <canvas class="sparkline-chart" 
+                                            data-sparkline="56, 12, 8, 25" width="100" height="30"></canvas>
+                                        </td>
+                                        <td>1</td>
+                                        <td>25%</td>
+                                        <td>
+                                            <canvas class="sparkline-chart" 
+                                            data-sparkline="56, 12, 8, 25" width="100" height="30"></canvas>
+                                        </td>                                        
+                                    </tr>
+                                    {% endfor %}
+                                    
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </div>      
                 </div>
-            </div>
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card hidden-transition">
+    
+                                    <div class="card-header" style="justify-content: space-between;">
+                                        <div class="card-title">
+                                            <div id="selected-survey"></div>
+                                        </div>
+    
+                                    </div>
+    
+    
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table text-nowrap table-hover border table-bordered" id="surveys">
+                                                <thead>
+                                                    <th>Survey Name </th>
+                                                    <th>Survey Assesment </th>
+                                                </thead>
+                                                <tbody id="tbody">
+                                                    {% for survey in surveys %}
+                                                    <tr>
+                                                        <td>{{ survey.name }}</td>
+                                                        <td> {{ survey.assesment }} </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
             
 
             <!-- table -->
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card hidden-transition">
-
-                                <div class="card-header" style="justify-content: space-between;">
-                                    <div class="card-title">
-                                        <div id="selected-survey"></div>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table text-nowrap table-hover border table-bordered" id="surveys">
-                                            <thead>
-                                                <th>Survey Name </th>
-                                                <th>Suvey Type </th>
-                                                <th> created_at </th>
-                                                <th>start date </th>
-                                                <th>end date </th>
-
-
-
-                                            </thead>
-                                            <tbody id="tbody">
-                                                {% for survey in surveys %}
-                                                <tr>
-                                                    <td>{{ survey.name }}</td>
-                                                    {% for type in surveyType %}
-                                                    {% if type.id == survey.survey_type_id %}
-                                                    <td> {{ type.name }} </td>
-                                                    {% endif %}
-                                                    {% endfor %}
-
-                                                    <td>{{ survey.created_at }}</td>
-                                                    <td>{{ survey.start_at }}</td>
-                                                    <td>{{ survey.end_at }}</td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            
     
     </div>
     </div>
