@@ -334,22 +334,31 @@ def compareDataView(request):
         'survey_years':survey_years
     }
     return render(request, 'compare.html',context)
+from django.forms.models import model_to_dict
+import json
+from datetime import datetime
+from django.http import HttpResponse
+def datetime_handler(obj):
+    if isinstance(obj, datetime):
+        return obj.isoformat()
 
 @login_required
 def get_data(request):
-    surveys = Section.objects.all()
+    surveys = Assesment.objects.all()
+    sections = Section.objects.all()
+    assesment = Assesment.objects.all()
     data1 = []
     data2 = []
     data3 = []
     data4 = []
-
     userResponse = UserResponse.objects.all()
     for response in userResponse:
+        section_id = response.forsection.id if response.forsection else None
         respone_data = {
             "id": response.id,
-            "forsurvey_id": response.forsurvey_id,
+            "forsurvey_id": section_id,
             "submitted_by_id":response.submitted_by_id ,
-            "submitted_by_lineMinistry": ["hello"],
+            "submitted_by_lineMinistry": '' ,
             "submitted_at": response.submitted_at,
             "year_of_experiance": response.year_of_experiance,
             "department": response.department,
@@ -365,20 +374,31 @@ def get_data(request):
             respone_data["submitted_by_lineMinistry"] = None
 
         data4.append(respone_data)
-    categories = Category.objects.all()
+        categories = Category.objects.all()
 
-    for catagory in categories:
-        catagory_data = {
-           "name": catagory.name,
-           "has_parent": catagory.parent is not None ,
-            "parent_name" : catagory.parent.name if catagory.parent else None,
-            "questions" : []
+    for category in categories:
+        category_data = {
+            "name": category.name,
+            "has_parent": category.parent is not None,
+            "parent_name": category.parent.name if category.parent else None,
+            "questions": list(category.question_set.values())
         }
-        questions = catagory.question_set.all()
-        for question in questions:
-            answer = question.id
-            catagory_data["questions"].append(answer)
-        data3.append(catagory_data)
+        data3.append(category_data)
+
+    assesment_data_list = []
+    for assesment in assesment:
+        assesment_data = {
+            "id": assesment.id,
+            "for_line_ministry": list(assesment.for_line_ministry.values_list('id', flat=True)),
+            "start_at": assesment.start_at,
+            "end_at": assesment.end_at,
+            "survey_type": assesment.survey_type.id if assesment.survey_type else None,
+            "name": assesment.name,
+            "created_at": assesment.created_at,
+            "section": list(assesment.section.values_list('id', flat=True)),
+        }
+
+        assesment_data_list.append(assesment_data)
     for survey in surveys:
         line_ministries = survey.for_line_ministry.all()
         line_ministry_data = []
@@ -394,20 +414,16 @@ def get_data(request):
             'name': survey.name,
             'line_ministries': line_ministry_data
         }
-        
         data1.append(survey_data)
-    
 
-    for survey in surveys:
+        for survey in sections:
             for_question = survey.question.all()
             question_data = []
-        
             for question in for_question:
                 question_data.append({
                     'id': question.id ,
                     'name': question.title ,
                 })
-            
             surveys_data = {
                 'id': survey.id,
                 'name': survey.name,
@@ -434,8 +450,8 @@ def get_data(request):
             "doc_label": question_obj.doc_label,
         }
         questions.append(question_info)
-            
-    serialized_data = {
+   
+        serialized_data = {
         'answer': list(Answer.objects.values()),
         'surveys': data1,
         'survey_questions' : data2 ,
@@ -446,12 +462,11 @@ def get_data(request):
         'department': list(Department.objects.values()),
         'questions': questions,
         'survey_type': list(SurveyType.objects.values()),
-        'survey': list(Section.objects.values()),
+        'Assesment': assesment_data_list,
         'user_response': data4,
-
     }
-    
-    return JsonResponse(serialized_data, safe=False)
+    return JsonResponse(serialized_data , safe=False)
+
 
 @login_required
 def survey(request):

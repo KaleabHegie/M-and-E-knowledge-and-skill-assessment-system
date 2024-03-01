@@ -319,6 +319,7 @@
         var surveyTableBody_3 = document.getElementById('general_Survey_Info').getElementsByTagName('tbody')[0];
         var select_ministry = document.getElementById("ministry-select");
         var selectElement = document.getElementById("survey-select");
+        var selectsection = document.getElementById("section-select");
         var selectYear = document.getElementById("survey_year");
         var myCheckbox = document.getElementById('myonoffswitch');
         var mySelect = document.getElementById('survey-select');
@@ -360,12 +361,10 @@
                         clearOptions(select_ministry);
                         clearOptions(selectElement);
                         if (selectedSurveyTypeId && myCheckbox.checked && selectedYear) {
-                            var surveys = data.survey.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() === selectedYear);
+                            var surveys = data.Assesment.filter(survey => survey.survey_type_id === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() === selectedYear);
                             var emptyOption = document.createElement("option");
                             emptyOption.value = "";
                             emptyOption.text = "-- Select an option --";
-
-                            // Append the empty option to the select element
                             selectElement.appendChild(emptyOption);
                             surveys.forEach(survey => {
                                 var option = document.createElement("option");
@@ -385,26 +384,26 @@
                                             break;
                                         }
                                     }
-                                    if (selectedSurvey) {
-                                        var lineMinistries = selectedSurvey.line_ministries;
-                                        while (select_ministry.firstChild) {
-                                            select_ministry.removeChild(select_ministry.firstChild)
-                                        }
-                                        var emptyOption = document.createElement("option");
-                                        emptyOption.value = "";
-                                        emptyOption.text = "-- Select an option --";
-                                        select_ministry.appendChild(emptyOption);
-                                        lineMinistries.forEach(function (lineMinistry) {
-                                            var ministry_option = document.createElement("option");
-                                            ministry_option.value = lineMinistry.id;
-                                            ministry_option.textContent = lineMinistry.name;
-                                            select_ministry.append(ministry_option)
+                                    // if (selectedSurvey) {
+                                    //     var lineMinistries = selectedSurvey.line_ministries;
+                                    //     while (select_ministry.firstChild) {
+                                    //         select_ministry.removeChild(select_ministry.firstChild)
+                                    //     }
+                                    //     var emptyOption = document.createElement("option");
+                                    //     emptyOption.value = "";
+                                    //     emptyOption.text = "-- Select an option --";
+                                    //     select_ministry.appendChild(emptyOption);
+                                    //     lineMinistries.forEach(function (lineMinistry) {
+                                    //         var ministry_option = document.createElement("option");
+                                    //         ministry_option.value = lineMinistry.id;
+                                    //         ministry_option.textContent = lineMinistry.name;
+                                    //         select_ministry.append(ministry_option)
 
-                                        });
-                                    }
-                                    else {
-                                        console.log('Selected survey not found');
-                                    }
+                                    //     });
+                                    // }
+                                    // else {
+                                    //     console.log('Selected survey not found');
+                                    // }
                                     select_ministry.addEventListener("change", function () {
                                         if (select_ministry) {
                                             clearTable(surveyTableBody_2)
