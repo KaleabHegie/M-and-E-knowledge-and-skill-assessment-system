@@ -10,7 +10,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-:root {
+ :root {
     --blue: #007bff;
     --indigo: #6610f2;
     --purple: #6f42c1;
@@ -173,13 +173,13 @@ sup {
 }
 
 a {
-    color: #007bff;
+    color: green;
     text-decoration: none;
     background-color: transparent
 }
 
 a:hover {
-    color: #0056b3;
+    color: green;
     text-decoration: none
 }
 
@@ -2921,15 +2921,15 @@ fieldset:disabled a.btn {
 
 .btn-primary {
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: rgb(9, 109, 9);
+    border-color: rgb(9, 109, 9);
     box-shadow: none
 }
 
 .btn-primary:hover {
     color: #fff;
-    background-color: #0069d9;
-    border-color: #0062cc
+    background-color: rgb(9, 109, 9);
+    border-color: rgb(9, 109, 9);
 }
 
 .btn-primary.focus,
@@ -4782,13 +4782,13 @@ input[type=submit].btn-block {
 }
 
 .nav-pills .nav-link {
-    border-radius: .25rem
+    border-radius: 2.25rem
 }
 
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
     color: #fff;
-    background-color: #007bff
+    background-color: rgb(9, 109, 9);
 }
 
 .nav-fill .nav-item,
@@ -13176,7 +13176,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 }
 
 .layout-fixed .brand-link {
-    width: 250px
+    width: 500px
 }
 
 .layout-fixed .main-sidebar {
@@ -13889,7 +13889,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
     display: block;
     font-size: 1.25rem;
     line-height: 1.5;
-    padding: .8125rem .5rem;
+    padding: 1.02 .5rem;
     transition: width .3s ease-in-out;
     white-space: nowrap
 }
@@ -14066,7 +14066,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 
 .user-panel img {
     height: auto;
-    width: 2.1rem
+    width: 4.1rem
 }
 
 .user-panel .info {
@@ -14311,7 +14311,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 }
 
 [class*=sidebar-dark-] {
-    background-color: #343a40
+    background-color: #355E3B;
 }
 
 [class*=sidebar-dark-] .user-panel a:hover {
@@ -14401,7 +14401,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 
 .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
 .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
-    background-color: #007bff;
+    background-color: #00A36C;
     color: #fff
 }
 
@@ -19751,7 +19751,7 @@ body.text-sm .control-sidebar {
 }
 
 .navbar-white {
-    background-color: #fff;
+    background-color: aliceblue;
     color: #1f2d3d
 }
 
@@ -28425,7 +28425,7 @@ body.text-sm .input-group-text {
 }
 
 .card-primary.card-outline {
-    border-top: 3px solid #007bff
+    border-top: 3px solid #AFE1AF
 }
 
 .card-primary.card-outline-tabs>.card-header a:hover {
@@ -35174,6 +35174,7 @@ a.disabled.mailbox-attachment-close {
 }
 
 .small-box {
+    background-color: #AFE1AF;
     border-radius: .25rem;
     box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
     display: block;
@@ -35186,8 +35187,8 @@ a.disabled.mailbox-attachment-close {
 }
 
 .small-box>.small-box-footer {
-    background-color: rgba(0, 0, 0, .1);
-    color: rgba(255, 255, 255, .8);
+    /* background-color: rgba(0, 0, 0, .1); */
+    color: limegreen;
     display: block;
     padding: 3px 0;
     position: relative;
@@ -42085,7 +42086,7 @@ select.form-control-sm~.select2-container--default .select2-selection--multiple 
 }
 
 .mapael .mapTooltip {
-    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: "Comic Sans MS, Comic Sans, cursive", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
@@ -47897,7 +47898,7 @@ blockquote.quote-gray-dark h6 {
 }
 
 .bg-primary {
-    background-color: #007bff !important
+    background-color: #AFE1AF !important
 }
 
 .bg-primary,
