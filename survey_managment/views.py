@@ -875,40 +875,41 @@ def greetingpage_view(request):
 
 @login_required
 def survey_listss_views(request):
-    
-    # surveys_with_responses = [response.forsection for response in user_responses]
-    # user = CustomUser.objects.get(username=user)
-    # sections = Section.objects.all()
-    # surveys_without_responses = sections.exclude(id__in=[survey.id for survey in surveys_with_responses])
-    
-   
+    surveys = Assesment.objects.filter(survey_type__name="For Organization")
+    total_sections = 0
+    sections_with_responses = 0
 
-    
-    # line_ministry = user.Line_ministry
-    surveys = Assesment.objects.filter( survey_type__name = "For Organization")
     for i in surveys:
-       sections = Section.objects.filter(assesment = i)
-       user = request.user
-       user_responses = UserResponse.objects.filter(submitted_by=user)
-       for j  in user_responses:
-          if j.forsection == i:
-           print(j)
-          
+        sections = Section.objects.filter(assesment=i)
+        user = request.user
+        user_responses = UserResponse.objects.filter(submitted_by=user)
+
+        for section in sections:
+            total_sections += 1
+            for response in user_responses:
+                if response.forsection == section:
+                    sections_with_responses += 1
+                    break 
+    if total_sections == 0:
+        percent_sections_with_responses = 0
+    else:
+        percent_sections_with_responses = (sections_with_responses / total_sections) * 100
 
     pattern = r'/questionForSurvey/\d+/'
     pattern1 = r'/questionForSurveyAnonymous/\d+/\d+/'
-    if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
-        messages.success(request, 'Your Survey  is submitted succussesfuly.') 
-        print("hello") # regular expression pattern to match the URL
-    elif request.META.get('HTTP_REFERER') and re.search(pattern1, request.META['HTTP_REFERER']):
-        messages.success(request, 'Your Survey is submitted succussesfuly.')    
     
+    if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
+        messages.success(request, 'Your Survey is submitted successfully.')
+        print("hello")  # Regular expression pattern to match the URL
+    elif request.META.get('HTTP_REFERER') and re.search(pattern1, request.META['HTTP_REFERER']):
+        messages.success(request, 'Your Survey is submitted successfully.')
 
     data = {
         'surveys': surveys,
-        # "surveys_with_responses" : surveys_with_responses
+        'percent_sections_with_responses': percent_sections_with_responses,
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
+
 
 @login_required
 def section_list(request , survey_id):
@@ -936,12 +937,12 @@ def questionForSurvey(request, id):
 
     for cat in Category.objects.all():
         question_filtered = survey.question.filter(category=cat)
-        questions_list = [question.title for question in question_filtered]
+        questions_list = [question for question in question_filtered]
         cat_list.append({"category": cat.name, "questions": questions_list})
 
     question_cat_none = survey.question.filter(category=None)
     if question_cat_none.exists():
-        questions_list = [question.title for question in question_cat_none]
+        questions_list = [question for question in question_cat_none]
         cat_list.append({"category": 'No category', "questions": questions_list})
 
     if request.method == 'POST':
