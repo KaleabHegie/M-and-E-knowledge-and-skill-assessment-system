@@ -232,6 +232,12 @@
                     </div>
                 </div>
             </section>
+
+            <figure class="highcharts-figure">
+                <div id="container111"></div>
+                <p class="highcharts-description">
+                </p>
+            </figure>
         </div>
     </div>
 {% include "includes/scripts.html" %}    
@@ -312,9 +318,9 @@ let section_names = matchingSections.map(function(section) {
                         });
                                 
                         });
+                        var selectedSurveyId = parseInt(selectElement.value);
                         selectsection.addEventListener("change", function () {
-                  var selectedSection = selectsection.value;
-                  console.log("Selected section:", selectedSection);
+                  
                   Assesment.forEach((survey) => {
                     survey.for_line_ministry.forEach((ministry) => {
                       let matchingMinistry = data.line_ministry.filter(function (
@@ -335,7 +341,163 @@ let section_names = matchingSections.map(function(section) {
                     });
                   });
                 });
-                        }
+                        
+                select_ministry.addEventListener("change", function () {
+                    let categories = [];
+                    let dataforchart= [];
+                    let selectedSection = selectsection.value;
+                  console.log("Selected section:", selectedSection);
+                                    var selectedLineMinistry = parseInt(select_ministry.value);
+                                    user = null;
+                                    data.users.forEach(function (users) {
+                                        if (users.Line_ministry_id === selectedLineMinistry) {
+                                            user = users.id;
+                                            return;
+                                        }
+                                    });
+                                    var selectedUserResponses = data.user_response.filter(function (userResponse) {
+                                        console.log("userResponse.forsection" +  userResponse.forsection);
+                                        console.log("selectedSection" + selectedSection);
+                                        return userResponse.submitted_by_id === user && userResponse.forsection == selectedSection;
+                                    });
+                                    userResponseId = null
+                                    selectedUserResponses.forEach(function (userResponse) {
+                                        if (userResponse.submitted_by_id === user) {
+                                            userResponseId = userResponse.id;
+                                            return;
+                                        }
+                                    });
+                                console.log("selected user response "+ userResponseId);
+                                if (userResponseId !== null) {
+                                    let selectedSection = selectsection.value;
+                                    let selectedSurveyId = parseInt(selectElement.value);
+
+                                    let selectedSectionName = null;
+                                    let selectedSurveyName = null;   
+
+                                    data.surveys.forEach(function (survey) {
+                                        if (survey.id == selectedSurveyId) {
+                                            selectedSurveyName = survey.name;
+                                            return;
+                                        }
+                                    });
+                                    data.section.forEach(function (section) {
+                                        if (section.id == selectedSection) {
+                                            selectedSectionName = section.name;
+                                            return;
+                                        }
+                                    });
+                                     card_msg.style.display = "none";
+                                        var answers = data.answer.filter(function (answer) {
+                                            return answer.response_id === userResponseId;
+                                        });
+                                        console.log(answers);
+                                        var answerValues = answers.map(function (answer) {
+                                            return {
+                                                value: parseFloat(answer.answertext),
+                                                questionId: answer.forquestion_id
+                                            };
+                                        });
+                                        console.log(answerValues);
+                                        var weightedSum = 0;
+                                        var totalWeight = 0;
+                                        var total_weightedinPercent = 0;
+                                        var count = 0;
+                                        var total_answer = 0;
+                                        var cat = data.category;
+                                        answerValues.forEach(function (answer) {
+                                            var question = data.questions.find(function (q) {
+                                                return q.id === answer.questionId;
+                                            });
+                                            categories.push(question.title);
+                                                if(question.parent_id){
+                                             var childCatagories = cat.filter(function(cat){
+                                                return cat.id === question.parent_id;
+                                             });
+                                             console.log(childCatagories);
+                                                }
+                                            console.log(question);
+                                            if (question) {
+                                                var weight = question.weight;
+                                                var total_weight = 0
+                                                if (!isNaN(answer.value)) {
+                                                    weightedSum += answer.value * weight;
+                                                    totalWeight += weight;
+                                                    total_answer += answer.value;
+                                                }
+                                                var weighted__Sum = 0;
+                                                if (totalWeight > 0) {
+                                                    var weightedAverage = weightedSum / totalWeight;
+                                                    var row = surveyTableBody_2.insertRow();
+                                                    var question_cell = row.insertCell();
+                                                    question_cell.textContent = question.title;
+                                                    row.insertCell().textContent = answer.value;
+                                                    question_cell.classList.add('limited-width');
+                                                    row.insertCell().textContent = weight;
+                                                    row.insertCell().textContent = answer.value * weight;
+                                                    var totalresult = answer.value * weight
+                                                    var max_value = 10;
+
+                                                    var weightedinPercent = ((totalresult) / (max_value * weight)) * 100;
+                                                    count++;
+                                                    total_weightedinPercent += weightedinPercent;
+
+                                                    row.insertCell().textContent = weightedinPercent + "%";
+                                                    var x = weightedinPercent;
+                                                    dataforchart.push(weightedinPercent);
+
+                                                    var newCell = row.insertCell();
+                                                    newCell.id = 'Indicator';
+                                                    if (x >= 90) {
+                                                        newCell.textContent = " Very Good";
+                                                        newCell.style.backgroundColor = "#52B788";
+                                                    } else if (x >= 80) {
+                                                        newCell.textContent = "Good";
+                                                        newCell.style.backgroundColor = "#C2FA41";
+                                                    } else if (x >= 60) {
+                                                        newCell.textContent = "Satisfactory";
+                                                        newCell.style.backgroundColor = "#C1FA61";
+                                                    } else if (x >= 50) {
+                                                        newCell.textContent = "Poor";
+                                                        newCell.style.backgroundColor = "#FAEB41";
+                                                    } else if (x >= 40) {
+                                                        newCell.textContent = "Very Poor";
+                                                        newCell.style.backgroundColor = " #FA7D41";
+                                                    } else {
+                                                        newCell.textContent = "Extremely Poor";
+                                                        newCell.style.backgroundColor = "#FA7D41";
+                                                    }
+                                                    console.log("Weighted average of answers: " + weightedAverage.toFixed(2));
+                                                } else {
+                                                    console.log("No valid answers found for the selected line ministry.");
+                                                }
+                                            }
+                                        });
+                                        var totalRow = surveyTableBody_2.insertRow();
+                                        var labelCell = totalRow.insertCell();
+                                        labelCell.textContent = 'Total';
+                                        var valueCell = totalRow.insertCell();
+                                        valueCell.textContent = total_answer;
+                                        var weightCell = totalRow.insertCell();
+                                        weightCell.textContent = totalWeight;
+                                        var weightCell = totalRow.insertCell();
+                                        weightCell.textContent = weightedSum;
+                                        var averageCell = totalRow.insertCell();
+                                        var average = total_weightedinPercent / count;
+                                        averageCell.textContent = average.toFixed(2) + "%";
+                                        surveyTableBody_2.appendChild(totalRow);
+                                        option_table1.style.display = "block";
+                                        console.log(categories);
+                                        console.log(dataforchart);
+                                        clearAndRedrawChart(selectedSurveyName,selectedSectionName,categories,dataforchart);
+                                    }
+                                    else {
+                                        option_table1.style.display = "none";
+                                        var h3Element = document.getElementById("no_resonse_msg");
+                                        h3Element.textContent = 'No user_response ID found for the selected line ministry.';
+                                        card_msg.style.display = "block";
+                                    }                            });
+            }
                         
                         });
                 });
@@ -343,6 +505,71 @@ let section_names = matchingSections.map(function(section) {
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
+            function clearAndRedrawChart(surveyname,sectionName,categories,data){
+            Highcharts.chart('container111', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: surveyname,
+        align: 'left'
+    },
+    subtitle: {
+        text: sectionName,
+        align: 'left'
+    },
+    xAxis: {
+        categories: categories,
+        title: {
+            text: null
+        },
+        gridLineWidth: 1,
+        lineWidth: 0
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: '%',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        },
+        gridLineWidth: 0
+    },
+    tooltip: {
+        valueSuffix: ' millions'
+    },
+    plotOptions: {
+        bar: {
+            borderRadius: '50%',
+            dataLabels: {
+                enabled: true
+            },
+            groupPadding: 0.1
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        shadow: true
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: '',
+        data: data
+    }]
+});
+            }
 </script>
 
 </body>

@@ -356,7 +356,7 @@ def get_data(request):
         section_id = response.forsection.id if response.forsection else None
         respone_data = {
             "id": response.id,
-            "forsurvey_id": section_id,
+            "forsection": section_id,
             "submitted_by_id":response.submitted_by_id ,
             "submitted_by_lineMinistry": '' ,
             "submitted_at": response.submitted_at,
@@ -366,13 +366,6 @@ def get_data(request):
             "status": response.status,
             "line_ministry_id": response.line_ministry_id,
         }
-        try:
-            user = CustomUser.objects.get(id=response.submitted_by_id)
-            line_ministry = user.Line_ministry.id
-            respone_data["submitted_by_lineMinistry"] = str(line_ministry)
-        except CustomUser.DoesNotExist:
-            respone_data["submitted_by_lineMinistry"] = None
-
         data4.append(respone_data)
         categories = Category.objects.all()
 
