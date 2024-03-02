@@ -451,7 +451,7 @@ def get_data(request):
         }
         questions.append(question_info)
    
-        serialized_data = {
+    serialized_data = {
         'answer': list(Answer.objects.values()),
         'surveys': data1,
         'survey_questions' : data2 ,
@@ -463,6 +463,7 @@ def get_data(request):
         'questions': questions,
         'survey_type': list(SurveyType.objects.values()),
         'Assesment': assesment_data_list,
+        'section' : list(Section.objects.values()),
         'user_response': data4,
     }
     return JsonResponse(serialized_data , safe=False)
