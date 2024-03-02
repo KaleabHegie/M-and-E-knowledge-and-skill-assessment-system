@@ -126,14 +126,11 @@
                           <span class="info-box-number">{{  survey.created_at }}</span>
                           <span class="info-box-number">{{ survey.section.count }} Sections </span>
                           <div class="progress-bar-container">
-                            <div class="progress-bar" style="width: {{ survey.section.count }}%;">
+                            <div class="progress-bar" style="width: {{ percent_sections_with_responses|floatformat:2 }}%;">
                             </div>
                         </div>
                         <span style="color:rgb(9, 109, 9);"> 
-                          <script>
-                              
-                              document.write({{ survey.section.count }}) 
-                          </script>
+                          {{ percent_sections_with_responses|floatformat:2 }}
                           % Complited
                            </span>
                       </a>
