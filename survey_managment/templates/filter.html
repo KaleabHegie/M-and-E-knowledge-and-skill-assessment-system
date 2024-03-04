@@ -297,50 +297,66 @@
                             selectElement.appendChild(option);
                         });
                         let sections = [];
-                        selectElement.addEventListener('change', function () {
-                                var selectedSurvey = selectElement.value;
-                                console.log('Selected survey:', selectedSurvey);
-                                Assesment.forEach(survey => {
-                                    console.log(survey.section);
-                                    survey.section.forEach(section => {
-                                        let matchingSections = data.section.filter(function(element) {
-  return element.id === section;
+                        selectElement.addEventListener('change', function() {
+  var selectedSurvey = selectElement.value;
+  clearSelectOptions(selectsection);
+  console.log('Selected survey:', selectedSurvey);
+
+  Assesment.forEach(survey => {
+    survey.section.forEach(section => {
+      let matchingSections = data.section.filter(function(element) {
+        return element.id === section;
+      });
+
+      let section_names = matchingSections.map(function(section) {
+        return section.name;
+      });
+
+      // Check if option already exists
+      let existingOption = selectsection.querySelector(`option[value="${section}"]`);
+      if (!existingOption) {
+        let option = document.createElement("option");
+        option.value = section;
+        option.textContent = section_names;
+        selectsection.appendChild(option);
+      }
+    });
+  });
 });
+function clearSelectOptions(selectElement) {
+  selectElement.innerHTML = "";
+}
+let selectedSurveyId = parseInt(selectElement.value);
+selectsection.addEventListener("change", function () {
+  clearSelectOptions(select_ministry);
 
-let section_names = matchingSections.map(function(section) {
-  return section.name;
-});                let option = document.createElement("option");
-                option.value = section;
-                option.textContent = section_names;
-                selectsection.appendChild(option);
-            
-        });
-                        });
-                                
-                        });
-                        var selectedSurveyId = parseInt(selectElement.value);
-                        selectsection.addEventListener("change", function () {
-                  
-                  Assesment.forEach((survey) => {
-                    survey.for_line_ministry.forEach((ministry) => {
-                      let matchingMinistry = data.line_ministry.filter(function (
-                        element
-                      ) {
-                        return element.id === ministry;
-                      });
+  // Add empty option
+  let emptyOption = document.createElement("option");
+  emptyOption.value = "";
+  emptyOption.textContent = "---Select Line Ministry---";
+  select_ministry.appendChild(emptyOption);
 
-                      let ministry_name = matchingMinistry.map(function (
-                        ministry
-                      ) {
-                        return ministry.name;
-                      });
-                      let option = document.createElement("option");
-                      option.value = ministry;
-                      option.textContent = ministry_name;
-                      select_ministry.appendChild(option);
-                    });
-                  });
-                });
+  Assesment.forEach((survey) => {
+    survey.for_line_ministry.forEach((ministry) => {
+      let matchingMinistry = data.line_ministry.filter(function (
+        element
+      ) {
+        return element.id === ministry;
+      });
+
+      let ministry_name = matchingMinistry.map(function (
+        ministry
+      ) {
+        return ministry.name;
+      });
+
+      let option = document.createElement("option");
+      option.value = ministry;
+      option.textContent = ministry_name;
+      select_ministry.appendChild(option);
+    });
+  });
+});
                         
                 select_ministry.addEventListener("change", function () {
                     let categories = [];
@@ -392,12 +408,19 @@ let section_names = matchingSections.map(function(section) {
                                             return answer.response_id === userResponseId;
                                         });
                                         console.log(answers);
-                                        var answerValues = answers.map(function (answer) {
+                                        let answerValues = answers.map(function (answer) {
+                                            let questioncat = data.questions.find(function (q) {
+                                                return q.id === answer.forquestion_id;
+                                            });
                                             return {
                                                 value: parseFloat(answer.answertext),
-                                                questionId: answer.forquestion_id
+                                                questionId: answer.forquestion_id ,
+                                                category : questioncat.category_id
                                             };
                                         });
+                                        
+
+                                        console.log("Hello");
                                         console.log(answerValues);
                                         var weightedSum = 0;
                                         var totalWeight = 0;
@@ -410,6 +433,34 @@ let section_names = matchingSections.map(function(section) {
                                                 return q.id === answer.questionId;
                                             });
                                             categories.push(question.title);
+
+                                            if(question.category_id){
+                                                const categoryStats = {};
+
+answerValues.forEach(answer => {
+  const { value, category } = answer;
+
+  // Only process answers that have a category
+  if (category) {
+    if (!categoryStats[category]) {
+      categoryStats[category] = {
+        sum: value,
+        count: 1,
+      };
+    } else {
+      categoryStats[category].sum += value;
+      categoryStats[category].count++;
+    }
+  }
+});
+
+Object.keys(categoryStats).forEach(category => {
+  const { sum, count } = categoryStats[category];
+  categoryStats[category].average = sum / count;
+  console.log("hello");
+  console.log(categoryStats[category].average);
+});
+                                                }
                                                 if(question.parent_id){
                                              var childCatagories = cat.filter(function(cat){
                                                 return cat.id === question.parent_id;
@@ -426,12 +477,19 @@ let section_names = matchingSections.map(function(section) {
                                                     total_answer += answer.value;
                                                 }
                                                 var weighted__Sum = 0;
+                                                let categorystore = [];
                                                 if (totalWeight > 0) {
                                                     var weightedAverage = weightedSum / totalWeight;
                                                     var row = surveyTableBody_2.insertRow();
                                                     var question_cell = row.insertCell();
-                                                    question_cell.textContent = question.title;
-                                                    row.insertCell().textContent = answer.value;
+if (question.category_id) {
+  if (!categorystore.includes(question.category_id)) {
+    categorystore.push(question.category_id);
+
+  }
+}
+
+                                                    question_cell.textContent = question.title;                                                    row.insertCell().textContent = answer.value;
                                                     question_cell.classList.add('limited-width');
                                                     row.insertCell().textContent = weight;
                                                     row.insertCell().textContent = answer.value * weight;
@@ -496,7 +554,8 @@ let section_names = matchingSections.map(function(section) {
                                         var h3Element = document.getElementById("no_resonse_msg");
                                         h3Element.textContent = 'No user_response ID found for the selected line ministry.';
                                         card_msg.style.display = "block";
-                                    }                            });
+                                    }  
+                                                           });
             }
                         
                         });

@@ -112,7 +112,7 @@
                                                         <input type="text" id="" class="wide-input" name="question_title"
                                                             class="question_title" placeholder="Untitled question" required/>
                                                         <input type="text" id="" class="wide-input" name="question_lable"
-                                                            class="question_lable" placeholder="Untitled lable" required/>
+                                                            class="question_lable" placeholder="Untitled lable" />
                                             
                                                     </div>
                                                  </h3>
@@ -163,7 +163,7 @@
                                                 </div>
                                                 <div class="form-group col-lg-2">
                                                     <label for="">
-                                                        <input type="checkbox" class="doclable" name="docCHk">
+                                                        <input type="checkbox"  name="docCHk">
                                                         Document
                                                     </label>
                                                 </div>
@@ -264,51 +264,13 @@
 
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
     <script>
+ 
+
    $(document).ready(function(){
   // Show the modal when the button is clicked
   $("#addCategoryBtn").click(function(){
     $("#categoryModal").modal("show");
-  });
-
-//   // Handle form submission using AJAX
-//   $("#categoryForm").submit(function(event){
-//     event.preventDefault();
-//     var categoryName = $("#categoryName").val();
-//     $.ajax({
-//       type: "POST",
-//       url: '/save_category/', // Replace with the actual URL to process the category creation
-//       data: { categoryName: categoryName },
-//       beforeSend: function(xhr, settings) {
-//     xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-//   },
-//       success: function(response){
-//         // Handle the response from the server
-//         console.log(response);
-       
-//         if (response.success) {
-//         // Clear existing options
-//         let x = document.querySelectorAll('mycard');
-//         console.log(x);
-//         $("#categorySelect").empty();
-        
-//         // Add new options based on the response
-//         for (let i = 0; i < response.categories.length; i++) {
-//           let category = response.categories[i];
-//           let option = $("<option>").attr("value", category.id).text(category.name);
-//             if (i == (response.categories.length)-1) {
-//   option.attr("selected", "selected");
-// }
-//           $("#categorySelect").append(option);
-//         }
-
-//         // Close the modal
-//         $("#categoryModal").modal("hide");
-//       } else {
-//         console.log("Category saving failed.");
-//       }
-//     }
-//     });
-//   });
+  });  
 });
 
 
@@ -716,7 +678,7 @@ function addCardAfter(event) {
                                                 </div>
                                                 <div class="form-group col-lg-2">
                                                     <label for="">
-                                                        <input type="checkbox" class="doclable" name="docCHk">
+                                                        <input type="checkbox" class="" name="docCHk">
                                                         Document
                                                     </label>
                                                 </div>
@@ -793,6 +755,7 @@ const addButtons = document.querySelectorAll(".add-button");
 addButtons.forEach((button) => {
     button.addEventListener("click", addCardAfter);
 });
+
 
 function checkWeight(event, weightCheck, weightInput) {
 
@@ -897,9 +860,9 @@ const questionData = {
             question: card.querySelector('input[name="question_title"]').value,
             questionType: card.querySelector('[name="question_type"]').value,
             category: card.querySelector('[name="category"]').value,
-            hasWeight: card.querySelector('input[name="weightCHK"]').value,
+            hasWeight: card.querySelector('input[name="weightCHK"]').checked ? "on" : "off",
             weight: card.querySelector('input[name="weight_input"]').value,
-            hasDoc: card.querySelector('input[name="docCHk"]').value,
+            hasDoc: card.querySelector('input[name="docCHk"]').checked ? "on" : "off",
             question_lable : card.querySelector('input[name="question_lable"]').value,
             Doclable: card.querySelector('input[name="doclable"]').value,
             options: optionValues
