@@ -142,7 +142,12 @@
 
     <br />
     <br />
-    {% if cat_list %}
+
+    {% if cat_list.length < 2 and cat_list.questions.length < 1  %}
+
+    <h3 class="text-center text-danger">This Survey Has No Questions</h3>
+
+    {% else %}
 
     <div id="questions-container">
       <hr class="mt-5" style="border: black solid 1px" />
@@ -259,8 +264,6 @@
       {% endfor %}
     </div>
 
-    {% else %}
-    <h3 class="text-center text-danger">This Survey Has No Questions</h3>
     {% endif %}
   </form>
 

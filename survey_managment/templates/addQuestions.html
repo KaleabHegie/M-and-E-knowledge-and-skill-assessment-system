@@ -2,9 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include 'includes/head.html' %}
-
-<body class="hold-transition sidebar-mini">
-  <style>
+ <style>
     .custom-list {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -123,7 +121,11 @@
       background: linear-gradient(to right, #04aa6d, #f2f2f2);
     }
   </style>
+
+<body class="hold-transition sidebar-mini">
+ 
   <div class="wrapper">
+    
     {% include 'includes/topNavbar.html' %}
     {% include 'includes/sideNavbar.html' %}
 
@@ -262,6 +264,8 @@
     </div>
   </div>
 
+</body>
+
   {% include 'includes/scripts.html' %}
 
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
@@ -276,6 +280,6 @@
 
     document.getElementById("oneT").addEventListener("click", function () { });
   </script>
-</body>
+
 
 </html>

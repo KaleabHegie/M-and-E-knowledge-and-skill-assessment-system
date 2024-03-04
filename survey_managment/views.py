@@ -947,12 +947,13 @@ def questionForSurvey(request, id):
     for cat in Category.objects.all():
         question_filtered = survey.question.filter(category=cat)
         questions_list = [question for question in question_filtered]
-        cat_list.append({"category": cat.name, "questions": questions_list})
+        if questions_list:
+          cat_list.append({"category": cat.name, "questions": questions_list})
 
     question_cat_none = survey.question.filter(category=None)
     if question_cat_none.exists():
         questions_list = [question for question in question_cat_none]
-        cat_list.append({"category": 'No category', "questions": questions_list})
+        cat_list.append({"category": 'No category', "questions": questions_list})    
 
     if request.method == 'POST':
         user_response_form = UserResponseForm(request.POST)
@@ -1072,7 +1073,7 @@ def user_info(request):
             response = form.save(commit=False)
             response.save()
             user_response_id = response.id   # Get the line ministry of the saved UserResponse object
-            return redirect('survey_managment:anonymous_survey_listss_views', user_response_id=user_response_id)  # Pass the line ministry as a parameter
+            return redirect('survey_managment:questionForSurveyAnonymous', id=2 , user_response_id=user_response_id)  # Pass the line ministry as a parameter
     else:
         form = UserResponseFormA()
     data = {
@@ -1107,6 +1108,7 @@ def section_list_anonymous(request , survey_id , user_response_id):
         
     }
     return render(request, 'Final_Preview_Pages/section_list_anunymous.html', data)
+
 
 def questionForSurveyAnonymous(request, id , user_response_id):
     survey = get_object_or_404(Section, id=id)
