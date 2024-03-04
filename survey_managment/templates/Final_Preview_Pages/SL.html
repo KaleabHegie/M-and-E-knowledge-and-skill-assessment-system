@@ -123,14 +123,14 @@
                   <div class="info-box-content">
                       <a href="{% url 'survey_managment:section_list' survey_id=survey.id %}" style="color: black;text-decoration:none;">
                           <span class="info-box-text">{{ survey.name }}</span>
-                          <span class="info-box-number">{{  survey.created_at }}</span>
-                          <span class="info-box-number">{{ survey.section.count }} Sections </span>
+                          <span class="info-box-number">{{  survey.created }}</span>
+                          <span class="info-box-number">{{ survey.section }} Sections </span>
                           <div class="progress-bar-container">
-                            <div class="progress-bar" style="width: {{ percent_sections_with_responses|floatformat:2 }}%;">
+                            <div class="progress-bar" style="width: {{ survey.percent|floatformat:2 }}%;">
                             </div>
                         </div>
                         <span style="color:rgb(9, 109, 9);"> 
-                          {{ percent_sections_with_responses|floatformat:2 }}
+                          {{ survey.percent|floatformat:2 }}
                           % Complited
                            </span>
                       </a>

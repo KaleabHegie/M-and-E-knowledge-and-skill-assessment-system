@@ -885,10 +885,11 @@ def greetingpage_view(request):
 @login_required
 def survey_listss_views(request):
     surveys = Assesment.objects.filter(survey_type__name="For Organization")
-    total_sections = 0
-    sections_with_responses = 0
+    assesment = []
 
     for i in surveys:
+        total_sections = 0
+        sections_with_responses = 0
         sections = Section.objects.filter(assesment=i)
         user = request.user
         user_responses = UserResponse.objects.filter(submitted_by=user)
@@ -899,23 +900,13 @@ def survey_listss_views(request):
                 if response.forsection == section:
                     sections_with_responses += 1
                     break 
-    if total_sections == 0:
-        percent_sections_with_responses = 0
-    else:
-        percent_sections_with_responses = (sections_with_responses / total_sections) * 100
-
-    pattern = r'/questionForSurvey/\d+/'
-    pattern1 = r'/questionForSurveyAnonymous/\d+/\d+/'
-    
-    if request.META.get('HTTP_REFERER') and re.search(pattern, request.META['HTTP_REFERER']):
-        messages.success(request, 'Your Survey is submitted successfully.')
-        print("hello")  # Regular expression pattern to match the URL
-    elif request.META.get('HTTP_REFERER') and re.search(pattern1, request.META['HTTP_REFERER']):
-        messages.success(request, 'Your Survey is submitted successfully.')
+        if total_sections == 0:
+           assesment.append({'name':i.name, 'id' :i.pk , 'created':i.created_at, 'section':i.section.count(),'percent' : 0 })
+        else:
+            assesment.append({'name':i.name, 'id' :i.pk ,'created':i.created_at, 'section':i.section.count(),'percent' : (sections_with_responses / total_sections) * 100 })
 
     data = {
-        'surveys': surveys,
-        'percent_sections_with_responses': percent_sections_with_responses,
+        'surveys': assesment,
     }
     return render(request, 'Final_Preview_Pages/SL.html', data)
 
@@ -927,7 +918,7 @@ def section_list(request , survey_id):
     surveys_with_responses = [response.forsection for response in user_responses]
 
 
-    user = CustomUser.objects.get(username=user)
+    user = CustomUser.objects.get(email=user)
     sections = Section.objects.filter(assesment = survey_id)
     surveys_without_responses = sections.exclude(id__in=[survey.id for survey in surveys_with_responses])
 
