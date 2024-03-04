@@ -8,10 +8,9 @@ class Line_ministry(models.Model):
         return self.name
 
 class CustomUser(AbstractUser):
-       
-    
     phone_number = models.CharField( max_length=50 ,null=True)    
-    image = models.ImageField(upload_to='',null=True)
+    email = models.EmailField(unique = True)
+    image = models.ImageField(upload_to='',null=True,blank=True)
     gender = models.CharField(max_length=1,null=True)  
     date_of_birth = models.DateField( auto_now=False, auto_now_add=False , null=True)
     Department = models.CharField( max_length=50 ,null=True)
@@ -19,8 +18,10 @@ class CustomUser(AbstractUser):
     is_mopd_head = models.BooleanField(null=True , blank=True)
     is_line_minister_head  = models.BooleanField(null=True , blank=True)
     is_first_time = models.BooleanField(default=True)
-    
-    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name','username','last_name']
+    USERNAME_FIELD = 'email'
 
-    REQUIRED_FIELDS = ['email']   
+    
+    
+
 
