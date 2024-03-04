@@ -51,8 +51,7 @@ urlpatterns = [
     path('get_json/',views.get_data,name='get_data'),
     path('filter_data/',views.filter,name='filter'),
     path('average_data/',views.average,name='average'),
-
-    path('jsonSender/' , views.jsonSender , name = 'jsonSender'),
+    path('years/',views.YearDataview,name="years"),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),   
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
     path('surveylists/',views.survey_listss_views, name='surveylists'),
@@ -66,7 +65,9 @@ urlpatterns = [
     path('recomended_survey/<int:id>' , views.recomended_survey , name = 'recomended_survey'),
     path('previous_analysis/' , views.previous_analysis , name = 'previous_analysis'),
     path("load_survey/",views.load_survey,name ='load_survey'),
-    path("load_ministry/",views.load_ministry,name ='load_ministry')
+    path("load_ministry/",views.load_ministry,name ='load_ministry'),
+    path("assessment_category/", views.AssesmentCatagory, name='assessment_category'),
+
 
 
 

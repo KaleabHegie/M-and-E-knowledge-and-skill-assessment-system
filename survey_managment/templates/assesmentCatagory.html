@@ -1,246 +1,102 @@
-{% load static %}
 
+
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
+{% include 'includes/head.html' %}
 
-{% include "includes/head.html" %}
-
-<link rel="stylesheet" href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css" />
-
-<style>
-    .limited-width {
-        max-width: 500px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        word-wrap: break-word;
-
-    }
-
-    .onoffswitch {
-        position: relative;
-        width: 67px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-    }
-
-    .onoffswitch-checkbox {
-        position: absolute;
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .onoffswitch-label {
-        display: block;
-        overflow: hidden;
-        cursor: pointer;
-        border: 2px solid #999999;
-        border-radius: 20px;
-    }
-
-    .onoffswitch-inner {
-        display: block;
-        width: 200%;
-        margin-left: -100%;
-        transition: margin 0.3s ease-in 0s;
-    }
-
-    .onoffswitch-inner:before,
-    .onoffswitch-inner:after {
-        display: block;
-        float: left;
-        width: 50%;
-        height: 20px;
-        padding: 0;
-        line-height: 20px;
-        font-size: 14px;
-        color: white;
-        font-family: Trebuchet, Arial, sans-serif;
-        font-weight: bold;
-        box-sizing: border-box;
-    }
-
-    .onoffswitch-inner:before {
-        content: "ON";
-        padding-left: 10px;
-        background-color: #34A7C1;
-        color: #FFFFFF;
-    }
-
-    .onoffswitch-inner:after {
-        content: "OFF";
-        padding-right: 10px;
-        background-color: #EEEEEE;
-        color: #999999;
-        text-align: right;
-    }
-
-    .onoffswitch-switch {
-        display: block;
-        width: 15px;
-        margin: 7.5px;
-        background: #FFFFFF;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 33px;
-        border: 2px solid #999999;
-        border-radius: 20px;
-        transition: all 0.3s ease-in 0s;
-    }
-
-    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
-        margin-left: 0;
-    }
-
-    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
-        right: 0px;
-    }
-</style>
-
-<body class="hold-transition sidebar-mini layout-fixed">
+<body>
     <div class="wrapper">
+
         {% include 'includes/topNavbar.html' %}
         {% include 'includes/sideNavbar.html' %}
-        
-        <div class="content-wrapper" style="background-color: white;">
-            <!-- search and filter bar -->
-            <div class="container-fluid hidden-transition">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active shadow" aria-current="page" href="#"
-                            style="background-color: transparent;">Survey Analysis</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active shadow" aria-current="page" href="{% url 'survey_managment:years'%}"
-                            style="background-color: transparent;">Assesment</a>
-                    </li>
-                  
-                </ul>
-                <br>
-                <div class="row">
-                    <div class="card hidden-transition col-lg-5 ml-5" id="card1">
-                        <div class="card-body">
-                            <div class="d-flex align-items-top ">
-                                <div class="flex-fill">
-                                    <h5 class="d-block fw-semibold  mb-1">M & E System  Sets Assessment</h5>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="d-block ">
-                                            <div class=" counter"
-                                                style="font-size: x-large; text-align: center;"> 
-                                            </div>
-                                        </div>
-                                        <a class="btn btn-app"
-                                            style="background-color:  #a9dbc5;; border-radius: 10px;">
-                                            <i class="nav-icon fa-solid fa-building-columns" style="font-size: 30px;"></i>                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card hidden-transition col-lg-5 ml-5" id="card2">
-                        <div class="card-body">
-                            <div class="d-flex align-items-top ">
-                                <div class="flex-fill">
-                                    <h5 class="d-block fw-semibold  mb-1">M & E Knowledge/Skills  Sets Assessment</h5>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="d-block ">
-                                            <div class=" counter"
-                                                style="font-size: x-large; text-align: center;"> 
-                                            </div>
-                                        </div>
-                                        <a class="btn btn-app"
-                                            style="background-color:  #a9dbc5;; border-radius: 10px;">
-                                            <i class="fas fa-users" style="font-size: 30px;"></i>                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              
 
-                <div class="container-fluid" style="background-color: #b7e4c7;">
-                    <div class="container-fluid" id="searchArea">
-                        <!-- <h2 class="textS">Search Area</h2> -->
-                        <div class="row ">
-                            {%include "includes/select.html"%}
-                        </div>
-                    </div>
-                </div>
-
-                <br>
-            </div>
-
-
-
-            <!-- table -->
-            <section class="content" style="display: none;" id="section1">
+        <div class="content-wrapper">
+            <section class="content">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <div class="card hidden-transition">
-
-                                <div class="card-header" style="justify-content: space-between;">
-                                    <div class="card-title">
-                                        <div id="selected-survey"></div>
-                                    </div>
-
-                                    <button id="exportButton_2" class="btn btn-success">Export to Excel</button>
-
-                                </div>
-
-
+                    <h4 style="text-align: center; color: black;" class="mt-3 mb-4">Assessment Year {{year}}</h4>   
+                    <div class="row">  
+                        
+                        
+                    {% for i in  assessments %}
+                            <div class="card hidden-transition col-lg-5 ml-5" onclick="fetchdata({{ i.id }})">
                                 <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table text-nowrap table-hover border table-bordered"
-                                            id="general_Survey_Info">
-                                            <thead>
-                                                <th> Survey Name </th>
-                                                <th id="total_weight"> Total Weight </th>
-                                                <th id="total_answer"> Total Answer </th>
-                                                <th id="weighted_sum"> Weighted Sum </th>
-                                                <th> Average </th>
-
-
-
-                                            </thead>
-                                            <tbody id="tbody">
-
-                                            </tbody>
-                                        </table>
+                                    <div class="d-flex align-items-top ">
+                                        <div class="flex-fill">
+                                            <h5 class="d-block fw-semibold  mb-1"> {{i}} </h5>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-block ">
+                                                    <div class=" counter"
+                                                        style="font-size: x-large; text-align: center;"> {{Response}}
+                                                    </div>
+                                                   
+                                                </div>
+                                                <a class="btn btn-app"
+                                                    style="background-color: #7ae582; border-radius: 10px;">
+                                                    <i class="bi bi-card-checklist bi-main"></i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
-                        </div>
-                        <div class="col-lg-5">
-                            <figure class="highcharts-figure">
-                                <div id="container"></div>
-                                <p class="highcharts-description">
-                                </p>
-                            </figure>
-                        </div>
-                    </div>
+                    {%endfor%}
+                </div> 
                 </div>
             </section>
 
-            <div class="card hidden-transition" style="display: none;" id="msg1">
+           
 
-                <div class="card-header" style="justify-content: space-between;">
-
+            <div class="container-fluid" style="background-color: #b7e4c7;">
+                <h3 class="container m-2" id="selectedAssesment" style="text-align: center; color: black;"></h3>
+                <div class="container-fluid row" id="searchArea">
+                    <div class="form-group col-lg-3 col-sm-6">
+              
+                        <select id="section-select" class="form-control" >
+                        <option value="" >---Select section----</option>
+                        
+                      </select>
                 </div>
-                <div class="card-body" style="background-color: #94e299;">
-                    <p id="no_resonse_msg" style="text-align: center;"> </p>
+                    <div class="form-group col-lg-3 col-sm-6" style="display: none;">
+
+                        <select id="survey-select" class="form-control">
+                            <option value="" >Select Assesment</option>
+                            {%for i in assessments%} 
+                            <option  value="{{i.id}}" >{{i}}</option>
+                            {%endfor%}
+                     </select>
+               </div>
+                    
+              
+                     
+                      <div class="form-group col-lg-3 col-sm-6">
+                          <select id="ministry-select" class="form-control">
+                          <option  value="" >---Select Line Ministry---</option>
+                          
+                        </select>
+                  </div>
+                </div>
                 </div>
 
-            </div>
 
+                <div class="card hidden-transition" style="display: none;" id="msg1">
 
+                    <div class="card-header" style="justify-content: space-between;">
+    
+                    </div>
+                    <div class="card-body" style="background-color: #94e299;">
+                        <p id="no_resonse_msg" style="text-align: center;"> </p>
+                    </div>
+    
+                </div>
+            <figure class="highcharts-figure">
+                <div id="container111"></div>
+                <p class="highcharts-description">
+                </p>
+            </figure>
 
-            <!-- table -->
-            <section class="content" style="display: none;" id="section2">
+              <!-- table -->
+              <section class="content" style="display: none;" id="section2">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
@@ -275,114 +131,90 @@
                     </div>
                 </div>
             </section>
-
-            <figure class="highcharts-figure">
-                <div id="container111"></div>
-                <p class="highcharts-description">
-                </p>
-            </figure>
+            </div>
         </div>
     </div>
-{% include "includes/scripts.html" %}    
-<script>
-        var store_average = [];
-        var store_survey_name = [];
-        var ministry_info = [];
-        var surveyData = {};
-        var store_ministries = [];
-        var categories = [];
-        var surveyTypeInput = document.getElementById('survey_type');
-        // var surveyTableBody_1 = document.getElementById('surveyTable').getElementsByTagName('tbody')[0];
-        var surveyTableBody_2 = document.getElementById('survey_detail').getElementsByTagName('tbody')[0];
-        var surveyTableBody_3 = document.getElementById('general_Survey_Info').getElementsByTagName('tbody')[0];
-        var select_ministry = document.getElementById("ministry-select");
+
+
+    {% include 'includes/scripts.html' %}
+    <script>
+    
         var selectElement = document.getElementById('survey-select');
         var selectsection = document.getElementById("section-select");
-        var selectYear = document.getElementById("survey_year");
-        var myCheckbox = document.getElementById('myonoffswitch');
-        var option_table2 = document.getElementById('section1');
-        var option_table1 = document.getElementById('section2');
-        var column_chart = document.getElementById('container');
+        var select_ministry = document.getElementById("ministry-select");
+        var selectElementss;
+        let selectedAssesment = document.getElementById('selectedAssesment');
+    
+        let store_average = [];
+        let store_survey_name = [];
+        let ministry_info = [];
+        let surveyData = {};
+        let store_ministries = [];
+        let categories = [];
+        let surveyTableBody_2 = document.getElementById('survey_detail').getElementsByTagName('tbody')[0];
+        let surveyTableBody_3 = document.getElementById('general_Survey_Info').getElementsByTagName('tbody')[0];
+        let option_table2 = document.getElementById('section1');
+        let column_chart = document.getElementById('container');
         var card_msg = document.getElementById('msg1');
-        const button = document.getElementById('getSelectedValuesBtn');
-        let card1 = document.getElementById("card1");
-        let card2 = document.getElementById("card2");
-        function clearSelectOptions(selectElement) {
-  selectElement.innerHTML = "";
-}
-
-        fetch('http://127.0.0.1:8000/get_json/')
-            .then(res => res.json())
-            .then(data => {
-                categories = data.category;
-                // Populate the survey type options
-                data.survey_type.forEach(surveyType => {
-                    var emptyOption = document.createElement("option");
-                            emptyOption.value = "";
-                            emptyOption.text = "-- Select an option --";
-                    var option = document.createElement('option');
-                    option.value = surveyType.id;
-                    option.textContent = surveyType.name;
-                    surveyTypeInput.appendChild(option);
-                });
-// Function to select the option based on ID
-function selectOption(idtype) {
-    selectElement.value = idtype; 
-  // Set the value of the select element to the specified ID
-}
-
-                surveyTypeInput.addEventListener('change', function () {
-                    var selectedSurveyTypeId = parseInt(surveyTypeInput.value);
-
-                    selectYear.addEventListener('change', function () {
-                        clearSelectOptions(selectElement);
-                        var selectedYear = parseInt(selectYear.value);
-                        var emptyOption = document.createElement("option");
-                        emptyOption.value = "";
-                        emptyOption.text = "-- Select an option --";
-                        selectElement.appendChild(emptyOption); 
-
-                        if (selectedSurveyTypeId && selectedYear) {
-                            let Assesment = data.Assesment.filter(survey => survey.survey_type === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() === selectedYear);
-                        Assesment.forEach(survey => {
-                            var option = document.createElement("option");
-                            var emptyOption = document.createElement("option");
-                        emptyOption.value = "";
-                        emptyOption.text = "-- Select Survey --";
-                            option.value = survey.id;
-                            option.textContent = survey.name;
-                            selectElement.appendChild(option);
-                        });
-                        let sections = [];
-                        selectElement.addEventListener('change', function() {
-  var selectedSurvey = selectElement.value;
-  clearSelectOptions(selectsection);
-  console.log('Selected survey:', selectedSurvey);
-
-  Assesment.forEach(survey => {
-    survey.section.forEach(section => {
-      let matchingSections = data.section.filter(function(element) {
-        return element.id === section;
-      });
-
-      let section_names = matchingSections.map(function(section) {
-        return section.name;
-      });
-
-      // Check if option already exists
-      let existingOption = selectsection.querySelector(`option[value="${section}"]`);
-      if(!existingOption) {
-        let option = document.createElement("option");
-        option.value = section;
-        option.textContent = section_names;
-        selectsection.appendChild(option);
-      }
-    });
+        var change  = false;
+    function fetchdata(cardID){
+    fetch('http://127.0.0.1:8000/get_json/')
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Network response was not OK');
+        }
+        return response.json();
+      })
+      .then(function(jsonData) {
+    selectElement.value = cardID;
+    selectElementss=selectElement.value;
+    
+    if (selectElement) {
+    var option = selectElement.querySelector('option[value="' + selectElement.value + '"]');
+    if (option) {
+        var selectedObject = jsonData.Assesment.find(function(obj) {
+    return obj.id == selectElement.value;
   });
-});
+      option.selected = true;
+      selectedAssesment.textContent = selectedObject.name;
 
+    } else {
+      console.error('Option with value "' + selectElement.value + '" not found');
+    }
+  } else {
+    console.error('Select element not found');
+  }
+
+    console.log("Value assigned to sele this ctElement globally:", selectElementss);
+    exampleFunction(cardID);
+ 
+    if(change){
+    clearSelectOptions(selectsection);
+    let selectedAssessmentObj = jsonData.Assesment.find(assessment => assessment.id === cardID);
+console.log(selectedAssessmentObj);
+
+// Add an empty option
+let emptyOption = document.createElement("option");
+emptyOption.value = "";
+emptyOption.textContent = "---Select section----";
+selectsection.appendChild(emptyOption);
+// Iterate over the sections and append their names as options
+selectedAssessmentObj.section.forEach(sectionId => {
+  let matchingSection = jsonData.section.find(section => section.id === sectionId);
+  if (matchingSection) {
+    // Check if option already exists
+    let existingOption = selectsection.querySelector(`option[value="${matchingSection.name}"]`);
+    if (!existingOption) {
+      let option = document.createElement("option");
+      option.value = matchingSection.id;
+      option.textContent = matchingSection.name;
+      selectsection.appendChild(option);
+    }
+  }
+});
+}
 let selectedSurveyId = parseInt(selectElement.value);
-selectsection.addEventListener("change", function () {
+ selectsection.addEventListener("change", function () {
   clearSelectOptions(select_ministry);
   surveyTableBody_2.innerHTML = "";
   // Add empty option
@@ -391,9 +223,9 @@ selectsection.addEventListener("change", function () {
   emptyOption.textContent = "---Select Line Ministry---";
   select_ministry.appendChild(emptyOption);
 
-  Assesment.forEach((survey) => {
+  jsonData.Assesment.forEach((survey) => {
     survey.for_line_ministry.forEach((ministry) => {
-      let matchingMinistry = data.line_ministry.filter(function (
+      let matchingMinistry = jsonData.line_ministry.filter(function (
         element
       ) {
         return element.id === ministry;
@@ -412,26 +244,60 @@ selectsection.addEventListener("change", function () {
     });
   });
 });
+if(select_ministry){
+    Analysis();
+}
+})
+
+      .catch(function(error) {
+        console.log('Error:', error);
+      });
+    }
+    function getIDValueFromCard(cardID) {
+    return cardID; 
+}
+function exampleFunction(cardID) {
+    var idValue = getIDValueFromCard(cardID);
+    console.log("ID Value from Card:", idValue);
+    change = true;
+}
+
+
+function clearSelectOptions(selectElement) {
+  selectElement.innerHTML = "";
+}
+ function Analysis(){
+    fetch('http://127.0.0.1:8000/get_json/')
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Network response was not OK');
+        }
+        return response.json();
+      })
+      .then(function(jsonData) {
+
+
                         
-                select_ministry.addEventListener("change", function () {
-                    surveyTableBody_2.innerHTML = "";
+        select_ministry.addEventListener("change", function () {
+            surveyTableBody_2.innerHTML = "";
                     let categories = [];
                     let dataforchart= [];
                     let selectedSection = selectsection.value;
                   console.log("Selected section:", selectedSection);
                                     var selectedLineMinistry = parseInt(select_ministry.value);
                                     user = null;
-                                    data.users.forEach(function (users) {
+                                    jsonData.users.forEach(function (users) {
                                         if (users.Line_ministry_id === selectedLineMinistry) {
                                             user = users.id;
                                             return;
                                         }
                                     });
-                                    var selectedUserResponses = data.user_response.filter(function (userResponse) {
+                                    var selectedUserResponses = jsonData.user_response.filter(function (userResponse) {
                                         console.log("userResponse.forsection" +  userResponse.forsection);
                                         console.log("selectedSection" + selectedSection);
                                         return userResponse.submitted_by_id === user && userResponse.forsection == selectedSection;
                                     });
+                                    console.log(selectedUserResponses);
                                     userResponseId = null
                                     selectedUserResponses.forEach(function (userResponse) {
                                         if (userResponse.submitted_by_id === user) {
@@ -447,25 +313,24 @@ selectsection.addEventListener("change", function () {
                                     let selectedSectionName = null;
                                     let selectedSurveyName = null;   
 
-                                    data.surveys.forEach(function (survey) {
+                                    jsonData.surveys.forEach(function (survey) {
                                         if (survey.id == selectedSurveyId) {
                                             selectedSurveyName = survey.name;
                                             return;
                                         }
                                     });
-                                    data.section.forEach(function (section) {
+                                    jsonData.section.forEach(function (section) {
                                         if (section.id == selectedSection) {
                                             selectedSectionName = section.name;
                                             return;
                                         }
                                     });
-                                     card_msg.style.display = "none";
-                                        var answers = data.answer.filter(function (answer) {
+                                        var answers = jsonData.answer.filter(function (answer) {
                                             return answer.response_id === userResponseId;
                                         });
                                         console.log(answers);
                                         let answerValues = answers.map(function (answer) {
-                                            let questioncat = data.questions.find(function (q) {
+                                            let questioncat = jsonData.questions.find(function (q) {
                                                 return q.id === answer.forquestion_id;
                                             });
                                             return {
@@ -483,9 +348,9 @@ selectsection.addEventListener("change", function () {
                                         var total_weightedinPercent = 0;
                                         var count = 0;
                                         var total_answer = 0;
-                                        var cat = data.category;
+                                        var cat = jsonData.category;
                                         answerValues.forEach(function (answer) {
-                                            var question = data.questions.find(function (q) {
+                                            var question = jsonData.questions.find(function (q) {
                                                 return q.id === answer.questionId;
                                             });
                                             categories.push(question.title);
@@ -509,7 +374,7 @@ answerValues.forEach(answer => {
     }
   }
 });
-
+var t ;
 Object.keys(categoryStats).forEach(category => {
   const { sum, count } = categoryStats[category];
   categoryStats[category].average = sum / count;
@@ -560,6 +425,9 @@ if (question.category_id) {
                                                     var x = weightedinPercent;
                                                     dataforchart.push(weightedinPercent);
 
+
+
+
                                                     var newCell = row.insertCell();
                                                     newCell.id = 'Indicator';
                                                     if (x >= 90) {
@@ -588,6 +456,7 @@ if (question.category_id) {
                                             }
                                         });
                                         var totalRow = surveyTableBody_2.insertRow();
+                                        var option_table1 = document.getElementById('section2');
                                         var labelCell = totalRow.insertCell();
                                         labelCell.textContent = 'Total';
                                         var valueCell = totalRow.insertCell();
@@ -603,25 +472,26 @@ if (question.category_id) {
                                         option_table1.style.display = "block";
                                         console.log(categories);
                                         console.log(dataforchart);
+                                        dataforchart.push(average)
+                                        categories.push("Average");
                                         clearAndRedrawChart(selectedSurveyName,selectedSectionName,categories,dataforchart);
                                     }
                                     else {
                                         option_table1.style.display = "none";
+
                                         var h3Element = document.getElementById("no_resonse_msg");
                                         h3Element.textContent = 'No user_response ID found for the selected line ministry.';
-                                        card_msg.style.display = "block";
                                     }  
                                                            });
 
-                                                           
-            }
-        });
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-            function clearAndRedrawChart(surveyname,sectionName,categories,data){
+       })
+      .catch(function(error) {
+        console.log('Error:', error);
+      });
+  
+    }
+
+    function clearAndRedrawChart(surveyname,sectionName,categories,data){
             Highcharts.chart('container111', {
     chart: {
         type: 'bar'
@@ -686,8 +556,9 @@ if (question.category_id) {
     }]
 });
             }
-</script>
 
+
+            </script>
 </body>
 
 </html>

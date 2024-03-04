@@ -318,14 +318,35 @@ def jsonSender(request):
         'surveys':    list(Section.objects.all().values()),
     }
     return JsonResponse(data)
-
+@login_required
+def YearDataview(request):
+    survey_years = Assesment.objects.order_by('created_at__year').values('created_at__year').distinct() 
+    context = {
+        'survey_years':survey_years
+    }
+    return render(request, 'year.html',context)
+@login_required
+def AssesmentCatagory(request):
+    year = request.GET.get('year')
+    assessments = Assesment.objects.filter(created_at__year=year)
+    context = {
+        'year': year ,
+        'assessments': assessments
+    }
+    return render(request, 'assesmentCatagory.html', context)
 @login_required
 def compareDataView(request):
     line_ministry = Line_ministry.objects.all()
     survey_type = SurveyType.objects.all()
     survey = Section.objects.all()
     survey_years = Section.objects.order_by('created_at__year').values('created_at__year').distinct() 
-
+    context = {
+        'line_ministry':line_ministry,
+        'survey_type': survey_type,
+        'survey':survey,
+        'survey_years':survey_years
+    }
+    return render(request, 'compare.html',context)
 
     context = {
         'line_ministry':line_ministry,
