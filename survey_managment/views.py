@@ -548,18 +548,15 @@ def line_ministrys(request):
 @login_required
 def line_ministry_detail(request , id):
     line_ministry = Line_ministry.objects.get(id = id)
-    try :
-        minister = CustomUser.objects.get(Line_ministry=line_ministry)   
-    except :
-        minister = ''
+    minister = CustomUser.objects.filter(Line_ministry=line_ministry).first() # Use filter() instead of get() to handle the case when no user is found
+
     if minister:
-        userresponse = UserResponse.objects.filter(submitted_by = minister ),
-    else :
-        userresponse = ''
-    print((user_response))
+        user_response = UserResponse.objects.filter(submitted_by=minister)
+    else:
+        user_response = []
     data = {
         "survey" : Section.objects.filter(assesment = id),
-        "user_responses" : userresponse,
+        "user_responses" : user_response,
         "line_ministry":line_ministry,
         'minister' : minister
     }
