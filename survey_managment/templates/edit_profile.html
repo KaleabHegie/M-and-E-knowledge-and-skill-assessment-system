@@ -70,25 +70,35 @@
   </head>
   <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top">
-      <div
-        class="container-fluid container-xl d-flex align-items-center justify-content-between"
-      >
-        <a href="#" class="logo d-flex align-items-center">
-          <img src="{% static 'assets/img/logo.png' %}" alt="" />
-          <span style="color: rgb(9, 109, 9)">MOPD</span>
-        </a>
+    
 
-        {% include "includes/navBar.html" %}
+        {% if user.is_superuser == False %}
+
+        <section id="hero" class="hero mt-3 align-items-center">
+     
+          <div class="container">
+        <header id="header" class="header fixed-top">
+          <div
+            class="container-fluid container-xl d-flex align-items-center justify-content-between"
+          >
+            <a href="#" class="logo d-flex align-items-center">
+              <img src="{% static 'assets/img/logo.png' %}" alt="" />
+              <span style="color: rgb(9, 109, 9)">MOPD</span>
+            </a>
+            {% include "includes/navBar.html" %}
+
+          </div>
+        </header>
+
+     
+
+        {% endif %}
         <!-- .navbar -->
-      </div>
-    </header>
+     
     <!-- End Header -->
 
     <!-- ======= Hero Section ======= -->
-    <section id="hero" class="hero mt-3 align-items-center">
-     
-    <div class="container">
+   
 
 
       <div class="wrapper">
@@ -110,10 +120,10 @@
           <div class="col-md-3">
             <div class="text-center">
               {% if user.image %}
-          <img src="{{ user.image.url }}" class="avatar img-circle img-thumbnail" alt="avatar">
+          <img class="ml-2" src="{{ user.image.url }}" class="avatar img-circle img-thumbnail" alt="avatar">
         {% else %}
-              <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="avatar img-circle img-thumbnail" alt="avatar">
-              <h6>Upload a different photo...</h6>
+              <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="avatar img-circle img-thumbnail ml-5" alt="avatar">
+              <h6 class="ml-5">Upload a different photo...</h6>
               {%  endif %}
             </div>
           </div>
@@ -174,20 +184,25 @@
     </div>
 
     </div>
-    </div>
-    </section>
+   
     <!-- End Hero -->
     <!-- ======= Services Section ======= -->
 
   
+    {% if user.is_superuser == False %}
+     </div>
+   </section>
     {% include "includes/previewFooter.html" %}
-    <!-- End Footer -->
-
     <a
       href="#"
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
+    
+    {% endif %}
+    <!-- End Footer -->
+
+    
 
 
 

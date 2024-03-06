@@ -115,22 +115,22 @@
                  
                  {% for i in cat_list %}
 
-                 <ul class="question-list " style="list-style: none">
+                 <ul class="question-list " style="list-style: none;margin-left:-23px">
                      {% if i.questions %}
                      <div class="tab">
                          <h5 class="text-gray mb-5">
                              {% if i.catagory.parent %}
                             {{ i.category.parent}}
                              {% endif %}
-                             <span class="ml-2" style="color: #04aa6d; font-weight: bold ; font-size: 20px">
+                             <span  style="color: #04aa6d; font-weight: bold ; font-size: 20px">
                               Category
                           </span>{{ i.category }}</h5>
                          {% for question in i.questions %}
                
-                         <li style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 30px;">
+                         <li style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 20px;">
                              <div class="row" style="margin-left:10px">
                                  <div class="col-11">
-                                     <p style="padding-top:40px;font-size:25px;">{{ question.title }}</p>
+                                     <p style="padding-top:40px;font-size:18px;">{{ question.title }}</p>
                                  </div>
                              </div>
                
@@ -264,6 +264,7 @@
         </div>
 
       </div>
+      
     </div>
   </div>
   

@@ -42,6 +42,9 @@
 
 
       <div class="container">
+
+        {% if minister %}
+
         <div class="row">
 
           <div class="col-lg-12">
@@ -106,15 +109,13 @@
                           <thead>
                             <tr>
                               <th>Survey </th>
-                              <th>Avarage </th>
                               <th>Submited At </th>
                             </tr>
                           </thead>
                           <tbody>
                             {% for response in user_responses %}
                               <tr>
-                                <td><a style="text-decoration: none; color: black;" href="{% url 'survey_managment:user_response' id=response.forsurvey.id response_id=response.id %}">{{ response.forsurvey }}</a></td>
-                                <td>{{ response.submitted_at }}</td>
+                                <td><a style="text-decoration: none; color: black;" href="{% url 'survey_managment:user_response' id=response.forsection.id response_id=response.id %}">{{ response.forsection }}</a></td>
                                 <td>{{ response.submitted_at }}</td>
                               </tr>
                             {% endfor %}
@@ -132,6 +133,12 @@
 
           </div>
         </div>
+
+        {% else %}
+
+           <h2 class="text-center text-danger mt-5"> No User for this ministry </h2>
+
+        {% endif %}
 
       </div>
     </div>

@@ -30,7 +30,7 @@
     {% include 'includes/sideNavbar.html' %}
 
     <div class="content-wrapper" style="background-color: white;">
-      {% include 'includes/message.html' %}
+   
 
 
 
@@ -64,7 +64,7 @@
                   </tr>
                 </thead>
                 <tbody>
-        {% for answer in answers %}
+               {% for answer in answers %}
                   <tr {% if answer.recommendation %}class="table-success" {% endif %}>
                     <td>{{ answer.forquestion }}</td>
                     <td class="centerdtxt">{{ answer.forquestion.weight }}</td>

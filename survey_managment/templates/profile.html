@@ -53,23 +53,35 @@
   </head>
   <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top">
-      <div
-        class="container-fluid container-xl d-flex align-items-center justify-content-between"
-      >
-        <a href="#" class="logo d-flex align-items-center">
-          <img src="{% static 'assets/img/logo.png' %}" alt="" />
-          <span style="color: rgb(9, 109, 9)">MOPD</span>
-        </a>
+    {% if user.is_superuser == False %}
 
-        {% include "includes/navBar.html" %}
-        <!-- .navbar -->
-      </div>
-    </header>
+        <section id="hero" class="hero mt-3 align-items-center">
+          
+     
+          <div class="container">
+        <header id="header" class="header fixed-top">
+          <div
+            class="container-fluid container-xl d-flex align-items-center justify-content-between"
+          >
+            <a href="#" class="logo d-flex align-items-center">
+              <img src="{% static 'assets/img/logo.png' %}" alt="" />
+              <span style="color: rgb(9, 109, 9)">MOPD</span>
+            </a>
+            {% include "includes/navBar.html" %}
+
+          </div>
+        </header>
+
+      
+
+
+        
+
+        
+
+        {% endif %}
     <!-- End Header -->
 
-    <!-- ======= Hero Section ======= -->
-    <section id="hero" class="hero mt-3 align-items-center">
      
       <div class="wrapper mx-auto bg-white">
         {% if user.is_superuser %}
@@ -155,21 +167,22 @@
               </div>
           </div>
       </div>
-    </div>
-    </section>
+
     <!-- End Hero -->
     <!-- ======= Services Section ======= -->
 
   
+    {% if user.is_superuser == False %}
+  </div>
+</section>
     {% include "includes/previewFooter.html" %}
-    <!-- End Footer -->
-
     <a
       href="#"
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
-
+    
+    {% endif %}
 
 
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

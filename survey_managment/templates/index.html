@@ -249,97 +249,80 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class=" hidden-transition">
-                            <!-- <div class="card-body">
-                                <figure class="highcharts-figure">
-                                    <div id="splineChart"></div>
-                                    <p class="highcharts-description">
-                                    </p>
-                                </figure>
-                            </div> -->
-                                <table class="table table-borderless">
-                                    <caption>List of Line Ministries</caption>
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th colspan="3">System Assessment</th>
-                                            <th colspan="3">Skill Assessment</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                
-                                    {% for i in line_ministry %}
-                                    <tr>
-                                        <td data-bs-toggle="tooltip" class="truncate-text"
-                                            data-bs-placement="top" title="{{ i.name }}">{{ i.name }}</td>
-                                        <td>1</td>
-                                        <td>20%</td>
-                                        <td>
-                                            <canvas class="sparkline-chart" 
-                                            data-sparkline="56, 12, 8, 25" width="100" height="30"></canvas>
-                                        </td>
-                                        <td>1</td>
-                                        <td>25%</td>
-                                        <td>
-                                            <canvas class="sparkline-chart" 
-                                            data-sparkline="56, 12, 8, 25" width="100" height="30"></canvas>
-                                        </td>                                        
-                                    </tr>
-                                    {% endfor %}
-                                    
-                                    </tbody>
-                                </table>
-                        </div>
+                        <h4 class="text-center mt-3"> Monitoring and Evaluation system and capacity performance Index </h4>
+                        <div class="form-group d-flex justify-content-center mt-4">
+                            <select class="select2" id="LMselect" multiple="multiple" data-placeholder="Select line Ministry" style="width: 50%;">
+                                {% for i in line_ministries %}
+                                    <option value="{{i.id}}"> {{i.name}} </option>
+                                {% endfor %}
+                            </select>
+                        </div>          
+                        
+                            <div id="messageContainer" class="mt-5 mb-5">
+                                <p class="text-center">Please select Line Ministry to view analysis.</p>
+                            </div>
+                            <!-- graphs -->
+                            <div id="graphsContainer"></div>
+            
+            
+                        <!-- tables -->
+                           <div class="container-fluid row" >
+                                <!-- M&E System -->
+                                <div class="col-lg-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="sysEval">
+                                            <thead>
+                                                <tr>
+                                                  <th scope="col">Domains of M&E System</th>
+                                                  <th scope="col"> Average </th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                {% if SystemAssessmentSections %}
+                                                    {% for j in SystemAssessmentSections %}
+                                                    <tr>
+                                                        <td class="sysSection"> {{j.name}} </td>
+                                                        <td class="sysVal text-center"> - </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                              </tbody>
+                                              <caption id="sysTotal"> Total : </caption>
+                                        </table>
+                                      </div>
+                                </div>
+            
+                                <!-- Skill Assesment -->
+                                <div class="col-lg-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="skillEval">
+                                            <thead>
+                                                <tr>
+                                                  <th scope="col">Domains of M&E Skill</th>
+                                                  <th scope="col">Average</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                {% if SkillAssessmentSections %}
+                                                    {% for x in SkillAssessmentSections %}
+                                                    <tr>
+                                                        <td class="skillSection"> {{x.name}} </td>
+                                                        <td class="skillVal text-center"> - </td>
+                                                    </tr> 
+                                                    {% endfor %}
+                                                {% endif %}
+                                              </tbody>
+                                              <caption id="skillTotal"> Total : </caption>
+                                        </table>
+                                      </div>
+                                </div>
+                           </div>
                     </div>
                 </div>      
                 </div>
-                <section class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card hidden-transition">
-    
-                                    <div class="card-header" style="justify-content: space-between;">
-                                        <div class="card-title">
-                                            <div id="selected-survey"></div>
-                                        </div>
-    
-                                    </div>
-    
-    
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table text-nowrap table-hover border table-bordered" id="surveys">
-                                                <thead>
-                                                    <th>Survey Name </th>
-                                                    <th>Survey Assesment </th>
-                                                </thead>
-                                                <tbody id="tbody">
-                                                    {% for survey in surveys %}
-                                                    <tr>
-                                                        <td>{{ survey.name }}</td>
-                                                        <td> {{ survey.assesment }} </td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+         </div>
 
-            
-
-            <!-- table -->
-            
-    
-    </div>
+         
     </div>
 
 
@@ -359,37 +342,333 @@
         
     </script>
   <script>
-    // Retrieve the sparkline chart data from the data-sparkline attribute
-    var sparklineData = document.querySelectorAll('canvas[data-sparkline]');
-    sparklineData.forEach(function(canvas) {
-      var data = canvas.getAttribute('data-sparkline').split(',').map(Number);
-      var ctx = canvas.getContext('2d');
+    // assesment names 
+const sysEval = document.getElementById('sysEval') // table 1
+const skillEval = document.getElementById('skillEval') // table 2
 
-      // Create the sparkline chart using Chart.js
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['', '', '', ''], // Add empty labels to match the data points
-          datasets: [{
-            data: data,
-            fill: false,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            tension: 0.4
-          }]
-        },
-        options: {
-          maintainAspectRatio: false, // Allow the chart to exceed the canvas size
-          legend: {
-            display: false // Hide the legend
-          },
-          scales: {
-            x: { display: false }, // Hide the x-axis
-            y: { display: false } // Hide the y-axis
-          }
-        }
-      });
+const sysSection = document.querySelectorAll('.sysSection') // sections of table 1
+const sysSections = getSections(sysSection) // get sections
+const sysValElements = document.querySelectorAll('.sysVal') // td that hold avg of each section
+
+const skillSection = document.querySelectorAll('.skillSection') // sections of table 2
+const skillSections = getSections(skillSection)
+const skillValElements  = document.querySelectorAll('.skillVal') // td that hold avg of each section
+
+const sysTotal = document.getElementById('sysTotal') // avg for the graph
+const skillTotal = document.getElementById('skillTotal')
+
+// const messageContainer = document.getElementById("messageContainer");
+// const graphs = document.getElementById('graphs')
+
+//  for storing the chart instances
+let chart1 = null;
+let chart2 = null;
+
+function getSections(TDs){
+    const sections = [] 
+    for (let i = 0; i < TDs.length; i++) {
+        sections.push(TDs[i].textContent)
+    }
+    return sections
+}
+
+
+// Function to reset the charts and colors
+function resetCharts() {
+    if (chart1) {
+        chart1.destroy();
+        chart1 = null;
+    }
+    if (chart2) {
+        chart2.destroy();
+        chart2 = null;
+    }
+
+    sysValElements.forEach((element) => {
+        element.textContent = '-';
+        element.style.backgroundColor = '';
     });
-  </script>
+
+    skillValElements.forEach((element) => {
+        element.textContent = '-';
+        element.style.backgroundColor = '';
+    });
+
+    sysTotal.textContent = '';
+    skillTotal.textContent = '';
+}
+
+
+
+$('#LMselect').select2().on('change',function(e){
+        // const selectedMinistries = Array.from(LMselect.options)
+        //     .filter(option => option.selected)
+        //     .map(option => option.value);
+        const selectedMinistries = $('#LMselect').val();
+        console.log(selectedMinistries)
+
+    if (selectedMinistries === null || selectedMinistries.length === 0) {
+        // Selection is empty
+        resetCharts();
+        // No selected ministries, show the message container and hide the graphs container
+        document.getElementById('messageContainer').style.display = 'block';
+        document.getElementById('graphsContainer').innerHTML = '';
+
+    } else{
+        document.getElementById('messageContainer').style.display = 'none';
+        // Create the graphs container
+        const graphsContainer = document.getElementById('graphsContainer');
+        graphsContainer.innerHTML = `
+            <div class="container row d-flex justify-content-center">
+                <div class="col-lg-6 col-md-6 text-center">
+                    <figure class="highcharts-figure">
+                        <div id="container1" style="height: 250px; width: auto;"></div>
+                    </figure>
+                </div>
+                <div class="col-lg-6 col-md-6 text-center">
+                    <figure class="highcharts-figure">
+                        <div id="container2" style="height: 250px; width: auto;"></div>
+                    </figure>
+                </div>
+            </div>
+        `;
+    }
+
+   let total_avg = 0 
+   let SkillResult = 0 // for the chart
+   let SysResult = 0 // for the chart
+ 
+fetch('http://127.0.0.1:8000/get_json/')
+            .then(res => res.json())
+            .then(data => {
+
+            
+
+        function getAVG(zAssessmentSections, ValElements, forTotal){
+            if(selectedMinistries !== null  && zAssessmentSections.length > 0 ){
+                let totalSumAvg = []
+                for (let i = 0; i < zAssessmentSections.length; i++) {
+                    let totalSum = 0
+                    
+                    let sectionName = zAssessmentSections[i].trim();
+                    const zsection = data.section.find(sect => sect.name === sectionName); // Find the section by name
+                    let sectionId = null
+                    if (zsection) {
+                        sectionId = zsection.id; // Get the id of the section
+                    }
+                    
+
+                    console.log(zAssessmentSections[i])
+
+                    // hold each section's 
+                    for (let j = 0; j < selectedMinistries.length; j++) {
+                        const lineMinistryId = selectedMinistries[j];
+                        let sum = 0;
+                        // Filter user responses based on line ministry and section
+                        const filteredResponse = data.user_response.find(response => response.forsection === sectionId && response.submitted_by_id == lineMinistryId);
+                        
+
+
+                        let Sum = 0;
+                        if(filteredResponse){
+                            // get the answers for the response
+                            const filteredResponseID = filteredResponse.id
+                            const zAnswers = data.answer.filter(ans => ans.response_id == filteredResponseID)
+                            //console.log(filteredResponse)
+                            // console.log(zAnswers)
+                            
+                            
+                            if(zAnswers){
+                                for(let j=0; j < zAnswers.length; j++){
+                                  const answerText = zAnswers[j].answertext
+                                  const numericValue = parseInt(answerText, 10); // Convert text to a numeric value
+                                  
+                                  // answers may be non numeric
+                                  if (!isNaN(numericValue)) {
+                                      Sum += numericValue;
+                                   }
+                                }
+                            }
+                        }
+                        console.log(Sum)
+                        totalSum += Sum
+                        
+                    }     
+                    console.log('total sum by section ' + totalSum)
+
+
+                    const average = selectedMinistries.length > 0 ? totalSum / selectedMinistries.length : 0;
+                     console.log(`Average: ${average}`);
+
+                       // Update the value of each skillVal element with the calculated average
+                        
+
+
+                     totalSumAvg.push(average)
+                }
+                console.log(totalSumAvg)
+
+                ValElements.forEach((element, index) => {
+                    element.textContent = totalSumAvg[index];
+                });
+
+                let sumOfAvgs = 0 // avg of avgs
+                
+                for (let i = 0; i < totalSumAvg.length; i++) {
+                    sumOfAvgs += totalSumAvg[i];
+                }
+
+                total_avg = totalSumAvg.length > 0 ? sumOfAvgs/totalSumAvg.length : 0;
+                console.log('total avg of avg == ' + total_avg )
+                forTotal.textContent = `Total : ${total_avg}`
+                return total_avg
+            }
+            else{
+                ValElements.forEach((element) => {
+                    element.textContent = '-'
+                });
+            }
+        }
+
+     
+        SkillResult = getAVG(skillSections,skillValElements, skillTotal ) 
+           SysResult = getAVG(sysSections, sysValElements, sysTotal) 
+           console.log('sys ' + SysResult + ' skill '+ SkillResult)
+
+//  messageContainer.style.display = "none";
+//  graphs.style.visibility='visible'
+
+if (chart1) {
+chart1.destroy();
+}
+if (chart2) {
+chart2.destroy();
+}
+
+var startAngle = -90;
+if(SysResult){
+var data1 = SysResult;
+var endAngle1 = (data1/100 * 180) + startAngle;
+endAngle1 = endAngle1 == 0 ? 0.01 : endAngle1;
+
+chart1 = Highcharts.chart('container1', {
+chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+},
+title: {
+    text:'M&E System Performance Index',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 75
+},
+tooltip: {
+    pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+},
+plotOptions: {
+pie: {
+    dataLabels: {
+        enabled: true,
+        distance: -50,
+        style: {
+            fontWeight: 'bold',
+            color: 'white'
+        }
+    },
+    startAngle: startAngle,
+    endAngle: endAngle1,
+    center: ['50%', '55%'],
+    size: '120%'
+}
+},
+series: [{
+    type: 'pie',
+    name: 'Average Performance',
+    innerSize: '50%',
+    data: [
+        ['',   data1]   
+    ]
+}]
+});
+}
+
+
+if(SkillResult){
+var data2 = SkillResult;
+var endAngle2 = (data2/100 * 180) + startAngle;
+endAngle2 = endAngle2 == 0 ? 0.01 : endAngle2;
+
+chart2 = Highcharts.chart('container2', {
+chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+},
+title: {
+    text:'M&E Capacity Performance Index',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 75
+},
+tooltip: {
+    pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+},
+plotOptions: {
+pie: {
+    dataLabels: {
+        enabled: true,
+        distance: -50,
+        style: {
+            fontWeight: 'bold',
+            color: 'white'
+        }
+    },
+    startAngle: startAngle,
+    endAngle: endAngle2,
+    center: ['50%', '55%'],
+    size: '120%'
+}
+},
+series: [{
+    type: 'pie',
+    name: 'Average Capacity',
+    innerSize: '50%',
+    data: [
+        ['',   data2]   
+    ]
+}]
+});
+}
+
+
+
+
+           // set color of avgs
+        function setColor(avgS){
+            avgS.forEach((td)=>{
+                if( td.textContent <= 50 )
+                    td.style.backgroundColor = 'red';
+                else if( td.textContent <= 70 ) 
+                    td.style.backgroundColor = 'yellow';
+                else if( td.textContent <= 100 )
+                    td.style.backgroundColor = 'green';
+                else
+                    td.style.backgroundColor = 'none';
+            } )
+        }
+
+        if(skillValElements && sysValElements){
+            setColor(skillValElements)
+            setColor(sysValElements) 
+        }
+    })
+})
+
+
+
+
+</script>
 
 </body>
 

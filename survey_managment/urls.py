@@ -7,6 +7,7 @@ app_name = 'survey_managment'
 
 urlpatterns = [
     path('',views.indexView, name='Index'),
+    path('dashboard2/',views.dashboard2, name='dashboard2'),
     path('surveyCreation/',views.surveyCreationView, name='SurveyCreation'),
     path('ChartAnalysis/',views.Mychartanalysis, name='ChartAnalysis'),
     path('change_password/', views.change_password,name='change_password'),

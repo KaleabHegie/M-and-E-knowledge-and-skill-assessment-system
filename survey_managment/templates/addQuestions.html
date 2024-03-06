@@ -122,7 +122,7 @@
     }
   </style>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
  
   <div class="wrapper">
     
@@ -132,135 +132,113 @@
     <div class="content-wrapper" style="background-color: white">
       {% include "includes/message.html" %}
 
-      <section class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6"></div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="container-fluid">
+      <div class="mt-4 container">
+        <div class="container">
           <a class="btn" href="{% url 'survey_managment:createQuestion' survey_id=zsurvey.id %}"
             style="float: right; color: white; background-color: #208c5c">
             <i class="bi bi-plus-circle" style="color: white"></i> Question
           </a>
-
+      
           <a class="btn" href="{% url 'survey_managment:displayQuestion' zsurvey.id %}"
             style="color: white; background-color: #208c5c">
             <i class="bi bi-box-arrow-in-left" style="color: white"></i>
             Import
           </a>
         </div>
-
+      
         <h3 class="text-center">{{zsurvey.name}}</h3>
         <div id="questions-container">
           <hr class="mt-5" style="border: black solid 1px" />
           {% for i in cat_list %}
-
-          <ul class="question-list" style="list-style: none">
-            {% if i.questions %}
-            <div class="tab">
-              <h5 class="text-gray mb-5">
-                <span class="ml-2" style="color: #04aa6d; font-weight: bold; font-size: 20px">
-                  Category </span>{{ i.category }}
-              </h5>
-              {% for question in i.questions %}
-
-              <li style="
-                    border-left: 6px solid #04aa6d;
-                    border-radius: 8px;
-                    margin-left: 30px;
-                  ">
-                <div class="row" style="margin-left: 10px">
-                  <div class="col-11">
-                    <p style="padding-top: 40px; font-size: 25px">
-                      {{ question.title }}
-                    </p>
-                  </div>
-                </div>
-
-                {% if question.label %}
-                <div class="row" style="margin-left: 30px">
-                  <div class="col-1">
-                    <span style="
-                          color: #04aa6d;
-                          font-weight: bold;
-                          font-size: 16px;
-                        ">
-                      Description:
-                    </span>
-                  </div>
-                  <div class="col-11">
-                    <p style="font-size: 16px" class="ml-5">
-                      {{ question.label }}
-                    </p>
-                  </div>
-                </div>
-                {% endif %}
-                {% if question.question_type == "rating" %}
-                <div>
-                  <label style="margin: 20px; margin-left: 30px; font-weight: bold">
-                    Choose 0 - 10
-                  </label>
-                  <input disabled type="range" id="progressInput{{question.id}}" min="0" max="10" value="0"
-                    oninput="updateProgressBar(this.value, {{question.id}})" style="margin: 20px; margin-left: 30px"
-                    name="answer_{{ question.id }}" />
-                  <span style="font-size: 20px; font-weight: bold; color: #04aa6d"
-                    id="progressLabel{{question.id}}">0</span>
-                </div>
-                {% elif question.question_type == "radio" or question.question_type == "checkbox" %}
-                <div>
-                  {% for choice in question.choice.all %}
-                  <div style="margin-left: -700px">
-                    <input disabled type="{{question.question_type}}" name="{{choice.id}}" id="{{choice.id}}"
-                      value="{{choice.id}}" style="margin-right: -800px" />
-                    <label for="{{choice.id}}">{{ choice.name }}</label>
-                  </div>
+      
+          <ul class="question-list " style="list-style: none;margin-left:-23px">
+              {% if i.questions %}
+              <div class="tab">
+                  <h5 class="text-gray mb-5">
+                      {% if i.catagory.parent %}
+                     {{ i.category.parent}}
+                      {% endif %}
+                      <span  style="color: #04aa6d; font-weight: bold ; font-size: 20px">
+                       Category
+                   </span>{{ i.category }}</h5>
+                  {% for question in i.questions %}
+        
+                  <li style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 20px;">
+                      <div class="row" style="margin-left:10px">
+                          <div class="col-11">
+                              <p style="padding-top:40px;font-size:18px;">{{ question.title }}</p>
+                          </div>
+                      </div>
+        
+                      {% if question.label %}
+                      <div class="row" style="margin-left:30px">
+                          <div class="col-1">
+                              <span  style="color: #04aa6d; font-weight: bold;font-size:16px">
+                                  Description:
+                              </span>
+                          </div>
+                          <div class="col-11">
+                              <p style="font-size:16px" class="ml-5">{{ question.label }}</p>
+                          </div>
+                      </div>
+                      {% endif %}
+        
+                      {% if question.question_type == "rating" %}
+                      <div>
+                        <label style="margin:20px;margin-left:30px;font-weight:bold"> Choose 0 - 10 </label>
+                        <input disabled type="range" id="progressInput{{question.id}}" min="0" max="10" value="0" oninput="updateProgressBar(this.value, {{question.id}})" style="margin:20px;margin-left:30px;" name="answer_{{ question.id }}">
+                        <span style="font-size:20px;font-weight:bold;color:#04AA6D;" id="progressLabel{{question.id}}">0</span>
+                      </div>
+                    {% elif question.question_type == "radio" or question.question_type == "checkbox" %}
+                    <div>
+                     
+                      {% for choice in question.choice.all %}
+                     
+                      <div style="margin-left:70px">
+                        <input disabled type="{{question.question_type}}" name="{{choice.id}}" id="{{choice.id}}" value="{{choice.id}}" />
+                        <label for="{{choice.id}}">{{ choice.name }}</label>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    {% elif question.question_type == "number" %}
+                      <input disabled style="margin-left:50px" class="form-control" type="number" name="answer_{{ question.id }}" placeholder="Answer..." required />
+                    {% elif question.question_type == "email" %}
+                      <input disabled style="margin-left:50px" class="form-control" type="email" name="answer_{{ question.id }}" placeholder="Email..." required />
+                    {% elif question.question_type == "url" %}
+                      <input disabled style="margin-left:50px" class="form-control" type="url" name="answer_{{ question.id }}" placeholder="URL..." required />
+                    {% elif question.question_type == "date" %}
+                      <input disabled style="margin-left:50px" class="form-control" type="date" name="answer_{{ question.id }}" placeholder="Date..." required />
+                    {% elif question.question_type == "text" %}
+                    <input disabled style="margin-left:50px" class="form-control" type="text" name="answer_{{ question.id }}" placeholder="Answer..." required />
+                      {% else %}
+                    <textarea disabled  style="margin-left:50px" class="form-control" name="answer_{{ question.id }}" placeholder="Enter your text here..." required></textarea>
+                    {% endif %}
+        
+                      {% if question.allow_doc %}
+                      <input disabled style="margin-left:30px" class="form-control m-3 ml-4" type="file" name="file_{{ question.id }}"
+                          placeholder="File..." required />
+                      {% endif %}
+                      {% if question.doc_label %}
+                      <p style="margin:20px">
+                          <label style="margin-left:30px;font-weight:bold" class="ml-4 mt-3" for="file{{ question.id }}">Document
+                              label</label>
+                          {{ question.doc_label }}
+                      </p>
+                      {% endif %}
+        
+                      <br />
+                  </li>
+                  <br />
                   {% endfor %}
-                </div>
-                {% elif question.question_type == "number" %}
-                <input disabled style="margin-left: 50px" class="form-control" type="number"
-                  name="answer_{{ question.id }}" placeholder="Answer..." required />
-                {% elif question.question_type == "email" %}
-                <input disabled style="margin-left: 50px" class="form-control" type="email"
-                  name="answer_{{ question.id }}" placeholder="Email..." required />
-                {% elif question.question_type == "url" %}
-                <input disabled style="margin-left: 50px" class="form-control" type="url"
-                  name="answer_{{ question.id }}" placeholder="URL..." required />
-                {% elif question.question_type == "date" %}
-                <input disabled style="margin-left: 50px" class="form-control" type="date"
-                  name="answer_{{ question.id }}" placeholder="Date..." required />
-                {% elif question.question_type == "text" %}
-                <input disabled style="margin-left: 50px" class="form-control" type="text"
-                  name="answer_{{ question.id }}" placeholder="Answer..." required />
-                {% elif question.question_type == "textarea" %}
-                <textarea disabled style="margin-left: 50px" class="form-control" name="answer_{{ question.id }}"
-                  placeholder="Enter your text here..." required></textarea>
-                {% endif %} {% if question.allow_doc %}
-                <input disabled style="margin-left: 30px" class="form-control m-3 ml-4" type="file"
-                  name="file_{{ question.id }}" placeholder="File..." required />
-                {% endif %} {% if question.doc_label %}
-                <p style="margin: 20px">
-                  <label style="margin-left: 30px; font-weight: bold" class="ml-4 mt-3"
-                    for="file{{ question.id }}">Document label</label>
-                  {{ question.doc_label }}
-                </p>
-                {% endif %}
-
-                <br />
-              </li>
-              <br />
-              {% endfor %}
-            </div>
-            {% endif %}
+              </div>
+              {% endif %}
           </ul>
-
+        
           {% endfor %}
-
+      
         </div>
-      </section>
+      </div>
+     
     </div>
   </div>
 
@@ -283,3 +261,6 @@
 
 
 </html>
+
+
+
