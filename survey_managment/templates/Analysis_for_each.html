@@ -1,608 +1,1208 @@
-{% load static %}
+fetch('http://127.0.0.1:8000/get_json/')
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('Network response was not OK');
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+        function getRandomElement(array) {
+          return array[Math.floor(Math.random() * array.length)];
+        }
+    
+        let storedSection = data.section;
+        let storedMinistry = data.line_ministry;
+    
+        let userResponseId = null;
+    
+        while (!userResponseId) {
+          let randomSection = getRandomElement(storedSection);
+          let randomMinistry = getRandomElement(storedMinistry);
+    
+          console.log('Random section:', randomSection.id);
+          console.log('Random Ministry:', randomMinistry.id);
+    
+          let user = null;
+          data.users.forEach(function (users) {
+            if (users.Line_ministry_id === randomMinistry.id) {
+              user = users.id;
+              return;
+            }
+          });
+    
+          let selectedUserResponses = data.user_response.filter(function (userResponse) {
+            return (
+              userResponse.submitted_by_id === user &&
+              userResponse.forsection == randomSection.id
+            );
+          });
+    
+          selectedUserResponses.forEach(function (userResponse) {
+            if (userResponse.submitted_by_id === user) {
+              userResponseId = userResponse.id;
+              return;
+            }
+          });
+    
+          if (!userResponseId) {
+            console.log('No response found for the selected random values');
+          }
+        }
+    
+        console.log('User response found:', userResponseId);
+      })
+      .catch(function (error) {
+        console.log('Error:', error);
+      });
+      
+       
+      Highcharts.chart("container01", {
+        chart: {
+          type: "column",
+        },
+        title: {
+          text: "Corn vs wheat estimated production for 2020",
+          align: "left",
+        },
+        subtitle: {
+          text:
+            'Source: <a target="_blank" ' +
+            'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
+          align: "left",
+        },
+        xAxis: {
+          categories: ["USA", "China", "Brazil", "EU", "India", "Russia"],
+          crosshair: true,
+          accessibility: {
+            description: "Countries",
+          },
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: "1000 metric tons (MT)",
+          },
+        },
+        tooltip: {
+          valueSuffix: " (1000 MT)",
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+          },
+        },
+        series: [
+          {
+            name: "Corn",
+            data: [406292, 260000, 107000, 68300, 27500, 14500],
+          },
+          {
+            name: "Wheat",
+            data: [51086, 136000, 5500, 141000, 107180, 77000],
+          },
+        ],
+      });
+
+      Highcharts.chart("container1", {
+        chart: {
+          type: "column",
+        },
+        title: {
+          text: "Corn vs wheat estimated production for 2020",
+          align: "left",
+        },
+        subtitle: {
+          text:
+            'Source: <a target="_blank" ' +
+            'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
+          align: "left",
+        },
+        xAxis: {
+          categories: ["USA", "China", "Brazil", "EU", "India", "Russia"],
+          crosshair: true,
+          accessibility: {
+            description: "Countries",
+          },
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: "1000 metric tons (MT)",
+          },
+        },
+        tooltip: {
+          valueSuffix: " (1000 MT)",
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+          },
+        },
+        series: [
+          {
+            name: "Corn",
+            data: [406292, 260000, 107000, 68300, 27500, 14500],
+          },
+          {
+            name: "Wheat",
+            data: [51086, 136000, 5500, 141000, 107180, 77000],
+          },
+        ],
+      });
+
+
+
+
+      {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
-  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:08 GMT -->
+  {% include "includes/head.html" %}
 
-<!-- {% include "includes/head.html" %}   -->
-<style>
-  .hidden {
-      display: none;
+  <link
+    rel="stylesheet"
+    href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css"
+  />
+
+  <style>
+    .limited-width {
+      max-width: 500px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
     }
-    .clickable-row {
-            cursor: pointer;
-        }
-</style>
+
+    .onoffswitch {
+      position: relative;
+      width: 67px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    .onoffswitch-checkbox {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .onoffswitch-label {
+      display: block;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid #999999;
+      border-radius: 20px;
+    }
+
+    .onoffswitch-inner {
+      display: block;
+      width: 200%;
+      margin-left: -100%;
+      transition: margin 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-inner:before,
+    .onoffswitch-inner:after {
+      display: block;
+      float: left;
+      width: 50%;
+      height: 20px;
+      padding: 0;
+      line-height: 20px;
+      font-size: 14px;
+      color: white;
+      font-family: Trebuchet, Arial, sans-serif;
+      font-weight: bold;
+      box-sizing: border-box;
+    }
+
+    .onoffswitch-inner:before {
+      content: "ON";
+      padding-left: 10px;
+      background-color: #34a7c1;
+      color: #ffffff;
+    }
+
+    .onoffswitch-inner:after {
+      content: "OFF";
+      padding-right: 10px;
+      background-color: #eeeeee;
+      color: #999999;
+      text-align: right;
+    }
+
+    .onoffswitch-switch {
+      display: block;
+      width: 15px;
+      margin: 7.5px;
+      background: #ffffff;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 33px;
+      border: 2px solid #999999;
+      border-radius: 20px;
+      transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+      margin-left: 0;
+    }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+      right: 0px;
+    }
+  </style>
 
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-    
-       
-
-      {% include 'includes/topNavbar.html' %}
+      {% include 'includes/topNavbar.html' %} 
       {% include 'includes/sideNavbar.html' %}
 
-      <div class="content-wrapper">
-        <div class="content-header">
+      <div class="content-wrapper" style="background-color: white">
+        <!-- search and filter bar -->
+        <div class="container-fluid hidden-transition">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active shadow"
+                aria-current="page"
+                href="#"
+                style="background-color: transparent">Survey Analysis</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active shadow" aria-current="page" href="{% url 'survey_managment:years'%}" style="background-color: transparent">Assesment</a>
+            </li>
+          </ul>
+          <br />
+          <div class="row">
+            <div class="card hidden-transition col-lg-5 ml-5" id="card1">
+              <div class="card-body">
+                <div class="d-flex align-items-top">
+                  <div class="flex-fill">
+                    <h5 class="d-block fw-semibold mb-1">
+                      M & E System Sets Assessment
+                    </h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-block">
+                        <div class="counter" style="font-size: x-large; text-align: center"></div>
+                      </div>
+                      <a class="btn btn-app"
+                        style="background-color: #a9dbc5; border-radius: 10px">
+                        <i class="nav-icon fa-solid fa-building-columns"
+                          style="font-size: 30px"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card hidden-transition col-lg-5 ml-5" id="card2">
+              <div class="card-body">
+                <div class="d-flex align-items-top">
+                  <div class="flex-fill">
+                    <h5 class="d-block fw-semibold mb-1">
+                      M & E Knowledge/Skills Sets Assessment
+                    </h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-block">
+                        <div class="counter"
+                          style="font-size: x-large; text-align: center" ></div>
+                      </div>
+                      <a class="btn btn-app" style="background-color: #a9dbc5; border-radius: 10px">
+                        <i class="fas fa-users" style="font-size: 30px"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="container-fluid" style="background-color: #b7e4c7">
+            <div class="container-fluid" id="searchArea">
+              <!-- <h2 class="textS">Search Area</h2> -->
+              <div class="row">{%include "includes/select.html"%}</div>
+            </div>
+          </div>
+
+          <br />
+        </div>
+
+        <!-- table -->
+        <section class="content" style="display: none" id="section1">
           <div class="container-fluid">
-            <div class="row mb-2">
-              <div class="col-sm-6">
-                <h1 class="m-0">Dashboard</h1>
-                
+            <div class="row">
+              <div class="col-lg-7">
+                <div class="card hidden-transition">
+                  <div
+                    class="card-header"
+                    style="justify-content: space-between"
+                  >
+                    <div class="card-title">
+                      <div id="selected-survey"></div>
+                    </div>
+
+                    <button id="exportButton_2" class="btn btn-success">
+                      Export to Excel
+                    </button>
+                  </div>
+
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table
+                        class="table text-nowrap table-hover border table-bordered"
+                        id="general_Survey_Info"
+                      >
+                        <thead>
+                          <th>Survey Name</th>
+                          <th id="total_weight">Total Weight</th>
+                          <th id="total_answer">Total Answer</th>
+                          <th id="weighted_sum">Weighted Sum</th>
+                          <th>Average</th>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="container mt-5">
-                {%include 'includes/select.html'%}
-                   <div class="col-sm-6">
-                     <ol class="breadcrumb float-sm-right">
-                       <li class="breadcrumb-item"><a href="#">Home</a></li>
-                       <li class="breadcrumb-item active">Dashboard</li>
-                     </ol>
-                   </div>
-                 </div>
+              <div class="col-lg-5">
+                <figure class="highcharts-figure">
+                  <div id="container"></div>
+                  <p class="highcharts-description"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="card hidden-transition" style="display: none" id="msg1">
+          <div class="card-header" style="justify-content: space-between"></div>
+          <div class="card-body" style="background-color: #94e299">
+            <p id="no_resonse_msg" style="text-align: center"></p>
           </div>
         </div>
 
+        <!-- table -->
+        <section class="content" style="display: none" id="section2">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card hidden-transition">
+                  <div
+                    class="card-header"
+                    style="justify-content: space-between"
+                  >
+                    <div class="card-title">
+                      <div id="selected-survey"></div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table
+                        class="table text-nowrap table-hover border table-bordered"
+                        id="survey_detail"
+                      >
+                        <thead>
+                          <th>ጥያቄ</th>
+                          <th>ደረጃ</th>
+                          <th>ክብደት</th>
 
-<div class="row">
-  <div class="col-7">
-    <div class="card">
-      <div class="card-header">
-      <h3 class="card-title">{{ questionnaire.name }}</h3>
-      </div>
-      
-      <div class="card-body p-0">
-      <table class="table table-striped" >
-      <thead>
-      <tr>
-      <th style="width: 10px">#</th>
-      <th>Questions</th>
-      <th>Average Score</th>
-      <th style="width: 40px">Target</th>
-      </tr>
-      </thead>
-      <tbody>
-        {% for question in questions %}
-      <tr>
-      <td>{{ forloop.counter }}</td>
-      <td>{{ question.title }}</td>
-      <td>
-      <div class="progress progress-xs">
-      <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-      </div>
-      </td>
-      <td><span class="badge bg-danger">55%</span></td>
-      </tr>
-      {% endfor %}
-      </tbody>
-      </table>
-      </div>
-      
-      </div>
-  </div>
-  <section class=" col-5 content">
-    <div class="container-fluid">
-      
-          <div class="" id="area_chart">
-            <div class="card card-primary">
+                          <th>የተመዘነ ደረጃ</th>
+                          <th>በ100% ኛ</th>
+                          <th>Grading</th>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            <div class="card-header">
-              <h3 class="card-title" id="area_chart">Area Chart</h3>
-              <div class="card-tools">
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="collapse"
-                >
-                  <i class="fas fa-minus"></i>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="remove"
-                >
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-            <div class="card-body">
-              <div class="chart">
-                <canvas
-                  id="areaChart"
-                  style="
-                    min-height: 250px;
-                    height: 250px;
-                    max-height: 250px;
-                    max-width: 100%;
-                  "
-                ></canvas>
-              </div>
-            </div>
-          </div>
-<div class="hidden" id="donut_chart">
-          <div class="card card-danger">
-            <div class="card-header">
-              <h3 class="card-title" >Donut Chart</h3>
-              <div class="card-tools">
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="collapse"
-                >
-                  <i class="fas fa-minus"></i>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="remove"
-                >
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <canvas
-                id="donutChart"
-                style="
-                  min-height: 250px;
-                  height: 250px;
-                  max-height: 250px;
-                  max-width: 100%;
-                "
-              ></canvas>
-            </div>
-          </div>
-        </div>
-        <div class="hidden" id="pie_chart">
+        <figure class="highcharts-figure">
+          <div id="container111"></div>
+          <p class="highcharts-description"></p>
+        </figure>
 
-          <div class="card card-danger">
-            <div class="card-header">
-              <h3 class="card-title" >Pie Chart</h3>
-              <div class="card-tools">
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="remove"
-                >
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <canvas
-                id="pieChart"
-                style="
-                  min-height: 250px;
-                  height: 250px;
-                  max-height: 250px;
-                  max-width: 100%;
-                "
-              ></canvas>
-            </div>
-          </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="hidden" id="line_chart">
-
-          <div class="card card-info">
-            <div class="card-header">
-              <h3 class="card-title" >Line Chart</h3>
-              <div class="card-tools">
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="collapse"
-                >
-                  <i class="fas fa-minus"></i>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="remove"
-                >
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="chart">
-                <canvas
-                  id="lineChart"
-                  style="
-                    min-height: 250px;
-                    height: 250px;
-                    max-height: 250px;
-                    max-width: 100%;
-                  "
-                ></canvas>
-              </div>
-            </div>
-          </div>
-</div>
-<div class="hidden" id="bar_chart"> 
-          <div class="card card-success">
-            <div class="card-header">
-              <h3 class="card-title" >Bar Chart</h3>
-              <div class="card-tools">
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="collapse"
-                >
-                  <i class="fas fa-minus"></i>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="remove"
-                >
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="chart">
-                <canvas
-                  id="barChart"
-                  style="
-                    min-height: 250px;
-                    height: 250px;
-                    max-height: 250px;
-                    max-width: 100%;
-                  "
-                ></canvas>
-              </div>
-            </div>
-          </div>
-</div>
-<div class="hidden" id="stacked_bar_chart">
-          <div class="card card-success">
-            <div class="card-header">
-              <h3 class="card-title">Stacked Bar Chart</h3>
-              <div class="card-tools">
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="collapse"
-                >
-                  <i class="fas fa-minus"></i>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-tool"
-                  data-card-widget="remove"
-                >
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="chart">
-                <canvas
-                  id="stackedBarChart"
-                  style="
-                    min-height: 250px;
-                    height: 250px;
-                    max-height: 250px;
-                    max-width: 100%;
-                  "
-                ></canvas>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        
+        <div class="row">
+          <figure class="highcharts-figure col-sm-12 col-lg-6">
+            <div id="container01"></div>
+            <p class="highcharts-description"></p>
+          </figure>
+          <figure class="highcharts-figure col-sm-12 col-lg-6">
+            <div id="container1"></div>
+            <p class="highcharts-description"></p>
+          </figure>
         </div>
       </div>
     </div>
-    
-      
-     
-
-        
-        
-  </section>
-</div>
-        
-
-       
-      </div>
-
-      <footer class="main-footer">
-        <strong
-          >Copyright &copy; 2014-2021
-          <a href="https://adminlte.io/">MoPD </a>.</strong
-        >
-        All rights reserved.
-
-      </footer>
-
-      <aside class="control-sidebar control-sidebar-dark"></aside>
-    </div>
-
-   
     {% include "includes/scripts.html" %}
+    <script>
+      var store_average = [];
+      var store_survey_name = [];
+      var ministry_info = [];
+      var surveyData = {};
+      var store_ministries = [];
+      var categories = [];
+      var surveyTypeInput = document.getElementById("survey_type");
+      var surveyTableBody_2 = document
+        .getElementById("survey_detail")
+        .getElementsByTagName("tbody")[0];
+      var surveyTableBody_3 = document
+        .getElementById("general_Survey_Info")
+        .getElementsByTagName("tbody")[0];
+      var select_ministry = document.getElementById("ministry-select");
+      var selectElement = document.getElementById("survey-select");
+      var selectsection = document.getElementById("section-select");
+      var selectYear = document.getElementById("survey_year");
+      var myCheckbox = document.getElementById("myonoffswitch");
+      var option_table2 = document.getElementById("section1");
+      var option_table1 = document.getElementById("section2");
+      var column_chart = document.getElementById("container");
+      var card_msg = document.getElementById("msg1");
+      const button = document.getElementById("getSelectedValuesBtn");
+      let card1 = document.getElementById("card1");
+      let card2 = document.getElementById("card2");
+      function clearSelectOptions(selectElement) {
+        selectElement.innerHTML = "";
+      }
+      fetchData();
+      async function fetchData() {
+        try {
+          const response = await fetch("http://127.0.0.1:8000/get_json/");
+          if (!response.ok) {
+            throw new Error("Network response was not OK");
+          }
+          const data = await response.json();
+          await RandomGenerate(data);
+          data.survey_type.forEach((surveyType) => {
+            var emptyOption = document.createElement("option");
+            emptyOption.value = "";
+            emptyOption.text = "-- Select an option --";
+            var option = document.createElement("option");
+            option.value = surveyType.id;
+            option.textContent = surveyType.name;
+            surveyTypeInput.appendChild(option);
+          });
+          // Function to select the option based on ID
+          function selectOption(idtype) {
+            selectElement.value = idtype;
+            // Set the value of the select element to the specified ID
+          }
 
-  </body>
+          surveyTypeInput.addEventListener("change", function () {
+            var selectedSurveyTypeId = parseInt(surveyTypeInput.value);
 
+            selectYear.addEventListener("change", function () {
+              clearSelectOptions(selectElement);
+              var selectedYear = parseInt(selectYear.value);
+              var emptyOption = document.createElement("option");
+              emptyOption.value = "";
+              emptyOption.text = "-- Select an option --";
+              selectElement.appendChild(emptyOption);
 
-  <script>
-      function redirectToQuestionnaire(row) {
-        var questionnaireId = row.getAttribute("data-questionnaire-id");
-        window.location.href = "/questionnaire/" + questionnaireId + "/";
-    }
-    
-    $(document).ready(function () {
-            $(".clickable-row").click(function (e) {
-                e.preventDefault(); // Prevents the default link behavior
+              if (selectedSurveyTypeId && selectedYear) {
+                let Assesment = data.Assesment.filter(
+                  (survey) =>
+                    survey.survey_type === selectedSurveyTypeId &&
+                    new Date(survey.created_at).getFullYear() === selectedYear
+                );
+                Assesment.forEach((survey) => {
+                  var option = document.createElement("option");
+                  var emptyOption = document.createElement("option");
+                  emptyOption.value = "";
+                  emptyOption.text = "-- Select Survey --";
+                  option.value = survey.id;
+                  option.textContent = survey.name;
+                  selectElement.appendChild(option);
+                });
+                let sections = [];
+                selectElement.addEventListener("change", function () {
+                  var selectedSurvey = selectElement.value;
+                  clearSelectOptions(selectsection);
+                  console.log("Selected survey:", selectedSurvey);
 
-                // Get the URL from the data-href attribute
-                var url = $(this).data("href");
+                  Assesment.forEach((survey) => {
+                    survey.section.forEach((section) => {
+                      let matchingSections = data.section.filter(function (
+                        element
+                      ) {
+                        return element.id === section;
+                      });
 
-                // Open the URL in a new tab
-                window.open(url, "_blank");
+                      let section_names = matchingSections.map(function (
+                        section
+                      ) {
+                        return section.name;
+                      });
+
+                      // Check if option already exists
+                      let existingOption = selectsection.querySelector(
+                        `option[value="${section}"]`
+                      );
+                      if (!existingOption) {
+                        let option = document.createElement("option");
+                        option.value = section;
+                        option.textContent = section_names;
+                        selectsection.appendChild(option);
+                      }
+                    });
+                  });
+                });
+
+                let selectedSurveyId = parseInt(selectElement.value);
+                selectsection.addEventListener("change", function () {
+                  clearSelectOptions(select_ministry);
+                  surveyTableBody_2.innerHTML = "";
+                  // Add empty option
+                  let emptyOption = document.createElement("option");
+                  emptyOption.value = "";
+                  emptyOption.textContent = "---Select Line Ministry---";
+                  select_ministry.appendChild(emptyOption);
+
+                  Assesment.forEach((survey) => {
+                    survey.for_line_ministry.forEach((ministry) => {
+                      let matchingMinistry = data.line_ministry.filter(
+                        function (element) {
+                          return element.id === ministry;
+                        }
+                      );
+
+                      let ministry_name = matchingMinistry.map(function (
+                        ministry
+                      ) {
+                        return ministry.name;
+                      });
+
+                      let option = document.createElement("option");
+                      option.value = ministry;
+                      option.textContent = ministry_name;
+                      select_ministry.appendChild(option);
+                    });
+                  });
+                });
+
+                select_ministry.addEventListener("change", function () {
+                  surveyTableBody_2.innerHTML = "";
+                  let categories = [];
+                  let dataforchart = [];
+                  let selectedSection = selectsection.value;
+                  console.log("Selected section:", selectedSection);
+                  var selectedLineMinistry = parseInt(select_ministry.value);
+                  user = null;
+                  data.users.forEach(function (users) {
+                    if (users.Line_ministry_id === selectedLineMinistry) {
+                      user = users.id;
+                      return;
+                    }
+                  });
+                  var selectedUserResponses = data.user_response.filter(
+                    function (userResponse) {
+                      console.log(
+                        "userResponse.forsection" + userResponse.forsection
+                      );
+                      console.log("selectedSection" + selectedSection);
+                      return (
+                        userResponse.submitted_by_id === user &&
+                        userResponse.forsection == selectedSection
+                      );
+                    }
+                  );
+                  userResponseId = null;
+                  selectedUserResponses.forEach(function (userResponse) {
+                    if (userResponse.submitted_by_id === user) {
+                      userResponseId = userResponse.id;
+                      return;
+                    }
+                  });
+                  console.log("selected user response " + userResponseId);
+                  if (userResponseId !== null) {
+                    let selectedSection = selectsection.value;
+                    let selectedSurveyId = parseInt(selectElement.value);
+
+                    let selectedSectionName = null;
+                    let selectedSurveyName = null;
+
+                    data.surveys.forEach(function (survey) {
+                      if (survey.id == selectedSurveyId) {
+                        selectedSurveyName = survey.name;
+                        return;
+                      }
+                    });
+                    data.section.forEach(function (section) {
+                      if (section.id == selectedSection) {
+                        selectedSectionName = section.name;
+                        return;
+                      }
+                    });
+                    card_msg.style.display = "none";
+                    var answers = data.answer.filter(function (answer) {
+                      return answer.response_id === userResponseId;
+                    });
+                    console.log(answers);
+                    let answerValues = answers.map(function (answer) {
+                      let questioncat = data.questions.find(function (q) {
+                        return q.id === answer.forquestion_id;
+                      });
+                      return {
+                        value: parseFloat(answer.answertext),
+                        questionId: answer.forquestion_id,
+                        category: questioncat.category_id,
+                      };
+                    });
+
+                    console.log("Hello");
+                    console.log(answerValues);
+                    var weightedSum = 0;
+                    var totalWeight = 0;
+                    var total_weightedinPercent = 0;
+                    var count = 0;
+                    var total_answer = 0;
+                    var cat = data.category;
+                    answerValues.forEach(function (answer) {
+                      var question = data.questions.find(function (q) {
+                        return q.id === answer.questionId;
+                      });
+                      categories.push(question.title);
+
+                      if (question.category_id) {
+                        const categoryStats = {};
+
+                        answerValues.forEach((answer) => {
+                          const { value, category } = answer;
+
+                          // Only process answers that have a category
+                          if (category) {
+                            if (!categoryStats[category]) {
+                              categoryStats[category] = {
+                                sum: value,
+                                count: 1,
+                              };
+                            } else {
+                              categoryStats[category].sum += value;
+                              categoryStats[category].count++;
+                            }
+                          }
+                        });
+
+                        Object.keys(categoryStats).forEach((category) => {
+                          const { sum, count } = categoryStats[category];
+                          categoryStats[category].average = sum / count;
+                          console.log("hello");
+                          console.log(categoryStats[category].average);
+                        });
+                      }
+                      if (question.parent_id) {
+                        var childCatagories = cat.filter(function (cat) {
+                          return cat.id === question.parent_id;
+                        });
+                        console.log(childCatagories);
+                      }
+                      console.log(question);
+                      if (question) {
+                        var weight = question.weight;
+                        var total_weight = 0;
+                        if (!isNaN(answer.value)) {
+                          weightedSum += answer.value * weight;
+                          totalWeight += weight;
+                          total_answer += answer.value;
+                        }
+                        var weighted__Sum = 0;
+                        let categorystore = [];
+                        if (totalWeight > 0) {
+                          var weightedAverage = weightedSum / totalWeight;
+                          var row = surveyTableBody_2.insertRow();
+                          var question_cell = row.insertCell();
+                          if (question.category_id) {
+                            if (!categorystore.includes(question.category_id)) {
+                              categorystore.push(question.category_id);
+                            }
+                          }
+
+                          question_cell.textContent = question.title;
+                          row.insertCell().textContent = answer.value;
+                          question_cell.classList.add("limited-width");
+                          row.insertCell().textContent = weight;
+                          row.insertCell().textContent = answer.value * weight;
+                          var totalresult = answer.value * weight;
+                          var max_value = 10;
+
+                          var weightedinPercent =
+                            (totalresult / (max_value * weight)) * 100;
+                          count++;
+                          total_weightedinPercent += weightedinPercent;
+
+                          row.insertCell().textContent =
+                            weightedinPercent + "%";
+                          var x = weightedinPercent;
+                          dataforchart.push(weightedinPercent);
+
+                          var newCell = row.insertCell();
+                          newCell.id = "Indicator";
+                          if (x >= 90) {
+                            newCell.textContent = " Very Good";
+                            newCell.style.backgroundColor = "#52B788";
+                          } else if (x >= 80) {
+                            newCell.textContent = "Good";
+                            newCell.style.backgroundColor = "#C2FA41";
+                          } else if (x >= 60) {
+                            newCell.textContent = "Satisfactory";
+                            newCell.style.backgroundColor = "#C1FA61";
+                          } else if (x >= 50) {
+                            newCell.textContent = "Poor";
+                            newCell.style.backgroundColor = "#FAEB41";
+                          } else if (x >= 40) {
+                            newCell.textContent = "Very Poor";
+                            newCell.style.backgroundColor = " #FA7D41";
+                          } else {
+                            newCell.textContent = "Extremely Poor";
+                            newCell.style.backgroundColor = "#FA7D41";
+                          }
+                          console.log(
+                            "Weighted average of answers: " +
+                              weightedAverage.toFixed(2)
+                          );
+                        } else {
+                          console.log(
+                            "No valid answers found for the selected line ministry."
+                          );
+                        }
+                      }
+                    });
+                    var totalRow = surveyTableBody_2.insertRow();
+                    var labelCell = totalRow.insertCell();
+                    labelCell.textContent = "Total";
+                    var valueCell = totalRow.insertCell();
+                    valueCell.textContent = total_answer;
+                    var weightCell = totalRow.insertCell();
+                    weightCell.textContent = totalWeight;
+                    var weightCell = totalRow.insertCell();
+                    weightCell.textContent = weightedSum;
+                    var averageCell = totalRow.insertCell();
+                    var average = total_weightedinPercent / count;
+                    averageCell.textContent = average.toFixed(2) + "%";
+                    surveyTableBody_2.appendChild(totalRow);
+                    option_table1.style.display = "block";
+                    console.log(categories);
+                    console.log(dataforchart);
+                    clearAndRedrawChart(
+                      selectedSurveyName,
+                      selectedSectionName,
+                      categories,
+                      dataforchart
+                    );
+                  } else {
+                    option_table1.style.display = "none";
+                    var h3Element = document.getElementById("no_resonse_msg");
+                    h3Element.textContent =
+                      "No user_response ID found for the selected line ministry.";
+                    card_msg.style.display = "block";
+                  }
+                });
+              }
             });
+          });
+        } catch (error) {
+          console.log("Error:", error);
+        }
+      }
+      function clearAndRedrawChart(surveyname, sectionName, categories, data) {
+        Highcharts.chart("container111", {
+          chart: {
+            type: "bar",
+          },
+          title: {
+            text: surveyname,
+            align: "left",
+          },
+          subtitle: {
+            text: sectionName,
+            align: "left",
+          },
+          xAxis: {
+            categories: categories,
+            title: {
+              text: null,
+            },
+            gridLineWidth: 1,
+            lineWidth: 0,
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: "%",
+              align: "high",
+            },
+            labels: {
+              overflow: "justify",
+            },
+            gridLineWidth: 0,
+          },
+          tooltip: {
+            valueSuffix: " millions",
+          },
+          plotOptions: {
+            bar: {
+              borderRadius: "50%",
+              dataLabels: {
+                enabled: true,
+              },
+              groupPadding: 0.1,
+            },
+          },
+          legend: {
+            layout: "vertical",
+            align: "right",
+            verticalAlign: "top",
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor:
+              Highcharts.defaultOptions.legend.backgroundColor || "#FFFFFF",
+            shadow: true,
+          },
+          credits: {
+            enabled: false,
+          },
+          series: [
+            {
+              name: "",
+              data: data,
+            },
+          ],
         });
-    var surveySelect = document.getElementById("survey-select");
-  var questionnaires = document.getElementsByClassName("questionnaires");
-
-  function showQuestionnaires(surveyId) {
-    for (var i = 0; i < questionnaires.length; i++) {
-      if (questionnaires[i].id === "questionnaires-" + surveyId) {
-        questionnaires[i].style.display = "block";
-      } else {
-        questionnaires[i].style.display = "none";
       }
-    }
-  }
 
-  surveySelect.addEventListener("change", function() {
-    showQuestionnaires(surveySelect.value);
-  });
-     function showDiv() {
-      var select = document.getElementById("mySelect");
-      var area_chart = document.getElementById("area_chart");
-      var pie_chart = document.getElementById("pie_chart");
-      var bar_chart = document.getElementById("bar_chart");
-      var stacked_bar_chart=document.getElementById("stacked_bar_chart");
-      var line_chart= document.getElementById("line_chart");
-      var donut_chart = document.getElementById("donut_chart");
-      var mytable = document.getElementById("mytable");
-
-      // Hide all divs
-      area_chart.style.display = "none";
-      pie_chart.style.display = "none";
-      bar_chart.style.display = "none";
-      stacked_bar_chart.style.display = "none";
-      line_chart.style.display = "none";
-      donut_chart.style.display = "none";
-      mytable.style.display = "block";
-
-      // Show the selected div based on the option value
-      if (select.value === "area_chart") {
-        area_chart.style.display = "block";
-      } else if (select.value === "pie_chart") {
-        pie_chart.style.display = "block";
-      } else if (select.value === "bar_chart") {
-        bar_chart.style.display = "block";
-      }else if (select.value === "stacked_bar_chart") {
-        stacked_bar_chart.style.display = "block";
-      } else if (select.value === "line_chart") {
-        line_chart.style.display = "block";
-      }else if (select.value === "donut_chart") {
-        donut_chart.style.display = "block";
+      function getRandomElement(array) {
+        return array[Math.floor(Math.random() * array.length)];
       }
-    }
-    $(function () {
-      /* ChartJS
-       * -------
-       * Here we will create a few charts using ChartJS
-       */
+      async function RandomGenerate(storedData) {
+        let categories = [];
+        let dataforchart = [];
+        if (storedData) {
+          let storedSection = storedData.section;
+          let storedMinistry = storedData.line_ministry;
+          let currentYear = new Date().getFullYear();
 
-      //--------------
-      //- AREA CHART -
-      //--------------
+          let userResponseId = null;
 
-      // Get context with jQuery - using jQuery's .get() method.
-      var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+          while (!userResponseId) {
+            let randomSection = getRandomElement(storedSection);
+            let randomMinistry = getRandomElement(storedMinistry);
 
-      var areaChartData = {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
-        datasets: [
+            console.log("Random section:", randomSection.id);
+            console.log("Random Ministry:", randomMinistry.id);
+
+            let user = null;
+            storedData.users.forEach(function (users) {
+              if (users.Line_ministry_id === randomMinistry.id) {
+                user = users.id;
+                return;
+              }
+            });
+
+            let selectedUserResponses = storedData.user_response.filter(
+              function (userResponse) {
+                return (
+                  userResponse.submitted_by_id === user &&
+                  userResponse.forsection == randomSection.id
+                );
+              }
+            );
+
+            selectedUserResponses.forEach(function (userResponse) {
+              if (userResponse.submitted_by_id === user) {
+                userResponseId = userResponse.id;
+                return;
+              }
+            });
+
+            if (!userResponseId) {
+              console.log("No response found for the selected random values");
+            }
+          }
+
+          console.log("User response found:", userResponseId);
+          console.log("selected user response " + userResponseId);
+          if (userResponseId !== null) {
+            let selectedSection = selectsection.value;
+            let selectedSurveyId = parseInt(selectElement.value);
+
+            let selectedSectionName = null;
+            let selectedSurveyName = null;
+
+            storedData.surveys.forEach(function (survey) {
+              if (survey.id == selectedSurveyId) {
+                selectedSurveyName = survey.name;
+                return;
+              }
+            });
+            storedData.section.forEach(function (section) {
+              if (section.id == selectedSection) {
+                selectedSectionName = section.name;
+                return;
+              }
+            });
+            var answers = storedData.answer.filter(function (answer) {
+              return answer.response_id === userResponseId;
+            });
+            console.log(answers);
+            let answerValues = answers.map(function (answer) {
+              let questioncat = storedData.questions.find(function (q) {
+                return q.id === answer.forquestion_id;
+              });
+              return {
+                value: parseFloat(answer.answertext),
+                questionId: answer.forquestion_id,
+                category: questioncat.category_id,
+              };
+            });
+
+            console.log("Hello");
+            console.log(answerValues);
+            var weightedSum = 0;
+            var totalWeight = 0;
+            var total_weightedinPercent = 0;
+            var count = 0;
+            var total_answer = 0;
+            var cat = storedData.category;
+            answerValues.forEach(function (answer) {
+              var question = storedData.questions.find(function (q) {
+                return q.id === answer.questionId;
+              });
+              categories.push(question.title);
+
+              if (question.category_id) {
+                const categoryStats = {};
+
+                answerValues.forEach((answer) => {
+                  const { value, category } = answer;
+
+                  // Only process answers that have a category
+                  if (category) {
+                    if (!categoryStats[category]) {
+                      categoryStats[category] = {
+                        sum: value,
+                        count: 1,
+                      };
+                    } else {
+                      categoryStats[category].sum += value;
+                      categoryStats[category].count++;
+                    }
+                  }
+                });
+
+                Object.keys(categoryStats).forEach((category) => {
+                  const { sum, count } = categoryStats[category];
+                  categoryStats[category].average = sum / count;
+                  console.log("hello");
+                  console.log(categoryStats[category].average);
+                });
+              }
+              if (question.parent_id) {
+                var childCatagories = cat.filter(function (cat) {
+                  return cat.id === question.parent_id;
+                });
+                console.log(childCatagories);
+              }
+              console.log(question);
+              if (question) {
+                var weight = question.weight;
+                var total_weight = 0;
+                if (!isNaN(answer.value)) {
+                  weightedSum += answer.value * weight;
+                  totalWeight += weight;
+                  total_answer += answer.value;
+                }
+                var weighted__Sum = 0;
+                let categorystore = [];
+                if (totalWeight > 0) {
+                  var weightedAverage = weightedSum / totalWeight;
+                  var row = surveyTableBody_2.insertRow();
+                  var question_cell = row.insertCell();
+                  if (question.category_id) {
+                    if (!categorystore.includes(question.category_id)) {
+                      categorystore.push(question.category_id);
+                    }
+                  }
+
+                  question_cell.textContent = question.title;
+                  row.insertCell().textContent = answer.value;
+                  question_cell.classList.add("limited-width");
+                  row.insertCell().textContent = weight;
+                  row.insertCell().textContent = answer.value * weight;
+                  var totalresult = answer.value * weight;
+                  var max_value = 10;
+
+                  var weightedinPercent =
+                    (totalresult / (max_value * weight)) * 100;
+                  count++;
+                  total_weightedinPercent += weightedinPercent;
+
+                  row.insertCell().textContent = weightedinPercent + "%";
+                  var x = weightedinPercent;
+                  dataforchart.push(weightedinPercent);
+
+                  var newCell = row.insertCell();
+                  newCell.id = "Indicator";
+                  if (x >= 90) {
+                    newCell.textContent = " Very Good";
+                    newCell.style.backgroundColor = "#52B788";
+                  } else if (x >= 80) {
+                    newCell.textContent = "Good";
+                    newCell.style.backgroundColor = "#C2FA41";
+                  } else if (x >= 60) {
+                    newCell.textContent = "Satisfactory";
+                    newCell.style.backgroundColor = "#C1FA61";
+                  } else if (x >= 50) {
+                    newCell.textContent = "Poor";
+                    newCell.style.backgroundColor = "#FAEB41";
+                  } else if (x >= 40) {
+                    newCell.textContent = "Very Poor";
+                    newCell.style.backgroundColor = " #FA7D41";
+                  } else {
+                    newCell.textContent = "Extremely Poor";
+                    newCell.style.backgroundColor = "#FA7D41";
+                  }
+                  console.log(
+                    "Weighted average of answers: " + weightedAverage.toFixed(2)
+                  );
+                } else {
+                  console.log(
+                    "No valid answers found for the selected line ministry."
+                  );
+                }
+              }
+            });
+            var totalRow = surveyTableBody_2.insertRow();
+            var labelCell = totalRow.insertCell();
+            labelCell.textContent = "Total";
+            var valueCell = totalRow.insertCell();
+            valueCell.textContent = total_answer;
+            var weightCell = totalRow.insertCell();
+            weightCell.textContent = totalWeight;
+            var weightCell = totalRow.insertCell();
+            weightCell.textContent = weightedSum;
+            var averageCell = totalRow.insertCell();
+            var average = total_weightedinPercent / count;
+            averageCell.textContent = average.toFixed(2) + "%";
+            surveyTableBody_2.appendChild(totalRow);
+            option_table1.style.display = "block";
+            console.log(categories);
+            console.log(dataforchart);
+            clearAndRedrawChart(
+              selectedSurveyName,
+              selectedSectionName,
+              categories,
+              dataforchart
+            );
+          }
+        }
+      }
+
+      Highcharts.chart("container01", {
+        chart: {
+          type: "column",
+        },
+        title: {
+          text: "Corn vs wheat estimated production for 2020",
+          align: "left",
+        },
+        subtitle: {
+          text:
+            'Source: <a target="_blank" ' +
+            'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
+          align: "left",
+        },
+        xAxis: {
+          categories: ["USA", "China", "Brazil", "EU", "India", "Russia"],
+          crosshair: true,
+          accessibility: {
+            description: "Countries",
+          },
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: "1000 metric tons (MT)",
+          },
+        },
+        tooltip: {
+          valueSuffix: " (1000 MT)",
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+          },
+        },
+        series: [
           {
-            label: "Digital Goods",
-            backgroundColor: "rgba(60,141,188,0.9)",
-            borderColor: "rgba(60,141,188,0.8)",
-            pointRadius: false,
-            pointColor: "#3b8bba",
-            pointStrokeColor: "rgba(60,141,188,1)",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(60,141,188,1)",
-            data: [28, 48, 40, 19, 86, 27, 90],
+            name: "Corn",
+            data: [406292, 260000, 107000, 68300, 27500, 14500],
           },
           {
-            label: "Electronics",
-            backgroundColor: "rgba(210, 214, 222, 1)",
-            borderColor: "rgba(210, 214, 222, 1)",
-            pointRadius: false,
-            pointColor: "rgba(210, 214, 222, 1)",
-            pointStrokeColor: "#c1c7d1",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 80, 81, 56, 55, 40],
+            name: "Wheat",
+            data: [51086, 136000, 5500, 141000, 107180, 77000],
           },
         ],
-      };
-
-      var areaChartOptions = {
-        maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [
-            {
-              gridLines: {
-                display: false,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              gridLines: {
-                display: false,
-              },
-            },
-          ],
-        },
-      };
-
-      // This will get the first returned node in the jQuery collection.
-      new Chart(areaChartCanvas, {
-        type: "line",
-        data: areaChartData,
-        options: areaChartOptions,
       });
 
-      //-------------
-      //- LINE CHART -
-      //--------------
-      var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
-      var lineChartOptions = $.extend(true, {}, areaChartOptions);
-      var lineChartData = $.extend(true, {}, areaChartData);
-      lineChartData.datasets[0].fill = false;
-      lineChartData.datasets[1].fill = false;
-      lineChartOptions.datasetFill = false;
-
-      var lineChart = new Chart(lineChartCanvas, {
-        type: "line",
-        data: lineChartData,
-        options: lineChartOptions,
-      });
-
-      //-------------
-      //- DONUT CHART -
-      //-------------
-      // Get context with jQuery - using jQuery's .get() method.
-      var donutChartCanvas = $("#donutChart").get(0).getContext("2d");
-      var donutData = {
-        labels: ["Chrome", "IE", "FireFox", "Safari", "Opera", "Navigator"],
-        datasets: [
+      Highcharts.chart("container1", {
+        chart: {
+          type: "column",
+        },
+        title: {
+          text: "Corn vs wheat estimated production for 2020",
+          align: "left",
+        },
+        subtitle: {
+          text:
+            'Source: <a target="_blank" ' +
+            'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
+          align: "left",
+        },
+        xAxis: {
+          categories: ["USA", "China", "Brazil", "EU", "India", "Russia"],
+          crosshair: true,
+          accessibility: {
+            description: "Countries",
+          },
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: "1000 metric tons (MT)",
+          },
+        },
+        tooltip: {
+          valueSuffix: " (1000 MT)",
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+          },
+        },
+        series: [
           {
-            data: [700, 500, 400, 600, 300, 100],
-            backgroundColor: [
-              "#f56954",
-              "#00a65a",
-              "#f39c12",
-              "#00c0ef",
-              "#3c8dbc",
-              "#d2d6de",
-            ],
+            name: "Corn",
+            data: [406292, 260000, 107000, 68300, 27500, 14500],
+          },
+          {
+            name: "Wheat",
+            data: [51086, 136000, 5500, 141000, 107180, 77000],
           },
         ],
-      };
-      var donutOptions = {
-        maintainAspectRatio: false,
-        responsive: true,
-      };
-      //Create pie or douhnut chart
-      // You can switch between pie and douhnut using the method below.
-      new Chart(donutChartCanvas, {
-        type: "doughnut",
-        data: donutData,
-        options: donutOptions,
       });
-
-      //-------------
-      //- PIE CHART -
-      //-------------
-      // Get context with jQuery - using jQuery's .get() method.
-      var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-      var pieData = donutData;
-      var pieOptions = {
-        maintainAspectRatio: false,
-        responsive: true,
-      };
-      //Create pie or douhnut chart
-      // You can switch between pie and douhnut using the method below.
-      new Chart(pieChartCanvas, {
-        type: "pie",
-        data: pieData,
-        options: pieOptions,
-      });
-
-      //-------------
-      //- BAR CHART -
-      //-------------
-      var barChartCanvas = $("#barChart").get(0).getContext("2d");
-      var barChartData = $.extend(true, {}, areaChartData);
-      var temp0 = areaChartData.datasets[0];
-      var temp1 = areaChartData.datasets[1];
-      barChartData.datasets[0] = temp1;
-      barChartData.datasets[1] = temp0;
-
-      var barChartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        datasetFill: false,
-      };
-
-      new Chart(barChartCanvas, {
-        type: "bar",
-        data: barChartData,
-        options: barChartOptions,
-      });
-
-      //---------------------
-      //- STACKED BAR CHART -
-      //---------------------
-      var stackedBarChartCanvas = $("#stackedBarChart")
-        .get(0)
-        .getContext("2d");
-      var stackedBarChartData = $.extend(true, {}, barChartData);
-
-      var stackedBarChartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              stacked: true,
-            },
-          ],
-          yAxes: [
-            {
-              stacked: true,
-            },
-          ],
-        },
-      };
-
-      new Chart(stackedBarChartCanvas, {
-        type: "bar",
-        data: stackedBarChartData,
-        options: stackedBarChartOptions,
-      });
-    });
-
-  </script>
-  
-  </html>
+    </script>
+  </body>
+</html>

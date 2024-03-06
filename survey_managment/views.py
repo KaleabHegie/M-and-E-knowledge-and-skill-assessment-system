@@ -47,13 +47,14 @@ def indexView(request):
         line_ministry = Line_ministry.objects.all()
         survey_years = Section.objects.order_by('created_at__year').values('created_at__year').distinct() 
         form = AnalysisForm()
+        assesment = Assesment.objects.all()
        
    
 
 
 
         context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
-             'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
+             'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years, 'Assesment':assesment}
       
         return render(request, 'index.html', context)
 

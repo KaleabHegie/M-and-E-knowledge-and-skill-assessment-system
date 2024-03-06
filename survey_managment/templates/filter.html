@@ -2,636 +2,928 @@
 
 <!DOCTYPE html>
 <html lang="en">
+  {% include "includes/head.html" %}
 
-{% include "includes/head.html" %}
+  <link
+    rel="stylesheet"
+    href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css"
+  />
 
-<link rel="stylesheet" href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css" />
-
-<style>
+  <style>
     .limited-width {
-        max-width: 500px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        word-wrap: break-word;
-
+      max-width: 500px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
     }
 
     .onoffswitch {
-        position: relative;
-        width: 67px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
+      position: relative;
+      width: 67px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
     .onoffswitch-checkbox {
-        position: absolute;
-        opacity: 0;
-        pointer-events: none;
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .onoffswitch-label {
-        display: block;
-        overflow: hidden;
-        cursor: pointer;
-        border: 2px solid #999999;
-        border-radius: 20px;
+      display: block;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid #999999;
+      border-radius: 20px;
     }
 
     .onoffswitch-inner {
-        display: block;
-        width: 200%;
-        margin-left: -100%;
-        transition: margin 0.3s ease-in 0s;
+      display: block;
+      width: 200%;
+      margin-left: -100%;
+      transition: margin 0.3s ease-in 0s;
     }
 
     .onoffswitch-inner:before,
     .onoffswitch-inner:after {
-        display: block;
-        float: left;
-        width: 50%;
-        height: 20px;
-        padding: 0;
-        line-height: 20px;
-        font-size: 14px;
-        color: white;
-        font-family: Trebuchet, Arial, sans-serif;
-        font-weight: bold;
-        box-sizing: border-box;
+      display: block;
+      float: left;
+      width: 50%;
+      height: 20px;
+      padding: 0;
+      line-height: 20px;
+      font-size: 14px;
+      color: white;
+      font-family: Trebuchet, Arial, sans-serif;
+      font-weight: bold;
+      box-sizing: border-box;
     }
 
     .onoffswitch-inner:before {
-        content: "ON";
-        padding-left: 10px;
-        background-color: #34A7C1;
-        color: #FFFFFF;
+      content: "ON";
+      padding-left: 10px;
+      background-color: #34a7c1;
+      color: #ffffff;
     }
 
     .onoffswitch-inner:after {
-        content: "OFF";
-        padding-right: 10px;
-        background-color: #EEEEEE;
-        color: #999999;
-        text-align: right;
+      content: "OFF";
+      padding-right: 10px;
+      background-color: #eeeeee;
+      color: #999999;
+      text-align: right;
     }
 
     .onoffswitch-switch {
-        display: block;
-        width: 15px;
-        margin: 7.5px;
-        background: #FFFFFF;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 33px;
-        border: 2px solid #999999;
-        border-radius: 20px;
-        transition: all 0.3s ease-in 0s;
+      display: block;
+      width: 15px;
+      margin: 7.5px;
+      background: #ffffff;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 33px;
+      border: 2px solid #999999;
+      border-radius: 20px;
+      transition: all 0.3s ease-in 0s;
     }
 
-    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
-        margin-left: 0;
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+      margin-left: 0;
     }
 
-    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
-        right: 0px;
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+      right: 0px;
     }
-</style>
+  </style>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+  <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        {% include 'includes/topNavbar.html' %}
-        {% include 'includes/sideNavbar.html' %}
-        
-        <div class="content-wrapper" style="background-color: white;">
-            <!-- search and filter bar -->
-            <div class="container-fluid hidden-transition">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active shadow" aria-current="page" href="#"
-                            style="background-color: transparent;">Survey Analysis</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active shadow" aria-current="page" href="{% url 'survey_managment:years'%}"
-                            style="background-color: transparent;">Assesment</a>
-                    </li>
-                  
-                </ul>
-                <br>
-                <div class="row">
-                    <div class="card hidden-transition col-lg-5 ml-5" id="card1">
-                        <div class="card-body">
-                            <div class="d-flex align-items-top ">
-                                <div class="flex-fill">
-                                    <h5 class="d-block fw-semibold  mb-1">M & E System  Sets Assessment</h5>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="d-block ">
-                                            <div class=" counter"
-                                                style="font-size: x-large; text-align: center;"> 
-                                            </div>
-                                        </div>
-                                        <a class="btn btn-app"
-                                            style="background-color:  #a9dbc5;; border-radius: 10px;">
-                                            <i class="nav-icon fa-solid fa-building-columns" style="font-size: 30px;"></i>                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card hidden-transition col-lg-5 ml-5" id="card2">
-                        <div class="card-body">
-                            <div class="d-flex align-items-top ">
-                                <div class="flex-fill">
-                                    <h5 class="d-block fw-semibold  mb-1">M & E Knowledge/Skills  Sets Assessment</h5>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="d-block ">
-                                            <div class=" counter"
-                                                style="font-size: x-large; text-align: center;"> 
-                                            </div>
-                                        </div>
-                                        <a class="btn btn-app"
-                                            style="background-color:  #a9dbc5;; border-radius: 10px;">
-                                            <i class="fas fa-users" style="font-size: 30px;"></i>                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              
+      {% include 'includes/topNavbar.html' %} 
+      {% include 'includes/sideNavbar.html' %}
 
-                <div class="container-fluid" style="background-color: #b7e4c7;">
-                    <div class="container-fluid" id="searchArea">
-                        <!-- <h2 class="textS">Search Area</h2> -->
-                        <div class="row ">
-                            {%include "includes/select.html"%}
-                        </div>
+      <div class="content-wrapper" style="background-color: white">
+        <!-- search and filter bar -->
+        <div class="container-fluid hidden-transition">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a
+                class="nav-link active shadow"
+                aria-current="page"
+                href="#"
+                style="background-color: transparent"
+                >Survey Analysis</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active shadow"
+                aria-current="page"
+                href="{% url 'survey_managment:years'%}"
+                style="background-color: transparent"
+                >Assesment</a
+              >
+            </li>
+          </ul>
+          <br />
+          <div class="row">
+            <div class="card hidden-transition col-lg-5 ml-5" id="card1">
+              <div class="card-body">
+                <div class="d-flex align-items-top">
+                  <div class="flex-fill">
+                    <h5 class="d-block fw-semibold mb-1">
+                      M & E System Sets Assessment
+                    </h5>
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <div class="d-block">
+                        <div
+                          class="counter"
+                          style="font-size: x-large; text-align: center"
+                        ></div>
+                      </div>
+                      <a
+                        class="btn btn-app"
+                        style="background-color: #a9dbc5; border-radius: 10px"
+                      >
+                        <i
+                          class="nav-icon fa-solid fa-building-columns"
+                          style="font-size: 30px"
+                        ></i>
+                      </a>
                     </div>
+                  </div>
                 </div>
-
-                <br>
+              </div>
             </div>
-
-
-
-            <!-- table -->
-            <section class="content" style="display: none;" id="section1">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <div class="card hidden-transition">
-
-                                <div class="card-header" style="justify-content: space-between;">
-                                    <div class="card-title">
-                                        <div id="selected-survey"></div>
-                                    </div>
-
-                                    <button id="exportButton_2" class="btn btn-success">Export to Excel</button>
-
-                                </div>
-
-
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table text-nowrap table-hover border table-bordered"
-                                            id="general_Survey_Info">
-                                            <thead>
-                                                <th> Survey Name </th>
-                                                <th id="total_weight"> Total Weight </th>
-                                                <th id="total_answer"> Total Answer </th>
-                                                <th id="weighted_sum"> Weighted Sum </th>
-                                                <th> Average </th>
-
-
-
-                                            </thead>
-                                            <tbody id="tbody">
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-5">
-                            <figure class="highcharts-figure">
-                                <div id="container"></div>
-                                <p class="highcharts-description">
-                                </p>
-                            </figure>
-                        </div>
+            <div class="card hidden-transition col-lg-5 ml-5" id="card2">
+              <div class="card-body">
+                <div class="d-flex align-items-top">
+                  <div class="flex-fill">
+                    <h5 class="d-block fw-semibold mb-1">
+                      M & E Knowledge/Skills Sets Assessment
+                    </h5>
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <div class="d-block">
+                        <div
+                          class="counter"
+                          style="font-size: x-large; text-align: center"
+                        ></div>
+                      </div>
+                      <a
+                        class="btn btn-app"
+                        style="background-color: #a9dbc5; border-radius: 10px"
+                      >
+                        <i class="fas fa-users" style="font-size: 30px"></i>
+                      </a>
                     </div>
+                  </div>
                 </div>
-            </section>
-
-            <div class="card hidden-transition" style="display: none;" id="msg1">
-
-                <div class="card-header" style="justify-content: space-between;">
-
-                </div>
-                <div class="card-body" style="background-color: #94e299;">
-                    <p id="no_resonse_msg" style="text-align: center;"> </p>
-                </div>
-
+              </div>
             </div>
+          </div>
 
+          <div class="container-fluid" style="background-color: #b7e4c7">
+            <div class="container-fluid" id="searchArea">
+              <!-- <h2 class="textS">Search Area</h2> -->
+              <div class="row">{%include "includes/select.html"%}</div>
+            </div>
+          </div>
 
-
-            <!-- table -->
-            <section class="content" style="display: none;" id="section2">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card hidden-transition">
-                                <div class="card-header" style="justify-content: space-between;">
-                                    <div class="card-title">
-                                        <div id="selected-survey"></div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table text-nowrap table-hover border table-bordered"
-                                            id="survey_detail">
-                                            <thead>
-                                                <th> ጥያቄ</th>
-                                                <th> ደረጃ </th>
-                                                <th> ክብደት </th>
-
-                                                <th>የተመዘነ ደረጃ</th>
-                                                <th> በ100% ኛ </th>
-                                                <th> Grading </th>
-                                            </thead>
-                                            <tbody id="tbody">
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <figure class="highcharts-figure">
-                <div id="container111"></div>
-                <p class="highcharts-description">
-                </p>
-            </figure>
+          <br />
         </div>
+
+
+
+        <div class="card hidden-transition" style="display: none" id="msg1">
+          <div class="card-header" style="justify-content: space-between">
+          <div class="card-body" style="background-color: #94e299">
+            <p id="no_resonse_msg" style="text-align: center"></p>
+          </div>
+        </div>
+      </div>
+
+        <!-- table -->
+        <section class="content" style="display: none" id="section2">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card hidden-transition">
+                  <div
+                    class="card-header"
+                    style="justify-content: space-between"
+                  >
+                    <div class="card-title">
+                      <div id="selected-survey"></div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table
+                        class="table text-nowrap table-hover border table-bordered"
+                        id="survey_detail"
+                      >
+                        <thead>
+                          <th>ጥያቄ</th>
+                          <th>ደረጃ</th>
+                          <th>ክብደት</th>
+
+                          <th>የተመዘነ ደረጃ</th>
+                          <th>በ100% ኛ</th>
+                          <th>Grading</th>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <figure class="highcharts-figure">
+          <div id="container111"></div>
+          <p class="highcharts-description"></p>
+        </figure>
+
+
+        <div class="row">
+          <figure class="highcharts-figure col-sm-12 col-lg-12">
+              <div id="container01"></div>
+              <p class="highcharts-description">
+              </p>
+            </figure>
+            <figure class="highcharts-figure col-sm-12 col-lg-12">
+              <div id="container1"></div>
+              <p class="highcharts-description">
+              </p>
+            </figure>
+
+      </div>
+      </div>
     </div>
-{% include "includes/scripts.html" %}    
-<script>
-        var store_average = [];
-        var store_survey_name = [];
-        var ministry_info = [];
-        var surveyData = {};
-        var store_ministries = [];
-        var categories = [];
-        var surveyTypeInput = document.getElementById('survey_type');
-        // var surveyTableBody_1 = document.getElementById('surveyTable').getElementsByTagName('tbody')[0];
-        var surveyTableBody_2 = document.getElementById('survey_detail').getElementsByTagName('tbody')[0];
-        var surveyTableBody_3 = document.getElementById('general_Survey_Info').getElementsByTagName('tbody')[0];
-        var select_ministry = document.getElementById("ministry-select");
-        var selectElement = document.getElementById('survey-select');
-        var selectsection = document.getElementById("section-select");
-        var selectYear = document.getElementById("survey_year");
-        var myCheckbox = document.getElementById('myonoffswitch');
-        var option_table2 = document.getElementById('section1');
-        var option_table1 = document.getElementById('section2');
-        var column_chart = document.getElementById('container');
-        var card_msg = document.getElementById('msg1');
-        const button = document.getElementById('getSelectedValuesBtn');
-        let card1 = document.getElementById("card1");
-        let card2 = document.getElementById("card2");
-        function clearSelectOptions(selectElement) {
-  selectElement.innerHTML = "";
-}
-
-        fetch('http://127.0.0.1:8000/get_json/')
-            .then(res => res.json())
-            .then(data => {
-                categories = data.category;
-                // Populate the survey type options
-                data.survey_type.forEach(surveyType => {
-                    var emptyOption = document.createElement("option");
-                            emptyOption.value = "";
-                            emptyOption.text = "-- Select an option --";
-                    var option = document.createElement('option');
-                    option.value = surveyType.id;
-                    option.textContent = surveyType.name;
-                    surveyTypeInput.appendChild(option);
-                });
-// Function to select the option based on ID
-function selectOption(idtype) {
-    selectElement.value = idtype; 
-  // Set the value of the select element to the specified ID
-}
-
-                surveyTypeInput.addEventListener('change', function () {
-                    var selectedSurveyTypeId = parseInt(surveyTypeInput.value);
-
-                    selectYear.addEventListener('change', function () {
-                        clearSelectOptions(selectElement);
-                        var selectedYear = parseInt(selectYear.value);
-                        var emptyOption = document.createElement("option");
-                        emptyOption.value = "";
-                        emptyOption.text = "-- Select an option --";
-                        selectElement.appendChild(emptyOption); 
-
-                        if (selectedSurveyTypeId && selectedYear) {
-                            let Assesment = data.Assesment.filter(survey => survey.survey_type === selectedSurveyTypeId && new Date(survey.created_at).getFullYear() === selectedYear);
-                        Assesment.forEach(survey => {
-                            var option = document.createElement("option");
-                            var emptyOption = document.createElement("option");
-                        emptyOption.value = "";
-                        emptyOption.text = "-- Select Survey --";
-                            option.value = survey.id;
-                            option.textContent = survey.name;
-                            selectElement.appendChild(option);
-                        });
-                        let sections = [];
-                        selectElement.addEventListener('change', function() {
-  var selectedSurvey = selectElement.value;
-  clearSelectOptions(selectsection);
-  console.log('Selected survey:', selectedSurvey);
-
-  Assesment.forEach(survey => {
-    survey.section.forEach(section => {
-      let matchingSections = data.section.filter(function(element) {
-        return element.id === section;
-      });
-
-      let section_names = matchingSections.map(function(section) {
-        return section.name;
-      });
-
-      // Check if option already exists
-      let existingOption = selectsection.querySelector(`option[value="${section}"]`);
-      if(!existingOption) {
-        let option = document.createElement("option");
-        option.value = section;
-        option.textContent = section_names;
-        selectsection.appendChild(option);
+    {% include "includes/scripts.html" %}
+    <script>
+      var store_average = [];
+      var store_survey_name = [];
+      var ministry_info = [];
+      var surveyData = {};
+      var store_ministries = [];
+      var categories = [];
+      var surveyTypeInput = document.getElementById("survey_type");
+      var surveyTableBody_2 = document.getElementById("survey_detail").getElementsByTagName("tbody")[0];
+      var select_ministry = document.getElementById("ministry-select");
+      var selectElement = document.getElementById("survey-select");
+      var selectsection = document.getElementById("section-select");
+      var selectYear = document.getElementById("survey_year");
+      var myCheckbox = document.getElementById("myonoffswitch");
+      var option_table1 = document.getElementById("section2");
+      var column_chart = document.getElementById("container");
+      var card_msg = document.getElementById("msg1");
+      const button = document.getElementById("getSelectedValuesBtn");
+      let card1 = document.getElementById("card1");
+      let card2 = document.getElementById("card2");
+      function clearSelectOptions(selectElement) {
+        selectElement.innerHTML = "";
       }
-    });
-  });
-});
+      fetchData();
+      async function fetchData() {
+        try {
+          const response = await fetch("http://127.0.0.1:8000/get_json/");
+          if (!response.ok) {
+            throw new Error("Network response was not OK");
+          }
+          const data = await response.json();
+          await RandomGenerate(data);
+          data.survey_type.forEach((surveyType) => {
+            var emptyOption = document.createElement("option");
+            emptyOption.value = "";
+            emptyOption.text = "-- Select an option --";
+            var option = document.createElement("option");
+            option.value = surveyType.id;
+            option.textContent = surveyType.name;
+            surveyTypeInput.appendChild(option);
+          });
+          // Function to select the option based on ID
+          function selectOption(idtype) {
+            selectElement.value = idtype;
+            // Set the value of the select element to the specified ID
+          }
 
-let selectedSurveyId = parseInt(selectElement.value);
-selectsection.addEventListener("change", function () {
-  clearSelectOptions(select_ministry);
-  surveyTableBody_2.innerHTML = "";
-  // Add empty option
-  let emptyOption = document.createElement("option");
-  emptyOption.value = "";
-  emptyOption.textContent = "---Select Line Ministry---";
-  select_ministry.appendChild(emptyOption);
+          surveyTypeInput.addEventListener("change", function () {
+            var selectedSurveyTypeId = parseInt(surveyTypeInput.value);
 
-  Assesment.forEach((survey) => {
-    survey.for_line_ministry.forEach((ministry) => {
-      let matchingMinistry = data.line_ministry.filter(function (
-        element
-      ) {
-        return element.id === ministry;
-      });
+            selectYear.addEventListener("change", function () {
+              clearSelectOptions(selectElement);
+              var selectedYear = parseInt(selectYear.value);
+              var emptyOption = document.createElement("option");
+              emptyOption.value = "";
+              emptyOption.text = "-- Select an option --";
+              selectElement.appendChild(emptyOption);
 
-      let ministry_name = matchingMinistry.map(function (
-        ministry
-      ) {
-        return ministry.name;
-      });
+              if (selectedSurveyTypeId && selectedYear) {
+                let Assesment = data.Assesment.filter(
+                  (survey) =>
+                    survey.survey_type === selectedSurveyTypeId &&
+                    new Date(survey.created_at).getFullYear() === selectedYear
+                );
+                Assesment.forEach((survey) => {
+                  var option = document.createElement("option");
+                  var emptyOption = document.createElement("option");
+                  emptyOption.value = "";
+                  emptyOption.text = "-- Select Survey --";
+                  option.value = survey.id;
+                  option.textContent = survey.name;
+                  selectElement.appendChild(option);
+                });
+                let sections = [];
+                selectElement.addEventListener("change", function () {
+                  var selectedSurvey = selectElement.value;
+                  clearSelectOptions(selectsection);
+                  console.log("Selected survey:", selectedSurvey);
 
-      let option = document.createElement("option");
-      option.value = ministry;
-      option.textContent = ministry_name;
-      select_ministry.appendChild(option);
-    });
-  });
-});
-                        
+                  Assesment.forEach((survey) => {
+                    survey.section.forEach((section) => {
+                      let matchingSections = data.section.filter(function (
+                        element
+                      ) {
+                        return element.id === section;
+                      });
+
+                      let section_names = matchingSections.map(function (
+                        section
+                      ) {
+                        return section.name;
+                      });
+                      var emptyOption = document.createElement("option");
+                      emptyOption.value = "";
+                      emptyOption.text = "-- Select Section --";
+                      selectsection.appendChild(emptyOption);
+                      // Check if option already exists
+                      let existingOption = selectsection.querySelector(
+                        `option[value="${section}"]`
+                      );
+                      
+                      if (!existingOption) {
+                        let option = document.createElement("option");
+                        option.value = section;
+                        option.textContent = section_names;
+                        selectsection.appendChild(option);
+                      }
+                    });
+                  });
+                });
+
+                let selectedSurveyId = parseInt(selectElement.value);
+                selectsection.addEventListener("change", function () {
+                  clearSelectOptions(select_ministry);
+                  surveyTableBody_2.innerHTML = "";
+                  // Add empty option
+                  let emptyOption = document.createElement("option");
+                  emptyOption.value = "";
+                  emptyOption.textContent = "---Select Line Ministry---";
+                  select_ministry.appendChild(emptyOption);
+
+                  Assesment.forEach((survey) => {
+                    survey.for_line_ministry.forEach((ministry) => {
+                      let matchingMinistry = data.line_ministry.filter(
+                        function (element) {
+                          return element.id === ministry;
+                        }
+                      );
+
+                      let ministry_name = matchingMinistry.map(function (
+                        ministry
+                      ) {
+                        return ministry.name;
+                      });
+
+                      let option = document.createElement("option");
+                      option.value = ministry;
+                      option.textContent = ministry_name;
+                      select_ministry.appendChild(option);
+                    });
+                  });
+                });
+
                 select_ministry.addEventListener("change", function () {
-                    surveyTableBody_2.innerHTML = "";
-                    let categories = [];
-                    let dataforchart= [];
-                    let selectedSection = selectsection.value;
+                  surveyTableBody_2.innerHTML = "";
+                  let categories = [];
+                  let dataforchart = [];
+                  let selectedSection = selectsection.value;
                   console.log("Selected section:", selectedSection);
-                                    var selectedLineMinistry = parseInt(select_ministry.value);
-                                    user = null;
-                                    data.users.forEach(function (users) {
-                                        if (users.Line_ministry_id === selectedLineMinistry) {
-                                            user = users.id;
-                                            return;
-                                        }
-                                    });
-                                    var selectedUserResponses = data.user_response.filter(function (userResponse) {
-                                        console.log("userResponse.forsection" +  userResponse.forsection);
-                                        console.log("selectedSection" + selectedSection);
-                                        return userResponse.submitted_by_id === user && userResponse.forsection == selectedSection;
-                                    });
-                                    userResponseId = null
-                                    selectedUserResponses.forEach(function (userResponse) {
-                                        if (userResponse.submitted_by_id === user) {
-                                            userResponseId = userResponse.id;
-                                            return;
-                                        }
-                                    });
-                                console.log("selected user response "+ userResponseId);
-                                if (userResponseId !== null) {
-                                    let selectedSection = selectsection.value;
-                                    let selectedSurveyId = parseInt(selectElement.value);
+                  var selectedLineMinistry = parseInt(select_ministry.value);
+                  user = null;
+                  data.users.forEach(function (users) {
+                    if (users.Line_ministry_id === selectedLineMinistry) {
+                      user = users.id;
+                      return;
+                    }
+                  });
+                  var selectedUserResponses = data.user_response.filter(
+                    function (userResponse) {
+                      console.log(
+                        "userResponse.forsection" + userResponse.forsection
+                      );
+                      console.log("selectedSection" + selectedSection);
+                      return (
+                        userResponse.submitted_by_id === user &&
+                        userResponse.forsection == selectedSection
+                      );
+                    }
+                  );
+                  userResponseId = null;
+                  selectedUserResponses.forEach(function (userResponse) {
+                    if (userResponse.submitted_by_id === user && userResponse.status === 'approved') {
+                      userResponseId = userResponse.id;
+                      return;
+                    }
+                  });
+                  console.log("selected user response " + userResponseId);
+                  if (userResponseId !== null) {
+                    let selectedSection = selectsection.value;
+                    let selectedSurveyId = parseInt(selectElement.value);
 
-                                    let selectedSectionName = null;
-                                    let selectedSurveyName = null;   
+                    let selectedSectionName = null;
+                    let selectedSurveyName = null;
 
-                                    data.surveys.forEach(function (survey) {
-                                        if (survey.id == selectedSurveyId) {
-                                            selectedSurveyName = survey.name;
-                                            return;
-                                        }
-                                    });
-                                    data.section.forEach(function (section) {
-                                        if (section.id == selectedSection) {
-                                            selectedSectionName = section.name;
-                                            return;
-                                        }
-                                    });
-                                     card_msg.style.display = "none";
-                                        var answers = data.answer.filter(function (answer) {
-                                            return answer.response_id === userResponseId;
-                                        });
-                                        console.log(answers);
-                                        let answerValues = answers.map(function (answer) {
-                                            let questioncat = data.questions.find(function (q) {
-                                                return q.id === answer.forquestion_id;
-                                            });
-                                            return {
-                                                value: parseFloat(answer.answertext),
-                                                questionId: answer.forquestion_id ,
-                                                category : questioncat.category_id
-                                            };
-                                        });
-                                        
+                    data.surveys.forEach(function (survey) {
+                      if (survey.id == selectedSurveyId) {
+                        selectedSurveyName = survey.name;
+                        return;
+                      }
+                    });
+                    data.section.forEach(function (section) {
+                      if (section.id == selectedSection) {
+                        selectedSectionName = section.name;
+                        return;
+                      }
+                    });
+                    card_msg.style.display = "none";
+                    var answers = data.answer.filter(function (answer) {
+                      return answer.response_id === userResponseId;
+                    });
+                    console.log(answers);
+                    let answerValues = answers.map(function (answer) {
+                      let questioncat = data.questions.find(function (q) {
+                        return q.id === answer.forquestion_id;
+                      });
+                      return {
+                        value: parseFloat(answer.answertext),
+                        questionId: answer.forquestion_id,
+                        category: questioncat.category_id,
+                      };
+                    });
 
-                                        console.log("Hello");
-                                        console.log(answerValues);
-                                        var weightedSum = 0;
-                                        var totalWeight = 0;
-                                        var total_weightedinPercent = 0;
-                                        var count = 0;
-                                        var total_answer = 0;
-                                        var cat = data.category;
-                                        answerValues.forEach(function (answer) {
-                                            var question = data.questions.find(function (q) {
-                                                return q.id === answer.questionId;
-                                            });
-                                            categories.push(question.title);
+                    console.log("Hello");
+                    console.log(answerValues);
+                    var weightedSum = 0;
+                    var totalWeight = 0;
+                    var total_weightedinPercent = 0;
+                    var count = 0;
+                    var total_answer = 0;
+                    var cat = data.category;
+                    answerValues.forEach(function (answer) {
+                      var question = data.questions.find(function (q) {
+                        return q.id === answer.questionId;
+                      });
+                      categories.push(question.title);
 
-                                            if(question.category_id){
-                                                const categoryStats = {};
+                      if (question.category_id) {
+                        const categoryStats = {};
 
-answerValues.forEach(answer => {
-  const { value, category } = answer;
+                        answerValues.forEach((answer) => {
+                          const { value, category } = answer;
 
-  // Only process answers that have a category
-  if (category) {
-    if (!categoryStats[category]) {
-      categoryStats[category] = {
-        sum: value,
-        count: 1,
-      };
-    } else {
-      categoryStats[category].sum += value;
-      categoryStats[category].count++;
-    }
-  }
-});
+                          // Only process answers that have a category
+                          if (category) {
+                            if (!categoryStats[category]) {
+                              categoryStats[category] = {
+                                sum: value,
+                                count: 1,
+                              };
+                            } else {
+                              categoryStats[category].sum += value;
+                              categoryStats[category].count++;
+                            }
+                          }
+                        });
 
-Object.keys(categoryStats).forEach(category => {
-  const { sum, count } = categoryStats[category];
-  categoryStats[category].average = sum / count;
-  console.log("hello");
-  console.log(categoryStats[category].average);
-});
-                                                }
-                                                if(question.parent_id){
-                                             var childCatagories = cat.filter(function(cat){
-                                                return cat.id === question.parent_id;
-                                             });
-                                             console.log(childCatagories);
-                                                }
-                                            console.log(question);
-                                            if (question) {
-                                                var weight = question.weight;
-                                                var total_weight = 0
-                                                if (!isNaN(answer.value)) {
-                                                    weightedSum += answer.value * weight;
-                                                    totalWeight += weight;
-                                                    total_answer += answer.value;
-                                                }
-                                                var weighted__Sum = 0;
-                                                let categorystore = [];
-                                                if (totalWeight > 0) {
-                                                    var weightedAverage = weightedSum / totalWeight;
-                                                    var row = surveyTableBody_2.insertRow();
-                                                    var question_cell = row.insertCell();
-if (question.category_id) {
-  if (!categorystore.includes(question.category_id)) {
-    categorystore.push(question.category_id);
+                        Object.keys(categoryStats).forEach((category) => {
+                          const { sum, count } = categoryStats[category];
+                          categoryStats[category].average = sum / count;
+                          console.log("hello");
+                          console.log(categoryStats[category].average);
+                        });
+                      }
+                      if (question.parent_id) {
+                        var childCatagories = cat.filter(function (cat) {
+                          return cat.id === question.parent_id;
+                        });
+                        console.log(childCatagories);
+                      }
+                      console.log(question);
+                      if (question) {
+                        var weight = question.weight;
+                        var total_weight = 0;
+                        if (!isNaN(answer.value)) {
+                          weightedSum += answer.value * weight;
+                          totalWeight += weight;
+                          total_answer += answer.value;
+                        }
+                        var weighted__Sum = 0;
+                        let categorystore = [];
+                        if (totalWeight > 0) {
+                          var weightedAverage = weightedSum / totalWeight;
+                          var row = surveyTableBody_2.insertRow();
+                          var question_cell = row.insertCell();
+                          if (question.category_id) {
+                            if (!categorystore.includes(question.category_id)) {
+                              categorystore.push(question.category_id);
+                            }
+                          }
 
-  }
+                          question_cell.textContent = question.title;
+                          row.insertCell().textContent = answer.value;
+                          question_cell.classList.add("limited-width");
+                          row.insertCell().textContent = weight;
+                          row.insertCell().textContent = answer.value * weight;
+                          var totalresult = answer.value * weight;
+                          var max_value = 10;
+
+                          var weightedinPercent =
+                            (totalresult / (max_value * weight)) * 100;
+                          count++;
+                          total_weightedinPercent += weightedinPercent;
+
+                          row.insertCell().textContent =
+                            weightedinPercent + "%";
+                          var x = weightedinPercent;
+                          dataforchart.push(weightedinPercent);
+
+                          var newCell = row.insertCell();
+                          newCell.id = "Indicator";
+                          if (x >= 90) {
+                            newCell.textContent = " Very Good";
+                            newCell.style.backgroundColor = "#52B788";
+                          } else if (x >= 80) {
+                            newCell.textContent = "Good";
+                            newCell.style.backgroundColor = "#C2FA41";
+                          } else if (x >= 60) {
+                            newCell.textContent = "Satisfactory";
+                            newCell.style.backgroundColor = "#C1FA61";
+                          } else if (x >= 50) {
+                            newCell.textContent = "Poor";
+                            newCell.style.backgroundColor = "#FAEB41";
+                          } else if (x >= 40) {
+                            newCell.textContent = "Very Poor";
+                            newCell.style.backgroundColor = " #FA7D41";
+                          } else {
+                            newCell.textContent = "Extremely Poor";
+                            newCell.style.backgroundColor = "#FA7D41";
+                          }
+                          console.log(
+                            "Weighted average of answers: " +
+                              weightedAverage.toFixed(2)
+                          );
+                        } else {
+                          console.log(
+                            "No valid answers found for the selected line ministry."
+                          );
+                        }
+                      }
+                    });
+                    var totalRow = surveyTableBody_2.insertRow();
+                    var labelCell = totalRow.insertCell();
+                    labelCell.textContent = "Total";
+                    var valueCell = totalRow.insertCell();
+                    valueCell.textContent = total_answer;
+                    var weightCell = totalRow.insertCell();
+                    weightCell.textContent = totalWeight;
+                    var weightCell = totalRow.insertCell();
+                    weightCell.textContent = weightedSum;
+                    var averageCell = totalRow.insertCell();
+                    var average = total_weightedinPercent / count;
+                    averageCell.textContent = average.toFixed(2) + "%";
+                    surveyTableBody_2.appendChild(totalRow);
+                    option_table1.style.display = "block";
+                    console.log(categories);
+                    console.log(dataforchart);
+                    clearAndRedrawChart(
+                      selectedSurveyName,
+                      selectedSectionName,
+                      categories,
+                      dataforchart
+                    );
+                  } else {
+                    option_table1.style.display = "none";
+                    var h3Element = document.getElementById("no_resonse_msg");
+                    h3Element.textContent =
+                      "No user_response ID found for the selected line ministry.";
+                    card_msg.style.display = "block";
+                  }
+                });
+              }
+            });
+          });
+        } catch (error) {
+          console.log("Error:", error);
+        }
+      }
+      function clearAndRedrawChart(surveyname, sectionName, categories, data) {
+        Highcharts.chart("container111", {
+          chart: {
+            type: "bar",
+          },
+          title: {
+            text: surveyname,
+            align: "left",
+          },
+          subtitle: {
+            text: sectionName,
+            align: "left",
+          },
+          xAxis: {
+            categories: categories,
+            title: {
+              text: null,
+            },
+            gridLineWidth: 1,
+            lineWidth: 0,
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: "%",
+              align: "high",
+            },
+            labels: {
+              overflow: "justify",
+            },
+            gridLineWidth: 0,
+          },
+          tooltip: {
+            valueSuffix: " millions",
+          },
+          plotOptions: {
+            bar: {
+              borderRadius: "50%",
+              dataLabels: {
+                enabled: true,
+              },
+              groupPadding: 0.1,
+            },
+          },
+          legend: {
+            layout: "vertical",
+            align: "right",
+            verticalAlign: "top",
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor:
+              Highcharts.defaultOptions.legend.backgroundColor || "#FFFFFF",
+            shadow: true,
+          },
+          credits: {
+            enabled: false,
+          },
+          series: [
+            {
+              name: "",
+              data: data,
+            },
+          ],
+        });
+      }
+
+      function getRandomElement(array) {
+        return array[Math.floor(Math.random() * array.length)];
+      }
+      async function RandomGenerate(storedData) {
+        let categories = [];
+        let dataforchart = [];
+        let sectionName = null;
+        let ministryName = null;
+        let assessmentName = null;
+        if (storedData) {
+          let storedSection = [];
+          let assessmentData = [];
+          let allSelectedAssessmentObjs =storedData.Assesment;
+          allSelectedAssessmentObjs.forEach(assessment => {
+            let selectedAssessmentObj = storedData.Assesment.find(a => a.id === assessment.id);
+            assessmentData.push(selectedAssessmentObj);
+                    });
+                    
+          let selectedAssessmentObj1 = storedData.Assesment.find(assessment => assessment.id === allSelectedAssessmentObjs[1].id);
+          let currentYear = new Date().getFullYear();
+
+
+          assessmentData.forEach((selectedAssessmentObj1 ,index) => {
+            categories = [];
+            dataforchart = [];
+            sectionName = null;
+            ministryName = null;
+            assessmentName = null;
+            selectedAssessmentObj1.section.forEach(sectionId => {
+              let matchingSection = storedData.section.find(section => section.id === sectionId && new Date(section.created_at).getFullYear() === currentYear);
+              if (matchingSection) {
+                storedSection.push(matchingSection);
+              }
+            });
+          let storedMinistry = storedData.line_ministry;
+          let userResponseId = null;
+          while (!userResponseId) {
+            let randomSection = getRandomElement(storedSection);
+            let randomMinistry = getRandomElement(storedMinistry);
+
+            console.log("Random section:", randomSection.name);
+            console.log("Random Ministry:", randomMinistry.name);
+            sectionName =  randomSection.name;
+            ministryName = randomMinistry.name
+            let user = null;
+            storedData.users.forEach(function (users) {
+              if (users.Line_ministry_id === randomMinistry.id) {
+                user = users.id;
+                return;
+              }
+            });
+
+            let selectedUserResponses = storedData.user_response.filter(
+              function (userResponse) {
+                return (
+                  userResponse.submitted_by_id === user &&
+                  userResponse.forsection == randomSection.id
+                );
+              }
+            );
+
+            selectedUserResponses.forEach(function (userResponse) {
+              if (userResponse.submitted_by_id === user && userResponse.status === 'approved') {
+                userResponseId = userResponse.id;
+                return;
+              }
+            });
+
+            if (!userResponseId) {
+              console.log("No response found for the selected random values");
+            }
+          }
+
+          console.log("User response found:", userResponseId);
+          console.log("selected user response " + userResponseId);
+          if (userResponseId !== null) {
+            let selectedSection = selectsection.value;
+            let selectedSurveyId = parseInt(selectElement.value);
+
+            let selectedSectionName = null;
+            let selectedSurveyName = null;
+
+            storedData.surveys.forEach(function (survey) {
+              if (survey.id == selectedSurveyId) {
+                selectedSurveyName = survey.name;
+                return;
+              }
+            });
+            storedData.section.forEach(function (section) {
+              if (section.id == selectedSection) {
+                selectedSectionName = section.name;
+                return;
+              }
+            });
+            var answers = storedData.answer.filter(function (answer) {
+              return answer.response_id === userResponseId;
+            });
+            console.log(answers);
+            let answerValues = answers.map(function (answer) {
+              let questioncat = storedData.questions.find(function (q) {
+                return q.id === answer.forquestion_id;
+              });
+              return {
+                value: parseFloat(answer.answertext),
+                questionId: answer.forquestion_id,
+                category: questioncat.category_id,
+              };
+            });
+
+            console.log("Hello");
+            console.log(answerValues);
+            var weightedSum = 0;
+            var totalWeight = 0;
+            var total_weightedinPercent = 0;
+            var count = 0;
+            var total_answer = 0;
+            var cat = storedData.category;
+            answerValues.forEach(function (answer) {
+              var question = storedData.questions.find(function (q) {
+                return q.id === answer.questionId;
+              });
+              categories.push(question.title);
+
+              if (question.category_id) {
+                const categoryStats = {};
+
+                answerValues.forEach((answer) => {
+                  const { value, category } = answer;
+
+                  // Only process answers that have a category
+                  if (category) {
+                    if (!categoryStats[category]) {
+                      categoryStats[category] = {
+                        sum: value,
+                        count: 1,
+                      };
+                    } else {
+                      categoryStats[category].sum += value;
+                      categoryStats[category].count++;
+                    }
+                  }
+                });
+
+                Object.keys(categoryStats).forEach((category) => {
+                  const { sum, count } = categoryStats[category];
+                  categoryStats[category].average = sum / count;
+                  console.log("hello");
+                  console.log(categoryStats[category].average);
+                });
+              }
+              if (question.parent_id) {
+                var childCatagories = cat.filter(function (cat) {
+                  return cat.id === question.parent_id;
+                });
+                console.log(childCatagories);
+              }
+              console.log(question);
+              if (question) {
+                var weight = question.weight;
+                var total_weight = 0;
+                if (!isNaN(answer.value)) {
+                  weightedSum += answer.value * weight;
+                  totalWeight += weight;
+                  total_answer += answer.value;
+                }
+                var weighted__Sum = 0;
+                let categorystore = [];
+                if (totalWeight > 0) {
+                  var weightedAverage = weightedSum / totalWeight;
+                  if (question.category_id) {
+                    if (!categorystore.includes(question.category_id)) {
+                      categorystore.push(question.category_id);
+                    }
+                  }
+
+                  var totalresult = answer.value * weight;
+                  var max_value = 10;
+
+                  var weightedinPercent =
+                    (totalresult / (max_value * weight)) * 100;
+                  count++;
+                  total_weightedinPercent += weightedinPercent;
+                  dataforchart.push(weightedinPercent);
+
+                  
+                  console.log(
+                    "Weighted average of answers: " + weightedAverage.toFixed(2)
+                  );
+                } else {
+                  console.log(
+                    "No valid answers found for the selected line ministry."
+                  );
+                }
+              }
+            });
+            option_table1.style.display = "none";
+            console.log(categories);
+            console.log(dataforchart); 
+            if(index==0){
+              RandomGraph(categories ,dataforchart,sectionName,ministryName,selectedAssessmentObj1.name,'container01'); 
+            }
+else{
+  RandomGraph(categories ,dataforchart,sectionName,ministryName,selectedAssessmentObj1.name,'container1');
 }
 
-                                                    question_cell.textContent = question.title;                                                    row.insertCell().textContent = answer.value;
-                                                    question_cell.classList.add('limited-width');
-                                                    row.insertCell().textContent = weight;
-                                                    row.insertCell().textContent = answer.value * weight;
-                                                    var totalresult = answer.value * weight
-                                                    var max_value = 10;
-
-                                                    var weightedinPercent = ((totalresult) / (max_value * weight)) * 100;
-                                                    count++;
-                                                    total_weightedinPercent += weightedinPercent;
-
-                                                    row.insertCell().textContent = weightedinPercent + "%";
-                                                    var x = weightedinPercent;
-                                                    dataforchart.push(weightedinPercent);
-
-                                                    var newCell = row.insertCell();
-                                                    newCell.id = 'Indicator';
-                                                    if (x >= 90) {
-                                                        newCell.textContent = " Very Good";
-                                                        newCell.style.backgroundColor = "#52B788";
-                                                    } else if (x >= 80) {
-                                                        newCell.textContent = "Good";
-                                                        newCell.style.backgroundColor = "#C2FA41";
-                                                    } else if (x >= 60) {
-                                                        newCell.textContent = "Satisfactory";
-                                                        newCell.style.backgroundColor = "#C1FA61";
-                                                    } else if (x >= 50) {
-                                                        newCell.textContent = "Poor";
-                                                        newCell.style.backgroundColor = "#FAEB41";
-                                                    } else if (x >= 40) {
-                                                        newCell.textContent = "Very Poor";
-                                                        newCell.style.backgroundColor = " #FA7D41";
-                                                    } else {
-                                                        newCell.textContent = "Extremely Poor";
-                                                        newCell.style.backgroundColor = "#FA7D41";
-                                                    }
-                                                    console.log("Weighted average of answers: " + weightedAverage.toFixed(2));
-                                                } else {
-                                                    console.log("No valid answers found for the selected line ministry.");
-                                                }
-                                            }
-                                        });
-                                        var totalRow = surveyTableBody_2.insertRow();
-                                        var labelCell = totalRow.insertCell();
-                                        labelCell.textContent = 'Total';
-                                        var valueCell = totalRow.insertCell();
-                                        valueCell.textContent = total_answer;
-                                        var weightCell = totalRow.insertCell();
-                                        weightCell.textContent = totalWeight;
-                                        var weightCell = totalRow.insertCell();
-                                        weightCell.textContent = weightedSum;
-                                        var averageCell = totalRow.insertCell();
-                                        var average = total_weightedinPercent / count;
-                                        averageCell.textContent = average.toFixed(2) + "%";
-                                        surveyTableBody_2.appendChild(totalRow);
-                                        option_table1.style.display = "block";
-                                        console.log(categories);
-                                        console.log(dataforchart);
-                                        clearAndRedrawChart(selectedSurveyName,selectedSectionName,categories,dataforchart);
-                                    }
-                                    else {
-                                        option_table1.style.display = "none";
-                                        var h3Element = document.getElementById("no_resonse_msg");
-                                        h3Element.textContent = 'No user_response ID found for the selected line ministry.';
-                                        card_msg.style.display = "block";
-                                    }  
-                                                           });
-
-                                                           
-            }
-        });
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-            function clearAndRedrawChart(surveyname,sectionName,categories,data){
-            Highcharts.chart('container111', {
+          }
+        }); 
+      }
+      }
+function RandomGraph(categories ,dataforchart,randomSection,randomMinistry,assessmentName,graph){
+  Highcharts.chart(graph, {
     chart: {
         type: 'bar'
     },
     title: {
-        text: surveyname,
+        text: assessmentName,
         align: 'left'
     },
     subtitle: {
-        text: sectionName,
+        text:  randomSection + " ," + randomMinistry ,
         align: 'left'
     },
     xAxis: {
@@ -654,7 +946,7 @@ if (question.category_id) {
         gridLineWidth: 0
     },
     tooltip: {
-        valueSuffix: ' millions'
+        valueSuffix: ' Percent(%)'
     },
     plotOptions: {
         bar: {
@@ -682,12 +974,11 @@ if (question.category_id) {
     },
     series: [{
         name: '',
-        data: data
+        data: dataforchart
     }]
 });
-            }
-</script>
+}
 
-</body>
-
+    </script>
+  </body>
 </html>
