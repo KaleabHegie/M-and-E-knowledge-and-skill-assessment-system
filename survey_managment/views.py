@@ -946,7 +946,7 @@ def greetingpage_view(request):
         contact.status = 'inbox'
         line_ministry = request.user.Line_ministry
         user = request.user 
-        user = CustomUser.objects.get(username = user)
+        user = CustomUser.objects.get(email = user)
     
 
         # Save the new object to the database
@@ -1065,7 +1065,7 @@ def questionForSurvey(request, id):
 def recomended_survey_list(request , survey_id):
     today = date.today()
     user = request.user 
-    user = CustomUser.objects.get(username = user)
+    user = CustomUser.objects.get(email = user)
     line_ministry = request.user.Line_ministry
     print(user)
     print(line_ministry)

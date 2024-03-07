@@ -34,13 +34,14 @@
           <h1 class="text-center text-info m-3"> Pending Responses </h1>
                        
           {% if user_responses %}
-            <table class="table table-striped table-hover success">
+            <table class="table table-striped table-hover table-responsive success">
               <thead>
                 <tr>
                   <th>Response by</th>
                   <th>Submitted at</th>
                   <th>Line ministry </th>
                   <th>For section </th>
+                  <th>Statues </th>
                 </tr>
               </thead>
               <tbody>
@@ -50,6 +51,7 @@
                     <td>{{ response.submitted_at }}</td>
                     <td>{{ response.submitted_by.Line_ministry }}</td>
                     <td>{{ response.forsection }}</td>
+                    <td>{{ response.status }}</td>
                   </tr>
                 {% endfor %}
               </tbody>

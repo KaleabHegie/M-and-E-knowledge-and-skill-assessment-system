@@ -115,7 +115,7 @@
                 aria-current="page"
                 href="#"
                 style="background-color: transparent"
-                >Survey Analysis</a>
+                >Random Analysis</a>
             </li>
             <li class="nav-item">
               <a
@@ -123,12 +123,21 @@
                 aria-current="page"
                 href="{% url 'survey_managment:years'%}"
                 style="background-color: transparent"
-                >Assesment</a
+                >Assesments By Year </a
               >
             </li>
           </ul>
           <br />
-         
+          <figure class="highcharts-figure col-sm-12 col-lg-12">
+            <div id="container01"></div>
+            <p class="highcharts-description">
+            </p>
+          </figure>
+          <figure class="highcharts-figure col-sm-12 col-lg-12">
+            <div id="container1"></div>
+            <p class="highcharts-description">
+            </p>
+          </figure>
 
           <div class="container-fluid" style="background-color: #b7e4c7">
             <div class="container-fluid" id="searchArea">
@@ -136,12 +145,8 @@
               <div class="row">{%include "includes/select.html"%}</div>
             </div>
           </div>
-
           <br />
         </div>
-
-
-
         <div class="card hidden-transition" style="display: none" id="msg1">
           <div class="card-header" style="justify-content: space-between">
           <div class="card-body" style="background-color: #94e299">
@@ -196,17 +201,7 @@
 
 
        
-          <figure class="highcharts-figure col-sm-12 col-lg-12">
-              <div id="container01"></div>
-              <p class="highcharts-description">
-              </p>
-            </figure>
-            <figure class="highcharts-figure col-sm-12 col-lg-12">
-              <div id="container1"></div>
-              <p class="highcharts-description">
-              </p>
-            </figure>
-
+          
      
       </div>
     </div>
