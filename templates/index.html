@@ -1,0 +1,675 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% include "includes/head.html" %}
+
+<link rel="stylesheet" href="https://github.com/downloads/lafeber/world-flags-sprite/flags16.css" />
+
+<style>
+    .nav-tabs>.nav-item>a {
+        color:#208c5c;
+    }
+
+    .truncate-text {
+    max-width: 150px; /* Adjust the maximum width as needed */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    }
+
+    canvas {
+      max-width: 200px; /* Set a maximum width for the chart canvas */
+    }
+
+    .highcharts-tooltip > span {
+    background: white;
+    border: 1px solid silver;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px #888;
+    padding: 8px;
+    }
+
+    .limited-width {
+        max-width: 500px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+
+    }
+
+    .onoffswitch {
+        position: relative;
+        width: 67px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .onoffswitch-checkbox {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .onoffswitch-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #999999;
+        border-radius: 20px;
+    }
+
+    .onoffswitch-inner {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-inner:before,
+    .onoffswitch-inner:after {
+        display: block;
+        float: left;
+        width: 50%;
+        height: 20px;
+        padding: 0;
+        line-height: 20px;
+        font-size: 14px;
+        color: white;
+        font-family: Trebuchet, Arial, sans-serif;
+        font-weight: bold;
+        box-sizing: border-box;
+    }
+
+    .onoffswitch-inner:before {
+        content: "ON";
+        padding-left: 10px;
+        background-color: #34A7C1;
+        color: #FFFFFF;
+    }
+
+    .onoffswitch-inner:after {
+        content: "OFF";
+        padding-right: 10px;
+        background-color: #EEEEEE;
+        color: #999999;
+        text-align: right;
+    }
+
+    .onoffswitch-switch {
+        display: block;
+        width: 15px;
+        margin: 7.5px;
+        background: #FFFFFF;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 33px;
+        border: 2px solid #999999;
+        border-radius: 20px;
+        transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+        margin-left: 0;
+    }
+
+    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+        right: 0px;
+    }
+</style>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        {% include 'includes/loader.html' %}
+        {% include 'includes/topNavbar.html' %}
+        {% include 'includes/sideNavbar.html' %}
+        
+        <div class="content-wrapper" style="background-color: white">
+            <ul class="nav nav-tabs" style="margin: 10px; justify-content: center;">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#"
+                        style="background-color: transparent;">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" 
+                    href="{% url 'survey_managment:filter' %}"
+                    style="background-color: transparent;" >Filter</a>
+                </li>
+                {% comment %} <li class="nav-item">
+                    <a class="nav-link" aria-current="page"  href="{% url 'survey_managment:average' %}"
+                    style="background-color: transparent;">Average</a>
+                </li> {% endcomment %}
+            </ul>
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row" style="margin: auto;">
+                        <div class="card hidden-transition col-lg-5 m-2">
+                            <div class="card-body">
+                                <div class="d-flex align-items-top ">
+                                    <div class="flex-fill">
+                                        <h5 class="d-block fw-semibold  mb-1">Total - Survey</h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-block ">
+                                                <div class="fw-semibold counter"
+                                                    style="font-size: x-large; text-align: center;">
+                                                    {{surveys_count}} </div>
+                                                <a href="{% url 'survey_managment:survey' %}"
+                                                    class="nav-link text-primary">
+                                                    View All
+                                                    <i class="bi bi-arrow-right-circle"></i>
+                                                </a>
+                                            </div>
+                                            <a class="btn btn-app"
+                                                style="background-color: #68c4fc; border-radius: 10px;">
+                                                <i class=" bi bi-file-earmark-text bi-main"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card hidden-transition col-lg-5 m-2">
+                            <div class="card-body">
+                                <div class="d-flex align-items-top ">
+                                    <div class="flex-fill">
+                                        <h5 class="d-block fw-semibold  mb-1"> Questions </h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-block ">
+                                                <div class=" counter"
+                                                    style="font-size: x-large; text-align: center;"> {{questions}}
+                                                </div>
+                                                <a href="" class="nav-link" style="color: #208c5c;">
+                                                    View All
+                                                    <i class="bi bi-arrow-right-circle"></i>
+                                                </a>
+                                            </div>
+                                            <a class="btn btn-app"
+                                                style="background-color: #996888; border-radius: 10px;">
+                                                <i class="bi bi-journals bi-main"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card hidden-transition col-lg-5 m-2">
+                            <div class="card-body">
+                                <div class="d-flex align-items-top ">
+                                    <div class="flex-fill">
+                                        <h5 class="d-block fw-semibold  mb-1"> Approved Responses </h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-block ">
+                                                <div class=" counter"
+                                                    style="font-size: x-large; text-align: center;"> {{Response}}
+                                                </div>
+                                                <a href="" class="nav-link " style="color: #7ae582;">
+                                                    View All
+                                                    <i class="bi bi-arrow-right-circle"></i>
+                                                </a>
+                                            </div>
+                                            <a class="btn btn-app"
+                                                style="background-color: #7ae582; border-radius: 10px;">
+                                                <i class="bi bi-card-checklist bi-main"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card hidden-transition col-lg-5 m-2">
+                            <div class="card-body">
+                                <div class="d-flex align-items-top ">
+                                    <div class="flex-fill">
+                                        <h5 class="d-block fw-semibold  mb-1">Pending Responses </h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-block ">
+                                                <div class=" counter"
+                                                    style="font-size: x-large; text-align: center;"> {{Response}}
+                                                </div>
+                                                <a href="" class="nav-link " style="color: #d18d4f;">
+                                                    View All
+                                                    <i class="bi bi-arrow-right-circle"></i>
+                                                </a>
+                                            </div>
+                                            <a class="btn btn-app"
+                                                style="background-color: #d18d4f; border-radius: 10px;">
+                                                <i class="bi bi-card-checklist bi-main"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="text-center mt-3"> Monitoring and Evaluation system and capacity performance Index </h4>
+                        <div class="form-group d-flex justify-content-center mt-4">
+                            <select class="select2" id="LMselect" multiple="multiple" data-placeholder="Select line Ministry" style="width: 50%;">
+                                {% for i in line_ministries %}
+                                    <option value="{{i.id}}"> {{i.name}} </option>
+                                {% endfor %}
+                            </select>
+                        </div>          
+                        
+                            <div id="messageContainer" class="mt-5 mb-5">
+                                <p class="text-center">Please select Line Ministry to view analysis.</p>
+                            </div>
+                            <!-- graphs -->
+                            <div id="graphsContainer"></div>
+            
+            
+                        <!-- tables -->
+                           <div class="container-fluid row" >
+                                <!-- M&E System -->
+                                <div class="col-lg-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="sysEval">
+                                            <thead>
+                                                <tr>
+                                                  <th scope="col">Domains of M&E System</th>
+                                                  <th scope="col"> Average </th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                {% if SystemAssessmentSections %}
+                                                    {% for j in SystemAssessmentSections %}
+                                                    <tr>
+                                                        <td class="sysSection"> {{j.name}} </td>
+                                                        <td class="sysVal text-center"> - </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                              </tbody>
+                                              <caption id="sysTotal"> Total : </caption>
+                                        </table>
+                                      </div>
+                                </div>
+            
+                                <!-- Skill Assesment -->
+                                <div class="col-lg-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="skillEval">
+                                            <thead>
+                                                <tr>
+                                                  <th scope="col">Domains of M&E Skill</th>
+                                                  <th scope="col">Average</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                {% if SkillAssessmentSections %}
+                                                    {% for x in SkillAssessmentSections %}
+                                                    <tr>
+                                                        <td class="skillSection"> {{x.name}} </td>
+                                                        <td class="skillVal text-center"> - </td>
+                                                    </tr> 
+                                                    {% endfor %}
+                                                {% endif %}
+                                              </tbody>
+                                              <caption id="skillTotal"> Total : </caption>
+                                        </table>
+                                      </div>
+                                </div>
+                           </div>
+                    </div>
+                </div>      
+                </div>
+         </div>
+
+         
+    </div>
+
+
+
+    {% include "includes/scripts.html" %}
+    <script>
+        $(function () { $('[data-bs-toggle="tooltip"]').tooltip() })
+    </script>
+    <script>
+
+        new DataTable('#surveys', {
+            order: [[2, 'asc']],
+            rowGroup: {
+                dataSrc: 2
+            }
+        });
+        
+    </script>
+  <script>
+    // assesment names 
+const sysEval = document.getElementById('sysEval') // table 1
+const skillEval = document.getElementById('skillEval') // table 2
+
+const sysSection = document.querySelectorAll('.sysSection') // sections of table 1
+const sysSections = getSections(sysSection) // get sections
+const sysValElements = document.querySelectorAll('.sysVal') // td that hold avg of each section
+
+const skillSection = document.querySelectorAll('.skillSection') // sections of table 2
+const skillSections = getSections(skillSection)
+const skillValElements  = document.querySelectorAll('.skillVal') // td that hold avg of each section
+
+const sysTotal = document.getElementById('sysTotal') // avg for the graph
+const skillTotal = document.getElementById('skillTotal')
+
+// const messageContainer = document.getElementById("messageContainer");
+// const graphs = document.getElementById('graphs')
+
+//  for storing the chart instances
+let chart1 = null;
+let chart2 = null;
+
+function getSections(TDs){
+    const sections = [] 
+    for (let i = 0; i < TDs.length; i++) {
+        sections.push(TDs[i].textContent)
+    }
+    return sections
+}
+
+
+// Function to reset the charts and colors
+function resetCharts() {
+    if (chart1) {
+        chart1.destroy();
+        chart1 = null;
+    }
+    if (chart2) {
+        chart2.destroy();
+        chart2 = null;
+    }
+
+    sysValElements.forEach((element) => {
+        element.textContent = '-';
+        element.style.backgroundColor = '';
+    });
+
+    skillValElements.forEach((element) => {
+        element.textContent = '-';
+        element.style.backgroundColor = '';
+    });
+
+    sysTotal.textContent = '';
+    skillTotal.textContent = '';
+}
+
+
+
+$('#LMselect').select2().on('change',function(e){
+        // const selectedMinistries = Array.from(LMselect.options)
+        //     .filter(option => option.selected)
+        //     .map(option => option.value);
+        const selectedMinistries = $('#LMselect').val();
+        console.log(selectedMinistries)
+
+    if (selectedMinistries === null || selectedMinistries.length === 0) {
+        // Selection is empty
+        resetCharts();
+        // No selected ministries, show the message container and hide the graphs container
+        document.getElementById('messageContainer').style.display = 'block';
+        document.getElementById('graphsContainer').innerHTML = '';
+
+    } else{
+        document.getElementById('messageContainer').style.display = 'none';
+        // Create the graphs container
+        const graphsContainer = document.getElementById('graphsContainer');
+        graphsContainer.innerHTML = `
+            <div class="container row d-flex justify-content-center">
+                <div class="col-lg-6 col-md-6 text-center">
+                    <figure class="highcharts-figure">
+                        <div id="container1" style="height: 250px; width: auto;"></div>
+                    </figure>
+                </div>
+                <div class="col-lg-6 col-md-6 text-center">
+                    <figure class="highcharts-figure">
+                        <div id="container2" style="height: 250px; width: auto;"></div>
+                    </figure>
+                </div>
+            </div>
+        `;
+    }
+
+   let total_avg = 0 
+   let SkillResult = 0 // for the chart
+   let SysResult = 0 // for the chart
+ 
+fetch('http://127.0.0.1:8000/get_json/')
+            .then(res => res.json())
+            .then(data => {
+
+            
+
+        function getAVG(zAssessmentSections, ValElements, forTotal){
+            if(selectedMinistries !== null  && zAssessmentSections.length > 0 ){
+                let totalSumAvg = []
+                for (let i = 0; i < zAssessmentSections.length; i++) {
+                    let totalSum = 0
+                    
+                    let sectionName = zAssessmentSections[i].trim();
+                    const zsection = data.section.find(sect => sect.name === sectionName); // Find the section by name
+                    let sectionId = null
+                    if (zsection) {
+                        sectionId = zsection.id; // Get the id of the section
+                    }
+                    
+
+                    console.log(zAssessmentSections[i])
+
+                    // hold each section's 
+                    for (let j = 0; j < selectedMinistries.length; j++) {
+                        const lineMinistryId = selectedMinistries[j];
+                        let sum = 0;
+                        // Filter user responses based on line ministry and section
+                        const filteredResponse = data.user_response.find(response => response.forsection === sectionId && response.submitted_by_id == lineMinistryId);
+                        
+
+
+                        let Sum = 0;
+                        if(filteredResponse){
+                            // get the answers for the response
+                            const filteredResponseID = filteredResponse.id
+                            const zAnswers = data.answer.filter(ans => ans.response_id == filteredResponseID)
+                            //console.log(filteredResponse)
+                            // console.log(zAnswers)
+                            
+                            
+                            if(zAnswers){
+                                for(let j=0; j < zAnswers.length; j++){
+                                  const answerText = zAnswers[j].answertext
+                                  const numericValue = parseInt(answerText, 10); // Convert text to a numeric value
+                                  
+                                  // answers may be non numeric
+                                  if (!isNaN(numericValue)) {
+                                      Sum += numericValue;
+                                   }
+                                }
+                            }
+                        }
+                        console.log(Sum)
+                        totalSum += Sum
+                        
+                    }     
+                    console.log('total sum by section ' + totalSum)
+
+
+                    const average = selectedMinistries.length > 0 ? totalSum / selectedMinistries.length : 0;
+                     console.log(`Average: ${average}`);
+
+                       // Update the value of each skillVal element with the calculated average
+                        
+
+
+                     totalSumAvg.push(average)
+                }
+                console.log(totalSumAvg)
+
+                ValElements.forEach((element, index) => {
+                    element.textContent = totalSumAvg[index];
+                });
+
+                let sumOfAvgs = 0 // avg of avgs
+                
+                for (let i = 0; i < totalSumAvg.length; i++) {
+                    sumOfAvgs += totalSumAvg[i];
+                }
+
+                total_avg = totalSumAvg.length > 0 ? sumOfAvgs/totalSumAvg.length : 0;
+                console.log('total avg of avg == ' + total_avg )
+                forTotal.textContent = `Total : ${total_avg}`
+                return total_avg
+            }
+            else{
+                ValElements.forEach((element) => {
+                    element.textContent = '-'
+                });
+            }
+        }
+
+     
+        SkillResult = getAVG(skillSections,skillValElements, skillTotal ) 
+           SysResult = getAVG(sysSections, sysValElements, sysTotal) 
+           console.log('sys ' + SysResult + ' skill '+ SkillResult)
+
+//  messageContainer.style.display = "none";
+//  graphs.style.visibility='visible'
+
+if (chart1) {
+chart1.destroy();
+}
+if (chart2) {
+chart2.destroy();
+}
+
+var startAngle = -90;
+if(SysResult){
+var data1 = SysResult;
+var endAngle1 = (data1/100 * 180) + startAngle;
+endAngle1 = endAngle1 == 0 ? 0.01 : endAngle1;
+
+chart1 = Highcharts.chart('container1', {
+chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+},
+title: {
+    text:'M&E System Performance Index',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 75
+},
+tooltip: {
+    pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+},
+plotOptions: {
+pie: {
+    dataLabels: {
+        enabled: true,
+        distance: -50,
+        style: {
+            fontWeight: 'bold',
+            color: 'white'
+        }
+    },
+    startAngle: startAngle,
+    endAngle: endAngle1,
+    center: ['50%', '55%'],
+    size: '120%'
+}
+},
+series: [{
+    type: 'pie',
+    name: 'Average Performance',
+    innerSize: '50%',
+    data: [
+        ['',   data1]   
+    ]
+}]
+});
+}
+
+
+if(SkillResult){
+var data2 = SkillResult;
+var endAngle2 = (data2/100 * 180) + startAngle;
+endAngle2 = endAngle2 == 0 ? 0.01 : endAngle2;
+
+chart2 = Highcharts.chart('container2', {
+chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+},
+title: {
+    text:'M&E Capacity Performance Index',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 75
+},
+tooltip: {
+    pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+},
+plotOptions: {
+pie: {
+    dataLabels: {
+        enabled: true,
+        distance: -50,
+        style: {
+            fontWeight: 'bold',
+            color: 'white'
+        }
+    },
+    startAngle: startAngle,
+    endAngle: endAngle2,
+    center: ['50%', '55%'],
+    size: '120%'
+}
+},
+series: [{
+    type: 'pie',
+    name: 'Average Capacity',
+    innerSize: '50%',
+    data: [
+        ['',   data2]   
+    ]
+}]
+});
+}
+
+
+
+
+           // set color of avgs
+        function setColor(avgS){
+            avgS.forEach((td)=>{
+                if( td.textContent <= 50 )
+                    td.style.backgroundColor = 'red';
+                else if( td.textContent <= 70 ) 
+                    td.style.backgroundColor = 'yellow';
+                else if( td.textContent <= 100 )
+                    td.style.backgroundColor = 'green';
+                else
+                    td.style.backgroundColor = 'none';
+            } )
+        }
+
+        if(skillValElements && sysValElements){
+            setColor(skillValElements)
+            setColor(sysValElements) 
+        }
+    })
+})
+
+
+
+
+</script>
+
+</body>
+
+</html>

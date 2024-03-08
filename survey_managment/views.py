@@ -25,8 +25,51 @@ import json
 def new_page(request):
     return render(request,'new_create.html')
 
+
+
+def dashboard2(request):
+    line_ministries = Line_ministry.objects.all()
+    SystemAssessment = Assesment.objects.filter(name = 'M&E Knowledge/Skills Sets Assessment' ) # 'M&E System Assessment'
+    SkillAssesment = Assesment.objects.filter(name = 'M&E System Sets Assessment') #M&E Knowledge and skill set Assessment
+
+    SystemAssessmentSections = []
+    SkillAssessmentSections = []
+
+    if SystemAssessment:
+        for assessment in SystemAssessment:
+                sections = assessment.section.all()
+                SystemAssessmentSections.extend(sections) 
+    if SkillAssesment:
+        for assessment in SkillAssesment:
+                sections = assessment.section.all()
+                SkillAssessmentSections.extend(sections) 
+
+    # print(SystemAssessmentSections)
+    context = {'line_ministries' : line_ministries,
+               'SystemAssessmentSections' : SystemAssessmentSections,
+               'SkillAssessmentSections' : SkillAssessmentSections,
+                }
+    return render(request, 'dashboard2.html', context)
+
+
 @login_required
 def indexView(request):
+    line_ministries = Line_ministry.objects.all()
+    SystemAssessment = Assesment.objects.filter(name = 'M&E Knowledge/Skills Sets Assessment' ) 
+    SkillAssesment = Assesment.objects.filter(name = 'M&E System Sets Assessment') 
+
+    SystemAssessmentSections = []
+    SkillAssessmentSections = []
+
+    if SystemAssessment:
+        for assessment in SystemAssessment:
+                sections = assessment.section.all()
+                SystemAssessmentSections.extend(sections) 
+    if SkillAssesment:
+        for assessment in SkillAssesment:
+                sections = assessment.section.all()
+                SkillAssessmentSections.extend(sections) 
+
     survey_id = request.GET.get('survey_id')
     if survey_id:
         survey = get_object_or_404(Section, id=survey_id)
@@ -54,7 +97,10 @@ def indexView(request):
 
 
         context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
-             'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years, 'Assesment':assesment}
+             'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years, 'Assesment':assesment,
+             'line_ministries' : line_ministries,
+               'SystemAssessmentSections' : SystemAssessmentSections,
+               'SkillAssessmentSections' : SkillAssessmentSections,}
       
         return render(request, 'index.html', context)
 
@@ -502,11 +548,17 @@ def line_ministrys(request):
 @login_required
 def line_ministry_detail(request , id):
     line_ministry = Line_ministry.objects.get(id = id)
-    minister = CustomUser.objects.get(Line_ministry=line_ministry) 
+    minister = CustomUser.objects.filter(Line_ministry=line_ministry).first() # Use filter() instead of get() to handle the case when no user is found
+
+    if minister:
+        user_response = UserResponse.objects.filter(submitted_by=minister)
+    else:
+        user_response = []
     data = {
         "survey" : Section.objects.filter(assesment = id),
-        "user_responses" : UserResponse.objects.filter(submitted_by = minister ),
-        "line_ministry":line_ministry
+        "user_responses" : user_response,
+        "line_ministry":line_ministry,
+        'minister' : minister
     }
     return render(request , 'line_ministry_detail.html' , data)
 
@@ -554,7 +606,7 @@ def user_response(request, id, response_id):
               'answers': answers,
               'response_id' : response_id
                 }
-        return render(request, 'user_response.html', data)
+        return redirect('survey_managment:pending_response')
        
      if 'done' in request.POST:
         survey = get_object_or_404(Section, id=id)
@@ -858,6 +910,8 @@ def sections(request , survey_id):
         }
     return render(request, 'Section.html', data)
 
+
+
 @login_required
 def sectionCreation(request , survey_id):
     assesment = Assesment.objects.get(id=survey_id)
@@ -865,9 +919,9 @@ def sectionCreation(request , survey_id):
         form =SectionForm(request.POST)
         if form.is_valid():
             section = form.save() 
-            section.assesment.add(assesment)
-            print(section.id)  # Check if the object has been saved to the database
-            return redirect('survey_managment:sections', survey_id=section.id )  # Pass the survey ID to the success page
+            assesment.section.add(section)
+            
+            return redirect('survey_managment:sections', survey_id=assesment.id )  # Pass the survey ID to the success page
         else:
             print(form.errors)  # Print any validation errors
     else:
@@ -878,7 +932,7 @@ def sectionCreation(request , survey_id):
 def greetingpage_view(request):
     
     user = request.user 
-    user = CustomUser.objects.get(username = user)
+    user = CustomUser.objects.get(email = user)
     line_ministry = request.user.Line_ministry
     if request.method == 'POST':
         # Create a new instance of the ContactUs model
@@ -892,7 +946,7 @@ def greetingpage_view(request):
         contact.status = 'inbox'
         line_ministry = request.user.Line_ministry
         user = request.user 
-        user = CustomUser.objects.get(username = user)
+        user = CustomUser.objects.get(email = user)
     
 
         # Save the new object to the database
@@ -1011,7 +1065,7 @@ def questionForSurvey(request, id):
 def recomended_survey_list(request , survey_id):
     today = date.today()
     user = request.user 
-    user = CustomUser.objects.get(username = user)
+    user = CustomUser.objects.get(email = user)
     line_ministry = request.user.Line_ministry
     print(user)
     print(line_ministry)

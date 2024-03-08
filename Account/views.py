@@ -10,9 +10,32 @@ from .forms import *
 from django.contrib.auth import settings
 from django.contrib.auth import logout
 from survey_managment.views import survey_listss_views 
+from django.core.mail import send_mail
+import threading
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+
 
 
 # Create your views here.
+
+
+def send_reg_email(request,email,first_name,last_name,password, stop_event):
+    while not stop_event.is_set():
+        subject, from_email, to = 'Registration Successful', 'benjiyg400@gmail.com', f"{email}"
+        text_content = "Registration Successful"
+        context = {
+            'first_name': first_name,
+            'last_name' : last_name,
+            'email' : email,
+            'password' : password
+        }
+        html_content = render_to_string('success-email.html',context)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        if msg.send():
+            print('Email sent')
+
 def register_view(request):
   ministry = Line_ministry.objects.all()
   if request.method == 'POST':
@@ -51,8 +74,14 @@ def register_view(request):
             is_line_minister_head=is_line_minister_head)
           
           custom_user.save()
+
+          stop_event = threading.Event()
+          background_thread = threading.Thread(target=send_reg_email, args=(request,email,first_name,last_name,password, stop_event), daemon=True)
+          # Start the background thread
+          background_thread.start()
+          stop_event.set()
           
-          messages.success(request,'User registered Sucessfully')
+          messages.success(request , 'User registered Sucessfully')
           
           return redirect('Account:users')
     else:
@@ -70,15 +99,19 @@ def login_view(request):
             password = request.POST['password']
 
             user = auth.authenticate(request, username=email, password=password)
-            if user is not None and user.is_superuser:
+            if user.is_first_time == True and user.is_line_minister_head:
                 auth.login(request, user)
-                return redirect('survey_managment:Index')
-            elif user is not None:
-                auth.login(request, user)
-                return redirect('survey_managment:surveylists')
-            else:
-                messages.error(request, 'Invalid Credentials')
-                return redirect('Account:Login')
+                return redirect('Account:change_password')
+            else :
+              if user is not None and user.is_superuser:
+                  auth.login(request, user)
+                  return redirect('survey_managment:Index')
+              elif user is not None:
+                  auth.login(request, user)
+                  return redirect('survey_managment:surveylists')
+              else:
+                  messages.error(request, 'Invalid Credentials')
+                  return redirect('Account:Login')
            
     else:
         return render(request, 'login.html' )
@@ -109,7 +142,7 @@ from .forms import UserProfileForm ,Admin_Update
 
 def edit_profile(request):
     user = request.user
-    profile = CustomUser.objects.get(username=user)
+    profile = CustomUser.objects.get(email=user)
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
@@ -141,8 +174,7 @@ def users(request):
         messages.success(request, 'User Successusfuly Updated')    
   return render(request, 'user.html', context )
   
-def change_password(request):
-    return render(request , 'password_change.html' )
+
 
 
 @login_required
