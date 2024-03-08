@@ -900,6 +900,9 @@
               }
             });
             option_table1.style.display = "none";
+            var average = total_weightedinPercent / count;
+            dataforchart.push(average);
+            categories.push("Average");
             console.log(categories);
             console.log(dataforchart); 
             if(index==0){
@@ -908,8 +911,7 @@
 else{
   RandomGraph(categories ,dataforchart,sectionName,ministryName,selectedAssessmentObj1.name,'container1');
 }
-
-          }
+}
         }); 
       }
       }

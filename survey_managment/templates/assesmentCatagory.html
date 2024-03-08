@@ -233,10 +233,15 @@
                                     return ministry.name;
                                 });
 
-                                let option = document.createElement("option");
-                                option.value = ministry;
-                                option.textContent = ministry_name;
-                                select_ministry.appendChild(option);
+                                // Check if an option with the same value already exists
+            let existingOption = select_ministry.querySelector(`option[value="${ministry}"]`);
+
+if(!existingOption){
+    let option = document.createElement("option");
+    option.value = ministry;
+    option.textContent = ministry_name;
+    select_ministry.appendChild(option);
+}
                             });
                         });
                     });
