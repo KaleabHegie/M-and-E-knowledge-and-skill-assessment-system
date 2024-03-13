@@ -95,27 +95,26 @@ def register_view(request):
 
 def login_view(request):
     if request.method == 'POST':
-            email = request.POST['email']
-            password = request.POST['password']
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
-            user = auth.authenticate(request, username=email, password=password)
-            if user.is_first_time == True and user.is_line_minister_head:
+        user = auth.authenticate(request, username=email, password=password)
+
+        if user is not None and user.is_authenticated:
+            if user.is_first_time and user.is_line_minister_head:
                 auth.login(request, user)
                 return redirect('Account:change_password')
-            else :
-              if user is not None and user.is_superuser:
-                  auth.login(request, user)
-                  return redirect('survey_managment:Index')
-              elif user is not None:
-                  auth.login(request, user)
-                  return redirect('survey_managment:surveylists')
-              else:
-                  messages.error(request, 'Invalid Credentials')
-                  return redirect('Account:Login')
-           
+            elif user.is_superuser:
+                auth.login(request, user)
+                return redirect('survey_managment:Index')
+            else:
+                auth.login(request, user)
+                return redirect('survey_managment:surveylists')
+        else:
+            messages.error(request, 'Invalid Credentials')
+            return redirect('Account:Login')
     else:
-        return render(request, 'login.html' )
-
+        return render(request, 'login.html')
 
 def logout(request):
         auth.logout(request)

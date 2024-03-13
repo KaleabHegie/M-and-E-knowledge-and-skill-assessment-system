@@ -121,7 +121,7 @@
                       <i class="far fa-copy"></i>
                   </span>                   
                   <div class="info-box-content">
-                      <a href="{% url 'survey_managment:section_list' survey_id=survey.id %}" style="color: black;text-decoration:none;">
+                      <a href="{% url 'survey_managment:section_list' survey_id=survey.id  %}" style="color: black;text-decoration:none;">
                           <span class="info-box-text">{{ survey.name }}</span>
                           <span class="info-box-number">{{  survey.created }}</span>
                           <span class="info-box-number">{{ survey.section }} Sections </span>

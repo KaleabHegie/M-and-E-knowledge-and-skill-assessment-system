@@ -1,4 +1,5 @@
 from audioop import reverse
+import random
 import re
 from django.forms import formset_factory, modelformset_factory
 from django.shortcuts import get_object_or_404, render, HttpResponse, redirect
@@ -18,6 +19,8 @@ from .models import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 import json
+from django.forms.models import model_to_dict
+from datetime import datetime
 
 
 
@@ -27,48 +30,37 @@ def new_page(request):
 
 
 
-def dashboard2(request):
-    line_ministries = Line_ministry.objects.all()
-    SystemAssessment = Assesment.objects.filter(name = 'M&E Knowledge/Skills Sets Assessment' ) # 'M&E System Assessment'
-    SkillAssesment = Assesment.objects.filter(name = 'M&E System Sets Assessment') #M&E Knowledge and skill set Assessment
-
-    SystemAssessmentSections = []
-    SkillAssessmentSections = []
-
-    if SystemAssessment:
-        for assessment in SystemAssessment:
-                sections = assessment.section.all()
-                SystemAssessmentSections.extend(sections) 
-    if SkillAssesment:
-        for assessment in SkillAssesment:
-                sections = assessment.section.all()
-                SkillAssessmentSections.extend(sections) 
-
-    # print(SystemAssessmentSections)
-    context = {'line_ministries' : line_ministries,
-               'SystemAssessmentSections' : SystemAssessmentSections,
-               'SkillAssessmentSections' : SkillAssessmentSections,
-                }
-    return render(request, 'dashboard2.html', context)
 
 
 @login_required
 def indexView(request):
     line_ministries = Line_ministry.objects.all()
-    SystemAssessment = Assesment.objects.filter(name = 'M&E Knowledge/Skills Sets Assessment' ) 
-    SkillAssesment = Assesment.objects.filter(name = 'M&E System Sets Assessment') 
+    SystemAssessments = Assesment.objects.filter(name = 'M&E Knowledge/Skills Sets Assessment' ) 
+    SkillAssesments = Assesment.objects.filter(name = 'M&E System Sets Assessment') 
 
-    SystemAssessmentSections = []
-    SkillAssessmentSections = []
+    SystemAssessments_Detail = {}
+    SkillAssesments_Detail = {}
 
-    if SystemAssessment:
-        for assessment in SystemAssessment:
-                sections = assessment.section.all()
-                SystemAssessmentSections.extend(sections) 
-    if SkillAssesment:
-        for assessment in SkillAssesment:
-                sections = assessment.section.all()
-                SkillAssessmentSections.extend(sections) 
+
+    if SystemAssessments:
+        for SystemAssessment in SystemAssessments:
+                start_at = SystemAssessment.start_at.year # created_at the assessment may be created before
+                sections = SystemAssessment.section.all()
+                section_names = [section.name for section in sections]
+                SystemAssessments_Detail[SystemAssessment.id] = {
+                    'sections': section_names,
+                    'start_year': start_at
+                }      
+                
+    if SkillAssesments:
+        for SkillAssesment in SkillAssesments:
+                start_at = SkillAssesment.start_at.year
+                sections = SkillAssesment.section.all()
+                section_names = [section.name for section in sections]
+                SkillAssesments_Detail[SkillAssesment.id] = {
+                    'sections': section_names,
+                    'start_year': start_at
+                }   
 
     survey_id = request.GET.get('survey_id')
     if survey_id:
@@ -99,8 +91,9 @@ def indexView(request):
         context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years, 'Assesment':assesment,
              'line_ministries' : line_ministries,
-               'SystemAssessmentSections' : SystemAssessmentSections,
-               'SkillAssessmentSections' : SkillAssessmentSections,}
+               'SystemAssessments_Detail' : json.dumps(SystemAssessments_Detail),
+               'SkillAssesments_Detail' : json.dumps(SkillAssesments_Detail),
+                }
       
         return render(request, 'index.html', context)
 
@@ -130,11 +123,6 @@ def filter(request):
         line_ministry = Line_ministry.objects.all()
         survey_years = Section.objects.order_by('created_at__year').values('created_at__year').distinct() 
         form = AnalysisForm()
-       
-        
-
-
-
         context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years}
       
@@ -395,17 +383,8 @@ def compareDataView(request):
     }
     return render(request, 'compare.html',context)
 
-    context = {
-        'line_ministry':line_ministry,
-        'survey_type': survey_type,
-        'survey':survey,
-        'survey_years':survey_years
-    }
-    return render(request, 'compare.html',context)
-from django.forms.models import model_to_dict
-import json
-from datetime import datetime
-from django.http import HttpResponse
+
+
 def datetime_handler(obj):
     if isinstance(obj, datetime):
         return obj.isoformat()
@@ -540,7 +519,12 @@ def survey(request):
 
 @login_required
 def line_ministrys(request):
-    data = {
+    # questions = Question.objects.all()
+    # for question in questions:
+    #     question.question_type = 'rating'
+    #     print(question.question_type , question.title)
+    # print(Question.objects.all().count())    
+    data = { 
         "line_ministrys" : Line_ministry.objects.all()
     }
     return render(request , 'line_ministrys.html' , data)
@@ -637,8 +621,9 @@ def user_response(request, id, response_id):
     return render(request, 'user_response.html', data)
 
 @login_required
-def survey_detail(request, id):
-    survey = get_object_or_404(Section, id=id)
+def survey_detail(request, id , assesment_id):
+    assesment = Assesment.objects.get(id=assesment_id)
+    survey = assesment.section.get(id=id)
     questions = survey.question.all()
     cat_list = []
     for cat in Category.objects.all():
@@ -657,7 +642,7 @@ def survey_detail(request, id):
         'survey_id': id,
         'survey': Section.objects.get(id=id),
         'cat_list':cat_list,
-        'user_responses': UserResponse.objects.filter(forsection_id=id),
+        'user_responses': UserResponse.objects.filter(forsection_id=id,forassesment=assesment_id),
         'questions': Section.objects.get(id=id).question.all(),
         'line_ministries' : Section.objects.get(id=id)
     }
@@ -907,6 +892,7 @@ def sections(request , survey_id):
     data = {
         'assesment': Assesment.objects.get(id  = survey_id),
         'sections': Section.objects.filter(assesment = survey_id),
+        'assesment_id' : survey_id
         }
     return render(request, 'Section.html', data)
 
@@ -968,7 +954,7 @@ def survey_listss_views(request):
         sections_with_responses = 0
         sections = Section.objects.filter(assesment=i)
         user = request.user
-        user_responses = UserResponse.objects.filter(submitted_by=user)
+        user_responses = UserResponse.objects.filter(submitted_by=user,forassesment=i)
 
         for section in sections:
             total_sections += 1
@@ -988,15 +974,14 @@ def survey_listss_views(request):
 
 
 @login_required
-def section_list(request , survey_id):
+def section_list(request , survey_id  ):
     user = request.user
-    user_responses = UserResponse.objects.filter(submitted_by=user)
+    user_responses = UserResponse.objects.filter(submitted_by=user , forassesment = survey_id)
     surveys_with_responses = [response.forsection for response in user_responses]
 
 
     user = CustomUser.objects.get(email=user)
     sections = Section.objects.filter(assesment = survey_id)
-    surveys_without_responses = sections.exclude(id__in=[survey.id for survey in surveys_with_responses])
 
     data = {
         "survey_id" : survey_id,
@@ -1006,8 +991,9 @@ def section_list(request , survey_id):
     return render(request, 'Final_Preview_Pages/SectionList.html', data)
 
 @login_required
-def questionForSurvey(request, id):
-    survey = get_object_or_404(Section, id=id)
+def questionForSurvey(request, id , assesment_id):
+    assesment = Assesment.objects.get(id = assesment_id)
+    survey = assesment.section.get(id=id)
     questions = survey.question.all()
     cat_list = []
 
@@ -1026,7 +1012,7 @@ def questionForSurvey(request, id):
         user_response_form = UserResponseForm(request.POST)
         answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
         document_forms = [DocumentForm(request.POST, request.FILES, prefix=str(question.id)) for question in survey.question.all()]
-        userresponse = UserResponse.objects.create(forsection = survey , submitted_by = request.user)
+        userresponse = UserResponse.objects.create(forsection = survey ,  forassesment= assesment , submitted_by = request.user)
         for category in cat_list:
             for question_title in category['questions']:
               if question_title.question_type ==  'checkbox' or question_title.question_type ==  'radio':
@@ -1199,7 +1185,7 @@ def questionForSurveyAnonymous(request, id , user_response_id):
         # value = request.POST.get('answer_16')
         # print(value)
 
-        if user_response.forsection :
+        if user_response.forsection:
            user_response = UserResponse.objects.create(
            forsection=survey,
            department=user_response.department,
@@ -1230,6 +1216,7 @@ def questionForSurveyAnonymous(request, id , user_response_id):
                
            
            return redirect('survey_managment:section_list_anonymous' , survey_id=assesment , user_response_id=user_response_id)
+           #return redirect('survey_managment:user_info' )
         else :
            user_response.status = 'approved'
            user_response.forsection = survey

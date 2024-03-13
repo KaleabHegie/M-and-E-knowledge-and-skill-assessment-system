@@ -48,7 +48,7 @@
             
             {% for i in sections  %}
             <div class="col-md-3 col-sm-6 col-12 p-1 hidden-transition">
-              <a href="{% url 'survey_managment:survey_detail' id=i.id %}" style="color: black; text-decoration: none;">
+              <a href="{% url 'survey_managment:survey_detail' id=i.id assesment_id=assesment_id %}" style="color: black; text-decoration: none;">
                 <div class="info-box shadow">
                   <span class="info-box-icon" style="color: #0096c7;">
                     <i class="far fa-copy"></i>

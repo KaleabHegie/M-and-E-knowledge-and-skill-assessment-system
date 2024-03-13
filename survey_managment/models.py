@@ -1,5 +1,6 @@
 from django.db import models
 from Account.models import CustomUser , Line_ministry
+from django.db.models import UniqueConstraint
 
 # Create your models here.
 
@@ -22,7 +23,6 @@ class Section(models.Model):
     instruction = models.TextField(null=True,blank=True)
     created_at = models.DateField(auto_now=True, auto_now_add=False , null=True)
     question = models.ManyToManyField("Question")
-    
     
     def __str__(self):
         return self.name
@@ -57,7 +57,7 @@ class Question(models.Model):
     has_weight = models.BooleanField(default=False)
     weight = models.IntegerField(blank=True,null=True)
     allow_doc = models.BooleanField(default = False)
-    doc_label = models.TextField()
+    doc_label = models.TextField(null=True , blank = True)
 
 
     def __str__(self):
@@ -92,8 +92,8 @@ class UserResponse(models.Model):
         ('pending', 'Pending'),
         ('recomended', 'Recomended'),
     ]
-
-    forsection = models.ForeignKey("Section", on_delete=models.CASCADE, null=True, blank=True)
+    forsection = models.ForeignKey("Section", on_delete=models.CASCADE , null=True , blank=True)
+    forassesment = models.ForeignKey("Assesment", on_delete=models.CASCADE , null=True , blank=True)
     submitted_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     submitted_at = models.DateTimeField(auto_now=True)
     year_of_experiance = models.IntegerField(null=True , blank=True)
@@ -101,6 +101,9 @@ class UserResponse(models.Model):
     age =models.IntegerField( null=True , blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending' ,  null=True , blank=True)
     line_ministry = models.ForeignKey(Line_ministry , on_delete=models.CASCADE , null=True , blank=True)
+
+    class Meta:
+        unique_together = ['forsection', 'forassesment']
 
     def __str__(self):
         return str(self.submitted_by)

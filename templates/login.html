@@ -85,12 +85,17 @@ label{
 <body>
     <div class="main container ">
       
+      
       <div class="card " >
+        {% include "includes/message.html" %}
         <div class="row">
+         
 
 			<div class="left col-lg-6" style="margin-top:70px;">
+        
 				<div class="glass-wrapper">
 				  <div class="m-3 p-3">
+            
 
 					<form method="post" action="{% url 'Account:Login' %}" >
 				          {%csrf_token%}
