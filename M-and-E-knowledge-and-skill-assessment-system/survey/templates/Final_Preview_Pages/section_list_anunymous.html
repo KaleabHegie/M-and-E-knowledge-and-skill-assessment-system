@@ -1,0 +1,154 @@
+{% load static %}
+{% include "includes/head.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "includes/greetingHead.html" %}
+ 
+    <style>
+      .ft p {
+        font-size: x-small;
+        font-weight: 400;
+      }
+      .card {
+        box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+      }
+
+      .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0, 0, 0, 0.125);
+        border-radius: 1rem;
+      }
+
+      .card-body {
+        -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 1.5rem 1.5rem;
+      }
+      .avatar-text {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        background: #000;
+        color: #fff;
+        font-weight: 700;
+      }
+
+      .avatar {
+        width: 3rem;
+        height: 3rem;
+      }
+      .rounded-3 {
+        border-radius: 0.5rem !important;
+      }
+      .mb-2 {
+        margin-bottom: 0.5rem !important;
+      }
+      .me-4 {
+        margin-right: 1.5rem !important;
+      }
+    </style>
+
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top">
+      <div
+        class="container-fluid container-xl d-flex align-items-center justify-content-between"
+      >
+        <a href="#" class="logo d-flex align-items-center">
+          <img src="{% static 'assets/img/logo.png' %}" alt="" />
+          <span style="color: rgb(9, 109, 9)">MOPD</span>
+        </a>
+
+        {%load static %}
+
+      
+      </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="hero mt-3 align-items-center">
+     
+    <div class="container">
+      <div class="text-center mb-5">
+        <h3  style="font-size: 40px;color:rgb(9, 109, 9);font-weight: bold;">Section Lists</h3>
+      </div>
+
+
+    
+      <div class="row">
+    
+        {% if sections %}
+       
+         {% for section in sections  %}
+        
+ 
+            <div class="col-md-3 col-sm-6 col-lg-4 p-1">
+             <a href="{% url 'survey_managment:questionForSurveyAnonymous' id=section.id user_response_id=user_response_id %}" style="color: black;text-decoration:none;">
+               <div class="info-box shadow">
+                 <span class="info-box-icon" style="color: rgb(9, 109, 9);">
+                   <i class="far fa-copy"></i>
+                 </span>                   
+                 <div class="info-box-content p-3">
+                       <span class="info-box-text">{{ section.name }}</span>
+                       <span class="info-box-text">{{ section.instruction }}</span>
+                       <span class="info-box-text">{{ section.question.count }} Questions </span>
+                   </div>
+               </div>
+           </a>
+           </div>
+ 
+             {% endfor %}
+ 
+             {% else %}
+             <div class="container-fluid" style="display: flex; align-items: center;">
+               <p style="margin: auto; color: darkgray;">No section found. Your  news sections will occure here.</p>
+             </div>
+ 
+             {% endif %}
+ 
+           </div>
+    </section>
+    <!-- End Hero -->
+    <!-- ======= Services Section ======= -->
+
+  
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript"></script>
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+    <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+  </body>
+</html>

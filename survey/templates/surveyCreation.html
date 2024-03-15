@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:08 GMT -->
+
+  {% include "includes/head.html" %}
+
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+    {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
+
+      <div class="content-wrapper" style="background-color:rgb(240, 249, 249);">
+
+        {% include "includes/message.html" %}
+        
+        <div class="container-fluid">
+          <div class="row justify-content-center">
+            <div class="col-lg-7 m-2 card shadow-lg border hidden-transition">
+     
+                  <h2 class="mt-3 mb-3" style="text-align: center;">Create Survey</h2>
+                  <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="{{ form.name.id_for_label }}">Name:</label>
+                      {{ form.name }}
+                      {% if form.name.errors %}
+                        <div class="invalid-feedback" style="display: block;" style="display: block;">
+                          {{ form.name.errors.0}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="{{ form.start_at.id_for_label }}">Start Date:</label>
+                        {{ form.start_at }}
+                        {% if form.start_at.errors %}
+                          <div class="invalid-feedback" style="display: block;">
+                            {{ form.start_at.errors}}
+                          </div>
+                        {% endif %}
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="{{ form.end_at.id_for_label }}">End Date:</label>
+                        {{ form.end_at }}
+                        {% if form.end_at.errors %}
+                          <div class="invalid-feedback" style="display: block;">
+                            {{ form.end_at.errors}}
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.survey_type.id_for_label }}">Survey Type:</label>
+                      {{ form.survey_type }}
+                      {% if form.survey_type.errors %}
+                        <div class="invalid-feedback" style="display: block;">
+                          {{ form.survey_type.errors}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.for_line_ministry.id_for_label }}">For Ministry:</label>
+                      <button class="btn btn-sm mr-2 btn-success" style="float:right" type="button" onclick="selectAllOptions('{{ form.for_line_ministry.id_for_label }}')">Select All</button>
+                      {{ form.for_line_ministry }}
+                      {% if form.for_line_ministry.errors %}
+                        <div class="invalid-feedback">
+                          {{ form.for_line_ministry.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn m-3" style="float: right; color: white; background-color: #0096c7;">Create</button>
+                  </form>
+
+
+
+
+                  {% comment %} {% if form.errors %}
+                  <div class="alert alert-danger mt-3">
+                      <strong>Error:</strong>
+                      <ul>
+                          {% for field in form %}
+                              {% for error in field.errors %}
+                                  <li>{{ error }}</li>
+                              {% endfor %}
+                          {% endfor %}
+                      </ul>
+                  </div>
+              {% endif %}
+       {% endcomment %}
+                  
+             
+              
+            
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    {% include "includes/scripts.html" %}
+  </body>
+  <script>
+    $(function () {
+      //Initialize Select2 Elements
+      $('.select2').select2()
+  
+      //Initialize Select2 Elements
+      $('.select2bs4').select2({
+        theme: 'bootstrap4'
+      })
+    })
+      function selectAllOptions(selectId) {
+        var selectElement = document.getElementById(selectId);
+        for (var i = 0; i < selectElement.options.length; i++) {
+          selectElement.options[i].selected = true;
+        }
+      }
+    </script>
+  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:12 GMT -->
+</html>

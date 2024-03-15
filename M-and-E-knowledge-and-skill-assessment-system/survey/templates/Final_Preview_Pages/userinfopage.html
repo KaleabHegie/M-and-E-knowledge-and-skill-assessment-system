@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create User Response</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<style>
+    .buton {
+        display: block;
+        margin: 20px auto;
+        width: 140px;
+        height: 45px;
+        margin-top: 8%;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 2.5px;
+        font-weight: 500;
+        color: #ffffff;
+        background-color: #46b583;
+        border: none;
+        border-radius: 45px;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease 0s;
+        cursor: pointer;
+        outline: none;
+        }
+      
+      .buton:hover {
+        background-color: #0056b3;
+        box-shadow: 0px 15px 20px rgba(46, 141, 229, 0.4);
+        color: #fff;
+        transform: translateY(-7px);
+      }
+           </style>
+<body>
+    <div class="container  mt-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 card shadow mt-5" style="background: #f2f2f2;color:black;border-radius:20px;border:5px solid #46b583">
+          <h3 class="m-3 text-center">Fill Personal Information</h3>
+          <form method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                  <label for="{{ form.age.id_for_label }}">Age:</label>
+                  {{ form.age }}
+              </div>
+              <div class="form-group">
+                  <label for="{{ form.department.id_for_label }}">Department:</label>
+                  {{ form.department }}
+              </div>
+              <div class="form-group">
+                  <label for="{{ form.line_ministry.id_for_label }}">Line Ministry:</label>
+                  {{ form.line_ministry }}
+              </div>
+              <div class="form-group">
+                  <label for="{{ form.year_of_experiance.id_for_label }}">Year of Experience:</label>
+                  {{ form.year_of_experiance }}
+              </div>
+              <button type="submit" class="buton">Submit</button>
+          </form>
+
+        </div>
+      </div>
+       
+    </div>
+</body>
+</html>

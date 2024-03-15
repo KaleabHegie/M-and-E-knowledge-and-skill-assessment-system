@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<script>
+  document.cookie = "js_enabled=true";
+</script>
+{% include 'includes/head.html' %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+<style>
+  .greenTxt {
+    color: #2da54b;
+  }
+
+  .centerdtxt {
+    text-align: center;
+  }
+
+  .highlight-row {
+    background-color: #40916c;
+  }
+
+  body {
+    background-color: white;
+  }
+</style>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+  <div class="wrapper">
+    {% include 'includes/topNavbar.html' %}
+    {% include 'includes/sideNavbar.html' %}
+
+    <div class="content-wrapper" style="background-color: white;">
+   
+
+
+
+      <section class="container ">
+        <div class="">
+          <div class="mt-3">
+            <form action="" name="recommendationForm" id="recommendationForm" method="post">
+              {% csrf_token %}
+              
+              {% if user_responses %}
+              {% for response in user_responses %}
+
+              <h4 class="mt-4 text-center">Response by {{ response.submitted_by }}</h4>
+              <hr style="border-top: 3px solid #40916c;">
+
+              <table class="table table-responsive" id="myTable">
+                <thead>
+                  <tr>
+                    <th>Question</th>
+                    <th>Weight</th>
+                    <th>Answer</th>
+                    <th>Rank</th>
+                    <th>Percent</th>
+                    <th>Grading</th>
+                    <th>
+                      Document
+                    </th>
+                    {% if response.status == 'pending' or 'recomended' %}
+                    <th>Recommendation</th>
+                    {% endif %}
+                  </tr>
+                </thead>
+                <tbody>
+               {% for answer in answers %}
+                  <tr {% if answer.recommendation %}class="table-success" {% endif %}>
+                    <td>{{ answer.forquestion }}</td>
+                    <td class="centerdtxt">{{ answer.forquestion.weight }}</td>
+                    <td >{{ answer.answertext }}</td>
+                    <td class="centerdtxt">
+                      <script>
+                        document.write(Number({{ answer.answertext }} * {{ answer.forquestion.weight }}))
+                      </script>
+                    </td>
+                    <td class="centerdtxt">
+                      <script>
+                        document.write((Number({{ answer.answertext }} * {{ answer.forquestion.weight }}) * 100) / Number({{ answer.forquestion.weight }} * 10))
+                      </script> %
+                    </td>
+
+                   
+
+                      {% if answer.forquestion.question_type == "number" or answer.forquestion.question_type == "rating"  %}
+                      
+                      <script>
+                        try {
+                          let result = (Number({{ answer.answertext }} * {{ answer.forquestion.weight }}) * 100) / (Number({{ answer.forquestion.weight }} * 10));
+                          if (result >= 90) {
+                            document.write(`<td style="background-color: #ccffcc;"> Excellent </td>`);
+                          } else if (result >= 80) {
+                            document.write(`<td style="background-color: #e5ffb8;"> Very Good </td>`);
+                          } else if (result >= 70) {
+                            document.write(`<td style="background-color: #ffffcc;"> Good </td>`);
+                          } else if (result >= 60) {
+                            document.write(`<td style="background-color: #fff5b3;"> Satisfactory </td>`);
+                          } else {
+                            document.write(`<td style="background-color: #ffd9b3;"> Needs Improvement </td>`);
+                          }
+                                     }  
+                          catch {
+                            document.write(`<td style="background-color: gray;"> No Grading  </td>`);
+                          }
+                    </script>
+                    {% else %}
+                       <td style="background-color: gray;"> No Grading  </td>
+                    {% endif %}
+                    <td>
+                      {% for answer_id, documents in documents_by_answer.items %}
+                        {% if answer_id == answer.id %}
+                          {% if documents %}
+                            {% for document in documents %}
+                              <a download="{{ document.url }}" href="{{ document.url }}">{{ document.document.name }}</a>
+                            {% endfor %}
+                          {% else %}
+                            <p> No Document </p>
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+
+                    {% if response.status == 'pending' or 'recomended' %}
+                    <td class="centerdtxt">
+                      <div class="opensModal" name="input_{{ answer.id }}" value="{{answer.id}}"
+                        onclick="highlightRow(this)">
+                        <i class="bi bi-patch-check"></i>
+                      </div>
+                    </td>
+                    {% endif %}
+                  </tr>
+        {% endfor %}
+        
+                </tbody>
+              </table>
+
+              {% if response.status == 'pending' or 'recomended' %}
+              <button type="submit" name="approve" class="btn mt-4"
+                style="float: right; background-color: #208c5c; color: white;">
+                Approve</button>
+              <button type="submit" name="done" class="btn mt-4"
+                style="float: left; background-color: #208c5c; color: white;">
+                Send survey</button>
+
+              {% endif %}
+
+              {% endfor %}
+
+              {% else %}
+              <p style="font-size: 1.2rem;">No responses found.</p>
+              {% endif %}
+          </div>
+        </div>
+      </section>
+
+      <!-- Recommendation Modal -->
+      <div class="modal fade" id="RecommendationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="">Write Recommendation</h1>
+              <button type="button" class="btn-close" id="closeModal" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <textarea name="recommendation" id="recommendation" cols="60" rows="7"></textarea>
+              <input type="number" name="checkedResp" id="checkedResp" value="" style="display: none;">
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  {% include 'includes/scripts.html' %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#myTable').DataTable({
+        columnDefs: [
+          { targets: [4], orderable: false }]
+      });
+    })
+
+    function highlightRow(divElement) {
+      var row = divElement.closest('tr');
+      var modal = document.getElementById('RecommendationModal');
+      var checkedResp = document.getElementById('checkedResp');
+      var recommendation = document.getElementById('recommendation')
+      var modalForm = document.getElementById('recommendationForm');
+
+      row.classList.toggle('table-success');
+
+      var closeModal = function () {
+        row.classList.remove('table-success');
+        $(modal).modal('hide');
+        modalForm.reset();
+      };
+
+      $(modal).on('hidden.bs.modal', closeModal);
+      $(document).on('click', '.modal-backdrop', closeModal);
+
+      if (row.classList.contains('table-success')) {
+        $(modal).modal('show');
+        checkedResp.value = divElement.getAttribute('value');
+        $.ajax({
+          url: '',
+          type: 'POST',
+          data: {
+            recommendation: recommendation.value,
+            checkedResp: checkedResp.value
+          },
+          success: function (response) {
+            // Handle the success response if needed
+            // For example, you can update the UI or display a success message
+          }
+        });
+      }
+    }
+
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+<!-- {%  for ministry in line_ministry %}
+<option value="{{ministry.id}}"> {{ministry.name}}</option>
+{%endfor%} -->
+<option value="">Select Line_ministry </option>
+    {% for line_ministry in line_ministries %}
+        <option value="{{ line_ministry.id }}">{{ line_ministry.name }}</option>
+    {% endfor %}

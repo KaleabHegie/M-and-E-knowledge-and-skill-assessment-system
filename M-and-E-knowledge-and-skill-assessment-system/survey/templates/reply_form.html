@@ -1,0 +1,135 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  {% include "includes/head.html" %}
+  <link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css"
+  />
+  <style></style>
+
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
+
+      <div class="content-wrapper mt-4" style="background-color: white">
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>Compose</h1>
+              </div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active">Compose</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-3">
+                <a href="mailbox.html" class="btn btn-primary btn-block mb-3"
+                  >Back to Inbox</a
+                >
+              {% include "includes/folder.html" %}
+                
+              </div>
+                 
+              <div class="col-md-9">
+                
+
+
+                <h1>Reply to Message</h1>
+
+                <p><strong>Original Message:</strong></p>
+                <p>{{ message.message }}</p>
+              
+                <form action="" method="POST">
+                  {% csrf_token %}
+                  <div class="card card-primary card-outline">
+                    <div class="card-header">
+                      <h3 class="card-title">Compose Reply</h3>
+                    </div>
+                    <div class="card-body">
+                      <div class="form-group">
+                        <input name="to" class="form-control" placeholder="To:" value="{{ message.email }}" readonly />
+                      </div>
+                      <div class="form-group">
+                        <input name="subject" class="form-control" placeholder="Subject:" value="RE: {{ message.subject }}" />
+                      </div>
+                      <div class="form-group">
+                        <textarea name="message" id="compose-textarea" class="form-control" style="height: 300px"></textarea>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <div class="float-right">
+                        <button type="submit" class="btn btn-default">
+                          <i class="fas fa-pencil-alt"></i> Draft
+                        </button>
+                        <button type="submit" class="btn btn-primary" name="send">
+                          <i class="far fa-envelope"></i> Send
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script>
+      $(function () {
+        //Enable check and uncheck all functionality
+        $(".checkbox-toggle").click(function () {
+          var clicks = $(this).data("clicks");
+          if (clicks) {
+            //Uncheck all checkboxes
+            $(".mailbox-messages input[type='checkbox']").prop(
+              "checked",
+              false
+            );
+            $(".checkbox-toggle .far.fa-check-square")
+              .removeClass("fa-check-square")
+              .addClass("fa-square");
+          } else {
+            //Check all checkboxes
+            $(".mailbox-messages input[type='checkbox']").prop("checked", true);
+            $(".checkbox-toggle .far.fa-square")
+              .removeClass("fa-square")
+              .addClass("fa-check-square");
+          }
+          $(this).data("clicks", !clicks);
+        });
+
+        //Handle starring for font awesome
+        $(".mailbox-star").click(function (e) {
+          e.preventDefault();
+          //detect type
+          var $this = $(this).find("a > i");
+          var fa = $this.hasClass("fa");
+
+          //Switch states
+          if (fa) {
+            $this.toggleClass("fa-star");
+            $this.toggleClass("fa-star-o");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
