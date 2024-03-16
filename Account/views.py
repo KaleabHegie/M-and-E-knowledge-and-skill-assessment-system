@@ -64,7 +64,10 @@ def register_view(request):
       else:
         if CustomUser.objects.filter(email=email).exists():
           messages.error(request , 'Email Name Already Exits ')
-          return HttpResponse('Email Name Already Exits')
+          return HttpResponse('Email Name Already Exits ')
+        elif CustomUser.objects.filter(Line_ministry=line_ministry).exists():
+          messages.error(request , 'User Exists For this line ministry')
+          return HttpResponse('User Exists For this line ministry')
         else:
           custom_user = CustomUser.objects.create_user(username=username,password=password,email=email,
                           first_name = first_name,last_name=last_name,

@@ -141,7 +141,7 @@
 
           <div class="container-fluid" style="background-color: #b7e4c7">
             <div class="container-fluid" id="searchArea">
-              <!-- <h2 class="textS">Search Area</h2> -->
+               <h2 class="textS">Search Area</h2> 
               <div class="row">{%include "includes/select.html"%}</div>
             </div>
           </div>
@@ -307,8 +307,7 @@
                       var emptyOption = document.createElement("option");
                       emptyOption.value = "";
                       emptyOption.text = "-- Select Section --";
-                      selectsection.appendChild(emptyOption);
-                      // Check if option already exists
+                     
                       let existingOption = selectsection.querySelector(
                         `option[value="${section}"]`
                       );

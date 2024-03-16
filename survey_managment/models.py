@@ -102,8 +102,7 @@ class UserResponse(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending' ,  null=True , blank=True)
     line_ministry = models.ForeignKey(Line_ministry , on_delete=models.CASCADE , null=True , blank=True)
 
-    class Meta:
-        unique_together = ['forsection', 'forassesment']
+
 
     def __str__(self):
         return str(self.submitted_by)

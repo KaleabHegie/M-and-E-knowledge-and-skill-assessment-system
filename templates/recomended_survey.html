@@ -97,35 +97,39 @@ button:hover {
     <h1>Update {{ survey.name }}</h1>
   
     {% for answer in answers  %}
-      <div class="question">
-        <div class="tab" id="answersTab{{ answer.id }}">
-          <div>
-            {{ answer.forquestion }}
-            <br>
-            <input style=" margin-top: 20px;" class="form-control text-input" name="answer_set" id="{{ answer.id }}" type="text" value="{{ answer }}"> 
-            {% for document in documents %}
-            
-              {% if document.foranswer == answer %}
-              <br>
+    {% if  answer.recommendation  %}
 
-              {% if  document.document.url != "none"   %}
-                 <p>Your Previous Document <a href="{{ document.document.url }}">{{ document.document.name }}</a></p>
-                 <label for="">Change Document</label>
-                 <input type="file" id="{{ document.id }}" name="document_set">
-              {% endif %}
-             {% endif %}
-            {% endfor %}
-             {% if  answer.recommendation  %}
-              <label for="">
-                Recommendation
-              </label>
-               <p>
-                {{ answer.recommendation }} 
-               </p>
-             {% endif %}
-          </div>
+    <div class="question">
+      <div class="tab" id="answersTab{{ answer.id }}">
+        <div>
+          {{ answer.forquestion }}
+          <br>
+          <input style=" margin-top: 20px;" class="form-control text-input" name="answer_set" id="{{ answer.id }}" type="text" value="{{ answer }}"> 
+          {% if  answer.recommendation  %}
+          <label for="">
+            Recommendation
+          </label>
+           <p>
+            {{ answer.recommendation }} 
+           </p>
+         {% endif %}
+          {% for document in documents %}
+          
+            {% if document.foranswer == answer %}
+            <br>
+
+            {% if  document.document.url != "none"   %}
+               <p>Your Previous Document <a href="{{ document.document.url }}">{{ document.document.name }}</a></p>
+               <label for="">Change Document</label>
+               <input type="file" id="{{ document.id }}" name="document_set">
+            {% endif %}
+           {% endif %}
+          {% endfor %}
         </div>
       </div>
+    </div>
+ 
+   {% endif %}
     {% endfor %}
   
     <input type="hidden" name="current_answer_id" value="{{ answers.0.id }}">

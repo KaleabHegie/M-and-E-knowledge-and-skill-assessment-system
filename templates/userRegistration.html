@@ -80,10 +80,18 @@ body {
 <body>
     <div class="main container ">
       
+
+
       <div class="card " >
         {% include "includes/message.html" %}
+       
         <div class="row">
           <h2 class="welcome-text mt-3"> Welcome </h2>
+          <h5>
+            <a style="text-decoration:none;float:right;color:#27ae60" href="{% url "survey_managment:Index" %}">
+              Go to home 
+            </a>
+          </h5>
           <div class="left col-lg-6">
             <div class="glass-wrapper">
               <div class="m-3 p-3">
@@ -246,14 +254,32 @@ body {
       function validateSection(sectionId) {
         var section = document.getElementById(sectionId);
         var inputs = section.querySelectorAll('input, select, textarea , radio');
+        var today = new Date();
+        var minDob = new Date(today.getFullYear() - 20, today.getMonth(), today.getDate()); // Calculate minimum date of birth
     
         for (var i = 0; i < inputs.length; i++) {
             if (inputs[i].hasAttribute('required') && !inputs[i].value.trim()) {
                 alert("Please fill in all fields in this section before proceeding.");
                 return false;
             }
+    
+            if (inputs[i].name === 'dob') {
+                var dob = new Date(inputs[i].value);
+                if (dob > minDob) {
+                    alert("Date of birth should be at least 20 years old.");
+                    return false;
+                }
+            }
+    
+            if (inputs[i].name === 'phone_num') {
+                var phoneRegex = /^\+?\d{10,12}$/;
+                if (!phoneRegex.test(inputs[i].value)) {
+                    alert("Please enter a valid phone number with 10-12 digits and '+' if needed.");
+                    return false;
+                }
+            }
         }
-        
+    
         return true;
     }
     

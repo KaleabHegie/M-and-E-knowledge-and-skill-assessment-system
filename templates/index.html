@@ -196,15 +196,11 @@
                     href="{% url 'survey_managment:filter' %}"
                     style="background-color: transparent;" >Filter</a>
                 </li>
-                {% comment %} <li class="nav-item">
-                    <a class="nav-link" aria-current="page"  href="{% url 'survey_managment:average' %}"
-                    style="background-color: transparent;">Average</a>
-                </li> {% endcomment %}
             </ul>
-            <div class="content-header">
+            <div class="content-header" >
                 <div class="container-fluid">
-                    <div class="row" style="margin: auto;">
-                        <div class="card hidden-transition col-lg-5 m-2">
+                    <div class="row hold-transition" >
+                        <div class="card hold-transition col-lg-5 m-2">
                             <div class="card-body">
                                 <div class="d-flex align-items-top ">
                                     <div class="flex-fill">
@@ -231,7 +227,7 @@
                         </div>
 
 
-                        <div class="card hidden-transition col-lg-5 m-2">
+                        <div class="card hold-transition col-lg-5 m-2">
                             <div class="card-body">
                                 <div class="d-flex align-items-top ">
                                     <div class="flex-fill">
@@ -256,7 +252,7 @@
                             </div>
                         </div>
 
-                        <div class="card hidden-transition col-lg-5 m-2">
+                        <div class="card hold-transition col-lg-5 m-2">
                             <div class="card-body">
                                 <div class="d-flex align-items-top ">
                                     <div class="flex-fill">
@@ -281,7 +277,7 @@
                             </div>
                         </div>
 
-                        <div class="card hidden-transition col-lg-5 m-2">
+                        <div class="card hold-transition col-lg-5 m-2">
                             <div class="card-body">
                                 <div class="d-flex align-items-top ">
                                     <div class="flex-fill">
@@ -307,18 +303,14 @@
                         </div>
 
                     </div>
-                </div>      
+                  </div>      
                 </div>
-         </div>
-
-
-         <div class="content-wrapper" style="background-color: white;">
-            <h4 class="text-center"> Monitoring and Evaluation system and capacity performance Index </h4>
+            <h4 class="text-center mb-5 text-info"> Monitoring and Evaluation system and capacity performance Index </h4>
 
 
             <div class="container-fluid d-flex justify-content-around">
                 <select id="year-picker"></select>
-                <select class="select2" id="LMselect" multiple="multiple" data-placeholder="Select line Ministry"
+                <select class="form-select select2" id="LMselect" multiple="multiple" data-placeholder="Select line Ministry"
                     style="width: 60%;">
                     {% for i in line_ministries %}
                     <option value="{{i.id}}"> {{i.name}} </option>
@@ -604,7 +596,7 @@
                 let SkillResult = 0 // for the chart
                 let SysResult = 0 // for the chart
 
-                fetch('http://127.0.0.1:8000/get_json/')
+                fetch('/get_json/')
                     .then(res => res.json())
                     .then(data => {
 
