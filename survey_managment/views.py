@@ -586,14 +586,14 @@ def user_response(request, id, response_id):
     survey = get_object_or_404(Section, id=id)
     user_responses = UserResponse.objects.filter(id=response_id)
     answers = Answer.objects.filter(response__in=user_responses)
-    documents = Document.objects.all()  
+    documents = Document.objects.all() 
 
     documents_by_answer = {}  # Dictionary to store documents for each answer
     for answer in answers:
         documents = Document.objects.filter(foranswer=answer)
         documents_by_answer[answer.id] = documents
 
-    print(documents_by_answer)
+
 
     if request.method == 'POST':
      if 'approve' in request.POST:  
@@ -619,6 +619,7 @@ def user_response(request, id, response_id):
      if 'done' in request.POST:
         survey = get_object_or_404(Section, id=id)
         userresponses = get_object_or_404(UserResponse, id=response_id)
+        assesment_id = userresponses.forassesment.id
         data = {
               'survey_id': id,
               'survey': survey,
@@ -627,7 +628,8 @@ def user_response(request, id, response_id):
               'response_id' : response_id
                 }
         userresponses.status = 'recomended'
-        return redirect('survey_managment:survey_detail' , id)
+        userresponses.save()
+        return redirect('survey_managment:survey_detail' , id , assesment_id)
      else :  
         recommendation = request.POST.get('recommendation')
         checkedResponse = request.POST.get('checkedResp') # the checkbox value holding the answer id to be recommended
@@ -1051,7 +1053,8 @@ def questionForSurvey(request, id , assesment_id):
         user_response_form = UserResponseForm(request.POST)
         answer_forms = [AnswerForm(request.POST, prefix=str(question.id)) for question in survey.question.all()]
         document_forms = [DocumentForm(request.POST, request.FILES, prefix=str(question.id)) for question in survey.question.all()]
-        userresponse = UserResponse.objects.create(forsection = survey ,  forassesment= assesment , submitted_by = request.user , line_ministry = request.user_Line_ministry)
+        user = request.user
+        userresponse = UserResponse.objects.create(forsection = survey ,  forassesment= assesment , submitted_by = request.user , line_ministry = user.Line_ministry)
         for category in cat_list:
             for question_title in category['questions']:
               if question_title.question_type ==  'checkbox' or question_title.question_type ==  'radio':

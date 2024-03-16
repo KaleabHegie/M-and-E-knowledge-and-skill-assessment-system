@@ -134,14 +134,13 @@
                 </tbody>
               </table>
 
-              {% if response.status == 'pending' or 'recomended' %}
+              {% if response.status == 'pending' or response.status == 'recomended' %}
               <button type="submit" name="approve" class="btn mt-4"
                 style="float: right; background-color: #208c5c; color: white;">
                 Approve</button>
               <button type="submit" name="done" class="btn mt-4"
                 style="float: left; background-color: #208c5c; color: white;">
-                Send survey</button>
-
+               Send Recommendation</button>
               {% endif %}
 
               {% endfor %}
