@@ -237,7 +237,13 @@
             throw new Error("Network response was not OK");
           }
           const data = await response.json();
-          await RandomGenerate(data);
+          let user_response = data.user_response;
+          let answer = data.answer;
+          if (user_response.length > 0 && answer.length > 0) {
+            await RandomGenerate(data);
+          } else {
+            console.log("User response is an empty array. Skipping RandomGenerate.");
+          }
           data.survey_type.forEach((surveyType) => {
             var emptyOption = document.createElement("option");
             emptyOption.value = "";
