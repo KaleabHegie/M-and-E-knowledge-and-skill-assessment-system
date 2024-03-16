@@ -1,0 +1,241 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>FlexStart Bootstrap Template - Index</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+      
+        <!-- Favicons -->
+        <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+        <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+      
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+      
+        <!-- Vendor CSS Files -->
+        <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+      
+        <!-- Template Main CSS File -->
+        <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+      
+        <!-- =======================================================
+        * Template Name: FlexStart
+        * Updated: Sep 18 2023 with Bootstrap v5.3.2
+        * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
+        * Author: BootstrapMade.com
+        * License: https://bootstrapmade.com/license/
+        ======================================================== -->
+        <style>
+          .ft p{
+            font-size: x-small;
+            font-weight: 400;
+          }
+        </style>
+      </head>
+<body>
+ <!-- ======= Header ======= -->
+ <header id="header" class="header fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      <a href="#" class="logo d-flex align-items-center" >
+        <img src="{% static 'assets/img/logo.png' %}" alt="">
+        <span style="color: rgb(9, 109, 9);">MOPD</span>
+      </a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="{% url 'survey_managment:greetingpage' %}" style="color: rgb(9, 109, 9);">Home</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}" style="color: rgb(9, 109, 9);">About</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}" style="color: rgb(9, 109, 9);">Values</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}" style="color: rgb(9, 109, 9);">Features</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'survey_managment:surveys' %}" style="color: rgb(9, 109, 9);">Surveys</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'survey_managment:greetingpage' %}" style="color: rgb(9, 109, 9);">Contact</a></li>
+          <li><a class="getstarted scrollto" href="{% url 'survey_managment:surveys' %}" style="color: white; background-color: rgb(9, 109, 9);" >Get Started</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+   <!-- ======= Hero Section ======= -->
+   <section id="hero" class="hero d-flex align-items-center">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+          <h1 data-aos="fade-up" style="color: rgb(9, 109, 9);">Ministry Of Plan And Devlopment Commission.</h1><br>
+          <h3 data-aos="fade-up" data-aos-delay="400" style="color: rgb(9, 109, 9);">የፌደራል ዘርፍ አፈፃፀም ተቋማት  ክትትልና ግምገማ አሰራር ስርዓት ላይ የሚካሄድ የዳሰሳ ጥናት.									
+          </h3>
+          <div data-aos="fade-up" data-aos-delay="600">
+            <div class="text-center text-lg-start">
+              <a href="#about" class=" d-inline-flex align-items-center justify-content-center align-self-center">
+                <img src="{% static 'assets/logo/EPDM-Logo-Final-Hi-res.png' %}" height="150rem" width="160rem"  style="margin-left: 8rem;">
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
+          <img src="{% static 'assets/img/hero-img.png' %}" class="img-fluid" alt="">
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+   <!-- ======= Services Section ======= -->
+   <section id="services" class="services">
+
+    <div class="container" data-aos="fade-up">
+
+      <header class="section-header">
+        <h1 style="color: rgb(7, 88, 7); font-weight: 500; font-family: serif;">Surveys</h1>
+        <p></p>
+      </header>
+
+      <div class="row gy-4">
+
+      {% for surveyType in surveyTypes  %}
+
+        <div class="col-lg-4 col-md-6">
+          <div class="service-box green">
+            <i class="ri-discuss-line icon"></i>
+            <h3>{{surveyType.name}}</h3>
+            <a href="{% url 'survey_managment:surveylists' surveyType.id %}" class="read-more"><span>See More</span> <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+
+        {% endfor %} 
+
+       
+
+      </div>
+
+    </div>
+
+  </section><!-- End Services Section -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <footer id="footer" class="footer" >
+
+    <div class="footer-newsletter" style="margin-top: 10rem;">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-12 text-center">
+            <h4>Our Newsletter</h4>
+            <p>Please send your email for updated news</p>
+          </div>
+          <div class="col-lg-6">
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-5 col-md-12 footer-info">
+            <a href="#" class="logo d-flex align-items-center">
+              <img src="assets/img/logo.png" alt="">
+              <span>MOPD</span>
+              <p>Ministry Of Plan And Development Commission.</p>
+
+            </a>
+            <div class="social-links mt-3">
+              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
+            
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-6 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
+              
+            </ul>
+          </div>
+        
+
+          <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+            <h4>Contact Us</h4>
+            <p>
+              Addis Ababa <br>
+              Ethiopia, AA <br>
+              <br><br>
+              <strong>Phone:</strong> +1 5589 55488 55<br>
+              <strong>Email:</strong> MOPD@example.com<br>
+            </p>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>MOPD</span></strong>. All Rights Reserved
+      </div>
+   
+    </div>
+  </footer><!-- End Footer -->
+    
+      <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    
+      <!-- Vendor JS Files -->
+      <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+      <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+      <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+      <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+      <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+      <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+      <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+    
+      <!-- Template Main JS File -->
+      <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+</html>

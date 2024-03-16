@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Mirrored from adminlte.io/themes/v3/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Sep 2023 12:52:08 GMT -->
+
+  {% include "includes/head.html" %}
+
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      {% include 'includes/topNavbar.html' %} {% include 'includes/sideNavbar.html' %}
+
+      <div class="content-wrapper">
+        
+
+        <div class="container">
+          <div class="row">
+            <div class="col-lg p-3">
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg p-3">
+                      <ul class="nav nav-tabs">
+                          <li class="nav-item">
+                            <a class="nav-link" href="{% url 'survey_managment:displayQuestion' id=id %}">Question List</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link " href="{% url 'survey_managment:catagorizedQuestion' id=id %}">Quesion By Catagory</a>
+                          </li>
+                        </ul>
+      
+                  </div>
+                </div>
+            </div>
+          </div>
+
+       </div>
+
+
+
+        <div class="row container justify-content-center">
+          <div class="col-lg-12 card shadow ">
+            <h4 class="text-center text-info mt-3">
+              Choose Questions for survey {{ surveys.name }}
+          </h4>
+        
+            <ul class="list-group">
+              <form method="post" >
+                {% csrf_token %}
+                <table id="example" class="table table-striped" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>Select</th>
+                      <th>Question</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for question in questions %}
+                    <tr>
+                      <td>
+                        <div class="form-check">
+                          <input class="form-check-input question-checkbox" type="checkbox" value="{{ question.id }}" id="question-{{ question.id }}" name="selected_questions">
+                          <label class="form-check-label" for="question-{{ question.id }}"></label>
+                        </div>
+                      </td>
+                      <td>{{ question.title }}</td>
+                      
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                  <div class="card-footer">
+                    <button class="btn btn-primary mt-4 mb-4 p-1" type="submit">Add Selected Questions</button>
+                  </div>
+                </div>
+              </form>
+                    
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    
+
+      <aside class="control-sidebar control-sidebar-dark"></aside>
+    </div>
+
+    <footer class="main-footer">
+      <strong
+        >Copyright &copy; 2014-2021
+        <a href="https://adminlte.io/">MoPD </a>.</strong
+      >
+      All rights reserved.
+    </footer>
+
+    {% include "includes/scripts.html" %}
+  </body>
+
+  <script>
+    new DataTable('#example');
+  </script>
+  </html>

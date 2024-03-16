@@ -1,0 +1,47 @@
+@login_required
+def un_approved_survey(request, id):
+    survey = get_object_or_404(Survey, id=id)
+    user = request.user
+    response = get_object_or_404(UserResponse, forsurvey=survey, submitted_by=user)
+
+    questions = survey.question.all()
+
+    if request.method == 'POST':
+        formset = forms.formset_factory(AnswerForm, extra=len(questions))(request.POST)
+        if formset.is_valid():
+            existing_answers = Answer.objects.filter(response=response)
+
+            # Delete existing answers
+            existing_answers.delete()
+
+            # Save each answer in the formset
+            for form, question in zip(formset.forms, questions):
+                answer = form.save(commit=False)
+                answer.response = response
+                answer.forquestion = question
+                answer.save()
+
+            return render(request, 'un_approved_survey_list.html')
+    else:
+        # Prepopulate the formset with existing answers
+        answers = Answer.objects.filter(response=response)
+        formset = forms.formset_factory(AnswerForm, extra=len(questions))(initial=[{'answertext': answer.answertext , 'forquestion': answer.forquestion} for answer in answers])
+
+    return render(request, 'un_approved_survey.html', {'formset': formset})
+
+
+
+
+
+
+    <div class="row">
+      <h1>Update Answers for {{ survey.name }}</h1>
+      <form method="POST">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {% for form in formset.forms %}
+          {{ form.as_table }}
+        {% endfor %}
+        <button type="submit">Submit</button>
+      </form>
+    </div>

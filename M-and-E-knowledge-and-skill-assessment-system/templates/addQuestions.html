@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% include 'includes/head.html' %}
+ <style>
+    .custom-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .custom-list li {
+      border: 2px solid #e9ecef;
+      padding: 10px;
+      border-radius: 5px;
+      color: black;
+    }
+
+    .custom-list li:hover {
+      border-color: #4c956c;
+    }
+
+    /* CSS Styles for the Question Displayer */
+    .question-options {
+      list-style: none;
+    }
+
+    .drop {
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .drop_container {
+      row-gap: 1rem;
+      padding: 2rem;
+    }
+
+    .drop_card {
+      justify-content: space-between;
+      padding: 1.25rem;
+      margin: 1rem;
+      border: 1px solid gray;
+      /* box-shadow: 4px 4px 16px #E1E1E1, -2px -2px 16px #FFF;
+        border-radius: 2rem; */
+      cursor: grab;
+    }
+
+    /* class name for chosen item */
+    .sortable-chosen {
+      box-shadow: 8px 8px 32px #e1e1e1;
+    }
+
+    /* class name for dragging item */
+    .sortable-drag {
+      opacity: 0;
+    }
+
+    .inputs {
+      position: relative;
+      border: none;
+      border-bottom: 2px solid #ccc;
+      padding: 8px;
+      background-color: transparent;
+      transition: border-color 0.3s ease;
+      outline: none;
+    }
+
+    .inputs:focus::before {
+      width: 100%;
+    }
+
+    .inputs:focus {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input[type="range"] {
+      max-width: 90%;
+      height: 10px;
+      background: linear-gradient(to right, #f2f2f2, #f2f2f2);
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: #04aa6d;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transform: rotate(-30deg) translate(-50%, -50%);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #04aa6d;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transform: rotate(-45deg) translate(-50%, -50%);
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 10px;
+      border-radius: 5px;
+      background: linear-gradient(to right, #04aa6d, #f2f2f2);
+    }
+
+    input[type="range"]::-moz-range-track {
+      height: 10px;
+      border-radius: 5px;
+      background: linear-gradient(to right, #04aa6d, #f2f2f2);
+    }
+  </style>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+ 
+  <div class="wrapper">
+    
+    {% include 'includes/topNavbar.html' %}
+    {% include 'includes/sideNavbar.html' %}
+
+    <div class="content-wrapper" style="background-color: white">
+      {% include "includes/message.html" %}
+
+      <div class="mt-4 container">
+        <div class="container">
+          <a class="btn" href="{% url 'survey_managment:createQuestion' survey_id=zsurvey.id %}"
+            style="float: right; color: white; background-color: #208c5c">
+            <i class="bi bi-plus-circle" style="color: white"></i> Question
+          </a>
+      
+          <a class="btn" href="{% url 'survey_managment:displayQuestion' zsurvey.id %}"
+            style="color: white; background-color: #208c5c">
+            <i class="bi bi-box-arrow-in-left" style="color: white"></i>
+            Import
+          </a>
+        </div>
+      
+        <h3 class="text-center">{{zsurvey.name}}</h3>
+        <div id="questions-container">
+          <hr class="mt-5" style="border: black solid 1px" />
+          {% for i in cat_list %}
+      
+          <ul class="question-list " style="list-style: none;margin-left:-23px">
+              {% if i.questions %}
+              <div class="tab">
+                  <h5 class="text-gray mb-5">
+                      {% if i.catagory.parent %}
+                     {{ i.category.parent}}
+                      {% endif %}
+                      <span  style="color: #04aa6d; font-weight: bold ; font-size: 20px">
+                       Category
+                   </span>{{ i.category }}</h5>
+                  {% for question in i.questions %}
+        
+                  <li style="border-left: 6px solid #04aa6d; border-radius: 8px; margin-left: 20px;">
+                      <div class="row" style="margin-left:10px">
+                          <div class="col-11">
+                              <p style="padding-top:40px;font-size:18px;">{{ question.title }}</p>
+                          </div>
+                      </div>
+        
+                      {% if question.label %}
+                      <div class="row" style="margin-left:30px">
+                          <div class="col-1">
+                              <span  style="color: #04aa6d; font-weight: bold;font-size:16px">
+                                  Description:
+                              </span>
+                          </div>
+                          <div class="col-11">
+                              <p style="font-size:16px" class="ml-5">{{ question.label }}</p>
+                          </div>
+                      </div>
+                      {% endif %}
+        
+                      {% if question.question_type == "rating" %}
+                      <div>
+                        <label style="margin:20px;margin-left:30px;font-weight:bold"> Choose 0 - 10 </label>
+                        <input disabled type="range" id="progressInput{{question.id}}" min="0" max="10" value="0" oninput="updateProgressBar(this.value, {{question.id}})" style="margin:20px;margin-left:30px;" name="answer_{{ question.id }}">
+                        <span style="font-size:20px;font-weight:bold;color:#04AA6D;" id="progressLabel{{question.id}}">0</span>
+                      </div>
+                    {% elif question.question_type == "radio" or question.question_type == "checkbox" %}
+                    <div>
+                     
+                      {% for choice in question.choice.all %}
+                     
+                      <div style="margin-left:70px">
+                        <input disabled type="{{question.question_type}}" name="{{choice.id}}" id="{{choice.id}}" value="{{choice.id}}" />
+                        <label for="{{choice.id}}">{{ choice.name }}</label>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    {% elif question.question_type == "number" %}
+                      <input disabled style="margin-left:50px" class="form-control" type="number" name="answer_{{ question.id }}" placeholder="Answer..." required />
+                    {% elif question.question_type == "email" %}
+                      <input disabled style="margin-left:50px" class="form-control" type="email" name="answer_{{ question.id }}" placeholder="Email..." required />
+                    {% elif question.question_type == "url" %}
+                      <input disabled style="margin-left:50px" class="form-control" type="url" name="answer_{{ question.id }}" placeholder="URL..." required />
+                    {% elif question.question_type == "date" %}
+                      <input disabled style="margin-left:50px" class="form-control" type="date" name="answer_{{ question.id }}" placeholder="Date..." required />
+                    {% elif question.question_type == "text" %}
+                    <input disabled style="margin-left:50px" class="form-control" type="text" name="answer_{{ question.id }}" placeholder="Answer..." required />
+                      {% else %}
+                    <textarea disabled  style="margin-left:50px" class="form-control" name="answer_{{ question.id }}" placeholder="Enter your text here..." required></textarea>
+                    {% endif %}
+        
+                      {% if question.allow_doc %}
+                      <input disabled style="margin-left:30px" class="form-control m-3 ml-4" type="file" name="file_{{ question.id }}"
+                          placeholder="File..." required />
+                      {% endif %}
+                      {% if question.doc_label %}
+                      <p style="margin:20px">
+                          <label style="margin-left:30px;font-weight:bold" class="ml-4 mt-3" for="file{{ question.id }}">Document
+                              label</label>
+                          {{ question.doc_label }}
+                      </p>
+                      {% endif %}
+        
+                      <br />
+                  </li>
+                  <br />
+                  {% endfor %}
+              </div>
+              {% endif %}
+          </ul>
+        
+          {% endfor %}
+      
+        </div>
+      </div>
+     
+    </div>
+  </div>
+
+</body>
+
+  {% include 'includes/scripts.html' %}
+
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+  <script>
+    // JavaScript code for Drag and Drop reordering
+    const dropItems = document.getElementById("drop-items");
+    new Sortable(dropItems, {
+      animation: 150,
+      chosenClass: "sortable-chosen",
+      dragClass: "sortable-drag",
+    });
+
+    document.getElementById("oneT").addEventListener("click", function () { });
+  </script>
+
+
+</html>
+
+
+
