@@ -468,6 +468,28 @@ if(!existingOption){
                             weightCell.textContent = weightedSum;
                             var averageCell = totalRow.insertCell();
                             var average = total_weightedinPercent / count;
+
+                            var totalgrading = totalRow.insertCell();
+                            totalgrading.textContent = "";
+                            if (average >= 90) {
+                                totalgrading.textContent = " Very Good";
+                                totalgrading.style.backgroundColor = "#52B788";
+                            } else if (average >= 80) {
+                                totalgrading.textContent = "Good";
+                                totalgrading.style.backgroundColor = "#C2FA41";
+                            } else if (average >= 60) {
+                                totalgrading.textContent = "Satisfactory";
+                                totalgrading.style.backgroundColor = "#C1FA61";
+                            } else if (average >= 50) {
+                                totalgrading.textContent = "Poor";
+                                totalgrading.style.backgroundColor = "#FAEB41";
+                            } else if (average >= 40) {
+                                totalgrading.textContent = "Very Poor";
+                                totalgrading.style.backgroundColor = " #FA7D41";
+                            } else {
+                                totalgrading.textContent = "Extremely Poor";
+                                totalgrading.style.backgroundColor = "#FA7D41";
+                            }
                             averageCell.textContent = average.toFixed(2) + "%";
                             surveyTableBody_2.appendChild(totalRow);
                             option_table1.style.display = "block";
