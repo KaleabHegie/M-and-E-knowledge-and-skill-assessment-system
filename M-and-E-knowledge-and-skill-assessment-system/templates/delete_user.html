@@ -1,6 +1,0 @@
-<!-- delete_listing.html -->
-<p>Are you sure you want to delete "{{ user.username }}"?</p>
-<form method="post" action="{% url 'Account:delete_users' user.id %}">
-    {% csrf_token %}
-    <button type="submit">Delete</button>
-</form>

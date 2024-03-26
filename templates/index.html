@@ -186,17 +186,7 @@
         {% include 'includes/sideNavbar.html' %}
         
         <div class="content-wrapper" style="background-color: white">
-            <ul class="nav nav-tabs" style="margin: 10px; justify-content: center;">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"
-                        style="background-color: transparent;">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" 
-                    href="{% url 'survey_managment:filter' %}"
-                    style="background-color: transparent;" >Filter</a>
-                </li>
-            </ul>
+           {% include "includes/dashbordNav.html" %}
             <div class="content-header" >
                 <div class="container-fluid">
                     <div class="row hold-transition" >
@@ -805,8 +795,6 @@
 
 
 
-
-                        // set color of avgs
                         function setColor(avgS) {
                             avgS.forEach((td) => {
                                 if (td.textContent <= 50)

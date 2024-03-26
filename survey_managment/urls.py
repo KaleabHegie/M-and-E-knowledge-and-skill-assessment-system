@@ -52,6 +52,7 @@ urlpatterns = [
     path('filter_data/',views.filter,name='filter'),
     path('average_data/',views.average,name='average'),
     path('years/',views.YearDataview,name="years"),
+    path('years2/',views.YearDataview2,name="years2"),
     # path('choose-target/<int:survey_id>/<int:question_id>/', views.chooseTarget, name='chooseTarget'),   
     path('greetingpage/',views.greetingpage_view, name='greetingpage'),
     path('surveylists/',views.survey_listss_views, name='surveylists'),
@@ -67,6 +68,7 @@ urlpatterns = [
     path("load_survey/",views.load_survey,name ='load_survey'),
     path("load_ministry/",views.load_ministry,name ='load_ministry'),
     path("assessment_category/", views.AssesmentCatagory, name='assessment_category'),
+    path("LineMinistryFilter/", views.LineMinistryFilter, name='LineMinistryFilter'),
 
 
 
