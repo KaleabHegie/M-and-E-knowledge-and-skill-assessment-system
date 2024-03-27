@@ -244,6 +244,7 @@
           } else {
             console.log("User response is an empty array. Skipping RandomGenerate.");
           }
+         
           data.survey_type.forEach((surveyType) => {
             var emptyOption = document.createElement("option");
             emptyOption.value = "";
@@ -667,6 +668,8 @@
           let selectedAssessmentObj1 = storedData.Assesment.find(assessment => assessment.id === allSelectedAssessmentObjs[1].id);
           let currentYear = new Date().getFullYear();
 
+          console.log("selectedAssessmentObj1" + selectedAssessmentObj1.id);
+          console.log();
 
           assessmentData.forEach((selectedAssessmentObj1 ,index) => {
             categories = [];
@@ -679,7 +682,11 @@
               if (matchingSection) {
                 storedSection.push(matchingSection);
               }
+
             });
+            console.log("********");
+            console.log(storedSection);
+            console.log("********");
           let storedMinistry = storedData.line_ministry;
           let userResponseId = null;
           while (!userResponseId) {

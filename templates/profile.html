@@ -139,7 +139,18 @@
                           <span class="col"> Role </span>
                           <span style="float:inline-end;">  </span>
                          </th>
-                        <td> {{custom_user.Role}} </td>
+                        {% if custom_user.is_mopd_head %}
+                        <td> MOPD Head </td>
+
+{% elif custom_user.is_line_minister_head %}
+<td> Line Ministry Head </td>
+{% else %}
+<td> Unknown </td>
+{% endif %}   
+
+
+
+
                       </tr>
                       <tr>
                         <th scope="row"  class="d-flex">

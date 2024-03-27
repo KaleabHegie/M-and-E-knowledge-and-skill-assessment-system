@@ -15,7 +15,6 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.urls import reverse_lazy
 from .forms import *
 from .models import *
 from django.contrib.auth.decorators import login_required
