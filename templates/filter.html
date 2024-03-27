@@ -667,10 +667,13 @@
                     
           let selectedAssessmentObj1 = storedData.Assesment.find(assessment => assessment.id === allSelectedAssessmentObjs[1].id);
           let currentYear = new Date().getFullYear();
+<<<<<<< HEAD
 
           console.log("selectedAssessmentObj1" + selectedAssessmentObj1.id);
           console.log();
 
+=======
+>>>>>>> 20c0e29437785f3ed2b8f02710dcdebd07b3354f
           assessmentData.forEach((selectedAssessmentObj1 ,index) => {
             categories = [];
             dataforchart = [];
@@ -720,10 +723,6 @@
                 return;
               }
             });
-
-            if (!userResponseId) {
-              console.log("No response found for the selected random values");
-            }
           }
 
           console.log("User response found:", userResponseId);

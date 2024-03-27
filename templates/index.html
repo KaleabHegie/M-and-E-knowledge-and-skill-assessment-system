@@ -186,17 +186,7 @@
         {% include 'includes/sideNavbar.html' %}
         
         <div class="content-wrapper" style="background-color: white">
-            <ul class="nav nav-tabs" style="margin: 10px; justify-content: center;">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"
-                        style="background-color: transparent;">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" 
-                    href="{% url 'survey_managment:filter' %}"
-                    style="background-color: transparent;" >Filter</a>
-                </li>
-            </ul>
+           {% include "includes/dashbordNav.html" %}
             <div class="content-header" >
                 <div class="container-fluid">
                     <div class="row hold-transition" >
@@ -316,7 +306,7 @@
                     <option value="{{i.id}}"> {{i.name}} </option>
                     {% endfor %}
                 </select>
-                <button id="selectAllBtn" class="ml-3 btn">Select All</button>
+                <button id="selectAllBtn" class="ml-3 btn btn-success">Un Select All</button>
             </div>
 
 
@@ -424,9 +414,26 @@
         var placeholderText = 'All Line Ministries (' + optionCount + ')';
 
         $('#selectAllBtn').on('click', function () {
-            $('#LMselect').val($('#LMselect option').toArray().map(item => item.value)).trigger('change');
-            $('#LMselect').next('.select2-container').find('.select2-selection__rendered').text(placeholderText); // Update placeholder text                
+            var selectedOptions = $('#LMselect option:selected');
+            
+            if (selectedOptions.length > 0) {
+                selectedOptions.prop('selected', false);
+                $('#selectAllBtn').text('Select All');
+                $('#LMselect').next('.select2-container').find('.select2-selection__rendered').text('Select Line Ministry'); // Update placeholder text
+            } else {
+                $('#LMselect').val($('#LMselect option').toArray().map(item => item.value));
+                var numSelected = $('#LMselect option:selected').length;
+                var placeholderText = numSelected > 0 ? 'Selected (' + numSelected + ')' : 'Select Line Ministry';
+                $('#LMselect').next('.select2-container').find('.select2-selection__rendered').text(placeholderText); // Update placeholder text
+                $('#selectAllBtn').text('Unselect All');
+                $('#LMselect').trigger('change'); 
+            }
+
+            $('#LMselect').trigger('change'); 
+            
+            
         });
+
 
         // Event handler for when the user changes the year
         yearselect.on('change', function () {
@@ -805,8 +812,6 @@
 
 
 
-
-                        // set color of avgs
                         function setColor(avgS) {
                             avgS.forEach((td) => {
                                 if (td.textContent <= 50)

@@ -1,0 +1,365 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+{% include 'includes/head.html' %}
+
+<body>
+    <div class="wrapper">
+        {% include 'includes/topNavbar.html' %}
+        {% include 'includes/sideNavbar.html' %}
+        <div class="content-wrapper">
+            {% include "includes/dashbordNav.html" %}
+            <section class="content">
+                <div class="container-fluid">
+                    <h4 style="text-align: center; color: black;" class="mt-3 mb-4">Assessment of Year {{year}}</h4>
+                    <div class="row">
+                        {% for i in assessments %}
+                        <div class="card hidden-transition col-lg-5 d-flex mx-auto" onclick="fetchdata({{ i.id }})">
+                            <div class="card-body">
+                                <div class="d-flex align-items-top ">
+                                    <div class="flex-fill">
+                                        <h5 class="d-block fw-semibold  mb-1"> {{i}} </h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-block ">
+                                                <div class=" counter" style="font-size: x-large; text-align: center;">
+                                                    {{Response}}
+                                                </div>
+                                            </div>
+                                            <a class="btn btn-app"
+                                                style="background-color: #7ae582; border-radius: 10px;">
+                                                <i class="bi bi-card-checklist bi-main"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%}
+                    </div>
+                </div>
+            </section>
+
+
+
+            <div class="container-fluid" style="background-color: #b7e4c7;width: 90%; margin: 0 auto;">
+                <h3 class="container m-2" id="selectedAssesment" style="text-align: center; color: black;"></h3>
+                <div class="container-fluid row" id="searchArea">
+                    <div class="form-group col-lg-12 col-sm-12">
+                        <select id="ministry-select" class="form-control mx-auto d-flex">
+                           
+                        </select>
+                    </div>
+
+                    <div class="form-group " style="display: none;">
+
+                        <select id="survey-select" class="form-control" >
+                            <option value="">Select Assesment</option>
+                            {%for i in assessments%}
+                            <option value="{{i.id}}">{{i}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+
+
+
+                    
+                </div>
+            </div>
+
+            <figure class="highcharts-figure">
+                <div id="container111"></div>
+                <p class="highcharts-description">
+                </p>
+            </figure>
+
+            <!-- table -->
+            <section class="content" style="display: none;" id="section2">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card hidden-transition">
+                                <div class="card-header" style="justify-content: space-between;">
+                                    <div class="card-title">
+                                        <div id="selected-survey"></div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table text-nowrap table-hover border table-bordered"
+                                            id="survey_detail">
+                                            <thead>
+                                                <th> Section</th>
+                                                <th>Avarage 100%  </th>
+                                                <th> Grading </th>
+                                            </thead>
+                                            <tbody id="tbody">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <div class="card hidden-transition" style="display: none;" id="msg1">
+
+                <div class="card-header" style="justify-content: space-between;">
+
+                </div>
+                <div class="card-body" style="background-color: #94e299;">
+                    <p id="no_resonse_msg" style="text-align: center;"> </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    {% include 'includes/scripts.html' %}
+    <script>
+
+        var selectElement = document.getElementById('survey-select');
+        var select_ministry = document.getElementById("ministry-select");
+        var selectElementss;
+        let selectedAssesment = document.getElementById('selectedAssesment');
+
+        let store_average = [];
+        let store_survey_name = [];
+        let ministry_info = [];
+        let surveyData = {};
+        let store_ministries = [];
+        let categories = [];
+        let surveyTableBody_2 = document.getElementById('survey_detail').getElementsByTagName('tbody')[0];
+        let surveyTableBody_3 = document.getElementById('general_Survey_Info').getElementsByTagName('tbody')[0];
+        let option_table2 = document.getElementById('section1');
+        let column_chart = document.getElementById('container');
+        var card_msg = document.getElementById('msg1');
+        var change = false;
+        function fetchdata(cardID) {
+            fetch('http://127.0.0.1:8000/get_json/')
+              .then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Network response was not OK');
+                }
+                return response.json();
+              })
+              .then(function (jsonData) {
+                selectElement.value = cardID;
+                selectElementss = selectElement.value;
+          
+                if (selectElement) {
+                  var option = selectElement.querySelector('option[value="' + selectElement.value + '"]');
+                  if (option) {
+                    var selectedObject = jsonData.Assesment.find(function (obj) {
+                      return obj.id == selectElement.value;
+                    });
+                    option.selected = true;
+                    selectedAssesment.textContent = selectedObject.name;
+          
+                    // Clear existing ministry options
+                    var ministrySelect = document.getElementById('ministry-select');
+                    ministrySelect.innerHTML = '<option value="">---Select Line Ministry---</option>';
+          
+                    // Add ministry options for the selected assessment
+                    selectedObject.for_line_ministry.forEach(function (ministryId) {
+                      var ministry = jsonData.line_ministry.find(function (obj) {
+                        return obj.id == ministryId;
+                      });
+                      if (ministry) {
+                        var ministryOption = document.createElement('option');
+                        ministryOption.value = ministry.id;
+                        ministryOption.textContent = ministry.name;
+                        ministrySelect.appendChild(ministryOption);
+                      }
+                    });
+                  } else {
+                    console.error('Option with value "' + selectElement.value + '" not found');
+                  }
+                } else {
+                  console.error('Select element not found');
+                }
+                console.log("Value assigned to selectElement globally:", selectElementss);
+              });
+          }
+        function Analysis(cardID) {
+            fetch('http://127.0.0.1:8000/get_json/')
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('Network response was not OK');
+                    }
+                    return response.json();
+                })
+                .then(function (jsonData) {
+                    select_ministry.addEventListener("change", function () {
+                        surveyTableBody_2.innerHTML = "";
+                        var selectedLineMinistry = parseInt(select_ministry.value);
+                        console.log(selectedLineMinistry)
+                        user = null;
+                        jsonData.users.forEach(function (users) {
+                            if (users.Line_ministry_id === selectedLineMinistry) {
+                                user = users.id;
+                                return;
+                            }
+                        });
+                        var selectedUserResponses = jsonData.user_response.filter(function (userResponse) {
+                            return userResponse.submitted_by_id === user && userResponse.forAssessment === cardID;
+                        });
+                        console.log(selectedUserResponses);
+                        userResponseId = null
+                        selectedUserResponses.forEach(function (userResponse) {
+                            if (userResponse.submitted_by_id === user && userResponse.status === 'approved' && userResponse.forAssessment === cardID) {
+                                userResponseId = userResponse.id;
+                                return;
+                            }
+                        });
+                        console.log("selected user response " + userResponseId);
+                        if (userResponseId !== null) {
+                            let selectedSurveyId = parseInt(selectElement.value);
+                            let selectedSurveyName = null;
+        
+                            jsonData.surveys.forEach(function (survey) {
+                                if (survey.id == selectedSurveyId) {
+                                    selectedSurveyName = survey.name;
+                                    return;
+                                }
+                            });
+        
+                            var card_msg = document.getElementById('msg1');
+                            card_msg.style.display = "none";
+                            var answers = jsonData.answer.filter(function (answer) {
+                                return answer.response_id === userResponseId;
+                            });
+                            console.log(answers);
+                            let answerValues = answers.map(function (answer) {
+                                let questioncat = jsonData.questions.find(function (q) {
+                                    return q.id === answer.forquestion_id;
+                                });
+                                return {
+                                    value: parseFloat(answer.answertext),
+                                    questionId: answer.forquestion_id
+                                };
+                            });
+        
+                            console.log(answerValues);
+                            var weightedSum = 0;
+                            var totalWeight = 0;
+                            var total_weightedinPercent = 0;
+                            var count = 0;
+                            var total_answer = 0;
+        
+                            answerValues.forEach(function (answer) {
+                                var question = jsonData.questions.find(function (q) {
+                                    return q.id === answer.questionId;
+                                });
+        
+                                console.log(question);
+                                if (question) {
+                                    var weight = question.weight;
+                                    var total_weight = 0
+                                    if (!isNaN(answer.value)) {
+                                        weightedSum += answer.value * weight;
+                                        totalWeight += weight;
+                                        total_answer += answer.value;
+                                    }
+                                    var weighted__Sum = 0;
+        
+                                    if (totalWeight > 0) {
+                                        var weightedAverage = weightedSum / totalWeight;
+                                        var row = surveyTableBody_2.insertRow();
+                                        var question_cell = row.insertCell();
+        
+                                        question_cell.textContent = question.title;
+                                        row.insertCell().textContent = answer.value;
+                                        question_cell.classList.add('limited-width');
+                                        row.insertCell().textContent = weight;
+                                        row.insertCell().textContent = answer.value * weight;
+                                        var totalresult = answer.value * weight;
+                                        var weighted__Sum = 0;
+                                        console.log(weighted__Sum);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                })
+                .catch(function (error) {
+                    console.log('Error:', error);
+                });
+        }
+          function clearAndRedrawChart(surveyname, sectionName, categories, data) {
+            Highcharts.chart('container111', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: surveyname,
+                    align: 'left'
+                },
+                subtitle: {
+                    text: sectionName,
+                    align: 'left'
+                },
+                xAxis: {
+                    categories: categories,
+                    title: {
+                        text: null
+                    },
+                    gridLineWidth: 1,
+                    lineWidth: 0
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '%',
+                        align: 'high'
+                    },
+                    labels: {
+                        overflow: 'justify'
+                    },
+                    gridLineWidth: 0
+                },
+                tooltip: {
+                    valueSuffix: ' percent(%)'
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: '50%',
+                        dataLabels: {
+                            enabled: true
+                        },
+                        groupPadding: 0.1
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor:
+                        Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    shadow: true
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: '',
+                    data: data
+                }]
+            });
+        }
+
+
+    </script>
+</body>
+
+</html>

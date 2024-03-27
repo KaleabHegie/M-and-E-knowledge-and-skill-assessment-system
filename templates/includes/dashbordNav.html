@@ -1,0 +1,33 @@
+{% include "includes/head.html" %}
+
+
+<ul class="nav nav-tabs" style="margin: 10px; justify-content: center;">
+    <li class="nav-item">
+        <a class="nav-link" style="color:grey" aria-current="page" href="{% url 'survey_managment:Index'%}"
+            style="background-color: transparent;" id="dashboard-link">Dashboard</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" style="color:grey" aria-current="page" href="{% url 'survey_managment:years'%}"
+            style="background-color: transparent;" id="filter-detail-link">Filter Detail</a>
+    </li>
+</ul>
+
+<script>
+    // Get the current URL
+    var currentURL = window.location.href;
+    console.log(currentURL)
+
+    // Get the link elements
+    var dashboardLink = document.getElementById("dashboard-link");
+    var filterLineLink = document.getElementById("filter-line-link");
+    var filterDetailLink = document.getElementById("filter-detail-link");
+
+    // Check if the current URL matches the link href and add the 'active' class
+    if (currentURL"/") {
+        dashboardLink.classList.add("active");
+    } else if (currentURL.includes("/years2")) {
+        filterLineLink.classList.add("active");
+    } else if (currentURL.includes("/years")) {
+        filterDetailLink.classList.add("active");
+    }
+</script>

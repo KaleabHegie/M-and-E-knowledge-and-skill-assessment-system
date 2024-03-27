@@ -19,6 +19,32 @@
 
         <div class="container">
             <div class="row mt-3">
+
+                <div class="col-lg-8">
+                    <table class="table table-striped table-hover success">
+                        <thead>
+                        <tr>
+                            <th> C_ID </th>
+                            <th> P_ID </th>
+                            <th> Name </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in categories %}
+                                <tr>
+                                    <td> {{ i.id }} </td>
+                                    {% if  i.parent.id %} 
+                                        <td> {{ i.parent.id }}  </td>
+                                    {% else %}
+                                        <td> - </td>
+                                    {% endif %}
+                                    <td> {{ i.name}} </td>
+                                    
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             <div class="col-lg-4">
                 <h6 class="m-3 text-center"> Add New Category </h6>
                 <form action="" method="post">
@@ -38,42 +64,7 @@
                 </form>
             </div>
             
-            <div class="col-lg-8">
-                <table class="table table-striped table-hover success">
-                    <thead>
-                    <tr>
-                        <th> Category ID </th>
-                        <th> Parent ID </th>
-                        <th> Name </th>
-                        <th> Date Created </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in categories %}
-                            <tr>
-                                <td> {{ i.id }} </td>
-                                {% if  i.parent.id %} 
-                                    <td> {{ i.parent.id }}  </td>
-                                {% else %}
-                                    <td> - </td>
-                                {% endif %}
-                                <td> {{ i.name}} </td>
-                                <td> {{ i.created|date:"Y-m-d" }} </td>
-                                <td> 
-                                    <button type="button" class="btn btn-danger">Delete</button>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-success"> Edit
-                                        <i class="bi bi-pencil text-white"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+           
             </div>
         </div>
       </div>

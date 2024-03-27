@@ -372,6 +372,17 @@ def YearDataview(request):
     }
     return render(request, 'year.html',context)
 
+
+@login_required
+@admin_user_required
+def YearDataview2(request):
+    survey_years = Assesment.objects.order_by('created_at__year').values('created_at__year').distinct() 
+    context = {
+        'survey_years':survey_years
+    }
+    return render(request, 'year2.html',context)
+
+
 @login_required
 @admin_user_required
 def AssesmentCatagory(request):
@@ -382,6 +393,22 @@ def AssesmentCatagory(request):
         'assessments': assessments
     }
     return render(request, 'assesmentCatagory.html', context)
+
+
+
+@login_required
+@admin_user_required
+def LineMinistryFilter(request):
+    year = request.GET.get('year')
+    assessments = Assesment.objects.filter(created_at__year=year)
+    context = {
+        'year': year ,
+        'assessments': assessments
+    }
+    return render(request, 'lineMinistryFilter.html', context)
+
+
+
 
 @login_required
 @admin_user_required

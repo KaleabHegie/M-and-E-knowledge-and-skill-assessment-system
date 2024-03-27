@@ -11,13 +11,13 @@
         {% include 'includes/sideNavbar.html' %}
 
         <div class="content-wrapper">
+            {% include "includes/dashbordNav.html" %}
             <section class="content">
-              {% include "includes/dashbordNav.html" %}
                 <div class="container-fluid">
                     <h4 style="text-align: center; color: #7ae582;" class="mt-3 mb-4">Assessment By Year</h4>
                     {% for i in survey_years %}
                     <div class="col-md-3 col-sm-6 col-12 p-1 hidden-transition">
-                      <a href="{% url 'survey_managment:assessment_category' %}?year={{ i.created_at__year }}" style="color: black; text-decoration: none;">
+                      <a href="{% url 'survey_managment:LineMinistryFilter' %}?year={{ i.created_at__year }}" style="color: black; text-decoration: none;">
                         <div class="info-box shadow">
                           <span class="info-box-icon" style="color: #0096c7;">
                             <i class="fa-solid fa-database"></i>
