@@ -104,10 +104,10 @@ def login_view(request):
         user = auth.authenticate(request, username=email, password=password)
 
         if user is not None and user.is_authenticated:
-            if user.is_first_time and user.is_line_minister_head:
-                auth.login(request, user)
-                return redirect('Account:change_password')
-            elif user.is_superuser:
+            # if user.is_first_time and user.is_line_minister_head:
+            #     auth.login(request, user)
+            #     return redirect('Account:change_password')
+            if user.is_superuser:
                 auth.login(request, user)
                 return redirect('survey_managment:Index')
             else:

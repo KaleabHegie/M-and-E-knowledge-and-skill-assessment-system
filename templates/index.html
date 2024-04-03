@@ -331,7 +331,7 @@
                                 </tr>
                             </thead>
                             <tbody> </tbody>
-                            <caption id="sysTotal"> Total : </caption>
+                            <caption id="sysTotal"> Total Average: </caption>
                         </table>
                     </div>
                 </div>
@@ -347,7 +347,7 @@
                                 </tr>
                             </thead>
                             <tbody> </tbody>
-                            <caption id="skillTotal"> Total : </caption>
+                            <caption id="skillTotal"> Total Average: </caption>
                         </table>
                     </div>
                 </div>
@@ -814,17 +814,30 @@
 
                         function setColor(avgS) {
                             avgS.forEach((td) => {
-                                if (td.textContent <= 50)
-                                    td.style.backgroundColor = 'red';
-                                else if (td.textContent <= 70)
-                                    td.style.backgroundColor = 'yellow';
-                                else if (td.textContent <= 100)
-                                    td.style.backgroundColor = 'green';
-                                else
-                                    td.style.backgroundColor = 'none';
-                            })
-                        }
-
+                              let x = parseFloat(td.textContent);
+                              x = x.toFixed(2);
+                          
+                              if (x >= 90) {
+                                td.style.backgroundColor = "#52B788";
+                                td.textContent = `${x} Very Good`;
+                              } else if (x >= 80) {
+                                td.style.backgroundColor = "#C2FA41";
+                                td.textContent = `${x} Good`;
+                              } else if (x >= 60) {
+                                td.style.backgroundColor = "#C1FA61";
+                                td.textContent = `${x} Satisfactory`;
+                              } else if (x >= 50) {
+                                td.style.backgroundColor = "#FAEB41";
+                                td.textContent =  `${x} Poor`;
+                              } else if (x >= 40) {
+                                td.style.backgroundColor = "#FA7D41";
+                                td.textContent = `${x} Very Poor`;
+                              } else {
+                                td.style.backgroundColor = "#FA7D41";
+                                td.textContent = `${x} Extremely Poor`;
+                              }
+                            });
+                          }
                         if (skillValElements && sysValElements) {
                             setColor(skillValElements)
                             setColor(sysValElements)
