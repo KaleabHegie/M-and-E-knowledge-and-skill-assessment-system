@@ -101,6 +101,7 @@ class UserResponse(models.Model):
     age =models.IntegerField( null=True , blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending' ,  null=True , blank=True)
     line_ministry = models.ForeignKey(Line_ministry , on_delete=models.CASCADE , null=True , blank=True)
+    ip_address = models.GenericIPAddressField(null=True , blank=True)
 
 
 

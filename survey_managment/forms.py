@@ -53,7 +53,7 @@ class UserResponseForm(forms.ModelForm):
 class UserResponseFormA(forms.ModelForm):
     class Meta:
         model = UserResponse
-        fields = ['age', 'department', 'line_ministry', 'year_of_experiance']
+        fields = ['age', 'department', 'line_ministry', 'year_of_experiance', 'ip_address']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

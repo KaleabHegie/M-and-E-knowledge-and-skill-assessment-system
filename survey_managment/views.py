@@ -38,8 +38,9 @@ def new_page(request):
 @admin_user_required
 def indexView(request):
     line_ministries = Line_ministry.objects.all()
-    SystemAssessments = Assesment.objects.filter(name = 'M&E Knowledge/Skills Sets Assessment' ) 
-    SkillAssesments = Assesment.objects.filter(name = 'M&E System Sets Assessment') 
+    SystemAssessments = Assesment.objects.filter(name =  'M&E System Sets Assessment') 
+    SkillAssesments = Assesment.objects.filter(name =  'M&E Knowledge/Skills Sets Assessment') 
+    print(SystemAssessments)
     SystemAssessments_Detail = {}
     SkillAssesments_Detail = {}
     if SystemAssessments:
@@ -1189,17 +1190,19 @@ def previous_analysis(request ):
     return (request , 'previous_analysis.html' , context )
 
 def user_info(request):
+    client_ip = request.META.get('REMOTE_ADDR')
     if request.method == 'POST':
         form = UserResponseFormA(request.POST)
         if form.is_valid():
             response = form.save(commit=False)
             response.save()
             user_response_id = response.id   # Get the line ministry of the saved UserResponse object
-            return redirect('survey_managment:questionForSurveyAnonymous', id=2 , user_response_id=user_response_id)  # Pass the line ministry as a parameter
+            return redirect('survey_managment:anonymous_survey_listss_views' , user_response_id=user_response_id)  # Pass the line ministry as a parameter
     else:
         form = UserResponseFormA()
     data = {
         'form': form,
+        'client_ip' : client_ip,
     }
     return render(request, 'Final_Preview_Pages/userinfopage.html', data)
 
@@ -1210,8 +1213,7 @@ def anonymous_survey_listss_views(request, user_response_id):
     line_ministry = user_response.line_ministry
 
     # Exclude surveys with any user responses
-    surveys = Assesment.objects.filter(survey_type=survey_type, for_line_ministry=line_ministry ) \
-
+    surveys = Assesment.objects.filter(survey_type=survey_type, for_line_ministry=line_ministry ) 
     data = {
         'surveys': surveys,
         'user_response_id': user_response_id
@@ -1220,13 +1222,19 @@ def anonymous_survey_listss_views(request, user_response_id):
 
 def section_list_anonymous(request , survey_id , user_response_id):
 
+
+    client_ip = request.META.get('REMOTE_ADDR')
+    user_responses = UserResponse.objects.filter(forassesment = survey_id , ip_address=client_ip)
+    surveys_with_responses = [response.forsection for response in user_responses]
+
     sections = Section.objects.filter(assesment = survey_id)
-   
+    client_ip = request.META.get('REMOTE_ADDR')
     data = {
         
         "survey_id" : survey_id,
         'sections': sections,
-        "user_response_id" : user_response_id
+        "user_response_id" : user_response_id,
+        "surveys_with_responses" : surveys_with_responses
         
     }
     return render(request, 'Final_Preview_Pages/section_list_anunymous.html', data)
@@ -1257,6 +1265,7 @@ def questionForSurveyAnonymous(request, id , user_response_id):
         if user_response.forsection:
            user_response = UserResponse.objects.create(
            forsection=survey,
+           ip_address = request.META.get('REMOTE_ADDR'),
            department=user_response.department,
            age=user_response.age,
            line_ministry =  user_response.line_ministry ,
