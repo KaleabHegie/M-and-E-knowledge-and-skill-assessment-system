@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 
 
 
+
 # def mopd_user_requierd():
     
 def admin_user_required(view_func):
@@ -20,4 +21,4 @@ def ministry_user_required(view_func):
             return view_func(request, *args, **kwargs)
         else:
             return HttpResponse('You are not authorized to access this content.')
-    return wrapper_func    
+    return wrapper_func
