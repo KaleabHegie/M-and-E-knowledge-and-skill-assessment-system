@@ -36,6 +36,7 @@ def new_page(request):
 @login_required
 @admin_user_required
 def indexView(request):
+
     line_ministries = Line_ministry.objects.all()
     SystemAssessments = Assesment.objects.filter(name =  'M&E System Sets Assessment') 
     SkillAssesments = Assesment.objects.filter(name =  'M&E Knowledge/Skills Sets Assessment') 
@@ -984,7 +985,6 @@ def sectionCreation(request , survey_id):
 
 @login_required
 def greetingpage_view(request):
-    
     user = request.user 
     user = CustomUser.objects.get(email = user)
     line_ministry = request.user.Line_ministry
@@ -1221,13 +1221,11 @@ def anonymous_survey_listss_views(request, user_response_id):
 
 def section_list_anonymous(request , survey_id , user_response_id):
 
-
     client_ip = request.META.get('REMOTE_ADDR')
     user_responses = UserResponse.objects.filter(forassesment = survey_id , ip_address=client_ip)
     surveys_with_responses = [response.forsection for response in user_responses]
 
     sections = Section.objects.filter(assesment = survey_id)
-    client_ip = request.META.get('REMOTE_ADDR')
     data = {
         
         "survey_id" : survey_id,
@@ -1241,6 +1239,7 @@ def section_list_anonymous(request , survey_id , user_response_id):
 
 def questionForSurveyAnonymous(request, id , user_response_id):
     survey = get_object_or_404(Section, id=id)
+    ass = Assesment.objects.get(section = survey)
     assesment = Assesment.objects.get(section = survey).id
     questions = survey.question.all()
     cat_list = []
@@ -1264,6 +1263,7 @@ def questionForSurveyAnonymous(request, id , user_response_id):
         if user_response.forsection:
            user_response = UserResponse.objects.create(
            forsection=survey,
+           forassesment=ass,
            ip_address = request.META.get('REMOTE_ADDR'),
            department=user_response.department,
            age=user_response.age,
@@ -1297,6 +1297,7 @@ def questionForSurveyAnonymous(request, id , user_response_id):
         else :
            user_response.status = 'approved'
            user_response.forsection = survey
+           user_response.forassesment=ass
            user_response.save() 
            for category in cat_list:
             for i in category['questions']:

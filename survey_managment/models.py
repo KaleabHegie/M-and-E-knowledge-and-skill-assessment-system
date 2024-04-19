@@ -106,7 +106,7 @@ class UserResponse(models.Model):
 
 
     def __str__(self):
-        return str(self.submitted_by)
+     return f"{self.submitted_by} - {self.line_ministry}"
     
 class Answer(models.Model):
     response = models.ForeignKey("UserResponse", on_delete=models.CASCADE , null=True , blank=True)
