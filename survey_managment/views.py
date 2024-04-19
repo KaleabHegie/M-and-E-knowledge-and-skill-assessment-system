@@ -36,6 +36,7 @@ def new_page(request):
 @login_required
 @admin_user_required
 def indexView(request):
+
     line_ministries = Line_ministry.objects.all()
     SystemAssessments = Assesment.objects.filter(name =  'M&E System Sets Assessment') 
     SkillAssesments = Assesment.objects.filter(name =  'M&E Knowledge/Skills Sets Assessment') 
@@ -984,7 +985,6 @@ def sectionCreation(request , survey_id):
 
 @login_required
 def greetingpage_view(request):
-    
     user = request.user 
     user = CustomUser.objects.get(email = user)
     line_ministry = request.user.Line_ministry
