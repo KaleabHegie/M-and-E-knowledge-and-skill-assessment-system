@@ -79,7 +79,8 @@ def indexView(request):
         surveyType = SurveyType.objects.all()
         surveys_count = Section.objects.all().count()
         questions = Question.objects.all().count()
-        Response = UserResponse.objects.all().count()
+        ResponsePending = UserResponse.objects.filter(status='pending').count()
+        ResponseApproved = UserResponse.objects.filter(status='approved').count()
         line_ministry = Line_ministry.objects.all()
         survey_years = Section.objects.order_by('created_at__year').values('created_at__year').distinct() 
         form = AnalysisForm()
@@ -89,7 +90,7 @@ def indexView(request):
 
 
 
-        context = {'surveys_count': surveys_count, 'questions': questions, 'Response':Response , 'surveys':surveys ,
+        context = {'surveys_count': surveys_count, 'questions': questions, 'ResponsePending':ResponsePending ,'ResponseApproved':ResponseApproved, 'surveys':surveys ,
              'line_ministry':line_ministry,'form':form,'surveyType':surveyType,'survey_years':survey_years, 'Assesment':assesment,
              'line_ministries' : line_ministries,
                'SystemAssessments_Detail' : json.dumps(SystemAssessments_Detail),
