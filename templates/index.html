@@ -636,8 +636,8 @@
                                             const filteredResponseID = filteredResponse.id
                                             const zAnswers = data.answer.filter(ans => ans.response_id == filteredResponseID)
                                             //console.log(filteredResponse)
-                                            // console.log(zAnswers)
-
+                                            const zquestionsINaSection = data.section.find(section => section.id === filteredResponse.forsection);
+                                            const sectionQuestionsCount =zquestionsINaSection.questions.length;
 
                                             if (zAnswers) {
                                                 for (let j = 0; j < zAnswers.length; j++) {
@@ -646,8 +646,14 @@
 
                                                     // answers may be non numeric
                                                     if (!isNaN(numericValue)) {
-                                                        Sum += numericValue;
+                                                        Sum += (numericValue*10);
                                                     }
+                                                }
+                                                Sum = Sum /sectionQuestionsCount
+                                                
+                                                if(filteredResponse.length > 1){
+                                                    Sum = (Sum/filteredResponse.length) / 100
+                                                    console.log('employee ' +sum)
                                                 }
                                             }
                                         }
@@ -655,11 +661,11 @@
                                         totalSum += Sum
 
                                     }
-                                    console.log('total sum by section ' + totalSum)
+                                    console.log('total sum by section of all lm ' + totalSum)
 
 
                                     const average = selectedMinistries.length > 0 ? totalSum / selectedMinistries.length : 0;
-                                    console.log(`Average: ${average}`);
+                                    console.log(`Average by section: ${average}`);
 
                                     // Update the value of each skillVal element with the calculated average
 

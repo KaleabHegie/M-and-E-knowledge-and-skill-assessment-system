@@ -5,7 +5,7 @@ from django.contrib import messages,auth
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
-from . models import *
+from .models import *
 from .forms import *
 from django.contrib.auth import settings
 from django.contrib.auth import logout
@@ -125,7 +125,7 @@ def logout(request):
 
 
 
-from .models import CustomUser
+# from .models import CustomUser
 
 def view_profile(request):
     # Retrieve the custom user object

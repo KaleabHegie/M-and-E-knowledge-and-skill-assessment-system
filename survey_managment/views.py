@@ -40,7 +40,12 @@ def indexView(request):
     line_ministries = Line_ministry.objects.all()
     SystemAssessments = Assesment.objects.filter(name =  'M&E System Sets Assessment') 
     SkillAssesments = Assesment.objects.filter(name =  'M&E Knowledge/Skills Sets Assessment') 
-    print(SystemAssessments)
+    # print(SystemAssessments)
+    # y = Section.objects.get(name='M&E Concepts')
+    # x = UserResponse.objects.filter(line_ministry=47,forsection=y.id)
+    # z = Answer.objects.filter(response__in = x)
+    # for i in z:
+    #     print(i)
     SystemAssessments_Detail = {}
     SkillAssesments_Detail = {}
     if SystemAssessments:
@@ -95,7 +100,7 @@ def indexView(request):
                'SystemAssessments_Detail' : json.dumps(SystemAssessments_Detail),
                'SkillAssesments_Detail' : json.dumps(SkillAssesments_Detail),
                 }
-      
+    
         return render(request, 'index.html', context)
 
 @login_required
@@ -130,10 +135,7 @@ def filter(request):
       
         return render(request, 'filter.html', context)
     
-@login_required
-@admin_user_required
-def average(request):
-    return render(request , 'averages.html' )
+
 
 @login_required
 @admin_user_required
@@ -353,9 +355,7 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'survey_managment/change_password.html', {'form': form})
 
-def Mychartanalysis(request):
-    data={}
-    return render(request,'chart_analysis.html',data)
+
 
 def jsonSender(request):
     data = {
@@ -549,7 +549,23 @@ def get_data(request):
         'questions': questions,
         'survey_type': list(SurveyType.objects.values()),
         'Assesment': assesment_data_list,
-        'section' : list(Section.objects.values()),
+        # 'section' : list(Section.objects.values()),
+        'section': [
+            {
+                'id': section.id,
+                'name': section.name,
+                'instruction': section.instruction,
+                'created_at': section.created_at,
+                'questions': [
+                    {
+                        'id': question.id,
+                        'title': question.title
+                    }
+                    for question in section.question.all()
+                ]
+            }
+            for section in sections
+        ],
         'user_response': data4,
     }
     return JsonResponse(serialized_data , safe=False)
