@@ -182,8 +182,11 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         {% include 'includes/loader.html' %}
-        {% include 'includes/topNavbar.html' %}
         {% include 'includes/sideNavbar.html' %}
+
+
+        
+        {% include 'includes/topNavbar.html' %}
         
         <div class="content-wrapper" style="background-color: white">
            {% include "includes/dashbordNav.html" %}
@@ -194,7 +197,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-top ">
                                     <div class="flex-fill">
-                                        <h5 class="d-block fw-semibold  mb-1">Total - Survey</h5>
+                                        <h5 class="d-block fw-semibold  mb-1">Total - Section</h5>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="d-block ">
                                                 <div class="fw-semibold counter"
@@ -250,7 +253,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="d-block ">
                                                 <div class=" counter"
-                                                    style="font-size: x-large; text-align: center;"> {{Response}}
+                                                    style="font-size: x-large; text-align: center;"> {{ResponseApproved}}
                                                 </div>
                                                 <a href="" class="nav-link " style="color: #7ae582;">
                                                     View All
@@ -275,7 +278,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="d-block ">
                                                 <div class=" counter"
-                                                    style="font-size: x-large; text-align: center;"> {{Response}}
+                                                    style="font-size: x-large; text-align: center;"> {{ResponsePending}}
                                                 </div>
                                                 <a href="" class="nav-link " style="color: #d18d4f;">
                                                     View All
@@ -648,6 +651,7 @@
                                                     if (!isNaN(numericValue)) {
                                                         Sum += (numericValue*10);
                                                     }
+                                                   
                                                 }
                                                 Sum = Sum /sectionQuestionsCount
                                                 
