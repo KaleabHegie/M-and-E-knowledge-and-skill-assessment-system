@@ -182,8 +182,11 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         {% include 'includes/loader.html' %}
-        {% include 'includes/topNavbar.html' %}
         {% include 'includes/sideNavbar.html' %}
+
+
+        
+        {% include 'includes/topNavbar.html' %}
         
         <div class="content-wrapper" style="background-color: white">
            {% include "includes/dashbordNav.html" %}
@@ -194,7 +197,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-top ">
                                     <div class="flex-fill">
-                                        <h5 class="d-block fw-semibold  mb-1">Total - Survey</h5>
+                                        <h5 class="d-block fw-semibold  mb-1">Total - Section</h5>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="d-block ">
                                                 <div class="fw-semibold counter"
@@ -250,7 +253,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="d-block ">
                                                 <div class=" counter"
-                                                    style="font-size: x-large; text-align: center;"> {{Response}}
+                                                    style="font-size: x-large; text-align: center;"> {{ResponseApproved}}
                                                 </div>
                                                 <a href="" class="nav-link " style="color: #7ae582;">
                                                     View All
@@ -275,7 +278,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="d-block ">
                                                 <div class=" counter"
-                                                    style="font-size: x-large; text-align: center;"> {{Response}}
+                                                    style="font-size: x-large; text-align: center;"> {{ResponsePending}}
                                                 </div>
                                                 <a href="" class="nav-link " style="color: #d18d4f;">
                                                     View All
@@ -636,8 +639,8 @@
                                             const filteredResponseID = filteredResponse.id
                                             const zAnswers = data.answer.filter(ans => ans.response_id == filteredResponseID)
                                             //console.log(filteredResponse)
-                                            // console.log(zAnswers)
-
+                                            const zquestionsINaSection = data.section.find(section => section.id === filteredResponse.forsection);
+                                            const sectionQuestionsCount =zquestionsINaSection.questions.length;
 
                                             if (zAnswers) {
                                                 for (let j = 0; j < zAnswers.length; j++) {
@@ -646,8 +649,15 @@
 
                                                     // answers may be non numeric
                                                     if (!isNaN(numericValue)) {
-                                                        Sum += numericValue;
+                                                        Sum += (numericValue*10);
                                                     }
+                                                   
+                                                }
+                                                Sum = Sum /sectionQuestionsCount
+                                                
+                                                if(filteredResponse.length > 1){
+                                                    Sum = (Sum/filteredResponse.length) / 100
+                                                    console.log('employee ' +sum)
                                                 }
                                             }
                                         }
@@ -655,11 +665,11 @@
                                         totalSum += Sum
 
                                     }
-                                    console.log('total sum by section ' + totalSum)
+                                    console.log('total sum by section of all lm ' + totalSum)
 
 
                                     const average = selectedMinistries.length > 0 ? totalSum / selectedMinistries.length : 0;
-                                    console.log(`Average: ${average}`);
+                                    console.log(`Average by section: ${average}`);
 
                                     // Update the value of each skillVal element with the calculated average
 
